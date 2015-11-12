@@ -1,0 +1,119 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>test-analyzer-test-int</artifactId>
+	<packaging>jar</packaging>
+
+	<name>TestAnalyzer Integration Tests</name>
+
+	<parent>
+		<groupId>de.tum.in.niedermr.ta</groupId>
+		<artifactId>test-analyzer-parent</artifactId>
+		<version>2.0.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<rootFolder>${project.basedir}/../</rootFolder>
+		<test.integration.pattern>**/*IntegrationTest*.java</test.integration.pattern>
+		<test.program.path>${basedir}/src/test/program</test.program.path>
+	</properties>
+
+	<build>
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.7</version>
+				<executions>
+					<execution>
+						<id>copy</id>
+						<phase>pre-integration-test</phase>
+						<goals>
+							<goal>copy</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>de.tum.in.niedermr.ta</groupId>
+									<artifactId>test-analyzer-core</artifactId>
+									<version>${currentVersion}</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${test.program.path}</outputDirectory>
+									<destFileName>test-analyzer-core.jar</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>de.tum.in.niedermr.ta</groupId>
+									<artifactId>test-analyzer-runner</artifactId>
+									<version>${currentVersion}</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${test.program.path}</outputDirectory>
+									<destFileName>test-analyzer-runner.jar</destFileName>
+								</artifactItem>
+								<artifactItem>
+									<groupId>de.tum.in.niedermr.ta</groupId>
+									<artifactId>test-analyzer-extensions</artifactId>
+									<version>${currentVersion}</version>
+									<type>jar</type>
+									<overWrite>true</overWrite>
+									<outputDirectory>${test.program.path}</outputDirectory>
+									<destFileName>test-analyzer-extensions.jar</destFileName>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>${test.integration.pattern}</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.18.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>${test.integration.pattern}</include>
+							</includes>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-core</artifactId>
+			<version>${currentVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-runner</artifactId>
+			<version>${currentVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-extensions</artifactId>
+			<version>${currentVersion}</version>
+		</dependency>
+	</dependencies>
+</project>
