@@ -2,5 +2,8 @@
 *.prefs
 *.project
 *.classpath
-*/target/
+**/target/
 **/lib/archive/
+**/info/archive/
+/RemoveTestAssertions/
+/StaticReturnTypeAnalyzer/
