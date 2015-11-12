@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="false" scope-include="" scope-exclude="">
+  <component name="core.analysis" dim="140,40" pos="551,21">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.analysis.*" />
+  </component>
+  <component name="core.code" dim="120,40" pos="731,21" stereotype="public">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.code.*" />
+  </component>
+  <component name="core.common" dim="140,40" pos="361,21" stereotype="public">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.common.*" />
+  </component>
+  <component name="extensions.analysis" dim="170,40" pos="551,591">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.extensions.analysis.*" />
+  </component>
+  <component name="extensions.testing" dim="190,40" pos="801,591">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.extensions.testing.*" />
+  </component>
+  <component name="other" dim="120,40" pos="21,21">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.Core" />
+  </component>
+  <component name="runner.analysis" dim="160,40" pos="471,361">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.analysis.*" />
+  </component>
+  <component name="runner.configuration" dim="170,50" pos="221,461" stereotype="component_public">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.configuration.*" />
+  </component>
+  <component name="runner.constants" dim="150,40" pos="31,361" stereotype="public">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.constants.*" />
+  </component>
+  <component name="runner.execution" dim="190,40" pos="711,441">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.execution.*" />
+  </component>
+  <component name="runner.logging" dim="150,40" pos="961,361" stereotype="public">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.logging.*" />
+  </component>
+  <component name="runner.start" dim="160,40" pos="951,431">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.start.*" />
+  </component>
+  <component name="test.integration" dim="180,40" pos="941,541">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.test.integration.*" />
+  </component>
+  <component name="test.sample" dim="120,40" pos="941,21" stereotype="public">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.sample.*" />
+  </component>
+  <tolerate source="core.analysis" target="runner.execution">
+    <dependency source="de.tum.in.niedermr.ta.core.analysis.filter.core.FilterTest" target="de.tum.in.niedermr.ta.runner.logic.mutation.filter.SampleClass" />
+    <dependency source="de.tum.in.niedermr.ta.core.analysis.filter.core.FilterTest" target="de.tum.in.niedermr.ta.runner.logic.mutation.filter.SampleClassExtended" />
+  </tolerate>
+  <tolerate source="core.code" target="runner.execution">
+    <dependency source="de.tum.in.niedermr.ta.core.code.util.BytecodeUtilityTest" target="de.tum.in.niedermr.ta.runner.logic.mutation.filter.SampleClass" />
+  </tolerate>
+  <allow source="extensions.analysis" target="core.analysis" />
+  <allow source="extensions.analysis" target="runner.analysis" />
+  <allow source="extensions.analysis" target="runner.execution" />
+  <tolerate source="extensions.analysis" target="runner.start">
+    <dependency source="de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
+  </tolerate>
+  <allow source="runner.analysis" target="core.analysis" />
+  <allow source="runner.analysis" target="runner.configuration" />
+  <allow source="runner.analysis" target="runner.execution" />
+  <tolerate source="runner.analysis" target="runner.start">
+    <dependency source="de.tum.in.niedermr.ta.runner.analysis.TestRun" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
+    <dependency source="de.tum.in.niedermr.ta.runner.analysis.InformationCollector" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
+    <dependency source="de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
+  </tolerate>
+  <allow source="runner.configuration" target="core.analysis" />
+  <tolerate source="runner.configuration" target="runner.execution">
+    <dependency source="de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractClasspathProperty" target="de.tum.in.niedermr.ta.runner.logic.execution.environment.Environment" />
+  </tolerate>
+  <allow source="runner.execution" target="core.analysis" />
+  <allow source="runner.execution" target="runner.configuration" />
+  <tolerate source="runner.start" target="runner.analysis">
+    <dependency source="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" target="de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal" />
+  </tolerate>
+  <allow source="runner.start" target="runner.configuration" />
+  <tolerate source="runner.start" target="runner.constants">
+    <dependency source="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" target="de.tum.in.niedermr.ta.runner.constants.TestAnalyzerConstants" />
+    <dependency source="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerBatchStart" target="de.tum.in.niedermr.ta.runner.constants.TestAnalyzerConstants" />
+  </tolerate>
+  <allow source="runner.start" target="runner.execution" />
+  <allow source="test.integration" target="runner.configuration" />
+  <allow source="test.integration" target="runner.execution" />
+  <allow source="test.integration" target="runner.start" />
+</conqat-architecture>
