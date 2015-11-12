@@ -7,3 +7,5 @@
 **/info/archive/
 /RemoveTestAssertions/
 /StaticReturnTypeAnalyzer/
+*.log
+**/src/test/temp/
