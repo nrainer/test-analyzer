@@ -23,7 +23,8 @@ import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 /**
- * Can be used as fallback factory. Note that the type string is supposed to be handled by a simple return value generator on request.
+ * Can be used as fallback factory. Note that the type string is supposed to be handled by a simple return value
+ * generator on request.
  */
 public class CommonFactory extends AbstractReturnFactory {
 	public static final CommonFactory INSTANCE = new CommonFactory();
@@ -114,22 +115,22 @@ public class CommonFactory extends AbstractReturnFactory {
 		case "java.lang.Object":
 			return new Object();
 		case "java.lang.Boolean":
-			return new Boolean(false);
+			return Boolean.valueOf(false);
 		case "java.lang.Character":
 			return new Character((char) 0);
 		case "java.lang.Byte":
-			return new Byte((byte) 0);
+			return Byte.valueOf((byte) 0);
 		case "java.lang.Short":
-			return new Short((short) 0);
+			return Short.valueOf((short) 0);
 		case "java.lang.Number":
 		case "java.lang.Integer":
-			return new Integer(0);
+			return Integer.valueOf(0);
 		case "java.lang.Long":
-			return new Long(0);
+			return Long.valueOf(0);
 		case "java.lang.Float":
-			return new Float(0);
+			return Float.valueOf(0);
 		case "java.lang.Double":
-			return new Double(0);
+			return Double.valueOf(0);
 		case "java.lang.Class":
 			return Object.class;
 		case "java.lang.Comparable":
@@ -140,7 +141,7 @@ public class CommonFactory extends AbstractReturnFactory {
 		case "java.lang.Exception":
 			return new Exception();
 		case "java.lang.CharSequence":
-			return new String();
+			return "";
 		case "java.lang.StringBuffer":
 			return new StringBuffer();
 		case "java.lang.StringBuilder":
@@ -196,7 +197,7 @@ public class CommonFactory extends AbstractReturnFactory {
 		case "java.io.File":
 			return new File(".");
 		case "java.io.Serializable":
-			return new String();
+			return "";
 		default:
 			throw new NoSuchElementException();
 		}

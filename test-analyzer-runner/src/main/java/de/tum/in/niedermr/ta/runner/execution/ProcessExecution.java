@@ -19,7 +19,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 public class ProcessExecution {
 	private static final Logger LOG = AnalyzerRunnerInternal.LOG;
 
-	public static boolean s_showSysErrors = true;
+	private static final boolean PRINT_SYS_ERR_TO_CONSOLE = true;
 	private static final String COMMAND_JAVA = "java";
 	private static final String PARAM_CLASSPATH = "-classpath";
 
@@ -39,33 +39,35 @@ public class ProcessExecution {
 	 * @param workingFolderForClasspath
 	 *            path to the working folder (from the current execution directory)
 	 */
-	public ProcessExecution(String executionDirectory, String programFolderForClasspath, String workingFolderForClasspath) {
+	public ProcessExecution(String executionDirectory, String programFolderForClasspath,
+			String workingFolderForClasspath) {
 		this.m_directory = executionDirectory;
 		this.m_programFolderForClasspath = programFolderForClasspath;
 		this.m_workingFolderForClasspath = workingFolderForClasspath;
 	}
 
-	public String executeGetSysout(String executionId, int timeout, String mainClass, String classpath, List<String> arguments) throws FailedExecution,
-			IOException {
+	public String executeGetSysout(String executionId, int timeout, String mainClass, String classpath,
+			List<String> arguments) throws FailedExecution, IOException {
 		ExecutionResult result = execute(executionId, timeout, mainClass, classpath, arguments);
 
 		return result.getStdout();
 	}
 
-	public String executeAndGetSyserr(String executionId, int timeout, String mainClass, String classpath, List<String> arguments) throws FailedExecution,
-			IOException {
+	public String executeAndGetSyserr(String executionId, int timeout, String mainClass, String classpath,
+			List<String> arguments) throws FailedExecution, IOException {
 		ExecutionResult result = execute(executionId, timeout, mainClass, classpath, arguments);
 
 		return result.getStderr();
 	}
 
-	public ExecutionResult execute(String executionId, int timeout, String mainClass, String classpath, List<String> arguments) throws FailedExecution,
-			IOException {
+	public ExecutionResult execute(String executionId, int timeout, String mainClass, String classpath,
+			List<String> arguments) throws FailedExecution, IOException {
 		List<String> command = new LinkedList<>();
 
 		command.add(COMMAND_JAVA);
 		command.add(PARAM_CLASSPATH);
-		command.add(Environment.makeClasspathCanonical(Environment.replaceFolders(classpath, this.m_programFolderForClasspath, this.m_workingFolderForClasspath)));
+		command.add(Environment.makeClasspathCanonical(Environment.replaceFolders(classpath,
+				this.m_programFolderForClasspath, this.m_workingFolderForClasspath)));
 		command.add(mainClass);
 		command.add(executionId);
 
@@ -80,10 +82,10 @@ public class ProcessExecution {
 
 		ExecutionResult result = ProcessUtils.execute(processBuilder, null, timeout);
 
-		if (s_showSysErrors && !StringUtility.isNullOrEmpty(result.getStderr())) {
-			System.err.println("===== BEGIN SYSERR OF EXECUTED PROCESS =====");
-			System.err.println(result.getStderr());
-			System.err.println("=====  END SYSERR OF EXECUTED PROCESS  =====");
+		if (PRINT_SYS_ERR_TO_CONSOLE && !StringUtility.isNullOrEmpty(result.getStderr())) {
+			writeToConsole("===== BEGIN SYSERR OF EXECUTED PROCESS =====");
+			writeToConsole(result.getStderr());
+			writeToConsole("=====  END SYSERR OF EXECUTED PROCESS  =====");
 		}
 
 		if (!result.isNormalTermination()) {
@@ -91,9 +93,14 @@ public class ProcessExecution {
 		}
 
 		if (result.getReturnCode() != 0) {
-			throw new FailedExecution(executionId, "Execution id '" + executionId + "' returned with other code than 0");
+			throw new FailedExecution(executionId,
+					"Execution id '" + executionId + "' returned with other code than 0");
 		}
 
 		return result;
+	}
+
+	private static void writeToConsole(String output) {
+		System.out.println(output);
 	}
 }

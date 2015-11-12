@@ -10,10 +10,10 @@ import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 
 public class AnalysisInstrumentationOperation implements ICodeModificationOperation {
-	private final ITestClassDetector testClassDetector;
+	private final ITestClassDetector m_testClassDetector;
 
 	public AnalysisInstrumentationOperation(ITestClassDetector testClassDetector) {
-		this.testClassDetector = testClassDetector;
+		this.m_testClassDetector = testClassDetector;
 	}
 
 	@Override
@@ -33,6 +33,6 @@ public class AnalysisInstrumentationOperation implements ICodeModificationOperat
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
-		return testClassDetector.analyzeIsTestClass(cn).isTestClass();
+		return m_testClassDetector.analyzeIsTestClass(cn).isTestClass();
 	}
 }

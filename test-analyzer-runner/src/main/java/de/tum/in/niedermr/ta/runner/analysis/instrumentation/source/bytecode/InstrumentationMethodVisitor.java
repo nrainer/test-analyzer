@@ -8,19 +8,19 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class InstrumentationMethodVisitor extends MethodVisitor {
-	private final MethodIdentifier identifier;
+	private final MethodIdentifier m_identifier;
 
 	public InstrumentationMethodVisitor(MethodVisitor mv, String className, String methodName, String desc) {
 		super(Opcodes.ASM5, mv);
 
-		this.identifier = MethodIdentifier.create(className, methodName, desc);
+		this.m_identifier = MethodIdentifier.create(className, methodName, desc);
 	}
 
 	@Override
 	public void visitCode() {
 		super.visitCode();
 
-		visitLdcInsn(identifier.get());
+		visitLdcInsn(m_identifier.get());
 		mv.visitMethodInsn(Opcodes.INVOKESTATIC, JavaUtility.toClassPathWithoutEnding(InvocationLogger.class), "log", "(Ljava/lang/String;)V", false);
 	}
 }

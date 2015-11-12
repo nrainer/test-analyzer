@@ -21,7 +21,7 @@ public class JUnitSuiteRunner extends JUnitTestRunner implements ITestRunner, Us
 	public JUnitTestRunResult runTest(Class<?> testClass, String testcaseName) {
 		junit.framework.Test test = getTestByName(testClass, testcaseName);
 
-		return new JUnitTestRunResult(jUnitCore.run(test));
+		return new JUnitTestRunResult(m_jUnitCore.run(test));
 	}
 
 	@Override

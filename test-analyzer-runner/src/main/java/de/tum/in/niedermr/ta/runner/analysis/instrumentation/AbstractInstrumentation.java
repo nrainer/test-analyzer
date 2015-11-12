@@ -14,20 +14,20 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 public class AbstractInstrumentation {
 	private static final Logger LOG = AnalyzerRunnerInternal.LOG;
 
-	private final String executionId;
-	private final boolean operateFaultTolerant;
+	private final String m_executionId;
+	private final boolean m_operateFaultTolerant;
 
 	public AbstractInstrumentation(String executionId, boolean operateFaultTolerant) {
-		this.executionId = executionId;
-		this.operateFaultTolerant = operateFaultTolerant;
+		this.m_executionId = executionId;
+		this.m_operateFaultTolerant = operateFaultTolerant;
 	}
 
 	public String getExecutionId() {
-		return executionId;
+		return m_executionId;
 	}
 
 	public boolean isOperateFaultTolerant() {
-		return operateFaultTolerant;
+		return m_operateFaultTolerant;
 	}
 
 	protected void instrumentJars(String[] jarsToBeInstrumented, String genericJarOutputPath, ICodeModificationOperation operation) throws FailedExecution {
@@ -39,10 +39,10 @@ public class AbstractInstrumentation {
 		} catch (NoClassDefFoundError ex) {
 			LOG.error("Incomplete classpath!");
 			LOG.error(ex);
-			throw new FailedExecution(executionId, ex);
+			throw new FailedExecution(m_executionId, ex);
 		} catch (Throwable t) {
 			LOG.error(t);
-			throw new FailedExecution(executionId, t);
+			throw new FailedExecution(m_executionId, t);
 		}
 	}
 

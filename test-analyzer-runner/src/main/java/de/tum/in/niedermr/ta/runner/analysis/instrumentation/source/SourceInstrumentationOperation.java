@@ -18,18 +18,18 @@ import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.TestInstrument
  *
  */
 public class SourceInstrumentationOperation implements ICodeModificationOperation {
-	private final ITestClassDetector testClassDetector;
-	private final TestInstrumentationOperation testInstrumentationOperation;
+	private final ITestClassDetector m_testClassDetector;
+	private final TestInstrumentationOperation m_testInstrumentationOperation;
 
 	public SourceInstrumentationOperation(ITestClassDetector testClassDetector, TestInstrumentationOperation testInstrumentationOperation) {
-		this.testClassDetector = testClassDetector;
-		this.testInstrumentationOperation = testInstrumentationOperation;
+		this.m_testClassDetector = testClassDetector;
+		this.m_testInstrumentationOperation = testInstrumentationOperation;
 	}
 
 	@Override
 	public void modify(ClassReader cr, ClassWriter cw) throws Exception {
 		if (isTestClass(cr)) {
-			testInstrumentationOperation.modify(cr, cw);
+			m_testInstrumentationOperation.modify(cr, cw);
 		} else {
 			ClassVisitor cv = new InstrumentationClassVisitor(cw, cr.getClassName());
 			cr.accept(cv, 0);
@@ -40,6 +40,6 @@ public class SourceInstrumentationOperation implements ICodeModificationOperatio
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
-		return testClassDetector.analyzeIsTestClass(cn).isTestClass();
+		return m_testClassDetector.analyzeIsTestClass(cn).isTestClass();
 	}
 }

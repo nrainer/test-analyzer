@@ -9,10 +9,10 @@ import org.testng.TestListenerAdapter;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 
 public class TestNgRunResult implements ITestRunResult {
-	private final TestListenerAdapter listener;
+	private final TestListenerAdapter m_listener;
 
 	public TestNgRunResult(TestListenerAdapter listener) {
-		this.listener = listener;
+		this.m_listener = listener;
 	}
 
 	@Override
@@ -31,24 +31,24 @@ public class TestNgRunResult implements ITestRunResult {
 
 	@Override
 	public int getRunCount() {
-		return listener.getPassedTests().size() + getFailureCount() + listener.getSkippedTests().size();
+		return m_listener.getPassedTests().size() + getFailureCount() + m_listener.getSkippedTests().size();
 	}
 
 	@Override
 	public int getFailureCount() {
-		return listener.getFailedTests().size();
+		return m_listener.getFailedTests().size();
 	}
 
 	@Override
 	public Throwable getFirstException() {
-		return successful() ? null : listener.getFailedTests().get(0).getThrowable();
+		return successful() ? null : m_listener.getFailedTests().get(0).getThrowable();
 	}
 
 	@Override
 	public List<? extends Throwable> getAllExceptions() {
 		List<Throwable> result = new LinkedList<>();
 
-		for (ITestResult testResult : listener.getFailedTests()) {
+		for (ITestResult testResult : m_listener.getFailedTests()) {
 			result.add(testResult.getThrowable());
 		}
 

@@ -13,16 +13,16 @@ import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 public abstract class AbstractTestClassDetector implements ITestClassDetector {
 	protected final static boolean IGNORE_IGNORED_TEST_CASES = true;
 
-	private final Collection<Pattern> ignoredClassNamePatterns;
-	private final boolean ignoreAbstractClasses;
+	private final Collection<Pattern> m_ignoredClassNamePatterns;
+	private final boolean m_ignoreAbstractClasses;
 
 	public AbstractTestClassDetector(boolean acceptAbstractTestClasses, String... ignoredTestClassRegexes) {
-		this.ignoreAbstractClasses = !(acceptAbstractTestClasses);
-		this.ignoredClassNamePatterns = new LinkedList<>();
+		this.m_ignoreAbstractClasses = !(acceptAbstractTestClasses);
+		this.m_ignoredClassNamePatterns = new LinkedList<>();
 
 		for (String item : ignoredTestClassRegexes) {
 			if (!StringUtility.isNullOrEmpty(item)) {
-				ignoredClassNamePatterns.add(Pattern.compile(item));
+				m_ignoredClassNamePatterns.add(Pattern.compile(item));
 			}
 		}
 	}
@@ -32,7 +32,7 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 		if (isClassToBeIgnored(cn.name)) {
 			return ClassType.IGNORED_CLASS;
 		} else {
-			if (ignoreAbstractClasses && BytecodeUtility.isAbstractClass(cn)) {
+			if (m_ignoreAbstractClasses && BytecodeUtility.isAbstractClass(cn)) {
 				return ClassType.IGNORED_ABSTRACT_CLASS;
 			} else {
 				return isTestClassInternal(cn);
@@ -45,7 +45,7 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 	private boolean isClassToBeIgnored(String classPathOrName) {
 		String className = Identification.asClassName(classPathOrName);
 
-		for (Pattern p : ignoredClassNamePatterns) {
+		for (Pattern p : m_ignoredClassNamePatterns) {
 			if (p.matcher(className).find()) {
 				return true;
 			}

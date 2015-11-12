@@ -18,12 +18,12 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class TestCollector implements ITestCollector {
-	protected final Map<Class<?>, Set<String>> result;
-	protected final ITestClassDetector testClassDetector;
+	protected final Map<Class<?>, Set<String>> m_result;
+	protected final ITestClassDetector m_testClassDetector;
 
 	public TestCollector(ITestClassDetector testClassDetector) {
-		this.result = new HashMap<>();
-		this.testClassDetector = testClassDetector;
+		this.m_result = new HashMap<>();
+		this.m_testClassDetector = testClassDetector;
 	}
 
 	public boolean collectTestcasesInNonAbstractSuperClasses() {
@@ -39,14 +39,14 @@ public class TestCollector implements ITestCollector {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
-		ClassType testClassType = testClassDetector.analyzeIsTestClass(cn);
+		ClassType testClassType = m_testClassDetector.analyzeIsTestClass(cn);
 
 		if (testClassType.isTestClass()) {
 			Set<String> testcases = collectTestcases(cn, testClassType);
 
 			if (!testcases.isEmpty()) {
 				Class<?> cls = Class.forName(JavaUtility.toClassName(originalClassPath));
-				result.put(cls, testcases);
+				m_result.put(cls, testcases);
 			}
 		}
 	}
@@ -68,7 +68,7 @@ public class TestCollector implements ITestCollector {
 		Set<String> testcases = new HashSet<>();
 
 		for (MethodNode meth : (List<MethodNode>) cn.methods) {
-			if (testClassDetector.analyzeIsTestcase(meth, testClassType)) {
+			if (m_testClassDetector.analyzeIsTestcase(meth, testClassType)) {
 				testcases.add(meth.name);
 			}
 		}
@@ -103,11 +103,11 @@ public class TestCollector implements ITestCollector {
 
 	@Override
 	public Collection<Class<?>> getTestClasses() {
-		return result.keySet();
+		return m_result.keySet();
 	}
 
 	@Override
 	public Map<Class<?>, Set<String>> getTestClassesWithTestcases() {
-		return result;
+		return m_result;
 	}
 }

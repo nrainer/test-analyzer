@@ -9,9 +9,9 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	@Override
 	public void start() throws FailedExecution {
-		InstructionCounterStep countInstructionsStep = new InstructionCounterStep(super.information);
-		AssertionCounterStep countAssertionsStep = new AssertionCounterStep(super.information);
-		PersistResultStep persistResultStep = new PersistResultStep(super.information);
+		InstructionCounterStep countInstructionsStep = new InstructionCounterStep(super.m_information);
+		AssertionCounterStep countAssertionsStep = new AssertionCounterStep(super.m_information);
+		PersistResultStep persistResultStep = new PersistResultStep(super.m_information);
 
 		countInstructionsStep.run();
 		countAssertionsStep.run();

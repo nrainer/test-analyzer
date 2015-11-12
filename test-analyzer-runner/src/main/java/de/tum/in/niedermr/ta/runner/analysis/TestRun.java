@@ -32,7 +32,7 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 public class TestRun {
 	public static final Logger LOG = LogManager.getLogger(TestRun.class);
 
-	private static String executionId;
+	private static String s_executionId;
 
 	/**
 	 * Note that the jar file of the class to be tested must be on the classpath!
@@ -48,8 +48,8 @@ public class TestRun {
 			return;
 		}
 
-		TestRun.executionId = CommonUtility.getArgument(args, 0);
-		LOG.info(LoggingConstants.EXECUTION_ID_PREFIX + executionId);
+		TestRun.s_executionId = CommonUtility.getArgument(args, 0);
+		LOG.info(LoggingConstants.EXECUTION_ID_PREFIX + s_executionId);
 		LOG.info(LoggingUtil.getInputArgumentsF1(args));
 
 		try {
@@ -62,7 +62,7 @@ public class TestRun {
 					ResultPresentationProperty.RESULT_PRESENTATION_TEXT);
 
 			final IResultPresentation resultPresentation = ResultPresentationUtil
-					.getResultPresentation(resultPresentationChoice, executionId);
+					.getResultPresentation(resultPresentationChoice, s_executionId);
 
 			List<String> result = runTestsFromFile(testRunner, fileWithTestsToRun, resultPresentation, mutatedMethod,
 					usedReturnValueGenerator);
@@ -71,8 +71,8 @@ public class TestRun {
 
 			System.exit(0);
 		} catch (Throwable t) {
-			LOG.error("Failed execution " + executionId, t);
-			throw new FailedExecution(executionId, t);
+			LOG.error("Failed execution " + s_executionId, t);
+			throw new FailedExecution(s_executionId, t);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class TestRun {
 		}
 
 		LOG.info(
-				executionId + ": " + LoggingUtil.singularOrPlural(allTestsToRun, "testcase was", "testcases were", true)
+				s_executionId + ": " + LoggingUtil.singularOrPlural(allTestsToRun, "testcase was", "testcases were", true)
 						+ " run successfully.");
 
 		return result;

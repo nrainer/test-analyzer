@@ -50,9 +50,9 @@ public class JarIteratorTest {
 		ContentRecoderOperation operation = new ContentRecoderOperation();
 		it.execute(operation);
 
-		assertEquals(2, operation.iteratedClasses.size());
-		assertTrue(operation.iteratedClasses.contains(CLASSPATH_SIMPLE_CALCULATION));
-		assertTrue(operation.iteratedClasses.contains(CLASSPATH_UNIT_TEST));
+		assertEquals(2, operation.m_iteratedClasses.size());
+		assertTrue(operation.m_iteratedClasses.contains(CLASSPATH_SIMPLE_CALCULATION));
+		assertTrue(operation.m_iteratedClasses.contains(CLASSPATH_UNIT_TEST));
 	}
 
 	@Test
@@ -89,8 +89,8 @@ public class JarIteratorTest {
 		ContentRecoderOperation checkOperation = new ContentRecoderOperation();
 		analyzeIterator.execute(checkOperation);
 
-		assertEquals(3, checkOperation.iteratedClasses.size());
-		assertTrue(checkOperation.iteratedClasses.contains(JavaUtility.toClassPathWithEnding(classToAdd.getName())));
+		assertEquals(3, checkOperation.m_iteratedClasses.size());
+		assertTrue(checkOperation.m_iteratedClasses.contains(JavaUtility.toClassPathWithEnding(classToAdd.getName())));
 
 		file.delete();
 	}
@@ -123,7 +123,7 @@ public class JarIteratorTest {
 		private static final String HANDLE_RESOURCE = "handleResource";
 		private static final String AFTER_ALL = "afterAll";
 
-		private final StringBuilder logger = new StringBuilder();
+		private final StringBuilder m_logger = new StringBuilder();
 
 		public SequenceRecorderIterator(String inputJarPath) {
 			super(inputJarPath);
@@ -131,26 +131,26 @@ public class JarIteratorTest {
 
 		@Override
 		protected void beforeAll() {
-			logger.append(BEFORE_ALL);
+			m_logger.append(BEFORE_ALL);
 		}
 
 		@Override
 		protected void handleEntry(ICodeOperation jarOperation, ClassReader cr, String originalClassPath) {
-			logger.append(HANDLE_ENTRY);
+			m_logger.append(HANDLE_ENTRY);
 		}
 
 		@Override
 		protected void handleResource(ICodeOperation jarOperation, JarEntry resourceEntryList, InputStream inStream) {
-			logger.append(HANDLE_RESOURCE);
+			m_logger.append(HANDLE_RESOURCE);
 		}
 
 		@Override
 		protected void afterAll() {
-			logger.append(AFTER_ALL);
+			m_logger.append(AFTER_ALL);
 		}
 
 		public String getLog() {
-			return logger.toString();
+			return m_logger.toString();
 		}
 
 		@Override
@@ -165,15 +165,15 @@ public class JarIteratorTest {
 	}
 
 	class ContentRecoderOperation implements ICodeAnalyzeOperation {
-		private final Set<String> iteratedClasses;
+		private final Set<String> m_iteratedClasses;
 
 		public ContentRecoderOperation() {
-			this.iteratedClasses = new HashSet<>();
+			this.m_iteratedClasses = new HashSet<>();
 		}
 
 		@Override
 		public void analyze(ClassReader cr, String originalClassPath) throws Exception {
-			iteratedClasses.add(originalClassPath);
+			m_iteratedClasses.add(originalClassPath);
 		}
 	}
 

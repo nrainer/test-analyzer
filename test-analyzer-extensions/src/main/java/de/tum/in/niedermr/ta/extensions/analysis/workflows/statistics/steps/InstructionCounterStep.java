@@ -16,17 +16,17 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionSte
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
 
 public class InstructionCounterStep extends AbstractExecutionStep {
-	private final Map<MethodIdentifier, Integer> instructionsPerMethod;
-	private final Map<MethodIdentifier, Integer> instructionsPerTestcase;
-	private final Map<Class<?>, Set<String>> allTestcases;
+	private final Map<MethodIdentifier, Integer> m_instructionsPerMethod;
+	private final Map<MethodIdentifier, Integer> m_instructionsPerTestcase;
+	private final Map<Class<?>, Set<String>> m_allTestcases;
 
 	public InstructionCounterStep(ExecutionInformation information) {
 		super(information);
 
-		this.instructionsPerMethod = new HashMap<>();
-		this.allTestcases = new HashMap<>();
+		this.m_instructionsPerMethod = new HashMap<>();
+		this.m_allTestcases = new HashMap<>();
 
-		this.instructionsPerTestcase = new HashMap<>();
+		this.m_instructionsPerTestcase = new HashMap<>();
 	}
 
 	@Override
@@ -36,14 +36,14 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 				m_configuration.getTestClassesToSkip().getElements());
 
 		for (String sourceJar : m_configuration.getCodePathToMutate().getElements()) {
-			this.instructionsPerMethod.putAll(getCountInstructionsData(Mode.METHOD, testClassDetector, sourceJar));
+			this.m_instructionsPerMethod.putAll(getCountInstructionsData(Mode.METHOD, testClassDetector, sourceJar));
 		}
 
 		for (String testJar : m_configuration.getCodePathToTest().getElements()) {
-			this.instructionsPerTestcase.putAll(getCountInstructionsData(Mode.TESTCASE, testClassDetector, testJar));
+			this.m_instructionsPerTestcase.putAll(getCountInstructionsData(Mode.TESTCASE, testClassDetector, testJar));
 		}
 
-		TestcaseInheritanceHelper.postProcessAllTestcases(allTestcases, instructionsPerTestcase, LOG);
+		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_instructionsPerTestcase, LOG);
 	}
 
 	private Map<MethodIdentifier, Integer> getCountInstructionsData(Mode mode, ITestClassDetector testClassDetector,
@@ -60,7 +60,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 			if (mode == Mode.TESTCASE) {
 				ITestCollector testCollector = new TestCollector(testClassDetector);
 				iterator.execute(testCollector);
-				this.allTestcases.putAll(testCollector.getTestClassesWithTestcases());
+				this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
 			}
 
 			InstructionCounterOperation operation = new InstructionCounterOperation(testClassDetector, mode);
@@ -85,11 +85,11 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 	}
 
 	public Map<MethodIdentifier, Integer> getInstructionsPerMethod() {
-		return instructionsPerMethod;
+		return m_instructionsPerMethod;
 	}
 
 	public Map<MethodIdentifier, Integer> getInstructionsPerTestcase() {
-		return instructionsPerTestcase;
+		return m_instructionsPerTestcase;
 	}
 
 	public enum Mode {

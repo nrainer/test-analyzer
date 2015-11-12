@@ -7,13 +7,13 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
 
 public class AssertionCounterMethodVisitor extends MethodVisitor {
-	private final AssertionInformation assertionInformation;
-	private int countAssertions;
+	private final AssertionInformation m_assertionInformation;
+	private int m_countAssertions;
 
 	public AssertionCounterMethodVisitor(AssertionInformation assertionInformation) {
 		super(Opcodes.ASM5);
 
-		this.assertionInformation = assertionInformation;
+		this.m_assertionInformation = assertionInformation;
 	}
 
 	@Override
@@ -26,16 +26,16 @@ public class AssertionCounterMethodVisitor extends MethodVisitor {
 	}
 
 	private void analyzeMethodInvocation(String owner, String name, String desc) throws ClassNotFoundException {
-		if (assertionInformation.isAssertionMethod(MethodIdentifier.create(owner, name, desc)).m_isAssertion) {
-			countAssertions++;
+		if (m_assertionInformation.isAssertionMethod(MethodIdentifier.create(owner, name, desc)).isAssertion()) {
+			m_countAssertions++;
 		}
 	}
 
 	public int getCountAssertions() {
-		return countAssertions;
+		return m_countAssertions;
 	}
 
 	public void reset() {
-		this.countAssertions = 0;
+		this.m_countAssertions = 0;
 	}
 }

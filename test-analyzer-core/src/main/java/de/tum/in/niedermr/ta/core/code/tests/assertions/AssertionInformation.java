@@ -20,7 +20,7 @@ import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 public class AssertionInformation {
 	private static final Class<?>[] CORE_ASSERTION_CLASSES = new Class<?>[] { org.junit.Assert.class,
 			junit.framework.Assert.class };
-	private final Result NO_ASSERTION = new Result(false, null);
+	private final Result m_noAssertionResult = new Result(false, null);
 
 	private final Set<Class<?>> m_assertionClassesInUse;
 	private final Map<MethodIdentifier, int[]> m_assertions;
@@ -81,27 +81,27 @@ public class AssertionInformation {
 	public Result isAssertionMethod(MethodIdentifier methodIdentifier) throws ClassNotFoundException {
 		if (isKnownNativeAssertion(methodIdentifier)) {
 			return new Result(true, methodIdentifier);
-		} else {
-			Class<?> cls = Class.forName(methodIdentifier.getOnlyClassName());
+		}
 
-			for (Class<?> assertionClass : m_assertionClassesInUse) {
-				if (JavaUtility.inheritsClass(cls, assertionClass)) {
-					// create a new identifier in which the name of the class is replaced with the name of the assertion
-					// super class
-					// example: org.example.UtilTests.assertEquals(int,int) -> org.junit.Assert.assertEquals(int,int)
-					MethodIdentifier newIdentifier = MethodIdentifier
-							.parse(methodIdentifier.get().replace(cls.getName(), assertionClass.getName()));
+		Class<?> cls = Class.forName(methodIdentifier.getOnlyClassName());
 
-					if (isKnownNativeAssertion(newIdentifier)) {
-						return new Result(true, newIdentifier);
-					} else {
-						return NO_ASSERTION;
-					}
+		for (Class<?> assertionClass : m_assertionClassesInUse) {
+			if (JavaUtility.inheritsClass(cls, assertionClass)) {
+				// create a new identifier in which the name of the class is replaced with the name of the assertion
+				// super class
+				// example: org.example.UtilTests.assertEquals(int,int) -> org.junit.Assert.assertEquals(int,int)
+				MethodIdentifier newIdentifier = MethodIdentifier
+						.parse(methodIdentifier.get().replace(cls.getName(), assertionClass.getName()));
+
+				if (isKnownNativeAssertion(newIdentifier)) {
+					return new Result(true, newIdentifier);
+				} else {
+					return m_noAssertionResult;
 				}
 			}
-
-			return NO_ASSERTION;
 		}
+
+		return m_noAssertionResult;
 	}
 
 	private boolean isKnownNativeAssertion(MethodIdentifier identifier) {
@@ -109,20 +109,28 @@ public class AssertionInformation {
 	}
 
 	public class Result {
-		public final boolean m_isAssertion;
-		public final int[] m_popInstructionOpcodes;
+		private final boolean m_isAssertion;
+		private final int[] m_popInstructionOpcodes;
 
 		public Result(boolean isAssertion, MethodIdentifier originalMethodIdentifier) {
 			this.m_isAssertion = isAssertion;
-			this.m_popInstructionOpcodes = getPopInstructionOpcodes(originalMethodIdentifier);
+			this.m_popInstructionOpcodes = retrievePopInstructionOpcodes(originalMethodIdentifier);
 		}
 
-		private int[] getPopInstructionOpcodes(MethodIdentifier methodIdentifier) {
+		private int[] retrievePopInstructionOpcodes(MethodIdentifier methodIdentifier) {
 			if (methodIdentifier == null) {
 				return null;
 			} else {
 				return m_assertions.get(methodIdentifier);
 			}
+		}
+
+		public boolean isAssertion() {
+			return m_isAssertion;
+		}
+
+		public int[] getPopInstructionOpcodes() {
+			return m_popInstructionOpcodes;
 		}
 	}
 }

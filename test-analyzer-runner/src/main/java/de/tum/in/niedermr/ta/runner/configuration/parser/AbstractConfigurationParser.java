@@ -133,6 +133,7 @@ abstract class AbstractConfigurationParser {
 
 	/**
 	 * Can be used to migrate a value.
+	 * 
 	 * @param property
 	 * @param value
 	 */
@@ -195,7 +196,7 @@ abstract class AbstractConfigurationParser {
 	private enum LineType {
 		SET(ConfigurationLoader.KEY_VALUE_SEPARATOR_SET), APPEND(ConfigurationLoader.KEY_VALUE_SEPARATOR_APPEND);
 
-		public final String m_separator;
+		private final String m_separator;
 
 		private LineType(String separator) {
 			this.m_separator = separator;

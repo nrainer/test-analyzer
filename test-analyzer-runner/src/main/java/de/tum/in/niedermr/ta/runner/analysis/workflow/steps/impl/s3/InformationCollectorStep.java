@@ -19,11 +19,11 @@ import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformatio
 public class InformationCollectorStep extends AbstractExecutionStep {
 	private static final String EXEC_ID = "INFCOL";
 
-	private final ConcurrentLinkedQueue<TestInformation> methodsToMutateAndTestsToRun;
+	private final ConcurrentLinkedQueue<TestInformation> m_methodsToMutateAndTestsToRun;
 
 	public InformationCollectorStep(ExecutionInformation information) {
 		super(information);
-		this.methodsToMutateAndTestsToRun = new ConcurrentLinkedQueue<>();
+		this.m_methodsToMutateAndTestsToRun = new ConcurrentLinkedQueue<>();
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 	protected void loadCollectedData() throws IOException {
 		List<String> data = TextFileData.readFromFile(getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
 
-		methodsToMutateAndTestsToRun.addAll(CollectedInformation.parseInformationCollectorData(data));
+		m_methodsToMutateAndTestsToRun.addAll(CollectedInformation.parseInformationCollectorData(data));
 	}
 
 	protected String getClassNameOfInformationCollector() {
@@ -65,7 +65,7 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 	}
 
 	public ConcurrentLinkedQueue<TestInformation> getMethodsToMutateAndTestsToRun() {
-		return methodsToMutateAndTestsToRun;
+		return m_methodsToMutateAndTestsToRun;
 	}
 
 	@Override

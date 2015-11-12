@@ -11,18 +11,18 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
  */
 public class DatabaseResultPresentation implements IResultPresentation {
 	private static final String UPDATE_STATEMENT = "INSERT INTO Test_Result (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('%s', '%s', '%s', '%s', %s, %s, '%s');";
-	private String execId;
+	private String m_execId;
 
 	@Override
 	public String formatResultInformation(TestcaseIdentifier testcaseIdentifier, ITestRunResult testResult, MethodIdentifier mutatedMethod,
 			String returnValueGenerator) {
-		return String.format(UPDATE_STATEMENT, execId, testcaseIdentifier.toMethodIdentifier().get(), mutatedMethod.get(), returnValueGenerator,
+		return String.format(UPDATE_STATEMENT, m_execId, testcaseIdentifier.toMethodIdentifier().get(), mutatedMethod.get(), returnValueGenerator,
 				testResult.getFailureCount() > 0, testResult.isAssertionError(), getFirstExceptionName(testResult));
 	}
 
 	@Override
 	public void setShortExecutionId(String execId) {
-		this.execId = execId;
+		this.m_execId = execId;
 	}
 
 	private String getFirstExceptionName(ITestRunResult testResult) {

@@ -9,15 +9,15 @@ import org.junit.runner.notification.Failure;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 
 public class JUnitTestRunResult implements ITestRunResult {
-	private final Result jUnitResult;
+	private final Result m_jUnitResult;
 
 	public JUnitTestRunResult(Result jUnitResult) {
-		this.jUnitResult = jUnitResult;
+		this.m_jUnitResult = jUnitResult;
 	}
 
 	@Override
 	public boolean successful() {
-		return jUnitResult.wasSuccessful();
+		return m_jUnitResult.wasSuccessful();
 	}
 
 	@Override
@@ -31,24 +31,24 @@ public class JUnitTestRunResult implements ITestRunResult {
 
 	@Override
 	public int getRunCount() {
-		return jUnitResult.getRunCount();
+		return m_jUnitResult.getRunCount();
 	}
 
 	@Override
 	public int getFailureCount() {
-		return jUnitResult.getFailureCount();
+		return m_jUnitResult.getFailureCount();
 	}
 
 	@Override
 	public Throwable getFirstException() {
-		return successful() ? null : jUnitResult.getFailures().get(0).getException();
+		return successful() ? null : m_jUnitResult.getFailures().get(0).getException();
 	}
 
 	@Override
 	public List<? extends Throwable> getAllExceptions() {
 		List<Throwable> result = new LinkedList<>();
 
-		for (Failure failure : jUnitResult.getFailures()) {
+		for (Failure failure : m_jUnitResult.getFailures()) {
 			result.add(failure.getException());
 		}
 

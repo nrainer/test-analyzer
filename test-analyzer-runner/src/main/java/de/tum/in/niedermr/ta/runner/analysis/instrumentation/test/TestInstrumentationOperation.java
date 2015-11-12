@@ -18,10 +18,10 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.bytecode.TestModeClassVisitor;
 
 public class TestInstrumentationOperation implements ICodeModificationOperation {
-	private ITestClassDetector testClassDetector;
+	private ITestClassDetector m_testClassDetector;
 
 	public TestInstrumentationOperation(ITestClassDetector detector) {
-		this.testClassDetector = detector;
+		this.m_testClassDetector = detector;
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class TestInstrumentationOperation implements ICodeModificationOperation 
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
-		ClassType testClassType = testClassDetector.analyzeIsTestClass(cn);
+		ClassType testClassType = m_testClassDetector.analyzeIsTestClass(cn);
 
 		ClassVisitor cv;
 
@@ -51,7 +51,7 @@ public class TestInstrumentationOperation implements ICodeModificationOperation 
 		Set<MethodIdentifier> result = new HashSet<>();
 
 		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
-			if (testClassDetector.analyzeIsTestcase(methodNode, testClassType)) {
+			if (m_testClassDetector.analyzeIsTestcase(methodNode, testClassType)) {
 				result.add(MethodIdentifier.create(cn.name, methodNode));
 			}
 		}

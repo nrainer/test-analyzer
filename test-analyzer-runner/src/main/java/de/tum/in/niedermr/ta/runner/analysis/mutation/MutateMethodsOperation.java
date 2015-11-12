@@ -18,16 +18,15 @@ import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 
 public class MutateMethodsOperation implements ICodeModificationOperation {
-	private final IReturnValueGenerator returnValueGenerator;
-	private final MethodFilterCollection methodFilters;
-
-	private final List<MethodIdentifier> mutatedMethods;
+	private final IReturnValueGenerator m_returnValueGenerator;
+	private final MethodFilterCollection m_methodFilters;
+	private final List<MethodIdentifier> m_mutatedMethods;
 
 	public MutateMethodsOperation(IReturnValueGenerator returnValueGen, MethodFilterCollection methodFilters) {
-		this.returnValueGenerator = returnValueGen;
-		this.methodFilters = methodFilters;
+		this.m_returnValueGenerator = returnValueGen;
+		this.m_methodFilters = methodFilters;
 
-		this.mutatedMethods = new LinkedList<>();
+		this.m_mutatedMethods = new LinkedList<>();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -50,14 +49,16 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 	}
 
 	private boolean isToMutate(MethodNode method, MethodIdentifier identifier) {
-		return methodFilters.acceptMethod(identifier, method).isAccepted() && !isSynthetic(method);
+		return m_methodFilters.acceptMethod(identifier, method).isAccepted() && !isSynthetic(method);
 	}
 
 	private void mutate(MethodNode method, MethodIdentifier methodIdentifier) {
-		if (!ReturnValueGeneratorUtil.canHandleType(returnValueGenerator, methodIdentifier, method.desc)) {
-			// Note that capability to handle the return type is - if used correctly - already checked by the method filter.
-			throw new IllegalStateException("The selected return value generator does not support a value generation for the method " + methodIdentifier.get()
-					+ ".");
+		if (!ReturnValueGeneratorUtil.canHandleType(m_returnValueGenerator, methodIdentifier, method.desc)) {
+			// Note that capability to handle the return type is - if used correctly - already checked by the method
+			// filter.
+			throw new IllegalStateException(
+					"The selected return value generator does not support a value generation for the method "
+							+ methodIdentifier.get() + ".");
 		}
 
 		final Type returnType = Type.getReturnType(method.desc);
@@ -67,10 +68,10 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 		method.tryCatchBlocks.clear();
 		method.localVariables.clear();
 
-		returnValueGenerator.putReturnValueBytecodeInstructions(method, methodIdentifier, returnType);
+		m_returnValueGenerator.putReturnValueBytecodeInstructions(method, methodIdentifier, returnType);
 		method.visitInsn(returnOpcode);
 
-		mutatedMethods.add(methodIdentifier);
+		m_mutatedMethods.add(methodIdentifier);
 	}
 
 	private boolean isSynthetic(MethodNode method) {
@@ -78,6 +79,6 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 	}
 
 	public List<MethodIdentifier> getMutatedMethods() {
-		return mutatedMethods;
+		return m_mutatedMethods;
 	}
 }

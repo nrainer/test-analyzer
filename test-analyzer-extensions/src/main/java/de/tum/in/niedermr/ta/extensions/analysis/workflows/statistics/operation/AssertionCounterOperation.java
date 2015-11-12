@@ -15,13 +15,13 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.bytecode.AssertionCounterMethodVisitor;
 
 public class AssertionCounterOperation extends AbstractCodeAnalyzeOperation {
-	private final Map<MethodIdentifier, Integer> assertionsPerTestcase;
-	private final AssertionCounterMethodVisitor methodVisitor;
+	private final Map<MethodIdentifier, Integer> m_assertionsPerTestcase;
+	private final AssertionCounterMethodVisitor m_methodVisitor;
 
 	public AssertionCounterOperation(ITestClassDetector testClassDetector, AssertionInformation assertionInformation) {
 		super(testClassDetector);
-		this.assertionsPerTestcase = new HashMap<>();
-		this.methodVisitor = new AssertionCounterMethodVisitor(assertionInformation);
+		this.m_assertionsPerTestcase = new HashMap<>();
+		this.m_methodVisitor = new AssertionCounterMethodVisitor(assertionInformation);
 	}
 
 	@Override
@@ -34,17 +34,17 @@ public class AssertionCounterOperation extends AbstractCodeAnalyzeOperation {
 	protected void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType) {
 		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
 			if (m_testClassDetector.analyzeIsTestcase(methodNode, testClassType)) {
-				methodVisitor.reset();
+				m_methodVisitor.reset();
 
-				methodNode.accept(methodVisitor);
+				methodNode.accept(m_methodVisitor);
 
 				MethodIdentifier identifier = MethodIdentifier.create(cn.name, methodNode);
-				assertionsPerTestcase.put(identifier, methodVisitor.getCountAssertions());
+				m_assertionsPerTestcase.put(identifier, m_methodVisitor.getCountAssertions());
 			}
 		}
 	}
 
 	public Map<MethodIdentifier, Integer> getAssertionsPerTestcase() {
-		return assertionsPerTestcase;
+		return m_assertionsPerTestcase;
 	}
 }

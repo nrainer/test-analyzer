@@ -19,19 +19,19 @@ public class AssertionInformationTest {
 		MethodIdentifier identifier;
 
 		identifier = MethodIdentifier.create(Assert.class, "assertEquals", "(Ljava/lang/String;JJ)V");
-		assertTrue(assertionInformation.isAssertionMethod(identifier).m_isAssertion);
+		assertTrue(assertionInformation.isAssertionMethod(identifier).isAssertion());
 
 		identifier = MethodIdentifier.create(Assert.class, "fail", "()V");
-		assertTrue(assertionInformation.isAssertionMethod(identifier).m_isAssertion);
+		assertTrue(assertionInformation.isAssertionMethod(identifier).isAssertion());
 
 		identifier = MethodIdentifier.create(Assert.class, "assertNotNull", "(Ljava/lang/Object;)V");
-		assertTrue(assertionInformation.isAssertionMethod(identifier).m_isAssertion);
+		assertTrue(assertionInformation.isAssertionMethod(identifier).isAssertion());
 
 		identifier = MethodIdentifier.create(InheritedAssertionClass.class, "assertTrue", "(Z)V");
-		assertTrue(assertionInformation.isAssertionMethod(identifier).m_isAssertion);
+		assertTrue(assertionInformation.isAssertionMethod(identifier).isAssertion());
 
 		identifier = MethodIdentifier.create(String.class, "substring", "(I)V");
-		assertFalse(assertionInformation.isAssertionMethod(identifier).m_isAssertion);
+		assertFalse(assertionInformation.isAssertionMethod(identifier).isAssertion());
 	}
 
 	@Test
@@ -41,10 +41,10 @@ public class AssertionInformationTest {
 		MethodIdentifier identifier;
 
 		identifier = MethodIdentifier.create(OwnAssertionClass.class, "assertIsTen", "(I)V");
-		assertTrue(assertionInformation.isAssertionMethod(identifier).m_isAssertion);
+		assertTrue(assertionInformation.isAssertionMethod(identifier).isAssertion());
 
 		identifier = MethodIdentifier.create(OwnAssertionClass.class, "assertIsEleven", "(I)V");
-		assertTrue(assertionInformation.isAssertionMethod(identifier).m_isAssertion);
+		assertTrue(assertionInformation.isAssertionMethod(identifier).isAssertion());
 	}
 
 	@Test
@@ -54,9 +54,9 @@ public class AssertionInformationTest {
 		MethodIdentifier identifier = MethodIdentifier.create(Assert.class, "assertEquals", "(II)V");
 		Result result = assertionInformation.isAssertionMethod(identifier);
 
-		assertTrue(result.m_isAssertion);
-		assertEquals(2, result.m_popInstructionOpcodes.length);
-		assertEquals(Opcodes.POP, result.m_popInstructionOpcodes[0]);
+		assertTrue(result.isAssertion());
+		assertEquals(2, result.getPopInstructionOpcodes().length);
+		assertEquals(Opcodes.POP, result.getPopInstructionOpcodes()[0]);
 	}
 
 	static class InheritedAssertionClass extends Assert {

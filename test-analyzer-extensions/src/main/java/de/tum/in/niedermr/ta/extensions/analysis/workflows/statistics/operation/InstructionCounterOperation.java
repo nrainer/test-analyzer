@@ -15,7 +15,7 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.InstructionCounterStep.Mode;
 
 public class InstructionCounterOperation extends AbstractCodeAnalyzeOperation {
-	private final Map<MethodIdentifier, Integer> result = new HashMap<>();
+	private final Map<MethodIdentifier, Integer> m_result = new HashMap<>();
 
 	private final Mode m_mode;
 
@@ -47,16 +47,16 @@ public class InstructionCounterOperation extends AbstractCodeAnalyzeOperation {
 					continue;
 				}
 
-				result.put(MethodIdentifier.create(cn.name, methodNode), BytecodeUtility.countMethodInstructions(methodNode));
+				m_result.put(MethodIdentifier.create(cn.name, methodNode), BytecodeUtility.countMethodInstructions(methodNode));
 			}
 		}
 	}
 
 	public Map<MethodIdentifier, Integer> getResult() {
-		return result;
+		return m_result;
 	}
 
 	public void reset() {
-		result.clear();
+		m_result.clear();
 	}
 }

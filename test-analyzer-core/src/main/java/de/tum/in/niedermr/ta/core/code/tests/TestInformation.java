@@ -7,24 +7,24 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 
 public class TestInformation {
-	private final MethodIdentifier methodUnderTest;
-	private final Set<TestcaseIdentifier> testcases;
+	private final MethodIdentifier m_methodUnderTest;
+	private final Set<TestcaseIdentifier> m_testcases;
 
 	public TestInformation(MethodIdentifier methodUnderTest) {
 		this(methodUnderTest, new HashSet<TestcaseIdentifier>());
 	}
 
 	public TestInformation(MethodIdentifier methodUnderTest, Set<TestcaseIdentifier> testcases) {
-		this.methodUnderTest = methodUnderTest;
-		this.testcases = testcases;
+		this.m_methodUnderTest = methodUnderTest;
+		this.m_testcases = testcases;
 	}
 
 	public MethodIdentifier getMethodUnderTest() {
-		return methodUnderTest;
+		return m_methodUnderTest;
 	}
 
 	public Set<TestcaseIdentifier> getTestcases() {
-		return testcases;
+		return m_testcases;
 	}
 
 	public int countTestcases() {
@@ -32,7 +32,7 @@ public class TestInformation {
 	}
 
 	public void addTestcase(TestcaseIdentifier testcase) {
-		this.testcases.add(testcase);
+		this.m_testcases.add(testcase);
 	}
 
 	public void addTestcase(Class<?> testClass, String testcaseMethod) {

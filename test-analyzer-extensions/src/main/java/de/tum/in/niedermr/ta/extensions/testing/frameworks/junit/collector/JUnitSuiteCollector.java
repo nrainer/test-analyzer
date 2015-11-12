@@ -64,7 +64,7 @@ public class JUnitSuiteCollector extends TestCollector {
 
 	public List<junit.framework.Test> getTestsOfSuite(Class<?> cls) {
 		try {
-			Method suiteMethod = ((JUnitSuiteDetector) testClassDetector).getJUnit3SuiteMethod(cls);
+			Method suiteMethod = ((JUnitSuiteDetector) m_testClassDetector).getJUnit3SuiteMethod(cls);
 			junit.framework.Test suiteTestcase = (junit.framework.Test) suiteMethod.invoke(null);
 
 			return getTestsOfSuiteTestcase(suiteTestcase);

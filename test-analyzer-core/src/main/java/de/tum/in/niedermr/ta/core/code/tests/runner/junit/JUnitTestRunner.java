@@ -9,22 +9,22 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetect
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 
 public class JUnitTestRunner implements ITestRunner {
-	protected final JUnitCore jUnitCore;
+	protected final JUnitCore m_jUnitCore;
 
 	public JUnitTestRunner() {
-		this.jUnitCore = new JUnitCore();
+		this.m_jUnitCore = new JUnitCore();
 	}
 
 	@Override
 	public JUnitTestRunResult runTest(Class<?> testClass, String testcaseName) {
-		Result result = jUnitCore.run(Request.method(testClass, testcaseName));
+		Result result = m_jUnitCore.run(Request.method(testClass, testcaseName));
 
 		return new JUnitTestRunResult(result);
 	}
 
 	@Override
 	public void runTestsWithoutResult(Class<?> cls) {
-		jUnitCore.run(cls);
+		m_jUnitCore.run(cls);
 	}
 
 	@Override

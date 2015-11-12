@@ -118,7 +118,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 		// don't close sc, because it will close System.in (and that can't be reopened)
 		Scanner sc = new Scanner(System.in);
 
-		System.out.println("Path to configuration file (leave it empty to load the information from the console):");
+		writeToConsole("Path to configuration file (leave it empty to load the information from the console):");
 		String input = sc.nextLine();
 
 		if (input.isEmpty()) {
@@ -132,7 +132,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 		LOG.info("Configuration from console");
 
 		for (IConfigurationProperty<?> property : m_configuration.getAllPropertiesOrdered()) {
-			System.out.println(property.getDescription());
+			writeToConsole(property.getDescription());
 			System.out.print("Set value: ");
 			property.setValueUnsafe(scanner.nextLine());
 		}
@@ -192,5 +192,9 @@ public class ConfigurationLoader implements FileSystemConstants {
 		}
 
 		return result;
+	}
+
+	private static void writeToConsole(String output) {
+		System.out.println(output);
 	}
 }
