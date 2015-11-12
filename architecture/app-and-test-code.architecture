@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" scope-include="" scope-exclude="">
-  <component name="test.analyzer.core app" dim="220,40" pos="241,31">
+  <component name="test.analyzer.core app" dim="220,40" pos="21,21">
     <code-mapping type="include" regex="test-analyzer-core/src/main.*" />
   </component>
-  <component name="test.analyzer.core test" dim="220,40" pos="771,31">
+  <component name="test.analyzer.core test" dim="220,40" pos="551,21">
     <code-mapping type="include" regex="test-analyzer-core/src/test.*" />
+    <code-mapping type="exclude" regex="test-analyzer-core/src/test/resources/de/tum/in/niedermr/ta/sample/.*" />
   </component>
-  <component name="test.analyzer.extensions app" dim="220,40" pos="241,241">
+  <component name="test.analyzer.core test-res" dim="220,40" pos="841,21">
+    <code-mapping type="include" regex="test-analyzer-core/src/test/resources/de/tum/in/niedermr/ta/sample/.*" />
+  </component>
+  <component name="test.analyzer.extensions app" dim="220,40" pos="21,231">
     <code-mapping type="include" regex="test-analyzer-extensions/src/main.*" />
   </component>
-  <component name="test.analyzer.extensions test" dim="220,40" pos="771,251">
+  <component name="test.analyzer.extensions test" dim="220,40" pos="551,241">
     <code-mapping type="include" regex="test-analyzer-extensions/src/test.*" />
   </component>
-  <component name="test.analyzer.runner app" dim="220,40" pos="241,151">
+  <component name="test.analyzer.runner app" dim="220,40" pos="21,141">
     <code-mapping type="include" regex="test-analyzer-runner/src/main.*" />
   </component>
-  <component name="test.analyzer.runner test" dim="220,40" pos="771,151">
+  <component name="test.analyzer.runner test" dim="220,40" pos="551,141">
     <code-mapping type="include" regex="test-analyzer-runner/src/test.*" />
   </component>
-  <component name="test.analyzer.test.int test" dim="220,40" pos="771,351">
+  <component name="test.analyzer.test.int test" dim="220,40" pos="551,341">
     <code-mapping type="include" regex="test-analyzer-test-int/src/test.*" />
   </component>
   <allow source="test.analyzer.core test" target="test.analyzer.core app" />
+  <allow source="test.analyzer.core test" target="test.analyzer.core test-res" />
   <allow source="test.analyzer.extensions app" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions app" target="test.analyzer.runner app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.extensions app" />
   <allow source="test.analyzer.runner app" target="test.analyzer.core app" />
   <allow source="test.analyzer.runner test" target="test.analyzer.core app" />
-  <tolerate source="test.analyzer.runner test" target="test.analyzer.core test">
-    <dependency source="test-analyzer-runner/src/test/java/de/tum/in/niedermr/ta/runner/analysis/result/presentation/PresentationTest.java" target="test-analyzer-core/src/test/java/de/tum/in/niedermr/ta/core/code/tests/runner/junit/JUnitTestRunResultTest.java" />
-    <dependency source="test-analyzer-runner/src/test/java/de/tum/in/niedermr/ta/core/analysis/filter/core/FilterTest.java" target="test-analyzer-core/src/test/res/de/tum/in/niedermr/ta/sample/SampleClass.java" />
-    <dependency source="test-analyzer-runner/src/test/java/de/tum/in/niedermr/ta/core/analysis/filter/core/FilterTest.java" target="test-analyzer-core/src/test/res/de/tum/in/niedermr/ta/sample/SampleClassExtended.java" />
-  </tolerate>
+  <allow source="test.analyzer.runner test" target="test.analyzer.core test-res" />
   <allow source="test.analyzer.runner test" target="test.analyzer.runner app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.core app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.runner app" />
