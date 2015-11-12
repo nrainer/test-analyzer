@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.code.tests.runner.junit;
+package de.tum.in.niedermr.ta.sample.junit;
 
 import static org.junit.Assert.assertTrue;
 

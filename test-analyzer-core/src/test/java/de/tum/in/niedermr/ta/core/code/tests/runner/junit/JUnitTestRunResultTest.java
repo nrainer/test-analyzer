@@ -8,6 +8,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;
+
 public class JUnitTestRunResultTest {
 	private static final JUnitTestRunner TEST_RUNNER = new JUnitTestRunner();
 
