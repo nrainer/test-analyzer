@@ -1,0 +1,74 @@
+package de.tum.in.niedermr.ta.core.analysis.jars.iteration;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.jar.JarEntry;
+
+import org.apache.commons.io.IOUtils;
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassWriter;
+
+import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
+import de.tum.in.niedermr.ta.core.analysis.jars.writer.JarFileWriter;
+import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
+
+public class JarModificationIterator extends AbstractJarIterator<ICodeModificationOperation> {
+	private final JarFileWriter m_jarFileWriter;
+
+	public JarModificationIterator(String inputJarPath, String outputJarPath) {
+		super(inputJarPath);
+		this.m_jarFileWriter = new JarFileWriter(outputJarPath);
+	}
+
+	protected JarFileWriter getJarFileWriter() {
+		return m_jarFileWriter;
+	}
+
+	@Override
+	protected void beforeAll() throws Exception {
+		// NOP
+	}
+
+	@Override
+	protected void handleEntry(ICodeModificationOperation jarOperation, ClassReader cr, String originalClassPath)
+			throws Exception {
+		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
+
+		jarOperation.modify(cr, cw);
+
+		byte[] transformedClass = cw.toByteArray();
+		m_jarFileWriter.writeClassIntoJar(new JarFileElementRawData(originalClassPath, transformedClass));
+	}
+
+	@Override
+	protected void handleResource(ICodeModificationOperation jarOperation, JarEntry resourceEntry, InputStream inStream)
+			throws Exception {
+		m_jarFileWriter.writeResourceIntoJar(
+				new JarFileElementRawData(resourceEntry.getName(), IOUtils.toByteArray(inStream)));
+	}
+
+	@Override
+	protected void afterAll() throws IOException {
+		if (getFurtherClassesToBeAdded() != null) {
+			m_jarFileWriter.writeClassesIntoJar(getFurtherClassesToBeAdded());
+		}
+
+		m_jarFileWriter.close();
+	}
+
+	protected List<JarFileElementRawData> getFurtherClassesToBeAdded() {
+		return new ArrayList<>();
+	}
+
+	@Override
+	protected void onExceptionInHandleEntry(Exception ex, String className) throws Exception {
+		throw ex;
+	}
+
+	@Override
+	protected void onExceptionInHandleResource(Exception ex, String resourcePath) throws Exception {
+		throw ex;
+	}
+}
