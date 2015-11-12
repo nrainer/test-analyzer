@@ -146,7 +146,13 @@ public class ConfigurationLoader implements FileSystemConstants {
 		if (fileName.charAt(0) == '@') {
 			pathToConfiguration = this.m_rootPath + fileName.substring(1) + FILE_EXTENSION_CONFIG;
 		} else {
-			pathToConfiguration = this.m_rootPath + fileName;
+			File configFile = new File(fileName);
+
+			if (configFile.isAbsolute()) {
+				pathToConfiguration = fileName;
+			} else {
+				pathToConfiguration = this.m_rootPath + fileName;
+			}
 		}
 
 		try {
