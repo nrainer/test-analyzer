@@ -3,12 +3,15 @@ package de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.bytecode;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger.LoggingMode;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractTryFinallyMethodVisitor;
 
 public class TestModeMethodVisitor extends AbstractTryFinallyMethodVisitor implements Opcodes {
-	private static final String CP_INVOCATION_LOGGER = "de/tum/in/niedermr/ta/core/logic/instrumentation/InvocationLogger";
-	private static final String CP_LOGGING_MODE = CP_INVOCATION_LOGGER + "$LoggingMode";
+	private static final String CP_INVOCATION_LOGGER = JavaUtility.toClassPathWithoutEnding(InvocationLogger.class);
+	private static final String CP_LOGGING_MODE = JavaUtility
+			.toClassPathWithoutEnding(InvocationLogger.LoggingMode.class);
 	private static final String FIELD_NAME_FRAMING = "FRAMING";
 	private static final String FIELD_NAME_TESTING = "TESTING";
 	private static final String FIELD_DESC_LOGGING_MODE = "L" + CP_LOGGING_MODE + ";";
