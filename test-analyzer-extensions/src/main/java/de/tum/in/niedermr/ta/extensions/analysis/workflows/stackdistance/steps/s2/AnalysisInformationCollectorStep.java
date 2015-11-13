@@ -20,11 +20,13 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 
 	@Override
 	public void runInternal() throws Exception {
-		final String classPath = CLASSPATH_TEST_ANALYZER + getSourceInstrumentedJarFilesClasspath() + CP_SEP
-				+ m_configuration.getCodePathToTest().getValue() + CP_SEP + m_configuration.getClasspath().getValue();
+		final String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
+				+ getSourceInstrumentedJarFilesClasspath() + CP_SEP + m_configuration.getCodePathToTest().getValue()
+				+ CP_SEP + m_configuration.getClasspath().getValue();
 
 		List<String> arguments = new LinkedList<>();
-		arguments.add(m_configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
+		arguments.add(
+				m_configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
 		arguments.add(getFileInWorkingArea(AnalysisConstants.FILE_OUTPUT_ANALYSIS_INFORMATION));
 		arguments.add(m_configuration.getTestRunner().getValue());
 		arguments.add(m_configuration.getOperateFaultTolerant().getValueAsString());

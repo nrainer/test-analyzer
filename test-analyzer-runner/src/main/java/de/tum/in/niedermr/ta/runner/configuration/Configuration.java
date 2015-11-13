@@ -20,6 +20,7 @@ import de.tum.in.niedermr.ta.runner.configuration.property.OperateFaultTolerantP
 import de.tum.in.niedermr.ta.runner.configuration.property.RemoveTempDataProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.ReturnValueGeneratorsProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.TestAnalyzerClasspathProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestClassesToSkipProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestRunnerProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestWorkflowsProperty;
@@ -36,6 +37,7 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 public class Configuration extends AbstractConfiguration implements FileSystemConstants {
 	private static final int CURRENT_VERSION = 2;
 
+	private final TestAnalyzerClasspathProperty m_testAnalyzerClasspath;
 	private final WorkingFolderProperty m_workingFolder;
 	private final CodePathToMutateProperty m_codePathToMutate;
 	private final CodePathToTestProperty m_codePathToTest;
@@ -57,6 +59,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 
 	public Configuration() {
 		super(CURRENT_VERSION);
+		m_testAnalyzerClasspath = new TestAnalyzerClasspathProperty();
 		m_workingFolder = new WorkingFolderProperty();
 		m_codePathToMutate = new CodePathToMutateProperty();
 		m_codePathToTest = new CodePathToTestProperty();
@@ -82,6 +85,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		List<IConfigurationProperty<?>> properties = new ArrayList<>();
 
 		properties.add(super.getConfigurationVersion());
+		properties.add(m_testAnalyzerClasspath);
 		properties.add(m_workingFolder);
 		properties.add(m_codePathToMutate);
 		properties.add(m_codePathToTest);
@@ -102,6 +106,10 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		properties.add(m_removeTempData);
 
 		return properties;
+	}
+
+	public TestAnalyzerClasspathProperty getTestAnalyzerClasspath() {
+		return m_testAnalyzerClasspath;
 	}
 
 	/**

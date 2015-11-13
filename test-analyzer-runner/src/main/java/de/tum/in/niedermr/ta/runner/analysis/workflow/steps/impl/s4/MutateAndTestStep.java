@@ -15,7 +15,6 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
-import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -229,7 +228,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		protected void runTestsAndRecordResult(String execId, String fileWithTestsToRun, String fileWithResults,
 				IReturnValueGenerator retValGen) throws IOException {
 			final String usedReturnValueGenerator = retValGen.getClass().getName();
-			final String classPath = ClasspathUtility.getProgramClasspath()
+			final String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
 					+ getFileInWorkingArea(getWithIndex(FILE_TEMP_JAR_X, m_threadIndex)) + CP_SEP
 					+ m_configuration.getFullClasspath();
 			final int timeout = m_configuration.computeTestingTimeout(m_currentTestcases.size());

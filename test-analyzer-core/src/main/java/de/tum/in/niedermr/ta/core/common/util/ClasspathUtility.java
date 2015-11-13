@@ -24,7 +24,10 @@ public class ClasspathUtility {
 		return sB.toString();
 	}
 
-	public static String getProgramClasspath() {
+	/**
+	 * Warning: Must not be used when the program is started with the libraries to analyze, mutate and test.
+	 */
+	public static String getCurrentProgramClasspath() {
 		String classpath = ClasspathUtility.getCurrentClasspath();
 
 		try {
