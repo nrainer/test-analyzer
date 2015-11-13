@@ -185,18 +185,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 						m_configuration.getMethodFilters().createInstances());
 
 				if (wasSuccessfullyMutated) {
-					LOG.info("Mutated: " + m_currentMethodUnderTest.get());
-
-					String fileWithTestsToRun = getWithIndex(EnvironmentConstants.FILE_TEMP_TESTS_TO_RUN_X,
-							m_threadIndex);
-					TextFileData.writeToFile(getFileInWorkingArea(fileWithTestsToRun), testcasesToStringList());
-
-					LOG.info("Testing: " + m_currentMethodUnderTest.get() + " with "
-							+ LoggingUtil.appendPluralS(m_currentTestcases, "testcase", true) + ".");
-
-					runTestsAndRecordResult(testingId, fileWithTestsToRun,
-							getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex), returnValueGenerator);
-					m_countSuccessful++;
+					handleSuccessfullyMutatedMethod(testingId, returnValueGenerator);
 				} else {
 					LOG.info("Skipped: " + m_currentMethodUnderTest.get());
 					m_countSkipped++;
@@ -209,6 +198,21 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				LOG.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
 				m_countError++;
 			}
+		}
+
+		protected void handleSuccessfullyMutatedMethod(String testingId, IReturnValueGenerator returnValueGenerator)
+				throws IOException {
+			LOG.info("Mutated: " + m_currentMethodUnderTest.get());
+
+			String fileWithTestsToRun = getWithIndex(EnvironmentConstants.FILE_TEMP_TESTS_TO_RUN_X, m_threadIndex);
+			TextFileData.writeToFile(getFileInWorkingArea(fileWithTestsToRun), testcasesToStringList());
+
+			LOG.info("Testing: " + m_currentMethodUnderTest.get() + " with "
+					+ LoggingUtil.appendPluralS(m_currentTestcases, "testcase", true) + ".");
+
+			runTestsAndRecordResult(testingId, fileWithTestsToRun,
+					getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex), returnValueGenerator);
+			m_countSuccessful++;
 		}
 
 		protected final List<String> testcasesToStringList() {
