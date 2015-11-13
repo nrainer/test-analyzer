@@ -71,11 +71,7 @@ public class AnalyzerRunnerStart {
 
 		print("Working folder is: " + workingFolder);
 
-		if (configuration.getTestAnalyzerClasspath().isEmpty()) {
-			configuration.getTestAnalyzerClasspath().setValue(ClasspathUtility.getCurrentProgramClasspath());
-		} else {
-			print("Using TestAnalyzer classpath from configuration!");
-		}
+		configuration.getTestAnalyzerClasspath().setValue(ClasspathUtility.getCurrentProgramClasspath());
 
 		copyConfigurationIntoWorkingFolder(
 				Environment.replaceWorkingFolder(EnvironmentConstants.FILE_INPUT_USED_CONFIG, workingFolder),

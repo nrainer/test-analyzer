@@ -108,6 +108,9 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		return properties;
 	}
 
+	/**
+	 * <b>Only for internal use.</b>
+	 */
 	public TestAnalyzerClasspathProperty getTestAnalyzerClasspath() {
 		return m_testAnalyzerClasspath;
 	}
