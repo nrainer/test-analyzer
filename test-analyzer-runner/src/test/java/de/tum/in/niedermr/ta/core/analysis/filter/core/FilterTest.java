@@ -20,12 +20,9 @@ import de.tum.in.niedermr.ta.sample.SampleClassExtended;
 
 public class FilterTest {
 	@Test
-	public void testSetterGetterFilter() throws Exception {
+	public void testSetterGetterFilter1() throws Exception {
 		IMethodFilter filter = new SetterGetterFilter();
-
-		String className;
-
-		className = SampleClass.class.getName();
+		String className = SampleClass.class.getName();
 
 		assertFalse(analyze(filter, className, "setX", "(I)V"));
 		assertFalse(analyze(filter, className, "getY", "()D"));
@@ -35,8 +32,12 @@ public class FilterTest {
 		assertFalse(analyze(filter, className, "get0", "()I"));
 		assertTrue(analyze(filter, className, "setXWithCheck", "(I)V"));
 		assertTrue(analyze(filter, className, "getXAndY", "()D"));
+	}
 
-		className = SampleClassExtended.class.getName();
+	@Test
+	public void testSetterGetterFilter2() throws Exception {
+		IMethodFilter filter = new SetterGetterFilter();
+		String className = SampleClassExtended.class.getName();
 
 		assertFalse(analyze(filter, className, "getX", "()I"));
 		assertFalse(analyze(filter, className, "getDefinedConstY", "()I"));
