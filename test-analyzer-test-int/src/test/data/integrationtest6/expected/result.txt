@@ -1,0 +1,63 @@
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIsEven()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.isEven()
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith0
+Result: OK
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIsEven()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.isEven()
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith1
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [false] but found [true]
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIsEven()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith0
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [false] but found [true]
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIncrement()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith0
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [0] but found [1]
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIsEven()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith1
+Result: OK
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIncrement()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith1
+Result: OK
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIsEven()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [false] but found [true]
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIncrement()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [0] but found [1]
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIsEven()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [false] but found [true]
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIncrement()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [0] but found [1]
+.
+Testcase: de.tum.in.ma.simpleproject.testng.TestNgTests.testIncrement()
+Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.increment()
+Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
+Result: 1 of 1 FAILED
+Exception: java.lang.AssertionError: expected [0] but found [1]
+.
