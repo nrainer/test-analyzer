@@ -34,12 +34,12 @@ public class JarAnalyzeIterator extends AbstractJarIterator<ICodeAnalyzeOperatio
 	}
 
 	@Override
-	protected void onExceptionInHandleEntry(Exception ex, String className) throws Exception {
-		throw ex;
+	protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
+		throw new Exception(t);
 	}
 
 	@Override
-	protected void onExceptionInHandleResource(Exception ex, String resourcePath) throws Exception {
-		throw ex;
+	protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception {
+		throw new Exception(t);
 	}
 }

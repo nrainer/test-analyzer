@@ -14,14 +14,14 @@ public class FaultTolerantJarAnalyzeIterator extends JarAnalyzeIterator {
 	}
 
 	@Override
-	protected void onExceptionInHandleEntry(Exception t, String className) throws Exception {
-		m_log.warn("Skipping " + JavaUtility.toClassName(className) + " in fault tolerant mode. " + t.getClass().getName() + " occurred with message '"
-				+ t.getMessage() + "'.");
+	protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
+		m_log.warn("Skipping " + JavaUtility.toClassName(className) + " in fault tolerant mode. "
+				+ t.getClass().getName() + " occurred with message '" + t.getMessage() + "'.");
 	}
 
 	@Override
-	protected void onExceptionInHandleResource(Exception t, String resourcePath) throws Exception {
-		m_log.warn("Skipping resource " + resourcePath + " in fault tolerant mode. " + t.getClass().getName() + " occurred with message '" + t.getMessage()
-				+ "'.");
+	protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception {
+		m_log.warn("Skipping resource " + resourcePath + " in fault tolerant mode. " + t.getClass().getName()
+				+ " occurred with message '" + t.getMessage() + "'.");
 	}
 }

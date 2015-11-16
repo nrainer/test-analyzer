@@ -30,10 +30,12 @@ public class AbstractInstrumentation {
 		return m_operateFaultTolerant;
 	}
 
-	protected void instrumentJars(String[] jarsToBeInstrumented, String genericJarOutputPath, ICodeModificationOperation operation) throws FailedExecution {
+	protected void instrumentJars(String[] jarsToBeInstrumented, String genericJarOutputPath,
+			ICodeModificationOperation operation) throws FailedExecution {
 		try {
 			for (int i = 0; i < jarsToBeInstrumented.length; i++) {
-				JarModificationIterator jarWork = new JarInstrumentationIterator(jarsToBeInstrumented[i], Environment.getWithIndex(genericJarOutputPath, i));
+				JarModificationIterator jarWork = new JarInstrumentationIterator(jarsToBeInstrumented[i],
+						Environment.getWithIndex(genericJarOutputPath, i));
 				jarWork.execute(operation);
 			}
 		} catch (NoClassDefFoundError ex) {
@@ -55,7 +57,8 @@ public class AbstractInstrumentation {
 		}
 
 		@Override
-		protected void handleEntry(ICodeModificationOperation jarOperation, ClassReader cr, String originalClassPath) throws Exception {
+		protected void handleEntry(ICodeModificationOperation jarOperation, ClassReader cr, String originalClassPath)
+				throws Exception {
 			this.m_originalClassPath = originalClassPath;
 			this.m_classBytes = cr.b;
 
@@ -63,13 +66,14 @@ public class AbstractInstrumentation {
 		}
 
 		@Override
-		protected void onExceptionInHandleEntry(Exception t, String className) throws Exception {
+		protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
 			if (isOperateFaultTolerant()) {
 				getJarFileWriter().writeClassIntoJar(new JarFileElementRawData(m_originalClassPath, m_classBytes));
-				LOG.warn("Skipping bytecode instrumentation of " + JavaUtility.toClassName(className) + "! " + "Fault tolerant mode permits to continue after "
-						+ t.getClass().getName() + " with message '" + t.getMessage() + "'.");
+				LOG.warn("Skipping bytecode instrumentation of " + JavaUtility.toClassName(className) + "! "
+						+ "Fault tolerant mode permits to continue after " + t.getClass().getName() + " with message '"
+						+ t.getMessage() + "'.");
 			} else {
-				throw t;
+				throw new Exception(t);
 			}
 		}
 	}

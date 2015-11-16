@@ -35,8 +35,8 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 
 			try {
 				handleEntry(jarOperation, cr, entry.getName());
-			} catch (Exception ex) {
-				onExceptionInHandleEntry(ex, cr.getClassName());
+			} catch (Throwable t) {
+				onExceptionInHandleEntry(t, cr.getClassName());
 			} finally {
 				inStream.close();
 			}
@@ -49,8 +49,8 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 
 			try {
 				handleResource(jarOperation, entry, inStream);
-			} catch (Exception ex) {
-				onExceptionInHandleResource(ex, entry.getName());
+			} catch (Throwable t) {
+				onExceptionInHandleResource(t, entry.getName());
 			} finally {
 				inStream.close();
 			}
@@ -66,7 +66,7 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 
 	protected abstract void afterAll() throws Exception;
 
-	protected abstract void onExceptionInHandleEntry(Exception ex, String className) throws Exception;
+	protected abstract void onExceptionInHandleEntry(Throwable t, String className) throws Exception;
 
-	protected abstract void onExceptionInHandleResource(Exception ex, String resourcePath) throws Exception;
+	protected abstract void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception;
 }

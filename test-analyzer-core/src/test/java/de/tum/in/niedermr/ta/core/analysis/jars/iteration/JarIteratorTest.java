@@ -154,12 +154,12 @@ public class JarIteratorTest {
 		}
 
 		@Override
-		protected void onExceptionInHandleEntry(Exception t, String className) throws Exception {
+		protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
 			// NOP
 		}
 
 		@Override
-		protected void onExceptionInHandleResource(Exception t, String resourcePath) throws Exception {
+		protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception {
 			// NOP
 		}
 	}
