@@ -2,17 +2,11 @@
 <configuration status="OFF">
 
 	<properties>
-		<property name="mainLogFile">./logs/MainLog.log</property>
-		<property name="testingSyserrLogFile">./logs/4_TestRun_Syserr.log</property>
+		<property name="mainLogFile">./logs/TestAnalyzer.log</property>
 	</properties>
 	
  	<appenders>
 		<File name="MainFile" fileName="${mainLogFile}">
-			<PatternLayout>
-				<pattern>%d{HH:mm:ss,SSS} %p [%t] %m%n</pattern>
-			</PatternLayout>
-		</File>
-		<File name="TestingSyserrFile" fileName="${testingSyserrLogFile}">
 			<PatternLayout>
 				<pattern>%d{HH:mm:ss,SSS} %p [%t] %m%n</pattern>
 			</PatternLayout>
@@ -22,10 +16,6 @@
 		</Console>
 	</appenders>
 	<loggers>
-		<logger name="LoggerTestingSyserr" level="debug" additivity="false">
-		 	<appender-ref ref="TestingSyserrFile"/>
-		</logger>
-		
 		<root level="debug">
 			<appender-ref ref="MainFile"/>
 			<appender-ref ref="Console"/>
