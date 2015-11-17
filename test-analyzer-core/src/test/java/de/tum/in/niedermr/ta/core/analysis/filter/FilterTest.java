@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.filter.core;
+package de.tum.in.niedermr.ta.core.analysis.filter;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -13,6 +13,9 @@ import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.HashCodeMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.SetterGetterFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.SimpleCodeComplexityFilter;
+import de.tum.in.niedermr.ta.core.analysis.filter.core.ConstructorFilter;
+import de.tum.in.niedermr.ta.core.analysis.filter.core.MethodNameFilter;
+import de.tum.in.niedermr.ta.core.analysis.filter.core.NonEmptyMethodFilter;
 import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.sample.SampleClass;
