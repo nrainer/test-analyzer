@@ -26,6 +26,7 @@ import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class MutateAndTestStep extends AbstractExecutionStep {
 	private static final Logger LOG = LogManager.getLogger(MutateAndTestStep.class);
+	private static final Logger LOG_TEST_SYS_ERR = LogManager.getLogger("TestSysErr");
 
 	protected static final String EXEC_ID_TEST_RUN = "TSTRUN";
 	protected static final int TIME_INTERVAL_ABORT_CHECK = 30;
@@ -249,8 +250,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 					arguments);
 
 			if (!sysErr.isEmpty()) {
-				LOG.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get() + " with "
-						+ usedReturnValueGenerator + ": " + LoggingUtil.shorten(300, sysErr));
+				LOG_TEST_SYS_ERR.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get()
+						+ " with " + usedReturnValueGenerator + ": " + LoggingUtil.shorten(300, sysErr));
 			}
 		}
 

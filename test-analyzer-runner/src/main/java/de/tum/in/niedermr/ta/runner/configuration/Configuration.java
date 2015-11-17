@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
+import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
@@ -254,7 +255,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	 * (Note: Test classes which contain System.exit(0); must be skipped.)</br>
 	 * <br/>
 	 * The default value can be used. <br/>
-	 * Values separated by: {@link de.tum.in.niedermr.ta.core.common.constants.CommonConstants#SEPARATOR_DEFAULT}
+	 * Values separated by: {@value CommonConstants#SEPARATOR_DEFAULT}
 	 */
 	public TestClassesToSkipProperty getTestClassesToSkip() {
 		return m_testClassesToSkip;

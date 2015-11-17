@@ -3,18 +3,30 @@
 
 	<properties>
 		<property name="mainLogFile">./logs/TestAnalyzer.log</property>
+		<property name="testSysErrLogFile">./logs/TestAnalyzer-testSysErr.log</property>
+		<property name="loggingPattern">%d{dd.MM.yy HH:mm:ss} %level %c{1} [%t] %m%n</property>
 	</properties>
 	
  	<appenders>
 		<File name="MainFile" fileName="${mainLogFile}">
 			<PatternLayout>
-				<pattern>%d{HH:mm:ss,SSS} %p [%t] %m%n</pattern>
+				<pattern>${loggingPattern}</pattern>
 			</PatternLayout>
+			<RegexFilter regex="TestSysErr" onMatch="DENY" onMismatch="ACCEPT"/>
 		</File>
+		
+		<File name="TestSysErr" fileName="${testSysErrLogFile}">
+			<PatternLayout>
+				<pattern>${loggingPattern}</pattern>
+			</PatternLayout>
+			<RegexFilter regex="TestSysErr" onMatch="ACCEPT"/>
+		</File>
+		
 	 	<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%p %m%n"/>
 		</Console>
 	</appenders>
+	
 	<loggers>
 		<root level="debug">
 			<appender-ref ref="MainFile"/>
