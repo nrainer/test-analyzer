@@ -9,3 +9,4 @@
 /StaticReturnTypeAnalyzer/
 *.log
 **/src/test/temp/
+/teamscale/backups
