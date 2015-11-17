@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
@@ -14,6 +17,8 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLo
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
 public class AnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
+	private static final Logger LOG = LogManager.getLogger(AnalysisInformationCollectionLogic.class);
+
 	private static final String SQL_CREATE_TABLE_STACK_INFO = "CREATE TABLE IF NOT EXISTS Stack_Info (execution VARCHAR(5), testcase VARCHAR(1024), method VARCHAR(1024), minStackDistance INT(8), maxStackDistance INT(8));";
 	private static final String SQL_CREATE_INDEX_STACK_INFO_1 = "ALTER TABLE Stack_Info ADD INDEX (execution);";
 	private static final String SQL_CREATE_INDEX_STACK_INFO_2 = "ALTER TABLE Stack_Info ADD INDEX (testcase(100));";
@@ -55,17 +60,20 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
-		addToResult(testCaseIdentifier, StackLogger.getInvocationsMinDistance(), StackLogger.getInvocationsMaxDistance());
+		addToResult(testCaseIdentifier, StackLogger.getInvocationsMinDistance(),
+				StackLogger.getInvocationsMaxDistance());
 	}
 
-	protected void addToResult(TestcaseIdentifier testCaseIdentifier, Map<MethodIdentifier, Integer> invocationMinDistances,
+	protected void addToResult(TestcaseIdentifier testCaseIdentifier,
+			Map<MethodIdentifier, Integer> invocationMinDistances,
 			Map<MethodIdentifier, Integer> invocationMaxDistances) {
 		for (MethodIdentifier invokedMethod : invocationMinDistances.keySet()) {
 			int minInvocationDistance = invocationMinDistances.get(invokedMethod);
 			int maxInvocationDistance = invocationMaxDistances.get(invokedMethod);
 
-			m_result.add(String.format(SQL_INSERT_STACK_INFO, m_shortExecutionId, testCaseIdentifier.toMethodIdentifier().get(), invokedMethod.get(),
-					minInvocationDistance, maxInvocationDistance));
+			m_result.add(String.format(SQL_INSERT_STACK_INFO, m_shortExecutionId,
+					testCaseIdentifier.toMethodIdentifier().get(), invokedMethod.get(), minInvocationDistance,
+					maxInvocationDistance));
 		}
 	}
 

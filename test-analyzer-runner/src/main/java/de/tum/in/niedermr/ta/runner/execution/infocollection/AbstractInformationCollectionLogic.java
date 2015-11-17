@@ -17,7 +17,7 @@ import de.tum.in.niedermr.ta.runner.analysis.jars.iteration.FaultTolerantJarAnal
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public abstract class AbstractInformationCollectionLogic {
-	protected static final Logger LOG = LogManager.getLogger(AbstractInformationCollectionLogic.class);
+	private static final Logger LOG = LogManager.getLogger(AbstractInformationCollectionLogic.class);
 	private static final boolean LOG_FULL_STACKTRACE_OF_FAILED_UNMODIFIED_TESTS = false;
 
 	private final String m_executionId;
@@ -93,7 +93,7 @@ public abstract class AbstractInformationCollectionLogic {
 			JarAnalyzeIterator jarWork;
 
 			if (operateFaultTolerant) {
-				jarWork = new FaultTolerantJarAnalyzeIterator(inputJar, LOG);
+				jarWork = new FaultTolerantJarAnalyzeIterator(inputJar);
 			} else {
 				jarWork = new JarAnalyzeIterator(inputJar);
 			}

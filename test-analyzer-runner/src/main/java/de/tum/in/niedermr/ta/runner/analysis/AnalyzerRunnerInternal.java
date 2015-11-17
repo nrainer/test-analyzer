@@ -30,7 +30,7 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
  * 
  */
 public class AnalyzerRunnerInternal {
-	public static final Logger LOG = LogManager.getLogger(AnalyzerRunnerInternal.class);
+	private static final Logger LOG = LogManager.getLogger(AnalyzerRunnerInternal.class);
 
 	public static final String EXECUTION_ID_FOR_TESTS = "TEST";
 	private static final String RELATIVE_WORKING_FOLDER = FileSystemConstants.CURRENT_FOLDER;

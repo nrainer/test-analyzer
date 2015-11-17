@@ -1,13 +1,9 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow;
 
-import org.apache.logging.log4j.Logger;
-
-import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
 
 public abstract class AbstractWorkflow implements IWorkflow {
-	protected static final Logger LOG = AnalyzerRunnerInternal.LOG;
 
 	protected ExecutionInformation m_information;
 

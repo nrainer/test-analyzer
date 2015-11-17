@@ -1,8 +1,8 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -11,7 +11,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 
 public abstract class AbstractExecutionStep implements IExecutionStep, EnvironmentConstants {
-	protected static final Logger LOG = AnalyzerRunnerInternal.LOG;
+	private static final Logger LOG = LogManager.getLogger(AbstractExecutionStep.class);
 
 	private final ExecutionInformation m_information;
 	protected final Configuration m_configuration;

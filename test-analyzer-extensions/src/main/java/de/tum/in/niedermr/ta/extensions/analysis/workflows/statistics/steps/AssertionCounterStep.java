@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
@@ -19,6 +22,8 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionSte
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
 
 public class AssertionCounterStep extends AbstractExecutionStep {
+	private static final Logger LOG = LogManager.getLogger(AssertionCounterStep.class);
+
 	private static final String PREFIX_UNREGISTERED_ASSERT_METHODS_1 = "assert";
 	private static final String PREFIX_UNREGISTERED_ASSERT_METHODS_2 = "check";
 
@@ -81,7 +86,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 			this.m_assertionsPerTestcase.putAll(getCountAssertionsData(testClassDetector, testJar));
 		}
 
-		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_assertionsPerTestcase, LOG);
+		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_assertionsPerTestcase);
 	}
 
 	private Map<MethodIdentifier, Integer> getCountAssertionsData(ITestClassDetector testClassDetector,
@@ -90,7 +95,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 			JarAnalyzeIterator iterator;
 
 			if (m_configuration.getOperateFaultTolerant().getValue()) {
-				iterator = new FaultTolerantJarAnalyzeIterator(inputJarFile, LOG);
+				iterator = new FaultTolerantJarAnalyzeIterator(inputJarFile);
 			} else {
 				iterator = new JarAnalyzeIterator(inputJarFile);
 			}

@@ -25,7 +25,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class MutateAndTestStep extends AbstractExecutionStep {
-	protected static final Logger LOG_TEST_SYSERR = LogManager.getLogger("LoggerTestingSyserr");
+	private static final Logger LOG = LogManager.getLogger(MutateAndTestStep.class);
 
 	protected static final String EXEC_ID_TEST_RUN = "TSTRUN";
 	protected static final int TIME_INTERVAL_ABORT_CHECK = 30;
@@ -249,8 +249,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 					arguments);
 
 			if (!sysErr.isEmpty()) {
-				LOG_TEST_SYSERR.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get()
-						+ " with " + usedReturnValueGenerator + ": " + LoggingUtil.shorten(300, sysErr));
+				LOG.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get() + " with "
+						+ usedReturnValueGenerator + ": " + LoggingUtil.shorten(300, sysErr));
 			}
 		}
 

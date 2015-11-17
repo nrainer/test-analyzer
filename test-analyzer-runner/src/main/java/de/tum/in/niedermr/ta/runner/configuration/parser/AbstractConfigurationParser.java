@@ -7,12 +7,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.FileUtility;
-import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -20,7 +20,7 @@ import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionP
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 abstract class AbstractConfigurationParser {
-	protected static final Logger LOG = AnalyzerRunnerInternal.LOG;
+	private static final Logger LOG = LogManager.getLogger(AbstractConfigurationParser.class);
 
 	private ConfigurationPropertyManager m_propertyManager;
 	private Set<IConfigurationProperty<?>> m_processedPropertiesInCurrentFile;

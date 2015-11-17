@@ -7,6 +7,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
@@ -17,6 +20,8 @@ import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class InformationCollectionLogic extends AbstractInformationCollectionLogic {
+	private static final Logger LOG = LogManager.getLogger(InformationCollectionLogic.class);
+
 	protected final Map<MethodIdentifier, TestInformation> m_methodInformation;
 	private String m_outputFile;
 
@@ -52,7 +57,8 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 				m_methodInformation.put(identifier, testInformation);
 			}
 
-			testInformation.addTestcase(testCaseIdentifier.resolveTestClassNoEx(), testCaseIdentifier.getTestcaseName());
+			testInformation.addTestcase(testCaseIdentifier.resolveTestClassNoEx(),
+					testCaseIdentifier.getTestcaseName());
 		}
 	}
 
@@ -60,9 +66,11 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 	protected void execAllTestsExecuted(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		Collection<TestInformation> result = m_methodInformation.values();
 
-		LOG.info("Collected " + LoggingUtil.appendPluralS(result, "method", true) + " which are directly or indirectly invoked by testcases.");
+		LOG.info("Collected " + LoggingUtil.appendPluralS(result, "method", true)
+				+ " which are directly or indirectly invoked by testcases.");
 		LOG.info("Collected " + LoggingUtil.appendPluralS(countTestcases(result), "testcase", true) + " in "
-				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true) + ".");
+				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
+				+ ".");
 
 		final String shortExecutionId = getExecutionId().substring(0, CommonUtility.LENGTH_OF_RANDOM_ID);
 
@@ -75,14 +83,16 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 
 	protected void writeResultToFiles(String shortExecutionId, Collection<TestInformation> result) throws IOException {
 		TextFileData.writeToFile(m_outputFile, CollectedInformation.toPlainText(result));
-		TextFileData.writeToFile(getAdditionalSqlOutputFile(m_outputFile), CollectedInformation.toSQLStatements(result, shortExecutionId));
+		TextFileData.writeToFile(getAdditionalSqlOutputFile(m_outputFile),
+				CollectedInformation.toSQLStatements(result, shortExecutionId));
 	}
 
 	protected String getAdditionalSqlOutputFile(String mainOutputFile) {
 		String additionalSqlOutputFile = mainOutputFile;
 
 		if (mainOutputFile.endsWith(FileSystemConstants.FILE_EXTENSION_TXT)) {
-			additionalSqlOutputFile = additionalSqlOutputFile.substring(0, additionalSqlOutputFile.lastIndexOf(FileSystemConstants.FILE_EXTENSION_TXT));
+			additionalSqlOutputFile = additionalSqlOutputFile.substring(0,
+					additionalSqlOutputFile.lastIndexOf(FileSystemConstants.FILE_EXTENSION_TXT));
 		}
 
 		additionalSqlOutputFile += FileSystemConstants.FILE_EXTENSION_SQL_TXT;

@@ -7,11 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
-import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.parser.ConfigurationParser;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractConfigurationProperty;
@@ -38,7 +38,7 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
  *
  */
 public class ConfigurationLoader implements FileSystemConstants {
-	private static final Logger LOG = AnalyzerRunnerInternal.LOG;
+	private static final Logger LOG = LogManager.getLogger(ConfigurationLoader.class);
 
 	private static boolean s_fastFail = false;
 

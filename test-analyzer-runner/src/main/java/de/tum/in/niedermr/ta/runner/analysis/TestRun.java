@@ -30,7 +30,7 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
  *
  */
 public class TestRun {
-	public static final Logger LOG = LogManager.getLogger(TestRun.class);
+	private static final Logger LOG = LogManager.getLogger(TestRun.class);
 
 	private static String s_executionId;
 
@@ -89,9 +89,9 @@ public class TestRun {
 					usedReturnValueGenerator));
 		}
 
-		LOG.info(
-				s_executionId + ": " + LoggingUtil.singularOrPlural(allTestsToRun, "testcase was", "testcases were", true)
-						+ " run successfully.");
+		LOG.info(s_executionId + ": "
+				+ LoggingUtil.singularOrPlural(allTestsToRun, "testcase was", "testcases were", true)
+				+ " run successfully.");
 
 		return result;
 	}

@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.runner.analysis.instrumentation;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 
@@ -7,12 +8,11 @@ import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterator;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
-import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 
 public class AbstractInstrumentation {
-	private static final Logger LOG = AnalyzerRunnerInternal.LOG;
+	private static final Logger LOG = LogManager.getLogger(AbstractInstrumentation.class);
 
 	private final String m_executionId;
 	private final boolean m_operateFaultTolerant;

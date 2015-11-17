@@ -5,19 +5,19 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.conqat.lib.commons.io.ProcessUtils;
 import org.conqat.lib.commons.io.ProcessUtils.ExecutionResult;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
-import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 
 public class ProcessExecution {
-	private static final Logger LOG = AnalyzerRunnerInternal.LOG;
+	private static final Logger LOG = LogManager.getLogger(ProcessExecution.class);
 
 	private static final boolean PRINT_SYS_ERR_TO_CONSOLE = true;
 	private static final String COMMAND_JAVA = "java";

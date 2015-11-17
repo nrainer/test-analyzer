@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
@@ -16,6 +19,8 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionSte
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
 
 public class InstructionCounterStep extends AbstractExecutionStep {
+	private static final Logger LOG = LogManager.getLogger(InstructionCounterStep.class);
+
 	private final Map<MethodIdentifier, Integer> m_instructionsPerMethod;
 	private final Map<MethodIdentifier, Integer> m_instructionsPerTestcase;
 	private final Map<Class<?>, Set<String>> m_allTestcases;
@@ -43,7 +48,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 			this.m_instructionsPerTestcase.putAll(getCountInstructionsData(Mode.TESTCASE, testClassDetector, testJar));
 		}
 
-		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_instructionsPerTestcase, LOG);
+		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_instructionsPerTestcase);
 	}
 
 	private Map<MethodIdentifier, Integer> getCountInstructionsData(Mode mode, ITestClassDetector testClassDetector,
@@ -52,7 +57,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 			JarAnalyzeIterator iterator;
 
 			if (m_configuration.getOperateFaultTolerant().getValue()) {
-				iterator = new FaultTolerantJarAnalyzeIterator(inputJarFile, LOG);
+				iterator = new FaultTolerantJarAnalyzeIterator(inputJarFile);
 			} else {
 				iterator = new JarAnalyzeIterator(inputJarFile);
 			}

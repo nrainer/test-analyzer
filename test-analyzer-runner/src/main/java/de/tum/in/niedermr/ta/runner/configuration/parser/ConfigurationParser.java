@@ -2,6 +2,9 @@ package de.tum.in.niedermr.ta.runner.configuration.parser;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ConfigurationMigrationFromV1;
@@ -10,6 +13,8 @@ import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionP
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 public class ConfigurationParser extends AbstractConfigurationParser {
+
+	private static final Logger LOG = LogManager.getLogger(ConfigurationParser.class);
 
 	private IConfigurationMigration m_configurationMigration = null;
 

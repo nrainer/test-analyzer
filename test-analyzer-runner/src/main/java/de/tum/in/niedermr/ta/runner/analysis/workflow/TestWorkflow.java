@@ -5,6 +5,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s1.PrepareWorkingFolderStep;
@@ -18,6 +21,8 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
 public class TestWorkflow extends AbstractWorkflow {
+	private static final Logger LOG = LogManager.getLogger(TestWorkflow.class);
+
 	protected PrepareWorkingFolderStep m_prepareWorkingFolderStep;
 	protected InstrumentationStep m_instrumentationStep;
 	protected InformationCollectorStep m_informationCollectorStep;
