@@ -23,6 +23,7 @@ public class ConfigurationParserTest {
 	@Test
 	public void testParse1() throws IOException, ConfigurationException {
 		final Configuration expected = new Configuration();
+		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getClasspath().setValue("a.jar;b.jar;");
 		expected.getExecuteCollectInformation().setValue(true);
 		expected.getExecuteMutateAndTest().setValue(false);
@@ -55,6 +56,7 @@ public class ConfigurationParserTest {
 	@Test
 	public void testParseWithInheritance1() throws IOException, ConfigurationException {
 		final Configuration expected = new Configuration();
+		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getClasspath().setValue("a.jar;b.jar;");
 		expected.getNumberOfThreads().setValue(4);
 		expected.getResultPresentation().setValue(ResultPresentationProperty.RESULT_PRESENTATION_TEXT);

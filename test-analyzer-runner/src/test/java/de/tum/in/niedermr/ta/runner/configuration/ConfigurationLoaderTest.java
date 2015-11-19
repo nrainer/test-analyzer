@@ -31,6 +31,7 @@ public class ConfigurationLoaderTest {
 	@Test
 	public void testConfigurationFromFile() throws ConfigurationException, IOException {
 		Configuration expected = new Configuration();
+		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getCodePathToTest().setValue("a.jar");
 
 		Configuration result = ConfigurationLoader.getConfigurationFromFile("testConfigurationFromFile.config",
