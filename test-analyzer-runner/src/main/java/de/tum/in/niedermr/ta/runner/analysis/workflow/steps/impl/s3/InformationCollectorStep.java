@@ -37,7 +37,8 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 		arguments.add(getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
 		arguments.add(m_configuration.getTestRunner().getValue());
 		arguments.add(m_configuration.getOperateFaultTolerant().getValueAsString());
-		arguments.add(m_configuration.getTestClassesToSkip().getValue());
+		arguments.add(ProcessExecution.wrapPattern(m_configuration.getTestClassIncludes().getValue()));
+		arguments.add(ProcessExecution.wrapPattern(m_configuration.getTestClassExcludes().getValue()));
 
 		m_processExecution.execute(getFullExecId(EXEC_ID), ProcessExecution.NO_TIMEOUT,
 				getClassNameOfInformationCollector(), classPath, arguments);

@@ -39,10 +39,10 @@ public abstract class AbstractInformationCollectionLogic {
 		return m_testRunner;
 	}
 
-	public void execute(String[] jarsWithTests, String[] excludedTestClasses, boolean operateFaultTolerant)
-			throws Throwable {
+	public void execute(String[] jarsWithTests, String[] testClassIncludes, String[] testClassExcludes,
+			boolean operateFaultTolerant) throws Throwable {
 		Map<Class<?>, Set<String>> testClassesWithTestcases = collectTestClassesWithTestcases(jarsWithTests,
-				excludedTestClasses, operateFaultTolerant);
+				testClassIncludes, testClassExcludes, operateFaultTolerant);
 
 		execTestClassesCollected(testClassesWithTestcases);
 
@@ -54,10 +54,8 @@ public abstract class AbstractInformationCollectionLogic {
 
 		executeAllTestcases(testClassesWithTestcases);
 
-		if (excludedTestClasses.length > 0) {
-			LOG.info("Skipped "
-					+ LoggingUtil.singularOrPlural(excludedTestClasses.length, "test class", "test classes", true)
-					+ " as specified in the configuration.");
+		if (testClassExcludes.length > 0) {
+			LOG.info("Skipped excluded test classes.");
 		}
 
 		execAllTestsExecuted(testClassesWithTestcases);
@@ -85,9 +83,9 @@ public abstract class AbstractInformationCollectionLogic {
 	}
 
 	protected Map<Class<?>, Set<String>> collectTestClassesWithTestcases(String[] jarsWithTests,
-			String[] excludedTestClasses, boolean operateFaultTolerant) throws Throwable {
+			String[] testClassIncludes, String[] testClassExcludes, boolean operateFaultTolerant) throws Throwable {
 		final ITestCollector collectOperation = TestRunnerUtil.getAppropriateTestCollector(m_testRunner, false,
-				excludedTestClasses);
+				testClassIncludes, testClassExcludes);
 
 		for (String inputJar : jarsWithTests) {
 			JarAnalyzeIterator jarWork;

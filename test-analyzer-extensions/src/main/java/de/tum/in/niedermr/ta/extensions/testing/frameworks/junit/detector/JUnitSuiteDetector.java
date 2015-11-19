@@ -18,9 +18,10 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 	private static final String JUNIT_4_RUN_WITH_ANNOTATION = "Lorg/junit/runner/RunWith;";
 	private static final String JUNIT_4_SUITE_CLASSES_ANNOTATION = "Lorg/junit/runners/Suite$SuiteClasses;";
 
-	public JUnitSuiteDetector(String... ignoredTestClassRegexes) {
-		// accept abstract classes always since no instance is needed (to invoke the static suite method) and inherited suite methods are not considered
-		super(true, ignoredTestClassRegexes);
+	public JUnitSuiteDetector(String[] testClassIncludes, String[] testClassExcludes) {
+		// accept abstract classes always since no instance is needed (to invoke the static suite method) and inherited
+		// suite methods are not considered
+		super(true, testClassIncludes, testClassExcludes);
 	}
 
 	@Override
@@ -49,7 +50,8 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 		try {
 			Method suiteMethod = cls.getDeclaredMethod(SUITE_METHOD_NAME);
 
-			if (Modifier.isStatic(suiteMethod.getModifiers()) && JavaUtility.inheritsClass(suiteMethod.getReturnType(), junit.framework.Test.class)) {
+			if (Modifier.isStatic(suiteMethod.getModifiers())
+					&& JavaUtility.inheritsClass(suiteMethod.getReturnType(), junit.framework.Test.class)) {
 				return suiteMethod;
 			} else {
 				return null;
@@ -81,7 +83,8 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 	}
 
 	@Override
-	public boolean analyzeIsTestcase(MethodNode methodNode, ClassType testClassType) throws UnsupportedOperationException {
+	public boolean analyzeIsTestcase(MethodNode methodNode, ClassType testClassType)
+			throws UnsupportedOperationException {
 		throw new UnsupportedOperationException();
 	}
 }

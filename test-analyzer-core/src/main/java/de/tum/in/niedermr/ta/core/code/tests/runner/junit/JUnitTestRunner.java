@@ -28,7 +28,8 @@ public class JUnitTestRunner implements ITestRunner {
 	}
 
 	@Override
-	public ITestClassDetector getTestClassDetector(boolean acceptAbstractTestClasses, String... ignoredTestClassRegexes) {
-		return new JUnitTestClassDetector(acceptAbstractTestClasses, ignoredTestClassRegexes);
+	public ITestClassDetector getTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+			String[] testClassExcludes) {
+		return new JUnitTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
 	}
 }

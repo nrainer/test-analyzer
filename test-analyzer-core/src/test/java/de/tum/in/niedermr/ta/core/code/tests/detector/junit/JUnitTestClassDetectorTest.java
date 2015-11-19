@@ -14,11 +14,12 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import junit.framework.TestCase;
 
 public class JUnitTestClassDetectorTest {
+	private static final String[] EMPTY_PATTERN_STRINGS = new String[0];
 	private static JUnitTestClassDetector s_detector;
 
 	@BeforeClass
 	public static void setUp() {
-		s_detector = new JUnitTestClassDetector(false);
+		s_detector = new JUnitTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS);
 	}
 
 	@Test
@@ -42,14 +43,16 @@ public class JUnitTestClassDetectorTest {
 	public void testAbstractTestClasses() throws IOException {
 		ClassNode cn = BytecodeUtility.getAcceptedClassNode(AbstractJUnit4TestClass.class);
 
-		assertEquals(ClassType.IGNORED_ABSTRACT_CLASS, new JUnitTestClassDetector(false).analyzeIsTestClass(cn));
-		assertEquals(JUnitClassTypeResult.TEST_CLASS_JUNIT_4, new JUnitTestClassDetector(true).analyzeIsTestClass(cn));
+		assertEquals(ClassType.IGNORED_ABSTRACT_CLASS,
+				new JUnitTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS).analyzeIsTestClass(cn));
+		assertEquals(JUnitClassTypeResult.TEST_CLASS_JUNIT_4,
+				new JUnitTestClassDetector(true, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS).analyzeIsTestClass(cn));
 	}
 
 	@Test
 	public void testIgnoredClasses() throws IOException {
-		JUnitTestClassDetector detectorWithIgnore = new JUnitTestClassDetector(false,
-				"^" + JUnit4TestClass.class.getPackage().getName());
+		JUnitTestClassDetector detectorWithIgnore = new JUnitTestClassDetector(false, EMPTY_PATTERN_STRINGS,
+				new String[] { "^" + JUnit4TestClass.class.getPackage().getName() });
 
 		ClassNode cn = BytecodeUtility.getAcceptedClassNode(JUnit4TestClass.class);
 		assertEquals(ClassType.IGNORED_CLASS, detectorWithIgnore.analyzeIsTestClass(cn));

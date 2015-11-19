@@ -10,9 +10,10 @@ public class AnalysisInstrumentation extends AbstractInstrumentation {
 		super(executionId, operateFaultTolerant);
 	}
 
-	public void injectAnalysisStatements(String[] jarsToBeInstrumented, String genericJarOutputPath, ITestRunner testRunner) throws FailedExecution {
+	public void injectAnalysisStatements(String[] jarsToBeInstrumented, String genericJarOutputPath,
+			ITestRunner testRunner, String[] testClassIncludes, String[] testClassExcludes) throws FailedExecution {
 		// true as argument in order to include abstract test classes
-		ITestClassDetector detector = testRunner.getTestClassDetector(true);
+		ITestClassDetector detector = testRunner.getTestClassDetector(true, testClassIncludes, testClassExcludes);
 		AnalysisInstrumentationOperation operation = new AnalysisInstrumentationOperation(detector);
 		instrumentJars(jarsToBeInstrumented, genericJarOutputPath, operation);
 	}

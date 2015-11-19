@@ -8,6 +8,7 @@ import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.collection.AnalysisInformationCollectionLogic;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
@@ -57,13 +58,15 @@ public class AnalysisInformationCollector {
 			final ITestRunner testRunner = JavaUtility.createInstance(CommonUtility.getArgument(args, 3));
 			final boolean operateFaultTolerant = Boolean
 					.parseBoolean(CommonUtility.getArgument(args, 4, Boolean.FALSE.toString()));
-			final String excludedTestClassesString = CommonUtility.getArgument(args, 5);
-			final String[] excludedTestClasses = excludedTestClassesString.isEmpty() ? new String[0]
-					: excludedTestClassesString.split(CommonConstants.SEPARATOR_DEFAULT);
+			final String[] testClassIncludes = ProcessExecution
+					.unwrapAndSplitPattern(CommonUtility.getArgument(args, 5));
+			final String[] testClassExcludes = ProcessExecution
+					.unwrapAndSplitPattern(CommonUtility.getArgument(args, 6));
 
 			analysisInformationCollectionLogic.setTestRunner(testRunner);
 			analysisInformationCollectionLogic.setOutputFile(dataOutputPath);
-			analysisInformationCollectionLogic.execute(jarsWithTests, excludedTestClasses, operateFaultTolerant);
+			analysisInformationCollectionLogic.execute(jarsWithTests, testClassIncludes, testClassExcludes,
+					operateFaultTolerant);
 
 			System.exit(0);
 		} catch (Throwable t) {

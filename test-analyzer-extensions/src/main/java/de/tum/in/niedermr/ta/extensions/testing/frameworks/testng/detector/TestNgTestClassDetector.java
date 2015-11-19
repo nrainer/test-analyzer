@@ -13,8 +13,9 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 	private static final String TEST_ANNOTATION = "Lorg/testng/annotations/Test;";
 	private static final String TEST_ANNOTATION_VALUE_ENABLED = "enabled";
 
-	public TestNgTestClassDetector(boolean acceptAbstractTestClasses, String... ignoredTestClassRegexes) {
-		super(acceptAbstractTestClasses, ignoredTestClassRegexes);
+	public TestNgTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+			String[] testClassExcludes) {
+		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
 	}
 
 	@Override

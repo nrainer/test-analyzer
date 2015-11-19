@@ -80,7 +80,8 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 	protected void runInternal() throws Throwable {
 		ITestRunner testRunner = m_configuration.getTestRunner().createInstance();
 		ITestClassDetector testClassDetector = testRunner.getTestClassDetector(true,
-				m_configuration.getTestClassesToSkip().getElements());
+				m_configuration.getTestClassIncludes().getElements(),
+				m_configuration.getTestClassExcludes().getElements());
 
 		for (String testJar : m_configuration.getCodePathToTest().getElements()) {
 			this.m_assertionsPerTestcase.putAll(getCountAssertionsData(testClassDetector, testJar));

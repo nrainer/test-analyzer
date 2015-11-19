@@ -17,8 +17,10 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 
 public class ProcessExecution {
+
 	private static final Logger LOG = LogManager.getLogger(ProcessExecution.class);
 
+	private static final String WRAPPED_EMPTY_PATTERN = "!EMPTY!";
 	private static final boolean PRINT_SYS_ERR_TO_CONSOLE = true;
 	private static final String COMMAND_JAVA = "java";
 	private static final String PARAM_CLASSPATH = "-classpath";
@@ -102,5 +104,21 @@ public class ProcessExecution {
 
 	private static void writeToConsole(String output) {
 		System.out.println(output);
+	}
+
+	public static String wrapPattern(String pattern) {
+		if (StringUtility.isNullOrEmpty(pattern)) {
+			return WRAPPED_EMPTY_PATTERN;
+		}
+
+		return pattern;
+	}
+
+	public static String[] unwrapAndSplitPattern(String pattern) {
+		if (WRAPPED_EMPTY_PATTERN.equals(pattern)) {
+			return new String[0];
+		}
+
+		return pattern.split(CommonConstants.SEPARATOR_DEFAULT);
 	}
 }

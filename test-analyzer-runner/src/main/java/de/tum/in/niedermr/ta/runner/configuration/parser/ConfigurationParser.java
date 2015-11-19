@@ -7,7 +7,9 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ChainedConfigurationMigration;
 import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ConfigurationMigrationFromV1;
+import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ConfigurationMigrationFromV2;
 import de.tum.in.niedermr.ta.runner.configuration.parser.migration.IConfigurationMigration;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
@@ -62,7 +64,10 @@ public class ConfigurationParser extends AbstractConfigurationParser {
 			LOG.warn(ConfigurationVersionProperty.NAME + " specified with null value.");
 			m_configurationMigration = null;
 		} else if (version == 1) {
-			m_configurationMigration = new ConfigurationMigrationFromV1();
+			m_configurationMigration = new ChainedConfigurationMigration(new ConfigurationMigrationFromV1(),
+					new ConfigurationMigrationFromV2());
+		} else if (version == 2) {
+			m_configurationMigration = new ConfigurationMigrationFromV2();
 		} else {
 			m_configurationMigration = null;
 		}

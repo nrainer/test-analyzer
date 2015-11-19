@@ -15,11 +15,13 @@ import org.objectweb.asm.ClassReader;
 import de.tum.in.niedermr.ta.core.code.tests.runner.junit.JUnitTestRunner;
 
 public class TestCollectorTest {
+	private static final String[] EMPTY_PATTERN_STRINGS = new String[0];
 	private static final JUnitTestRunner JUNIT_TEST_RUNNER = new JUnitTestRunner();
 
 	@Test
 	public void testCollectDefault() throws Exception {
-		ITestCollector collector = new TestCollector(JUNIT_TEST_RUNNER.getTestClassDetector(false));
+		ITestCollector collector = new TestCollector(
+				JUNIT_TEST_RUNNER.getTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS));
 
 		String className;
 
@@ -58,7 +60,8 @@ public class TestCollectorTest {
 
 	private void checkCollectInheritedMethodsInternal(final boolean collectInNonAbstractClasses,
 			final boolean collectInAbstractClasses) throws Exception {
-		TestCollector collector = new TestCollector(JUNIT_TEST_RUNNER.getTestClassDetector(false)) {
+		TestCollector collector = new TestCollector(
+				JUNIT_TEST_RUNNER.getTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS)) {
 			@Override
 			public boolean collectTestcasesInNonAbstractSuperClasses() {
 				return collectInNonAbstractClasses;

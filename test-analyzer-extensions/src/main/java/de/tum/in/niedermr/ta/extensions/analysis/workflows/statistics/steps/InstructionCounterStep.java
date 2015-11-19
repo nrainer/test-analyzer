@@ -38,7 +38,8 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 	protected void runInternal() throws Throwable {
 		ITestRunner testRunner = m_configuration.getTestRunner().createInstance();
 		ITestClassDetector testClassDetector = testRunner.getTestClassDetector(true,
-				m_configuration.getTestClassesToSkip().getElements());
+				m_configuration.getTestClassIncludes().getElements(),
+				m_configuration.getTestClassExcludes().getElements());
 
 		for (String sourceJar : m_configuration.getCodePathToMutate().getElements()) {
 			this.m_instructionsPerMethod.putAll(getCountInstructionsData(Mode.METHOD, testClassDetector, sourceJar));

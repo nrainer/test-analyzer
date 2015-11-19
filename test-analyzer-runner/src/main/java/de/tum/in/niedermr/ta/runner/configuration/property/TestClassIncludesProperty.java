@@ -3,16 +3,16 @@ package de.tum.in.niedermr.ta.runner.configuration.property;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMultiStringProperty;
 
-public class TestClassesToSkipProperty extends AbstractMultiStringProperty {
+public class TestClassIncludesProperty extends AbstractMultiStringProperty {
 
 	@Override
 	public String getName() {
-		return "testClassesToSkip";
+		return "testClassIncludes";
 	}
 
 	@Override
 	public String getDescription() {
-		return "Patterns to skip test classes by their (qualified) name";
+		return "Patterns for test classes by their (qualified) name. All test classes will be included if empty.";
 	}
 
 	@Override

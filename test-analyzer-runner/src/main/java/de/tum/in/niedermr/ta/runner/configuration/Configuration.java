@@ -22,7 +22,8 @@ import de.tum.in.niedermr.ta.runner.configuration.property.RemoveTempDataPropert
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.ReturnValueGeneratorsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestAnalyzerClasspathProperty;
-import de.tum.in.niedermr.ta.runner.configuration.property.TestClassesToSkipProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.TestClassExcludesProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.TestClassIncludesProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestRunnerProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestWorkflowsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestingTimeoutAbsoluteMaxProperty;
@@ -36,7 +37,7 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
  * Configuration
  */
 public class Configuration extends AbstractConfiguration implements FileSystemConstants {
-	private static final int CURRENT_VERSION = 2;
+	private static final int CURRENT_VERSION = 3;
 
 	private final TestAnalyzerClasspathProperty m_testAnalyzerClasspath;
 	private final WorkingFolderProperty m_workingFolder;
@@ -48,7 +49,8 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	private final MethodFiltersProperty m_methodFilters;
 	private final ReturnValueGeneratorsProperty m_returnValueGenerators;
 	private final ResultPresentationProperty m_resultPresentation;
-	private final TestClassesToSkipProperty m_testClassesToSkip;
+	private final TestClassIncludesProperty m_testClassIncludes;
+	private final TestClassExcludesProperty m_testClassExcludes;
 	private final TestingTimeoutAbsoluteMaxProperty m_testingTimeoutAbsoluteMax;
 	private final TestingTimeoutConstantProperty m_testingTimeoutConstant;
 	private final TestingTimeoutPerTestcaseProperty m_testingTimeoutPerTestcase;
@@ -70,7 +72,8 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		m_methodFilters = new MethodFiltersProperty();
 		m_returnValueGenerators = new ReturnValueGeneratorsProperty();
 		m_resultPresentation = new ResultPresentationProperty();
-		m_testClassesToSkip = new TestClassesToSkipProperty();
+		m_testClassIncludes = new TestClassIncludesProperty();
+		m_testClassExcludes = new TestClassExcludesProperty();
 		m_testingTimeoutAbsoluteMax = new TestingTimeoutAbsoluteMaxProperty();
 		m_testingTimeoutConstant = new TestingTimeoutConstantProperty();
 		m_testingTimeoutPerTestcase = new TestingTimeoutPerTestcaseProperty();
@@ -96,7 +99,8 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		properties.add(m_methodFilters);
 		properties.add(m_returnValueGenerators);
 		properties.add(m_resultPresentation);
-		properties.add(m_testClassesToSkip);
+		properties.add(m_testClassIncludes);
+		properties.add(m_testClassExcludes);
 		properties.add(m_testingTimeoutConstant);
 		properties.add(m_testingTimeoutPerTestcase);
 		properties.add(m_testingTimeoutAbsoluteMax);
@@ -117,7 +121,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [1] Folder to store the result and the temporary data.<br/>
+	 * Folder to store the result and the temporary data.<br/>
 	 * Relative to TestAnalyzer!<br/>
 	 * <br/>
 	 * The default value can be used.
@@ -127,8 +131,8 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [2] Path to the jar files which contain methods supposed to be mutated. The jar files must have been compiled
-	 * with Java 1.5+.<br/>
+	 * Path to the jar files which contain methods supposed to be mutated. The jar files must have been compiled with
+	 * Java 1.5+.<br/>
 	 * The files won't be modified. A jar file can be both in 'jarsWithMethodsToMutate' and 'jarsWithTestsToRun'.<br/>
 	 * The files should not be added to the classpath property!<br/>
 	 * Note that <b>jar files used by this project must not be tested.</b> Among these are:
@@ -150,8 +154,8 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [3] Path to the jar files which contain tests supposed to be run. The files won't be modified. A jar file can be
-	 * both in 'jarsWithMethodsToMutate' and 'jarsWithTestsToRun'.<br/>
+	 * Path to the jar files which contain tests supposed to be run. The files won't be modified. A jar file can be both
+	 * in 'jarsWithMethodsToMutate' and 'jarsWithTestsToRun'.<br/>
 	 * It is not necessary to add the files to the classpath property.<br/>
 	 * Relative to the working folder.<br/>
 	 * 
@@ -162,7 +166,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [4] Class path needed for the classes in the jars of 'jarsWithMethodsToMutate' and 'jarsWithTestsToRun'.<br/>
+	 * Class path needed for the classes in the jars of 'jarsWithMethodsToMutate' and 'jarsWithTestsToRun'.<br/>
 	 * The jars in 'jarsWithMethodsToMutate' and 'jarsWithTestsToRun' should not to be specified. Furthermore, it is not
 	 * necessary to specify JUnit (4.8) or hamcrest (1.1.0).<br/>
 	 * It is ensured that it ends with the classpath separator (if not empty). <br/>
@@ -180,7 +184,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [5] Qualified class name of the test workflow to be used.<br/>
+	 * Qualified class name of the test workflow to be used.<br/>
 	 * The class must implement {@link IWorkflow} and be on the classpath.<br/>
 	 * <br/>
 	 * The default value can be used.
@@ -190,7 +194,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [6] Qualified class names of the method filters to be used.<br/>
+	 * Qualified class names of the method filters to be used.<br/>
 	 * The class must implement {@link IMethodFilter} and be on the classpath. <br/>
 	 * <br/>
 	 * The default value can be used. Values separated by:
@@ -201,7 +205,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [7] Qualified class name of the test runner to be used.<br/>
+	 * Qualified class name of the test runner to be used.<br/>
 	 * The class must implement {@link ITestRunner} and be on the classpath. <br/>
 	 * <br/>
 	 * The default value can be used.
@@ -211,7 +215,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [8] Class name of the return value generator(s).<br/>
+	 * Class name of the return value generator(s).<br/>
 	 * <br/>
 	 * Core provides the following built-in generators:</br>
 	 * <ul>
@@ -239,7 +243,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [9] Way of the result presentation.<br/>
+	 * Way of the result presentation.<br/>
 	 * Either {@link ResultPresentationProperty#RESULT_PRESENTATION_DB} ,
 	 * {@link ResultPresentationProperty#RESULT_PRESENTATION_TEXT} or the name of a class implementing
 	 * {@link de.tum.in.ma.logic.IResultPresentation} (which then needs to be on the classpath).<br/>
@@ -251,18 +255,30 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [10] Patterns (regular expressions!) for to skip test classes by their (qualified) name.<br/>
-	 * (Note: Test classes which contain System.exit(0); must be skipped.)</br>
+	 * Patterns (regular expressions!) to select test classes by their (qualified) name. <br/>
+	 * All test classes will be used if empty. </br>
 	 * <br/>
 	 * The default value can be used. <br/>
 	 * Values separated by: {@value CommonConstants#SEPARATOR_DEFAULT}
 	 */
-	public TestClassesToSkipProperty getTestClassesToSkip() {
-		return m_testClassesToSkip;
+	public TestClassIncludesProperty getTestClassIncludes() {
+		return m_testClassIncludes;
 	}
 
 	/**
-	 * [11] Duration (in seconds) of the constant part during the step run tests (RUNTST).<br/>
+	 * Patterns (regular expressions) for to skip test classes by their (qualified) name.<br/>
+	 * Excludes have a higher priority than includes. <br/>
+	 * (Note: Test classes which contain System.exit(0); must be skipped.)<br/>
+	 * <br/>
+	 * The default value can be used. <br/>
+	 * Values separated by: {@value CommonConstants#SEPARATOR_DEFAULT}
+	 */
+	public TestClassExcludesProperty getTestClassExcludes() {
+		return m_testClassExcludes;
+	}
+
+	/**
+	 * Duration (in seconds) of the constant part during the step run tests (RUNTST).<br/>
 	 * The timeout for running all tests for a given method under test is calculated as follows:<br/>
 	 * <code>min({@link #testingTimeoutAbsoluteMax}, {@link #testingTimeoutConstant} + {@link #testingTimeoutPerTestcase} * number of testcases)</code>
 	 * <br/>
@@ -276,7 +292,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [12] Duration (in seconds) of the variable part during the step run tests (RUNTST).<br/>
+	 * Duration (in seconds) of the variable part during the step run tests (RUNTST).<br/>
 	 * <br/>
 	 * The default value can be used.
 	 * 
@@ -288,7 +304,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [13] Absolute maximum duration (in seconds) for running all tests concerning one method under test.<br/>
+	 * Absolute maximum duration (in seconds) for running all tests concerning one method under test.<br/>
 	 * Can be disabled by setting the value to "-1".<br/>
 	 * <br/>
 	 * The default value can be used.
@@ -301,7 +317,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [14] Operate in fault tolerant mode. Permits at present:
+	 * Operate in fault tolerant mode. Permits at present:
 	 * <ul>
 	 * <li>classes not to be on the classpath (at INSTRU)</li>
 	 * </ul>
@@ -314,7 +330,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [15] Number of threads to use for the steps method mutation (METKIL) and test running (TSTRUN).<br/>
+	 * Number of threads to use for the steps method mutation (METKIL) and test running (TSTRUN).<br/>
 	 * <br/>
 	 * The default value can be used.
 	 */
@@ -323,7 +339,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [16] If false, the steps of instrumentation (INSTRU) and information collection (INFCOL) will be skipped.<br/>
+	 * If false, the steps of instrumentation (INSTRU) and information collection (INFCOL) will be skipped.<br/>
 	 * In this case the file
 	 * {@link de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants#FILE_OUTPUT_COLLECTED_INFORMATION}
 	 * must exist in the working folder!<br/>
@@ -335,7 +351,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [17] If false, the steps of mutating methods (METKIL) and running tests (TSTRUN) will be skipped.<br/>
+	 * If false, the steps of mutating methods (METKIL) and running tests (TSTRUN) will be skipped.<br/>
 	 * <br/>
 	 * The default value can be used.
 	 */
@@ -344,7 +360,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * [18] If false, the temporary data won't be removed.<br/>
+	 * If false, the temporary data won't be removed.<br/>
 	 * <br/>
 	 * The default value can be used.
 	 */

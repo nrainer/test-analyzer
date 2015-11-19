@@ -9,8 +9,9 @@ import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.TestInstrument
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 
 /**
- * (INSTRU) Instruments all classes of a jar file by injecting logging statements into each method (except constructors and static initializers). It is possible
- * to skip test classes. Furthermore, it adds the class de.tum.in.niedermr.ta.core.logic.instrumentation.InvocationLogger which holds the logging information.
+ * (INSTRU) Instruments all classes of a jar file by injecting logging statements into each method (except constructors
+ * and static initializers). It is possible to skip test classes. Furthermore, it adds the class
+ * de.tum.in.niedermr.ta.core.logic.instrumentation.InvocationLogger which holds the logging information.
  * 
  */
 public class SourceInstrumentation extends AbstractInstrumentation {
@@ -18,16 +19,20 @@ public class SourceInstrumentation extends AbstractInstrumentation {
 		super(executionId, operateFaultTolerant);
 	}
 
-	public void injectLoggingStatements(String[] jarsToBeInstrumented, String genericJarOutputPath, ITestRunner testRunner) throws FailedExecution {
+	public void injectLoggingStatements(String[] jarsToBeInstrumented, String genericJarOutputPath,
+			ITestRunner testRunner, String[] testClassIncludes, String[] testClassExcludes) throws FailedExecution {
 		// true as argument in order not to instrument abstract test classes
-		ITestClassDetector detector = testRunner.getTestClassDetector(true);
+		ITestClassDetector detector = testRunner.getTestClassDetector(true, testClassIncludes, testClassExcludes);
 
 		TestInstrumentation testInstrumentation = new TestInstrumentation(getExecutionId(), isOperateFaultTolerant());
 
-		// needed for test classes in source jars (which might be considered by the classloader first than in the instrumented test jars)
-		TestInstrumentationOperation testInstrumentationOperation = testInstrumentation.createTestInstrumentationOperation(testRunner);
+		// needed for test classes in source jars (which might be considered by the classloader first than in the
+		// instrumented test jars)
+		TestInstrumentationOperation testInstrumentationOperation = testInstrumentation
+				.createTestInstrumentationOperation(testRunner, testClassIncludes, testClassExcludes);
 
-		ICodeModificationOperation operation = new SourceInstrumentationOperation(detector, testInstrumentationOperation);
+		ICodeModificationOperation operation = new SourceInstrumentationOperation(detector,
+				testInstrumentationOperation);
 		instrumentJars(jarsToBeInstrumented, genericJarOutputPath, operation);
 	}
 }

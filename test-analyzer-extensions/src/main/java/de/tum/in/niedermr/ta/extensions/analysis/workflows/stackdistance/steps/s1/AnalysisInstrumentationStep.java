@@ -30,7 +30,9 @@ public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(executionId,
 				operateFaultTolerant);
 		analysisInstrumentation.injectAnalysisStatements(m_configuration.getCodePathToMutate().getElements(),
-				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner);
+				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,
+				m_configuration.getTestClassIncludes().getElements(),
+				m_configuration.getTestClassExcludes().getElements());
 	}
 
 	@Override

@@ -15,8 +15,9 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 	private static final String JUNIT_4_TEST_ANNOTATION = "Lorg/junit/Test;";
 	private static final String JUNIT_4_IGNORE_ANNOTATION = "Lorg/junit/Ignore;";
 
-	public JUnitTestClassDetector(boolean acceptAbstractTestClasses, String... ignoredTestClassRegexes) {
-		super(acceptAbstractTestClasses, ignoredTestClassRegexes);
+	public JUnitTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+			String[] testClassExcludes) {
+		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
 	}
 
 	@Override

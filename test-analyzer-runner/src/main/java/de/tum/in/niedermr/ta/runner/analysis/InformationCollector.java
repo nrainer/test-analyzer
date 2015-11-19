@@ -7,6 +7,7 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.InformationCollectionLogic;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
@@ -61,13 +62,15 @@ public class InformationCollector {
 			final ITestRunner testRunner = JavaUtility.createInstance(CommonUtility.getArgument(args, 3));
 			final boolean operateFaultTolerant = Boolean
 					.parseBoolean(CommonUtility.getArgument(args, 4, Boolean.FALSE.toString()));
-			final String excludedTestClassesString = CommonUtility.getArgument(args, 5);
-			final String[] excludedTestClasses = excludedTestClassesString.isEmpty() ? new String[0]
-					: excludedTestClassesString.split(CommonConstants.SEPARATOR_DEFAULT);
+			final String[] testClassIncludes = ProcessExecution
+					.unwrapAndSplitPattern(CommonUtility.getArgument(args, 5));
+			final String[] testClassExcludes = ProcessExecution
+					.unwrapAndSplitPattern(CommonUtility.getArgument(args, 6));
 
 			informationCollectionLogic.setTestRunner(testRunner);
 			informationCollectionLogic.setOutputFile(dataOutputPath);
-			informationCollectionLogic.execute(jarsWithTests, excludedTestClasses, operateFaultTolerant);
+			informationCollectionLogic.execute(jarsWithTests, testClassIncludes, testClassExcludes,
+					operateFaultTolerant);
 
 			System.exit(0);
 		} catch (Throwable t) {

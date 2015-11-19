@@ -26,11 +26,15 @@ public class InstrumentationStep extends AbstractExecutionStep {
 
 		SourceInstrumentation sourceInstrumentation = new SourceInstrumentation(executionId, operateFaultTolerant);
 		sourceInstrumentation.injectLoggingStatements(m_configuration.getCodePathToMutate().getElements(),
-				getFileInWorkingArea(FILE_TEMP_JAR_INSTRUMENTED_SOURCE_X), testRunner);
+				getFileInWorkingArea(FILE_TEMP_JAR_INSTRUMENTED_SOURCE_X), testRunner,
+				m_configuration.getTestClassIncludes().getElements(),
+				m_configuration.getTestClassExcludes().getElements());
 
 		TestInstrumentation testInstrumentation = new TestInstrumentation(executionId, operateFaultTolerant);
 		testInstrumentation.injectTestingModeStatements(m_configuration.getCodePathToTest().getElements(),
-				getFileInWorkingArea(FILE_TEMP_JAR_INSTRUMENTED_TEST_X), testRunner);
+				getFileInWorkingArea(FILE_TEMP_JAR_INSTRUMENTED_TEST_X), testRunner,
+				m_configuration.getTestClassIncludes().getElements(),
+				m_configuration.getTestClassExcludes().getElements());
 	}
 
 	@Override

@@ -14,7 +14,8 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.special.UsesOwnCollector;
 import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.collector.JUnitSuiteCollector;
 import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.detector.JUnitSuiteDetector;
 
-public class JUnitSuiteRunner extends JUnitTestRunner implements ITestRunner, UsesOwnCollector, UsesOtherDetectorForTestcaseInstrumentation {
+public class JUnitSuiteRunner extends JUnitTestRunner
+		implements ITestRunner, UsesOwnCollector, UsesOtherDetectorForTestcaseInstrumentation {
 	private static final Pattern TEST_INDEX = Pattern.compile("T_(\\d*)_");
 
 	@Override
@@ -25,17 +26,20 @@ public class JUnitSuiteRunner extends JUnitTestRunner implements ITestRunner, Us
 	}
 
 	@Override
-	public JUnitSuiteDetector getTestClassDetector(boolean acceptAbstractTestClasses, String... ignoredTestClassRegexes) {
-		return new JUnitSuiteDetector(ignoredTestClassRegexes);
+	public JUnitSuiteDetector getTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+			String[] testClassExcludes) {
+		return new JUnitSuiteDetector(testClassIncludes, testClassExcludes);
 	}
 
 	@Override
-	public JUnitSuiteCollector getTestCollector(boolean acceptAbstractTestClasses, String... ignoredTestClassRegexes) {
-		return new JUnitSuiteCollector(getTestClassDetector(acceptAbstractTestClasses, ignoredTestClassRegexes));
+	public JUnitSuiteCollector getTestCollector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+			String[] testClassExcludes) {
+		return new JUnitSuiteCollector(
+				getTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes));
 	}
 
 	private junit.framework.Test getTestByName(Class<?> testClass, String testcaseName) {
-		JUnitSuiteCollector collector = getTestCollector(false);
+		JUnitSuiteCollector collector = getTestCollector(false, new String[0], new String[0]);
 		List<junit.framework.Test> tests = collector.getTestsOfSuite(testClass);
 
 		return tests.get(getTestIndex(testcaseName));
@@ -50,7 +54,8 @@ public class JUnitSuiteRunner extends JUnitTestRunner implements ITestRunner, Us
 	}
 
 	@Override
-	public ITestClassDetector getTestClassDetectorForTestcaseInstrumentation() {
-		return new JUnitTestClassDetector(true);
+	public ITestClassDetector getTestClassDetectorForTestcaseInstrumentation(String[] testClassIncludes,
+			String[] testClassExcludes) {
+		return new JUnitTestClassDetector(true, testClassIncludes, testClassExcludes);
 	}
 }

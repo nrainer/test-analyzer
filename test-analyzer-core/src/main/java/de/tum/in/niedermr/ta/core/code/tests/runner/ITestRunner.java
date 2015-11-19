@@ -10,7 +10,8 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.special.UsesOwnCollector;
  * @see UsesOtherDetectorForTestcaseInstrumentation
  */
 public interface ITestRunner {
-	public ITestClassDetector getTestClassDetector(boolean acceptAbstractTestClasses, String... ignoredTestClassRegexes);
+	public ITestClassDetector getTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+			String[] testClassExcludes);
 
 	public ITestRunResult runTest(Class<?> testClass, String testcaseName);
 
