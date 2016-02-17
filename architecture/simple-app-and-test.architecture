@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" scope-include="" scope-exclude="">
+  <component name="application" dim="120,40" pos="201,231">
+    <code-mapping type="include" regex="test-analyzer-core/src/main.*" />
+    <code-mapping type="include" regex="test-analyzer-extensions/src/main.*" />
+    <code-mapping type="include" regex="test-analyzer-runner/src/main.*" />
+  </component>
+  <component name="test" dim="120,40" pos="471,231">
+    <code-mapping type="include" regex="test-analyzer-core/src/test.*" />
+    <code-mapping type="include" regex="test-analyzer-extensions/src/test.*" />
+    <code-mapping type="include" regex="test-analyzer-runner/src/test.*" />
+    <code-mapping type="include" regex="test-analyzer-test-int/src/test.*" />
+  </component>
+  <component name="tools" dim="120,40" pos="711,231">
+    <code-mapping type="include" regex="test-analyzer-core/utilities.*" />
+  </component>
+  <allow source="test" target="application" />
+</conqat-architecture>
