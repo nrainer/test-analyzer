@@ -10,3 +10,6 @@
 *.log
 **/src/test/temp/
 /teamscale/backups
+/test-analyzer-core/src/test/data/JarIteratorTest/temp1.jar
+/test-analyzer-core/src/test/data/JarIteratorTest/temp2.jar
+/test-analyzer-test-int/src/test/program
