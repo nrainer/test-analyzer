@@ -1,0 +1,409 @@
+<com.teamscale.core.migration.TeamscaleVersionContainer>
+  <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_8</version>
+  <payload class="com.teamscale.index.dashboard.DashboardDescriptor">
+    <name>Testanalyzer</name>
+    <owner>admin</owner>
+    <descriptorJSON><![CDATA[{
+  "widgets": [
+    {
+      "widget-id": "metrics-trend-chart",
+      "position": {
+        "x": 0,
+        "y": 5,
+        "width": 12,
+        "height": 5
+      },
+      "Title": "LOC vs. Findings Trend",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Trend": {
+        "type": "timespan",
+        "value": "90"
+      },
+      "Zooming": false,
+      "Metrics": [
+        "Lines of Code",
+        "Number of Findings"
+      ],
+      "Colors": [
+        "rgb(99, 156, 206)",
+        "rgb(255, 102, 51)",
+        "rgb(0, 153, 0)",
+        "rgb(102, 204, 102)",
+        "rgb(102, 102, 102)"
+      ],
+      "Stacked": false,
+      "Include 0": true,
+      "One scale": false,
+      "Hide Y-Axes": false,
+      "Baselines": false,
+      "Action menu": false
+    },
+    {
+      "widget-id": "numeric-metric-value",
+      "position": {
+        "x": 6,
+        "y": 0,
+        "width": 2,
+        "height": 2
+      },
+      "Title": "Clone Coverage",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Metric": "Clone Coverage",
+      "Boundaries": "0.05,0.1",
+      "Colors": [
+        "rgb(102, 204, 102)",
+        "rgb(255, 255, 51)",
+        "rgb(255, 102, 51)"
+      ],
+      "Trend": {
+        "type": "timespan",
+        "value": "30"
+      }
+    },
+    {
+      "widget-id": "numeric-metric-value",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "width": 2,
+        "height": 2
+      },
+      "Title": "LOC",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Metric": "Lines of Code",
+      "Boundaries": "",
+      "Colors": [
+        "rgb(102, 204, 102)",
+        "rgb(255, 255, 51)",
+        "rgb(255, 102, 51)"
+      ],
+      "Trend": {
+        "type": "timespan",
+        "value": "30"
+      }
+    },
+    {
+      "widget-id": "numeric-metric-value",
+      "position": {
+        "x": 8,
+        "y": 0,
+        "width": 2,
+        "height": 2
+      },
+      "Title": "Findings Count",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Metric": "Number of Findings",
+      "Boundaries": "100,250",
+      "Colors": [
+        "rgb(102, 204, 102)",
+        "rgb(255, 102, 0)",
+        "rgb(255, 102, 51)"
+      ],
+      "Trend": {
+        "type": "timespan",
+        "value": "30"
+      }
+    },
+    {
+      "widget-id": "findings-summary-bar-chart",
+      "Show timespan text": false,
+      "position": {
+        "x": 7,
+        "y": 19,
+        "width": 5,
+        "height": 4
+      },
+      "Title": "Findings Summary",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Findings since": {
+        "type": "timespan",
+        "value": 0
+      },
+      "Show details": false,
+      "Horizontal orientation": true,
+      "Sort by findings count": false,
+      "Show assessment": false
+    },
+    {
+      "widget-id": "treemap",
+      "position": {
+        "x": 7,
+        "y": 10,
+        "width": 5,
+        "height": 5
+      },
+      "Title": "Clone Coverage Treemap",
+      "Path": {
+        "project": "testanalyzer",
+        "path": ""
+      },
+      "Area Metric": "Lines of Code",
+      "Color Metric": "Clone Coverage",
+      "Color": [
+        "rgb(0, 0, 255)"
+      ],
+      "Enable cushion": false
+    },
+    {
+      "widget-id": "assessment-pie-chart",
+      "position": {
+        "x": 4,
+        "y": 2,
+        "width": 4,
+        "height": 3
+      },
+      "Title": "Method Length",
+      "Path": {
+        "project": "testanalyzer",
+        "path": ""
+      },
+      "Metric": "Method Length Assessment",
+      "Legend": true
+    },
+    {
+      "widget-id": "numeric-metric-value",
+      "position": {
+        "x": 2,
+        "y": 0,
+        "width": 2,
+        "height": 2
+      },
+      "Title": "SLOC",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Metric": "Source Lines of Code",
+      "Boundaries": "",
+      "Colors": [
+        "rgb(102, 204, 102)",
+        "rgb(255, 255, 51)",
+        "rgb(255, 102, 51)"
+      ],
+      "Trend": {
+        "type": "timespan",
+        "value": "30"
+      }
+    },
+    {
+      "widget-id": "numeric-metric-value",
+      "position": {
+        "x": 4,
+        "y": 0,
+        "width": 2,
+        "height": 2
+      },
+      "Title": "SLOC without test",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "-architectures-/simple-app-and-test.architecture/application/-src-",
+        "hiddenInWidgetTitle": false
+      },
+      "Metric": "Source Lines of Code",
+      "Boundaries": "",
+      "Colors": [
+        "rgb(102, 204, 102)",
+        "rgb(255, 255, 51)",
+        "rgb(255, 102, 51)"
+      ],
+      "Trend": {
+        "type": "timespan",
+        "value": "30"
+      }
+    },
+    {
+      "widget-id": "assessment-pie-chart",
+      "position": {
+        "x": 8,
+        "y": 2,
+        "width": 4,
+        "height": 3
+      },
+      "Title": "Nesting Depth",
+      "Path": {
+        "project": "testanalyzer",
+        "path": ""
+      },
+      "Metric": "Nesting Depth Assessment",
+      "Legend": true
+    },
+    {
+      "widget-id": "assessment-pie-chart",
+      "position": {
+        "x": 0,
+        "y": 2,
+        "width": 4,
+        "height": 3
+      },
+      "Title": "File Size",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Metric": "File Size Assessment",
+      "Trend": {
+        "value": 0,
+        "type": "timespan"
+      },
+      "Legend": true,
+      "Assessment thresholds": ""
+    },
+    {
+      "widget-id": "treemap",
+      "position": {
+        "x": 0,
+        "y": 15,
+        "width": 7,
+        "height": 4
+      },
+      "Title": "Method Length",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Area Metric": "Lines of Code",
+      "Color Metric": "Method Length Assessment",
+      "Color": [
+        "rgb(0, 0, 255)"
+      ],
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ],
+      "Enable cushion": false
+    },
+    {
+      "widget-id": "treemap",
+      "position": {
+        "x": 7,
+        "y": 15,
+        "width": 5,
+        "height": 4
+      },
+      "Title": "Nesting Depth",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Area Metric": "Lines of Code",
+      "Color Metric": "Nesting Depth Assessment",
+      "Color": [
+        "rgb(0, 0, 255)"
+      ],
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ],
+      "Enable cushion": false
+    },
+    {
+      "widget-id": "treemap",
+      "position": {
+        "x": 0,
+        "y": 10,
+        "width": 7,
+        "height": 5
+      },
+      "Title": "Findings",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Area Metric": "Lines of Code",
+      "Color Metric": "Number of Findings",
+      "Color": [
+        "rgb(255, 0, 0)"
+      ],
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ],
+      "Enable cushion": false
+    },
+    {
+      "widget-id": "numeric-metric-value",
+      "position": {
+        "x": 10,
+        "y": 0,
+        "width": 2,
+        "height": 2
+      },
+      "Title": "Findings Density",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Metric": "Findings Density",
+      "Boundaries": "5,10",
+      "Colors": [
+        "rgb(102, 204, 102)",
+        "rgb(255, 102, 0)",
+        "rgb(255, 102, 51)"
+      ],
+      "Trend": {
+        "type": "timespan",
+        "value": "30"
+      }
+    },
+    {
+      "widget-id": "metrics-table",
+      "position": {
+        "x": 0,
+        "y": 19,
+        "width": 7,
+        "height": 4
+      },
+      "Title": "Metrics Table",
+      "Path": {
+        "project": "testanalyzer",
+        "path": "",
+        "hiddenInWidgetTitle": false
+      },
+      "Show actions": false,
+      "Show values": true,
+      "Show icons": true,
+      "Show trend": true,
+      "Trend": {
+        "value": "30",
+        "type": "timespan"
+      },
+      "Metric Threshold Configuration": "TestAnalyzer"
+    }
+  ]
+}]]></descriptorJSON>
+    <author>admin</author>
+    <comment>Created from template &apos;admin/Overview Dashboard&apos;</comment>
+  </payload>
+</com.teamscale.core.migration.TeamscaleVersionContainer>

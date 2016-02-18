@@ -17,6 +17,7 @@
   </component>
   <component name="other" dim="120,40" pos="21,21">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.Core" />
+    <code-mapping type="include" regex="ClasspathHelp" />
   </component>
   <component name="runner.analysis" dim="160,40" pos="471,301">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.analysis.*" />

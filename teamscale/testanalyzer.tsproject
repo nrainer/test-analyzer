@@ -3,7 +3,7 @@
   <payload class="org.conqat.engine.index.configuration.instance.ProjectConfiguration">
     <name>TestAnalyzer</name>
     <id>testanalyzer</id>
-    <profile>TestAnalyzer</profile>
+    <profile>Java adjusted</profile>
     <connectors>
       <org.conqat.engine.index.configuration.instance.ConnectorConfiguration>
         <options class="linked-hash-map">
@@ -13,7 +13,7 @@
           </entry>
           <entry>
             <string>Repository identifier</string>
-            <string>repository2</string>
+            <string>repository1</string>
           </entry>
           <entry>
             <string>Included file names</string>
@@ -21,7 +21,7 @@
           </entry>
           <entry>
             <string>Excluded file names</string>
-            <string></string>
+            <string>**/package-info.java</string>
           </entry>
           <entry>
             <string>Start revision</string>

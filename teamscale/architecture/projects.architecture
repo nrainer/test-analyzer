@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" scope-include="" scope-exclude="">
+  <component name="Other tools" dim="210,40" pos="21,431">
+    <code-mapping type="include" regex="test\-analyzer\-core/utilities/ClasspathHelp\.java" />
+  </component>
   <component name="test.analyzer.core app" dim="220,40" pos="21,21">
     <code-mapping type="include" regex="test-analyzer-core/src/main.*" />
   </component>
