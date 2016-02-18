@@ -40,26 +40,26 @@ public class CommonFactory extends AbstractReturnFactory {
 	public Object getWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
 		if (returnType.endsWith(ARRAY_BRACKETS)) {
 			if (returnType.startsWith(PCKG_JAVA_LANG)) {
-				return getJavaLangArray(returnType);
+				return createJavaLangArray(returnType);
 			} else {
-				return getOtherArray(returnType);
+				return createOtherArray(returnType);
 			}
 		} else {
 			if (returnType.startsWith(PCKG_JAVA_LANG)) {
-				return getJavaLang(returnType);
+				return createJavaLang(returnType);
 			} else if (returnType.startsWith(PCKG_JAVA_UTIL)) {
-				return getJavaUtil(returnType);
+				return createJavaUtil(returnType);
 			} else if (returnType.startsWith(PCKG_JAVA_IO)) {
-				return getJavaIO(returnType);
+				return createJavaIO(returnType);
 			} else if (returnType.startsWith(PCKG_JAVA_MATH)) {
-				return getJavaMath(returnType);
+				return createJavaMath(returnType);
 			}
 		}
 
 		throw new NoSuchElementException();
 	}
 
-	private Object getJavaLangArray(String returnType) {
+	private Object createJavaLangArray(String returnType) {
 		switch (returnType) {
 		case "java.lang.Object[]":
 			return new Object[0];
@@ -87,7 +87,7 @@ public class CommonFactory extends AbstractReturnFactory {
 		}
 	}
 
-	private Object getOtherArray(String returnType) throws NoSuchElementException {
+	private Object createOtherArray(String returnType) throws NoSuchElementException {
 		switch (returnType) {
 		case "int[]":
 			return new int[0];
@@ -110,10 +110,26 @@ public class CommonFactory extends AbstractReturnFactory {
 		}
 	}
 
-	private Object getJavaLang(String returnType) throws NoSuchElementException {
+	private Object createJavaLang(String returnType) throws NoSuchElementException {
+		Object result;
+
+		result = tryCreateJavaLangWrapper(returnType);
+
+		if (result != null) {
+			return result;
+		}
+
+		result = tryCreateJavaLangNonWrapper(returnType);
+
+		if (result != null) {
+			return result;
+		}
+
+		throw new NoSuchElementException();
+	}
+
+	private Object tryCreateJavaLangWrapper(String returnType) throws NoSuchElementException {
 		switch (returnType) {
-		case "java.lang.Object":
-			return new Object();
 		case "java.lang.Boolean":
 			return Boolean.valueOf(false);
 		case "java.lang.Character":
@@ -131,6 +147,17 @@ public class CommonFactory extends AbstractReturnFactory {
 			return Float.valueOf(0);
 		case "java.lang.Double":
 			return Double.valueOf(0);
+		default:
+			return null;
+		}
+	}
+
+	private Object tryCreateJavaLangNonWrapper(String returnType) throws NoSuchElementException {
+		// Note that java.lang.String is handled by the simple return value generators.
+
+		switch (returnType) {
+		case "java.lang.Object":
+			return new Object();
 		case "java.lang.Class":
 			return Object.class;
 		case "java.lang.Comparable":
@@ -147,11 +174,29 @@ public class CommonFactory extends AbstractReturnFactory {
 		case "java.lang.StringBuilder":
 			return new StringBuilder();
 		default:
-			throw new NoSuchElementException();
+			return null;
 		}
 	}
 
-	private Object getJavaUtil(String returnType) throws NoSuchElementException {
+	private Object createJavaUtil(String returnType) throws NoSuchElementException {
+		Object result;
+
+		result = tryCreateJavaUtilIterable(returnType);
+
+		if (result != null) {
+			return result;
+		}
+
+		result = tryCreateJavaUtilNonIterable(returnType);
+
+		if (result != null) {
+			return result;
+		}
+
+		throw new NoSuchElementException();
+	}
+
+	private Object tryCreateJavaUtilIterable(String returnType) {
 		switch (returnType) {
 		case "java.util.Collection":
 		case "java.util.List":
@@ -160,39 +205,45 @@ public class CommonFactory extends AbstractReturnFactory {
 			return new LinkedList<>();
 		case "java.util.ArrayList":
 			return new ArrayList<>();
+		case "java.util.Vector":
+		case "java.util.Stack":
+			return new Stack<>();
 		case "java.util.Iterator":
 		case "java.util.ListIterator":
 			return new LinkedList<>().listIterator();
 		case "java.util.Set":
 		case "java.util.HashSet":
 			return new HashSet<>();
+		case "java.util.SortedSet":
+			return new TreeSet<>();
 		case "java.util.Map":
 		case "java.util.HashMap":
 			return new HashMap<>();
+		case "java.util.SortedMap":
+			return new TreeMap<>();
+		default:
+			return null;
+		}
+	}
+
+	private Object tryCreateJavaUtilNonIterable(String returnType) throws NoSuchElementException {
+		switch (returnType) {
 		case "java.util.Date":
 			return new Date(0);
-		case "java.util.Vector":
-		case "java.util.Stack":
-			return new Stack<>();
 		case "java.util.Comparator":
 			return newComparator();
 		case "java.util.Locale":
 			return Locale.GERMAN;
 		case "java.util.Calendar":
 			return Calendar.getInstance();
-		case "java.util.SortedMap":
-			return new TreeMap<>();
-		case "java.util.SortedSet":
-			return new TreeSet<>();
 		case "java.util.regex.Pattern":
 			return Pattern.compile(".");
 		default:
-			throw new NoSuchElementException();
+			return null;
 		}
-
 	}
 
-	private Object getJavaIO(String returnType) throws NoSuchElementException {
+	private Object createJavaIO(String returnType) throws NoSuchElementException {
 		switch (returnType) {
 		case "java.io.File":
 			return new File(".");
@@ -203,7 +254,7 @@ public class CommonFactory extends AbstractReturnFactory {
 		}
 	}
 
-	private Object getJavaMath(String returnType) throws NoSuchElementException {
+	private Object createJavaMath(String returnType) throws NoSuchElementException {
 		switch (returnType) {
 		case "java.math.BigInteger":
 			return BigInteger.ZERO;
