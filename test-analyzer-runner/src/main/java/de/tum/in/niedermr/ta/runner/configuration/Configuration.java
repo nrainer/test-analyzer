@@ -219,24 +219,24 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	 * <br/>
 	 * Core provides the following built-in generators:</br>
 	 * <ul>
-	 * <li>{@link de.tum.in.ma.logic.mutation.returnValues.VoidReturnValueGenerator}</li>
-	 * <li>{@link de.tum.in.ma.logic.mutation.returnValues.SimpleReturnValueGeneratorWith0}</li>
-	 * <li>{@link de.tum.in.ma.logic.mutation.returnValues.SimpleReturnValueGeneratorWith1}</li>
+	 * <li>{@link de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator}</li>
+	 * <li>{@link de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith0}</li>
+	 * <li>{@link de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith1}</li>
 	 * <li>
 	 * {@link de.tum.in.niedermr.ta.extensions.testing.factories.ma.logic.mutation.returnValues.CommonInstancesReturnValueGenerator}
 	 * </li>
-	 * <li>{@link de.tum.in.ma.logic.mutation.returnValues.SimpleInstancesReturnValueGenerator}</li>
+	 * <li>{@link de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleInstancesReturnValueGenerator}</li>
 	 * </ul>
 	 * <br/>
 	 * Other generators can be used too (they must implement
-	 * {@link de.tum.in.ma.logic.mutation.returnValues.IReturnValueGenerator} and be on the classpath). For generators
-	 * which use factories it is recommended to extend
-	 * {@link de.tum.in.ma.logic.mutation.returnValues.AbstractFactoryReturnValueGenerator} . <br/>
+	 * {@link de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator} and be on the classpath).
+	 * For generators which use factories it is recommended to extend
+	 * {@link de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.AbstractFactoryReturnValueGenerator} . <br/>
 	 * 
 	 * The default value can be used. <br/>
 	 * Values separated by: {@link de.tum.in.niedermr.ta.core.common.constants.CommonConstants#SEPARATOR_DEFAULT}
 	 * 
-	 * @see de.tum.in.ma.logic.mutation.returnValues. AbstractFactoryReturnValueGenerator
+	 * @see de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.AbstractFactoryReturnValueGenerator
 	 */
 	public ReturnValueGeneratorsProperty getReturnValueGenerators() {
 		return m_returnValueGenerators;
@@ -246,7 +246,8 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	 * Way of the result presentation.<br/>
 	 * Either {@link ResultPresentationProperty#RESULT_PRESENTATION_DB} ,
 	 * {@link ResultPresentationProperty#RESULT_PRESENTATION_TEXT} or the name of a class implementing
-	 * {@link de.tum.in.ma.logic.IResultPresentation} (which then needs to be on the classpath).<br/>
+	 * {@link de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation} (which then needs to be on
+	 * the classpath).<br/>
 	 * <br/>
 	 * The default value can be used.
 	 */

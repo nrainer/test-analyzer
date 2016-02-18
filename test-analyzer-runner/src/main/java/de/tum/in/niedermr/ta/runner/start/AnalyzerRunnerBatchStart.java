@@ -10,21 +10,23 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.constants.TestAnalyzerConstants;
 
 /**
- * Allows running MagicStart with many configurations which will be executed sequentially.
+ * Allows running the TestAnalyzer with many configurations which will be executed sequentially.
  * 
  */
 public class AnalyzerRunnerBatchStart {
 	/**
 	 * Only considered if main is invoked without arguments.
 	 * 
-	 * @return path of the configuration files separated by {@link CommonConstants#SEPARATOR_DEFAULT} (relative to 0_MagicStart)
+	 * @return path of the configuration files separated by {@link CommonConstants#SEPARATOR_DEFAULT} (relative to the
+	 *         TestAnalyzer program path)
 	 */
 	private static String getConfigurationFiles() {
 		return "";
 	}
 
 	/**
-	 * args[0]: path of the configuration files separated by {@link CommonConstants#SEPARATOR_DEFAULT} (relative to 0_MagicStart)
+	 * args[0]: path of the configuration files separated by {@link CommonConstants#SEPARATOR_DEFAULT} (relative to
+	 * TestAnalyzer program path)
 	 */
 	public static void main(String[] args) throws ConfigurationException, IOException {
 		final String configurationFiles = CommonUtility.getArgument(args, 0, getConfigurationFiles());
@@ -37,7 +39,8 @@ public class AnalyzerRunnerBatchStart {
 			}
 
 			try {
-				Configuration configuration = ConfigurationLoader.getConfigurationFromFile(configFile, TestAnalyzerConstants.CONFIGURATION_FOLDER_DEFAULT);
+				Configuration configuration = ConfigurationLoader.getConfigurationFromFile(configFile,
+						TestAnalyzerConstants.CONFIGURATION_FOLDER_DEFAULT);
 				AnalyzerRunnerStart.execute(configuration);
 			} catch (Exception ex) {
 				System.err.println("Skipped: " + configFile);

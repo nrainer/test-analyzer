@@ -22,11 +22,8 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 
 /**
- * <b>Executes MagicStartInternal</b> in a new process with the needed classpath.<br/>
+ * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed classpath.<br/>
  * The process will be started in the working area which is specified in the configuration.<br/>
- * <br/>
- * <b>Classpath:</b>
- * <code>java -classpath "./bin/;../Core/lib/ccsm-commons.jar;../Core/bin/;../Core/lib/asm-5.0_ALPHA.jar;../Core/lib/asm-analysis-5.0_ALPHA.jar;../Core/lib/asm-commons-5.0_ALPHA.jar;../Core/lib/asm-tree-5.0_ALPHA.jar;../Core/lib/commons-io-2.4.jar;../Core/lib/log4j-api-2.0-beta4.jar;../Core/lib/log4j-core-2.0-beta4.jar;" de.tum.in.niedermr.ta.runner.MagicStart</code>
  *
  */
 public class AnalyzerRunnerStart {
@@ -65,8 +62,8 @@ public class AnalyzerRunnerStart {
 		execute(configuration, new File(FileSystemConstants.CURRENT_FOLDER));
 	}
 
-	public static void execute(Configuration configuration, File locationMagicStart) throws IOException {
-		final String currentCanonicalPath = locationMagicStart.getCanonicalPath();
+	public static void execute(Configuration configuration, File locationTestAnalyzer) throws IOException {
+		final String currentCanonicalPath = locationTestAnalyzer.getCanonicalPath();
 		final String workingFolder = configuration.getWorkingFolder().getValue();
 
 		print("Working folder is: " + workingFolder);

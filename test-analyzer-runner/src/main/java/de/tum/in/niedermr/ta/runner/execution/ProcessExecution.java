@@ -37,7 +37,7 @@ public class ProcessExecution {
 	 * @param executionDirectory
 	 *            directory to execute the process
 	 * @param programFolderForClasspath
-	 *            path to the folder MagicStart (from the current execution directory)
+	 *            path to the folder TestAnalyzer (from the current execution directory)
 	 * @param workingFolderForClasspath
 	 *            path to the working folder (from the current execution directory)
 	 */
