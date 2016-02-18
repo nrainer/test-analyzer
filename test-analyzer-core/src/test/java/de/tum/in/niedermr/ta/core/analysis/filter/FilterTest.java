@@ -9,7 +9,6 @@ import org.objectweb.asm.tree.InsnList;
 import org.objectweb.asm.tree.InsnNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.HashCodeMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.SetterGetterFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.SimpleCodeComplexityFilter;

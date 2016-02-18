@@ -38,7 +38,8 @@ public final class FilterResult {
 	}
 
 	/**
-	 * value is only set if {@link #isAccepted()} is false.
+	 * Get the method filter. <br/>
+	 * Note that the value is only set if {@link #isAccepted()} is false.
 	 */
 	public Class<? extends IMethodFilter> getMethodFilter() {
 		return m_methodFilter;
@@ -49,7 +50,8 @@ public final class FilterResult {
 		if (isAccepted()) {
 			return "YES";
 		} else {
-			return "NO (" + getMethodFilter().getSimpleName() + (getSkipReason() != null ? (": " + getSkipReason()) : "") + ")";
+			return "NO (" + getMethodFilter().getSimpleName()
+					+ (getSkipReason() != null ? (": " + getSkipReason()) : "") + ")";
 		}
 	}
 }

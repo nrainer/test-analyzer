@@ -61,7 +61,8 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 	}
 
 	/**
-	 * Alternating sequence of name and value.
+	 * @param annotationValues
+	 *            Alternating sequence of name and value.
 	 */
 	private boolean isDisabledTest(List<Object> annotationValues) {
 		if (annotationValues == null) {

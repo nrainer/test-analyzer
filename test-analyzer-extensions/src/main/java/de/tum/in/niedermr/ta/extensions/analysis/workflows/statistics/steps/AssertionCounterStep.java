@@ -45,7 +45,8 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 	}
 
 	private AssertionInformation getAssertionInformation() {
-		return new AssertionInformation(getAvailableAssertionClasses().toArray(new Class[0])) {
+		Class<?>[] assertionClasses = getAvailableAssertionClasses().toArray(new Class[0]);
+		return new AssertionInformation(assertionClasses) {
 			@Override
 			public Result isAssertionMethod(MethodIdentifier methodIdentifier) throws ClassNotFoundException {
 				if (methodIdentifier.getOnlyMethodName().startsWith(PREFIX_UNREGISTERED_ASSERT_METHODS_1)
