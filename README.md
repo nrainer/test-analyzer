@@ -1,4 +1,4 @@
-# test-analyzer ![Teamscale Project](https://img.shields.io/badge/teamscale-teamscale-brightgreen.svg)
+# test-analyzer [![Teamscale Project](https://img.shields.io/badge/teamscale-test--analyzer-brightgreen.svg)](https://demo.teamscale.com/activity.html#/test-analyzer)
 A mutation testing tool to detect pseudo-tested methods.
 
 # Eclipse Setup
