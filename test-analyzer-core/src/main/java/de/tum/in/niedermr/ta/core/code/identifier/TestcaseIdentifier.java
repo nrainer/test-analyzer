@@ -15,7 +15,11 @@ public final class TestcaseIdentifier implements Identifier {
 	}
 
 	public static TestcaseIdentifier create(Class<?> testClass, String testcaseName) {
-		return new TestcaseIdentifier(testClass.getName(), testcaseName);
+		return create(testClass.getName(), testcaseName);
+	}
+	
+	public static TestcaseIdentifier create(String testClassName, String testcaseName) {
+		return new TestcaseIdentifier(testClassName, testcaseName);
 	}
 
 	public static TestcaseIdentifier parse(String s) throws IllegalArgumentException {
