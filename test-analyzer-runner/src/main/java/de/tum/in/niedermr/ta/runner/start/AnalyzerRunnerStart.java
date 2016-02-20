@@ -15,7 +15,6 @@ import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.constants.TestAnalyzerConstants;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
@@ -44,8 +43,7 @@ public class AnalyzerRunnerStart {
 		Configuration configuration = null;
 
 		try {
-			configuration = ConfigurationLoader.getConfiguration(args,
-					TestAnalyzerConstants.CONFIGURATION_FOLDER_DEFAULT);
+			configuration = ConfigurationLoader.getConfiguration(args);
 		} catch (ConfigurationException ex) {
 			if (ex.getCause() instanceof FileNotFoundException) {
 				print("Configuration file not found.");

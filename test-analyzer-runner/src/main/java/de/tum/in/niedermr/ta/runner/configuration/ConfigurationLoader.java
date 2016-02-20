@@ -66,9 +66,9 @@ public class ConfigurationLoader implements FileSystemConstants {
 		return s_fastFail;
 	}
 
-	public static Configuration getConfiguration(String[] args, String rootPathForFiles) throws ConfigurationException {
+	public static Configuration getConfiguration(String[] args) throws ConfigurationException {
 		try {
-			ConfigurationLoader loader = new ConfigurationLoader(rootPathForFiles);
+			ConfigurationLoader loader = new ConfigurationLoader(".");
 
 			if (args.length != 0) {
 				loader.loadFromArgs(args);
