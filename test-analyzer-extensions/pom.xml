@@ -17,12 +17,31 @@
 		<rootFolder>${project.basedir}/../</rootFolder>
 	</properties>
 
+	<build>
+		<plugins>
+			<plugin>
+				<!-- Needed so that (only) JUnit tests get executed (otherwise testNg 
+					is used because of the dependency) -->
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.surefire</groupId>
+						<artifactId>surefire-junit47</artifactId>
+						<version>2.19.1</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>de.tum.in.niedermr.ta</groupId>
 			<artifactId>test-analyzer-core</artifactId>
 			<version>${currentVersion}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>de.tum.in.niedermr.ta</groupId>
 			<artifactId>test-analyzer-runner</artifactId>
@@ -34,6 +53,6 @@
 			<artifactId>testng</artifactId>
 			<version>6.8.8</version>
 		</dependency>
-
 	</dependencies>
+
 </project>
