@@ -18,6 +18,7 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class AssertionInformation {
+	@SuppressWarnings("deprecation")
 	private static final Class<?>[] CORE_ASSERTION_CLASSES = new Class<?>[] { org.junit.Assert.class,
 			junit.framework.Assert.class };
 	private final Result m_noAssertionResult = new Result(false, null);

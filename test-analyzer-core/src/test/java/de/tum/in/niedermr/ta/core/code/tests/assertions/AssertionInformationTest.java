@@ -4,12 +4,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation.Result;
-import junit.framework.Assert;
 
 public class AssertionInformationTest {
 	@Test
@@ -51,12 +51,12 @@ public class AssertionInformationTest {
 	public void testPopOpcodes() throws ClassNotFoundException {
 		AssertionInformation assertionInformation = new AssertionInformation();
 
-		MethodIdentifier identifier = MethodIdentifier.create(Assert.class, "assertEquals", "(II)V");
+		MethodIdentifier identifier = MethodIdentifier.create(Assert.class, "assertEquals", "(JJ)V");
 		Result result = assertionInformation.isAssertionMethod(identifier);
 
 		assertTrue(result.isAssertion());
 		assertEquals(2, result.getPopInstructionOpcodes().length);
-		assertEquals(Opcodes.POP, result.getPopInstructionOpcodes()[0]);
+		assertEquals(Opcodes.POP2, result.getPopInstructionOpcodes()[0]);
 	}
 
 	static class InheritedAssertionClass extends Assert {

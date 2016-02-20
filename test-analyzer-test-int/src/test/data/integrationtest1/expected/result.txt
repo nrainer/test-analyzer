@@ -14,13 +14,13 @@ Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.even()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.isEven()
 Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith0
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: 
+Exception: java.lang.AssertionError
 .
 Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.even()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.isEven()
 Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith1
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: 
+Exception: java.lang.AssertionError
 .
 Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.add0()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
@@ -42,7 +42,7 @@ Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.even()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
 Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith0
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: 
+Exception: java.lang.AssertionError
 .
 Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.add5()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
@@ -77,7 +77,7 @@ Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.even()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
 Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith1
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: 
+Exception: java.lang.AssertionError
 .
 Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.add5()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
@@ -105,7 +105,7 @@ Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.even()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
 Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: 
+Exception: java.lang.AssertionError
 .
 Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.add5()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
@@ -128,7 +128,7 @@ Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.even()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
 Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: 
+Exception: java.lang.AssertionError
 .
 Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.add5()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
@@ -146,5 +146,5 @@ Testcase: de.tum.in.ma.simpleproject.lite.CalculationLiteTests.even()
 Mutated method: de.tum.in.ma.simpleproject.lite.CalculationLite.increment()
 Return value generator: de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: 
+Exception: java.lang.AssertionError
 .
