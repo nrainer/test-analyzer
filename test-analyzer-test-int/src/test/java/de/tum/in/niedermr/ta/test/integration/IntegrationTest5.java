@@ -22,7 +22,7 @@ public class IntegrationTest5 extends AbstractSystemTest {
 
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResult());
 
-		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, true, getFileExpectedCollectedInformation(), getFileOutputCollectedInformation());
+		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, false, getFileExpectedCollectedInformation(), getFileOutputCollectedInformation());
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResult(), getFileOutputResult());
 		
 		List<String> expectedLogFileTextChunks = new ArrayList<>();
