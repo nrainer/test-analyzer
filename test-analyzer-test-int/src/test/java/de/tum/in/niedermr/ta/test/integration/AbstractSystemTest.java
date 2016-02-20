@@ -16,8 +16,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -34,6 +36,7 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 	private final static String FOLDER_EXPECTED = "expected/";
 	private final static String FOLDER_CONFIGURATION = "configuration/";
 	private final static String FOLDER_OUTPUT = "result/";
+	private final static String FOLDER_LOG = "logs/";
 
 	private final static String FILE_NAME_CONFIGURATION = "config" + FILE_EXTENSION_CONFIG;
 
@@ -104,6 +107,19 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 
 		assertEquals(errorMsg, expectedContent, outputContent);
 	}
+	
+	protected void assertLogFileContains(List<String> expectedText) {
+		if (expectedText.isEmpty()) {
+			return;
+		}
+		
+		List<String> logFileContentLines = getContent(getLogFile());
+		String logFileContent = StringUtility.join(logFileContentLines, CommonConstants.NEW_LINE);
+		
+		for (String text : expectedText) {
+			assertTrue("Log file does not contain: '" + text + "'", logFileContent.contains(text));
+		}
+	}
 
 	protected Configuration getConfiguration() {
 		return m_configuration;
@@ -157,6 +173,10 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 
 	protected File getOutputFile(String fileName) {
 		return new File(getSpecificFolderTestWorkingArea() + FOLDER_OUTPUT + fileName);
+	}
+	
+	protected File getLogFile() {
+		return new File(getSpecificFolderTestWorkingArea() + FOLDER_LOG + "TestAnalyzer.log");
 	}
 
 	protected List<String> getContent(File file) {
