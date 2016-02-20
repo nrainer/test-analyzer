@@ -2,7 +2,10 @@ package de.tum.in.niedermr.ta.test.integration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
@@ -21,5 +24,11 @@ public class IntegrationTest5 extends AbstractSystemTest {
 
 		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, true, getFileExpectedCollectedInformation(), getFileOutputCollectedInformation());
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResult(), getFileOutputResult());
+		
+		List<String> expectedLogFileTextChunks = new ArrayList<>();
+		expectedLogFileTextChunks.add(TestcaseIdentifier.create("de.tum.in.ma.simpleproject.special.HasFailingTest", "failingTest").get() + " will be skipped!");
+		// Lambda mutation is not supported
+		expectedLogFileTextChunks.add("Skipped: de.tum.in.ma.simpleproject.special.Java8.lambda$1");
+		assertLogFileContains(expectedLogFileTextChunks);
 	}
 }
