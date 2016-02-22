@@ -29,8 +29,8 @@ public class JarIteratorTest {
 	private static final String TEST_RESOURCE_JAR = TEST_FOLDER + "jar-with-resource.jar";
 	private static final String TEST_TEMP_JAR_1 = TEST_FOLDER + "temp_1.jar";
 	private static final String TEST_TEMP_JAR_2 = TEST_FOLDER + "temp_2.jar";
-	private static final String CLASSPATH_SIMPLE_CALCULATION = "de/tum/in/ma/project/example/SimpleCalculation.class";
-	private static final String CLASSPATH_UNIT_TEST = "de/tum/in/ma/project/example/UnitTest.class";
+	private static final String CLASSPATH_SIMPLE_CALCULATION = "de/tum/in/ma/simpleproject/lite/CalculationLite.class";
+	private static final String CLASSPATH_UNIT_TEST = "de/tum/in/ma/simpleproject/lite/CalculationLiteTests.class";
 
 	@Test
 	public void testInvocationSequence() throws Throwable {
@@ -47,7 +47,7 @@ public class JarIteratorTest {
 	@Test
 	public void testAnalyzeIterator() throws Throwable {
 		JarAnalyzeIterator it = new JarAnalyzeIterator(TEST_INPUT_JAR);
-		ContentRecoderOperation operation = new ContentRecoderOperation();
+		ContentRecorderOperation operation = new ContentRecorderOperation();
 		it.execute(operation);
 
 		assertEquals(2, operation.m_iteratedClasses.size());
@@ -86,7 +86,7 @@ public class JarIteratorTest {
 		assertTrue(file.exists());
 
 		JarAnalyzeIterator analyzeIterator = new JarAnalyzeIterator(TEST_TEMP_JAR_1);
-		ContentRecoderOperation checkOperation = new ContentRecoderOperation();
+		ContentRecorderOperation checkOperation = new ContentRecorderOperation();
 		analyzeIterator.execute(checkOperation);
 
 		assertEquals(3, checkOperation.m_iteratedClasses.size());
@@ -164,10 +164,10 @@ public class JarIteratorTest {
 		}
 	}
 
-	class ContentRecoderOperation implements ICodeAnalyzeOperation {
+	class ContentRecorderOperation implements ICodeAnalyzeOperation {
 		private final Set<String> m_iteratedClasses;
 
-		public ContentRecoderOperation() {
+		public ContentRecorderOperation() {
 			this.m_iteratedClasses = new HashSet<>();
 		}
 
