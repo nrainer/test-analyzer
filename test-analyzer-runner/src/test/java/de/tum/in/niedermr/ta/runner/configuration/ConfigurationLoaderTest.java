@@ -9,6 +9,7 @@ import org.junit.After;
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
@@ -33,6 +34,13 @@ public class ConfigurationLoaderTest {
 		Configuration expected = new Configuration();
 		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getCodePathToTest().setValue("a.jar");
+
+		ConfigurationExtensionKey extensionKeyForTuningAlgorithm = ConfigurationExtensionKey
+				.create("tuning.speedup.algorithm");
+		expected.getConfigurationExtension().setRawValue(extensionKeyForTuningAlgorithm, "ER3z");
+		ConfigurationExtensionKey extensionKeyForTuningFactor = ConfigurationExtensionKey
+				.create("tuning.speedup.factor");
+		expected.getConfigurationExtension().setRawValue(extensionKeyForTuningFactor, "4");
 
 		Configuration result = ConfigurationLoader.getConfigurationFromFile("testConfigurationFromFile.config",
 				"./src/test/data/ConfigurationLoaderTest/");

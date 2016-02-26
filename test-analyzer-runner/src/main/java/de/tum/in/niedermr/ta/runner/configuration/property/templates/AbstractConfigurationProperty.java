@@ -65,7 +65,7 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 
 	@Override
 	public final String toString() {
-		return toString(getName(), getValue());
+		return "[" + toString(getName(), getValue()) + "]";
 	}
 
 	@Override
@@ -74,6 +74,6 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 	}
 
 	public static String toString(String name, Object value) {
-		return "[" + name + " = " + value + "]";
+		return name + " = " + value;
 	}
 }

@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.runner.configuration.extension;
 import java.io.Serializable;
 
 /** Key to access an extension property. */
-public class ConfigurationExtensionKey implements Serializable {
+public class ConfigurationExtensionKey implements Serializable, Comparable<ConfigurationExtensionKey> {
 
 	/** Version. */
 	private static final long serialVersionUID = 1L;
@@ -45,5 +45,10 @@ public class ConfigurationExtensionKey implements Serializable {
 	@Override
 	public int hashCode() {
 		return m_name.hashCode();
+	}
+
+	@Override
+	public int compareTo(ConfigurationExtensionKey o) {
+		return m_name.compareTo(o.m_name);
 	}
 }

@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractConfigurationProperty;
 
@@ -65,7 +67,9 @@ public class ConfigurationExtension {
 	public List<String> toStringLines() {
 		List<String> list = new ArrayList<>();
 
-		for (Entry<ConfigurationExtensionKey, String> entry : m_dataMap.entrySet()) {
+		SortedMap<ConfigurationExtensionKey, String> sortedMap = new TreeMap<>(m_dataMap);
+
+		for (Entry<ConfigurationExtensionKey, String> entry : sortedMap.entrySet()) {
 			list.add(toString(entry));
 		}
 

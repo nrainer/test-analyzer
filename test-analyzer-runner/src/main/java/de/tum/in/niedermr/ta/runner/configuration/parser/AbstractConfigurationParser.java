@@ -107,7 +107,7 @@ abstract class AbstractConfigurationParser {
 		}
 	}
 
-	private void handleBuiltInProperty(String key, LineType lineType, String line, String rawValue)
+	private void handleBuiltInProperty(String line, LineType lineType, String key, String rawValue)
 			throws ConfigurationException {
 		final IConfigurationProperty<?> property = getPropertyByKey(key);
 
