@@ -18,7 +18,8 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
@@ -35,26 +36,22 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	protected boolean m_aborted;
 	protected IReturnValueGenerator[] m_returnValueGenerators;
 
-	public MutateAndTestStep(ExecutionContext information) {
-		super(information);
-	}
-
 	public void setInputData(ConcurrentLinkedQueue<TestInformation> methodsToMutateAndTestsToRun) {
 		this.m_methodsToMutateAndTestsToRun = methodsToMutateAndTestsToRun;
 	}
 
 	@Override
-	public void runInternal() throws Exception {
-		LOG.info("Using " + LoggingUtil.appendPluralS(m_configuration.getNumberOfThreads().getValue(), "thread", true)
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+		LOG.info("Using " + LoggingUtil.appendPluralS(configuration.getNumberOfThreads().getValue(), "thread", true)
 				+ " for mutating and testing.");
 		LOG.info(LoggingUtil.appendPluralS(m_methodsToMutateAndTestsToRun, "method", true)
 				+ " are candidates to be mutated (Filters have not been applied yet).");
 
-		loadReturnValueGenerators();
+		loadReturnValueGenerators(configuration);
 
 		startAbortChecker();
 
-		List<MutateAndTestThread> threadList = createAndStartThreads(m_configuration.getNumberOfThreads().getValue());
+		List<MutateAndTestThread> threadList = createAndStartThreads(configuration, processExecution);
 
 		int countSuccessful = 0;
 		int countSkipped = 0;
@@ -84,30 +81,28 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		new AbortCheckerThread().start();
 	}
 
-	private void loadReturnValueGenerators() throws FailedExecution {
+	private void loadReturnValueGenerators(Configuration configuration) throws FailedExecution {
 		try {
-			this.m_returnValueGenerators = m_configuration.getReturnValueGenerators().createInstances();
+			this.m_returnValueGenerators = configuration.getReturnValueGenerators().createInstances();
 		} catch (ReflectiveOperationException ex) {
 			throw new FailedExecution(getFullExecId(EXEC_ID_TEST_RUN),
 					"Return value generator is not on the classpath (" + ex.getMessage() + ")");
 		}
 	}
 
-	private List<MutateAndTestThread> createAndStartThreads(int numberOfThreads) {
+	private List<MutateAndTestThread> createAndStartThreads(Configuration configuration,
+			ProcessExecution processExecution) {
+		int numberOfThreads = configuration.getNumberOfThreads().getValue();
 		List<MutateAndTestThread> threadList = new LinkedList<>();
 
-		for (int i = 0; i < numberOfThreads; i++) {
-			MutateAndTestThread t = new MutateAndTestThread(i);
+		for (int index = 0; index < numberOfThreads; index++) {
+			MutateAndTestThread t = new MutateAndTestThread(index, configuration, processExecution);
 
 			threadList.add(t);
 			t.start();
 		}
 
 		return threadList;
-	}
-
-	protected MutateAndTestThread createMutateAndTestThread(int index) {
-		return new MutateAndTestThread(index);
 	}
 
 	@Override
@@ -123,6 +118,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 
 	protected class MutateAndTestThread extends Thread {
 		private final int m_threadIndex;
+		private final Configuration m_configuration;
+		private final ProcessExecution m_processExecution;
 		private int m_countMethods;
 		private int m_countSuccessful;
 		private int m_countSkipped;
@@ -132,8 +129,10 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		private MethodIdentifier m_currentMethodUnderTest;
 		private Set<TestcaseIdentifier> m_currentTestcases;
 
-		public MutateAndTestThread(int index) {
+		public MutateAndTestThread(int index, Configuration configuration, ProcessExecution processExecution) {
 			this.m_threadIndex = index;
+			m_configuration = configuration;
+			m_processExecution = processExecution;
 
 			this.m_countMethods = 0;
 			this.m_countSuccessful = 0;

@@ -4,7 +4,8 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.instrumentation.AnalysisInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 
 /**
  * Note that it is ok to log invocations from framing methods (@Before) too because they also invoke the mutated
@@ -13,26 +14,21 @@ import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 	private static final String EXEC_ID_ANALYSIS_INSTRUMENTATION = "ANAINS";
 
-	public AnalysisInstrumentationStep(ExecutionContext information) {
-		super(information);
-	}
-
 	@Override
-	public void runInternal() throws Exception {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		/**
 		 * Instrument the methods of the jars to compute the min and max stack distance to the testcase.
 		 */
 
 		final String executionId = getFullExecId(EXEC_ID_ANALYSIS_INSTRUMENTATION);
-		final boolean operateFaultTolerant = m_configuration.getOperateFaultTolerant().getValue();
-		ITestRunner testRunner = m_configuration.getTestRunner().createInstance();
+		final boolean operateFaultTolerant = configuration.getOperateFaultTolerant().getValue();
+		ITestRunner testRunner = configuration.getTestRunner().createInstance();
 
 		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(executionId,
 				operateFaultTolerant);
-		analysisInstrumentation.injectAnalysisStatements(m_configuration.getCodePathToMutate().getElements(),
+		analysisInstrumentation.injectAnalysisStatements(configuration.getCodePathToMutate().getElements(),
 				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,
-				m_configuration.getTestClassIncludes().getElements(),
-				m_configuration.getTestClassExcludes().getElements());
+				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());
 	}
 
 	@Override

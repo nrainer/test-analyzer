@@ -6,28 +6,24 @@ import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class FinalizeResultStep extends AbstractExecutionStep {
-	private final boolean m_removeTempFilesAfterwards;
-
-	public FinalizeResultStep(ExecutionContext information) {
-		super(information);
-
-		this.m_removeTempFilesAfterwards = information.getConfiguration().getRemoveTempData().getValue();
-	}
 
 	@Override
-	public void runInternal() throws Exception {
-		if (m_configuration.getExecuteMutateAndTest().isTrue()) {
-			final String destinationFilePath = getFileInWorkingArea(
-					Environment.getGenericFilePathOfOutputResult(m_configuration));
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+		boolean removeTempFilesAfterwards = configuration.getRemoveTempData().getValue();
 
-			if (m_configuration.isMultiThreaded()) {
+		if (configuration.getExecuteMutateAndTest().isTrue()) {
+			final String destinationFilePath = getFileInWorkingArea(
+					Environment.getGenericFilePathOfOutputResult(configuration));
+
+			if (configuration.isMultiThreaded()) {
 				TextFileData.mergeFiles(destinationFilePath, getFileInWorkingArea(FILE_TEMP_RESULT_X),
-						m_configuration.getNumberOfThreads().getValue());
+						configuration.getNumberOfThreads().getValue());
 			} else {
 				File dest = new File(destinationFilePath);
 
@@ -41,7 +37,7 @@ public class FinalizeResultStep extends AbstractExecutionStep {
 			}
 		}
 
-		if (m_removeTempFilesAfterwards) {
+		if (removeTempFilesAfterwards) {
 			FileSystemUtils
 					.deleteRecursively(new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP)));
 		}
@@ -49,6 +45,6 @@ public class FinalizeResultStep extends AbstractExecutionStep {
 
 	@Override
 	protected String getDescription() {
-		return "Finalizing the result" + (m_removeTempFilesAfterwards ? " and removing temp files" : "");
+		return "Finalizing the result and removing temp files (if enabled)";
 	}
 }

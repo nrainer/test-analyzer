@@ -16,7 +16,8 @@ import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class AssertionCounterStep extends AbstractExecutionStep {
@@ -34,9 +35,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 	private final Map<Class<?>, Set<String>> m_allTestcases;
 	private final AssertionInformation m_assertionInformation;
 
-	public AssertionCounterStep(ExecutionContext information) {
-		super(information);
-
+	public AssertionCounterStep() {
 		this.m_assertionsPerTestcase = new HashMap<>();
 		this.m_allTestcases = new HashMap<>();
 		this.m_assertionInformation = getAssertionInformation();
@@ -76,21 +75,21 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 	}
 
 	@Override
-	protected void runInternal() throws Throwable {
-		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(m_configuration, true);
+	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
+		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
+		boolean operateFaultTolerant = configuration.getOperateFaultTolerant().getValue();
 
-		for (String testJar : m_configuration.getCodePathToTest().getElements()) {
-			this.m_assertionsPerTestcase.putAll(getCountAssertionsData(testJar, testCollector));
+		for (String testJar : configuration.getCodePathToTest().getElements()) {
+			this.m_assertionsPerTestcase.putAll(getCountAssertionsData(testJar, testCollector, operateFaultTolerant));
 		}
 
 		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_assertionsPerTestcase);
 	}
 
-	private Map<MethodIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector)
-			throws Throwable {
+	private Map<MethodIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector,
+			boolean operateFaultTolerant) throws Throwable {
 		try {
-			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
-					m_configuration.getOperateFaultTolerant().getValue());
+			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile, operateFaultTolerant);
 
 			iterator.execute(testCollector);
 			this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
@@ -102,7 +101,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 
 			return operation.getAssertionsPerTestcase();
 		} catch (Throwable t) {
-			if (m_configuration.getOperateFaultTolerant().getValue()) {
+			if (operateFaultTolerant) {
 				LOG.error("Skipping whole jar file " + inputJarFile
 						+ " because of an error when operating in fault tolerant mode!", t);
 				return new HashMap<>();

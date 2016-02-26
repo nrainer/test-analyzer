@@ -5,17 +5,15 @@ import java.io.File;
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class CleanupStep extends AbstractExecutionStep {
-	public CleanupStep(ExecutionContext information) {
-		super(information);
-	}
 
 	@Override
-	public void runInternal() throws Exception {
-		if (getContext().getConfiguration().getRemoveTempData().getValue()) {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+		if (configuration.getRemoveTempData().getValue()) {
 			FileSystemUtils
 					.deleteRecursively(new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP)));
 		}

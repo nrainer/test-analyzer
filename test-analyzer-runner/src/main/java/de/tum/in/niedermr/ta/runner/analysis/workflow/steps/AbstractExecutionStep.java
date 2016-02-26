@@ -13,28 +13,42 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 public abstract class AbstractExecutionStep implements IExecutionStep, EnvironmentConstants {
 	private static final Logger LOG = LogManager.getLogger(AbstractExecutionStep.class);
 
-	private final ExecutionContext m_context;
-	protected final Configuration m_configuration;
-	protected final ProcessExecution m_processExecution;
+	private boolean m_initialized;
 
-	public AbstractExecutionStep(ExecutionContext information) {
+	private ExecutionContext m_context;
+	private Configuration m_configuration;
+	private ProcessExecution m_processExecution;
+
+	@Override
+	public void initialize(ExecutionContext information) {
 		this.m_context = information;
 		this.m_configuration = information.getConfiguration();
 		this.m_processExecution = new ProcessExecution(information.getWorkingFolder(), information.getProgramPath(),
 				information.getWorkingFolder());
+		execInitialized(information);
+		m_initialized = true;
 	}
 
-	public ExecutionContext getContext() {
-		return m_context;
+	/**
+	 * The initialization was executed, {@link #m_initialized} will be set to true after this method.
+	 * 
+	 * @param information
+	 */
+	protected void execInitialized(ExecutionContext information) {
+		// NOP
 	}
 
 	@Override
 	public final void run() throws FailedExecution {
+		if (!m_initialized) {
+			throw new FailedExecution("UNKNOWN", "Not initialized");
+		}
+
 		try {
 			LOG.info("START: " + getDescription());
 
 			long startTime = System.currentTimeMillis();
-			runInternal();
+			runInternal(m_configuration, m_processExecution);
 			long duration = getDuration(startTime);
 
 			LOG.info("COMPLETED: " + getDescription());
@@ -46,7 +60,8 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		}
 	}
 
-	protected abstract void runInternal() throws Throwable;
+	protected abstract void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws Throwable;
 
 	protected abstract String getDescription();
 

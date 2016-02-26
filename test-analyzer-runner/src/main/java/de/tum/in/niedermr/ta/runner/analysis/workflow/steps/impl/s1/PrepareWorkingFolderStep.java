@@ -5,16 +5,14 @@ import java.io.File;
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class PrepareWorkingFolderStep extends AbstractExecutionStep {
-	public PrepareWorkingFolderStep(ExecutionContext information) {
-		super(information);
-	}
 
 	@Override
-	public void runInternal() throws Exception {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		final File workingAreaTemp = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP));
 		final File workingAreaResult = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_RESULT));
 

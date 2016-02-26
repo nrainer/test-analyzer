@@ -12,7 +12,8 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.MethodModifierRetrievalOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 /** Collect the access modifier of methods. */
@@ -21,30 +22,23 @@ public class MethodModifierRetrievalStep extends AbstractExecutionStep {
 	private static final Logger LOG = LogManager.getLogger(MethodModifierRetrievalStep.class);
 
 	/** The access modifier for each method. */
-	private final Map<MethodIdentifier, String> m_modifierPerMethod;
-
-	/** Constructor. */
-	public MethodModifierRetrievalStep(ExecutionContext information) {
-		super(information);
-
-		m_modifierPerMethod = new HashMap<>();
-	}
+	private final Map<MethodIdentifier, String> m_modifierPerMethod = new HashMap<>();
 
 	/** {@inheritDoc} */
 	@Override
-	protected void runInternal() throws Throwable {
-		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(m_configuration, true);
+	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
+		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 
-		for (String sourceJar : m_configuration.getCodePathToMutate().getElements()) {
-			m_modifierPerMethod.putAll(getCountInstructionsData(testCollector, sourceJar));
+		for (String sourceJar : configuration.getCodePathToMutate().getElements()) {
+			m_modifierPerMethod.putAll(getCountInstructionsData(configuration, testCollector, sourceJar));
 		}
 	}
 
-	private Map<MethodIdentifier, String> getCountInstructionsData(ITestCollector testCollector, String inputJarFile)
-			throws Throwable {
+	private Map<MethodIdentifier, String> getCountInstructionsData(Configuration configuration,
+			ITestCollector testCollector, String inputJarFile) throws Throwable {
 		try {
 			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
-					m_configuration.getOperateFaultTolerant().getValue());
+					configuration.getOperateFaultTolerant().getValue());
 
 			MethodModifierRetrievalOperation operation = new MethodModifierRetrievalOperation(
 					testCollector.getTestClassDetector());
@@ -53,7 +47,7 @@ public class MethodModifierRetrievalStep extends AbstractExecutionStep {
 
 			return operation.getResult();
 		} catch (Throwable t) {
-			if (m_configuration.getOperateFaultTolerant().getValue()) {
+			if (configuration.getOperateFaultTolerant().getValue()) {
 				LOG.error("Skipping whole jar file " + inputJarFile
 						+ " because of an error when operating in fault tolerant mode!", t);
 				return new HashMap<>();

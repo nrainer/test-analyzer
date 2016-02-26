@@ -7,33 +7,28 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 
 public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 	private static final String EXEC_ID_ANALYSIS_COLLECTOR = "ANACOL";
 
-	public AnalysisInformationCollectorStep(ExecutionContext information) {
-		super(information);
-	}
-
 	@Override
-	public void runInternal() throws Exception {
-		final String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
-				+ getSourceInstrumentedJarFilesClasspath() + CP_SEP + m_configuration.getCodePathToTest().getValue()
-				+ CP_SEP + m_configuration.getClasspath().getValue();
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+		final String classPath = configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
+				+ getSourceInstrumentedJarFilesClasspath(configuration) + CP_SEP
+				+ configuration.getCodePathToTest().getValue() + CP_SEP + configuration.getClasspath().getValue();
 
 		List<String> arguments = new LinkedList<>();
-		arguments.add(
-				m_configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
+		arguments.add(configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
 		arguments.add(getFileInWorkingArea(AnalysisConstants.FILE_OUTPUT_ANALYSIS_INFORMATION));
-		arguments.add(m_configuration.getTestRunner().getValue());
-		arguments.add(m_configuration.getOperateFaultTolerant().getValueAsString());
-		arguments.add(ProcessExecution.wrapPattern(m_configuration.getTestClassIncludes().getValue()));
-		arguments.add(ProcessExecution.wrapPattern(m_configuration.getTestClassExcludes().getValue()));
+		arguments.add(configuration.getTestRunner().getValue());
+		arguments.add(configuration.getOperateFaultTolerant().getValueAsString());
+		arguments.add(ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
+		arguments.add(ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
 
-		m_processExecution.execute(getFullExecId(EXEC_ID_ANALYSIS_COLLECTOR), ProcessExecution.NO_TIMEOUT,
+		processExecution.execute(getFullExecId(EXEC_ID_ANALYSIS_COLLECTOR), ProcessExecution.NO_TIMEOUT,
 				getClassNameToRun(), classPath, arguments);
 	}
 
@@ -41,10 +36,10 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 		return AnalysisInformationCollector.class.getName();
 	}
 
-	protected String getSourceInstrumentedJarFilesClasspath() {
+	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {
 		return Environment.getClasspathOfIndexedFiles(
 				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), 0,
-				m_configuration.getCodePathToMutate().countElements());
+				configuration.getCodePathToMutate().countElements());
 	}
 
 	@Override

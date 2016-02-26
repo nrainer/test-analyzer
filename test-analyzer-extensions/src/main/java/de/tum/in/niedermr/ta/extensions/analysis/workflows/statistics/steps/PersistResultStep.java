@@ -8,7 +8,8 @@ import java.util.Map.Entry;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class PersistResultStep extends AbstractExecutionStep {
@@ -20,16 +21,10 @@ public class PersistResultStep extends AbstractExecutionStep {
 	private static final String RESULT_FILE = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics"
 			+ FILE_EXTENSION_SQL_TXT;
 
-	private final List<String> m_result;
-
-	public PersistResultStep(ExecutionContext information) {
-		super(information);
-
-		this.m_result = new LinkedList<>();
-	}
+	private final List<String> m_result = new LinkedList<>();
 
 	@Override
-	protected void runInternal() throws Throwable {
+	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
 		TextFileData.writeToFile(getFileInWorkingArea(RESULT_FILE), m_result);
 	}
 
