@@ -1,15 +1,14 @@
-package de.tum.in.niedermr.ta.runner.analysis.jars.iteration;
+package de.tum.in.niedermr.ta.core.analysis.jars.iteration;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class FaultTolerantJarAnalyzeIterator extends JarAnalyzeIterator {
 	private static final Logger LOG = LogManager.getLogger(FaultTolerantJarAnalyzeIterator.class);
 
-	public FaultTolerantJarAnalyzeIterator(String inputJarPath) {
+	protected FaultTolerantJarAnalyzeIterator(String inputJarPath) {
 		super(inputJarPath);
 	}
 

@@ -17,7 +17,7 @@ import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 public class JarModificationIterator extends AbstractJarIterator<ICodeModificationOperation> {
 	private final JarFileWriter m_jarFileWriter;
 
-	public JarModificationIterator(String inputJarPath, String outputJarPath) {
+	protected JarModificationIterator(String inputJarPath, String outputJarPath) {
 		super(inputJarPath);
 		this.m_jarFileWriter = new JarFileWriter(outputJarPath);
 	}

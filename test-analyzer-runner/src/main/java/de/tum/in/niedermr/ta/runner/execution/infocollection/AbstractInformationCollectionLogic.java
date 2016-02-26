@@ -7,12 +7,12 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
-import de.tum.in.niedermr.ta.runner.analysis.jars.iteration.FaultTolerantJarAnalyzeIterator;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
@@ -88,14 +88,7 @@ public abstract class AbstractInformationCollectionLogic {
 				testClassIncludes, testClassExcludes);
 
 		for (String inputJar : jarsWithTests) {
-			JarAnalyzeIterator jarWork;
-
-			if (operateFaultTolerant) {
-				jarWork = new FaultTolerantJarAnalyzeIterator(inputJar);
-			} else {
-				jarWork = new JarAnalyzeIterator(inputJar);
-			}
-
+			JarAnalyzeIterator jarWork = IteratorFactory.createJarAnalyzeIterator(inputJar, operateFaultTolerant);
 			jarWork.execute(collectOperation);
 		}
 

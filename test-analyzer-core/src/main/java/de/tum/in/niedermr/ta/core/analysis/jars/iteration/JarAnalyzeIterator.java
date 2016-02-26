@@ -8,7 +8,7 @@ import org.objectweb.asm.ClassReader;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeAnalyzeOperation;
 
 public class JarAnalyzeIterator extends AbstractJarIterator<ICodeAnalyzeOperation> {
-	public JarAnalyzeIterator(String inputJarPath) {
+	protected JarAnalyzeIterator(String inputJarPath) {
 		super(inputJarPath);
 	}
 

@@ -7,13 +7,13 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.InstructionCounterOperation;
-import de.tum.in.niedermr.ta.runner.analysis.jars.iteration.FaultTolerantJarAnalyzeIterator;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
@@ -52,13 +52,8 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 	private Map<MethodIdentifier, Integer> getCountInstructionsData(Mode mode, ITestClassDetector testClassDetector,
 			String inputJarFile) throws Throwable {
 		try {
-			JarAnalyzeIterator iterator;
-
-			if (m_configuration.getOperateFaultTolerant().getValue()) {
-				iterator = new FaultTolerantJarAnalyzeIterator(inputJarFile);
-			} else {
-				iterator = new JarAnalyzeIterator(inputJarFile);
-			}
+			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
+					m_configuration.getOperateFaultTolerant().getValue());
 
 			if (mode == Mode.TESTCASE) {
 				ITestCollector testCollector = new TestCollector(testClassDetector);
