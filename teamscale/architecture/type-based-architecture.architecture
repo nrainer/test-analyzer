@@ -37,6 +37,9 @@
   <component name="runner.start" dim="160,40" pos="951,401">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.start.*" />
   </component>
+  <component name="runner.test" dim="120,40" pos="181,281">
+    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.test.*" />
+  </component>
   <component name="test.integration" dim="170,40" pos="951,541">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.test.integration.*" />
   </component>
@@ -45,10 +48,12 @@
   </component>
   <allow source="extensions.analysis" target="core.analysis" />
   <allow source="extensions.analysis" target="runner.analysis" />
+  <allow source="extensions.analysis" target="runner.configuration" />
   <allow source="extensions.analysis" target="runner.execution" />
   <tolerate source="extensions.analysis" target="runner.start">
     <dependency source="de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
   </tolerate>
+  <allow source="extensions.analysis" target="runner.test" />
   <allow source="runner.analysis" target="core.analysis" />
   <allow source="runner.analysis" target="runner.configuration" />
   <allow source="runner.analysis" target="runner.execution" />
@@ -65,6 +70,7 @@
   <allow source="runner.execution" target="core.analysis" />
   <allow source="runner.execution" target="runner.analysis" />
   <allow source="runner.execution" target="runner.configuration" />
+  <allow source="runner.execution" target="runner.test" />
   <allow source="runner.start" target="runner.analysis" />
   <allow source="runner.start" target="runner.configuration" />
   <tolerate source="runner.start" target="runner.constants">
@@ -72,6 +78,7 @@
     <dependency source="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerBatchStart" target="de.tum.in.niedermr.ta.runner.constants.TestAnalyzerConstants" />
   </tolerate>
   <allow source="runner.start" target="runner.execution" />
+  <allow source="runner.test" target="runner.configuration" />
   <allow source="test.integration" target="runner.configuration" />
   <allow source="test.integration" target="runner.execution" />
   <allow source="test.integration" target="runner.start" />
