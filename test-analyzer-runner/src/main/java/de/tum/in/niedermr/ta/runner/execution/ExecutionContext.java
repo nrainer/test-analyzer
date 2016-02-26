@@ -2,13 +2,13 @@ package de.tum.in.niedermr.ta.runner.execution;
 
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 
-public class ExecutionInformation {
+public class ExecutionContext {
 	private final String m_executionId;
 	private final Configuration m_configuration;
 	private final String m_programPath;
 	private final String m_workingFolder;
 
-	public ExecutionInformation(String executionId, Configuration configuration, String programPath,
+	public ExecutionContext(String executionId, Configuration configuration, String programPath,
 			String workingFolder) {
 		this.m_executionId = executionId;
 		this.m_configuration = configuration;

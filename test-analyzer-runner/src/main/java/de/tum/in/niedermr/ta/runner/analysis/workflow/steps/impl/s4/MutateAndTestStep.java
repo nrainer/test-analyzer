@@ -18,7 +18,7 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
@@ -35,7 +35,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	protected boolean m_aborted;
 	protected IReturnValueGenerator[] m_returnValueGenerators;
 
-	public MutateAndTestStep(ExecutionInformation information) {
+	public MutateAndTestStep(ExecutionContext information) {
 		super(information);
 	}
 

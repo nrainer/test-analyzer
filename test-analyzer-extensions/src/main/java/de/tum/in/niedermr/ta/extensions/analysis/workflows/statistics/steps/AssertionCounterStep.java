@@ -16,7 +16,7 @@ import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class AssertionCounterStep extends AbstractExecutionStep {
@@ -34,7 +34,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 	private final Map<Class<?>, Set<String>> m_allTestcases;
 	private final AssertionInformation m_assertionInformation;
 
-	public AssertionCounterStep(ExecutionInformation information) {
+	public AssertionCounterStep(ExecutionContext information) {
 		super(information);
 
 		this.m_assertionsPerTestcase = new HashMap<>();

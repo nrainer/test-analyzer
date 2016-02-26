@@ -4,7 +4,7 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.instrumentation.AnalysisInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 
 /**
  * Note that it is ok to log invocations from framing methods (@Before) too because they also invoke the mutated
@@ -13,7 +13,7 @@ import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
 public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 	private static final String EXEC_ID_ANALYSIS_INSTRUMENTATION = "ANAINS";
 
-	public AnalysisInstrumentationStep(ExecutionInformation information) {
+	public AnalysisInstrumentationStep(ExecutionContext information) {
 		super(information);
 	}
 

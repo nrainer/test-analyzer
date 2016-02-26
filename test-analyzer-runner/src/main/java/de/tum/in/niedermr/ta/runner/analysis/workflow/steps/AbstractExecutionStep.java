@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
@@ -13,19 +13,19 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
 public abstract class AbstractExecutionStep implements IExecutionStep, EnvironmentConstants {
 	private static final Logger LOG = LogManager.getLogger(AbstractExecutionStep.class);
 
-	private final ExecutionInformation m_information;
+	private final ExecutionContext m_context;
 	protected final Configuration m_configuration;
 	protected final ProcessExecution m_processExecution;
 
-	public AbstractExecutionStep(ExecutionInformation information) {
-		this.m_information = information;
+	public AbstractExecutionStep(ExecutionContext information) {
+		this.m_context = information;
 		this.m_configuration = information.getConfiguration();
 		this.m_processExecution = new ProcessExecution(information.getWorkingFolder(), information.getProgramPath(),
 				information.getWorkingFolder());
 	}
 
-	public ExecutionInformation getInformation() {
-		return m_information;
+	public ExecutionContext getContext() {
+		return m_context;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		} catch (FailedExecution ex) {
 			throw ex;
 		} catch (Throwable t) {
-			throw new FailedExecution(m_information.getExecutionId(), t);
+			throw new FailedExecution(m_context.getExecutionId(), t);
 		}
 	}
 
@@ -51,7 +51,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	protected abstract String getDescription();
 
 	protected final String getFullExecId(String processId) {
-		return m_information.getExecutionId() + "_" + processId;
+		return m_context.getExecutionId() + "_" + processId;
 	}
 
 	protected final String getWithIndex(String fileName, int index) {
@@ -59,7 +59,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	}
 
 	protected final String getFileInWorkingArea(String fileName) {
-		return Environment.replaceWorkingFolder(fileName, m_information.getWorkingFolder());
+		return Environment.replaceWorkingFolder(fileName, m_context.getWorkingFolder());
 	}
 
 	private long getDuration(long startTime) {

@@ -18,10 +18,10 @@ public class StackDistanceAnalysisWorkflow extends AbstractWorkflow {
 
 	@Override
 	public void start() throws FailedExecution {
-		m_prepareStep = new PrepareWorkingFolderStep(m_information);
-		m_analysisInstrumentationStep = new AnalysisInstrumentationStep(m_information);
-		m_analysisInformationCollectorStep = new AnalysisInformationCollectorStep(m_information);
-		m_cleanupStep = new CleanupStep(m_information);
+		m_prepareStep = new PrepareWorkingFolderStep(m_context);
+		m_analysisInstrumentationStep = new AnalysisInstrumentationStep(m_context);
+		m_analysisInformationCollectorStep = new AnalysisInformationCollectorStep(m_context);
+		m_cleanupStep = new CleanupStep(m_context);
 
 		m_prepareStep.run();
 		m_analysisInstrumentationStep.run();

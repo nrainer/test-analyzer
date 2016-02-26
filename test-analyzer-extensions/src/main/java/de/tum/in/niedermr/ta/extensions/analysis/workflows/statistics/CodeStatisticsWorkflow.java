@@ -18,23 +18,23 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 
 	@Override
 	public void start() throws FailedExecution {
-		PersistResultStep persistResultStep = new PersistResultStep(super.m_information);
+		PersistResultStep persistResultStep = new PersistResultStep(super.m_context);
 
-		if (m_information.getConfiguration().getConfigurationExtension().getBooleanValue(COUNT_INSTRUCTIONS)) {
-			InstructionCounterStep countInstructionsStep = new InstructionCounterStep(super.m_information);
+		if (m_context.getConfiguration().getConfigurationExtension().getBooleanValue(COUNT_INSTRUCTIONS)) {
+			InstructionCounterStep countInstructionsStep = new InstructionCounterStep(super.m_context);
 			countInstructionsStep.run();
 			persistResultStep.addResultInstructionsPerMethod(countInstructionsStep.getInstructionsPerMethod());
 			persistResultStep.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
 		}
 
-		if (m_information.getConfiguration().getConfigurationExtension().getBooleanValue(COUNT_ASSERTIONS)) {
-			AssertionCounterStep countAssertionsStep = new AssertionCounterStep(super.m_information);
+		if (m_context.getConfiguration().getConfigurationExtension().getBooleanValue(COUNT_ASSERTIONS)) {
+			AssertionCounterStep countAssertionsStep = new AssertionCounterStep(super.m_context);
 			countAssertionsStep.run();
 			persistResultStep.addResultAssertionsPerTestcase(countAssertionsStep.getAssertionsPerTestcase());
 		}
 
-		if (m_information.getConfiguration().getConfigurationExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
-			MethodModifierRetrievalStep modifierRetrievalStep = new MethodModifierRetrievalStep(super.m_information);
+		if (m_context.getConfiguration().getConfigurationExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
+			MethodModifierRetrievalStep modifierRetrievalStep = new MethodModifierRetrievalStep(super.m_context);
 			modifierRetrievalStep.run();
 			persistResultStep.addResultModifierPerMethod(modifierRetrievalStep.getModifierPerMethod());
 		}

@@ -10,7 +10,7 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.InformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
@@ -20,7 +20,7 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 
 	private final ConcurrentLinkedQueue<TestInformation> m_methodsToMutateAndTestsToRun;
 
-	public InformationCollectorStep(ExecutionInformation information) {
+	public InformationCollectorStep(ExecutionContext information) {
 		super(information);
 		this.m_methodsToMutateAndTestsToRun = new ConcurrentLinkedQueue<>();
 	}

@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class PersistResultStep extends AbstractExecutionStep {
@@ -22,7 +22,7 @@ public class PersistResultStep extends AbstractExecutionStep {
 
 	private final List<String> m_result;
 
-	public PersistResultStep(ExecutionInformation information) {
+	public PersistResultStep(ExecutionContext information) {
 		super(information);
 
 		this.m_result = new LinkedList<>();

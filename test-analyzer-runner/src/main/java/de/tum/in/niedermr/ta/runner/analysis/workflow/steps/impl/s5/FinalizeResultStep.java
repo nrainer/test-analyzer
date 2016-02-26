@@ -6,14 +6,14 @@ import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class FinalizeResultStep extends AbstractExecutionStep {
 	private final boolean m_removeTempFilesAfterwards;
 
-	public FinalizeResultStep(ExecutionInformation information) {
+	public FinalizeResultStep(ExecutionContext information) {
 		super(information);
 
 		this.m_removeTempFilesAfterwards = information.getConfiguration().getRemoveTempData().getValue();

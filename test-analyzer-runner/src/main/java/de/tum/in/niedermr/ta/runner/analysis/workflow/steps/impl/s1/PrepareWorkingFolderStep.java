@@ -5,11 +5,11 @@ import java.io.File;
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class PrepareWorkingFolderStep extends AbstractExecutionStep {
-	public PrepareWorkingFolderStep(ExecutionInformation information) {
+	public PrepareWorkingFolderStep(ExecutionContext information) {
 		super(information);
 	}
 

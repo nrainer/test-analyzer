@@ -45,7 +45,7 @@ public class TestWorkflow extends AbstractWorkflow {
 
 		ConcurrentLinkedQueue<TestInformation> testInformation;
 
-		if (m_information.getConfiguration().getExecuteCollectInformation().isTrue()) {
+		if (m_context.getConfiguration().getExecuteCollectInformation().isTrue()) {
 			testInformation = collectInformation();
 		} else {
 			LOG.info("Skipping steps to collect information");
@@ -53,7 +53,7 @@ public class TestWorkflow extends AbstractWorkflow {
 			testInformation = loadExistingTestInformation();
 		}
 
-		if (m_information.getConfiguration().getExecuteMutateAndTest().isTrue()) {
+		if (m_context.getConfiguration().getExecuteMutateAndTest().isTrue()) {
 			executeMutateAndTest(testInformation);
 		} else {
 			LOG.info("Skipping the steps to mutate and test methods");
@@ -63,17 +63,17 @@ public class TestWorkflow extends AbstractWorkflow {
 	}
 
 	protected void checkIsInitialized() throws FailedExecution {
-		if (this.m_information == null) {
+		if (this.m_context == null) {
 			throw new IllegalStateException("Not initialized.");
 		}
 	}
 
 	protected void setUpExecutionSteps() throws FailedExecution {
-		m_prepareWorkingFolderStep = new PrepareWorkingFolderStep(m_information);
-		m_instrumentationStep = new InstrumentationStep(m_information);
-		m_informationCollectorStep = new InformationCollectorStep(m_information);
-		m_mutateAndTestStep = new MutateAndTestStep(m_information);
-		m_finalizeResultStep = new FinalizeResultStep(m_information);
+		m_prepareWorkingFolderStep = new PrepareWorkingFolderStep(m_context);
+		m_instrumentationStep = new InstrumentationStep(m_context);
+		m_informationCollectorStep = new InformationCollectorStep(m_context);
+		m_mutateAndTestStep = new MutateAndTestStep(m_context);
+		m_finalizeResultStep = new FinalizeResultStep(m_context);
 	}
 
 	protected void beforeExecution() throws FailedExecution {
@@ -93,12 +93,12 @@ public class TestWorkflow extends AbstractWorkflow {
 
 	protected ConcurrentLinkedQueue<TestInformation> loadExistingTestInformation() throws FailedExecution {
 		String fileCollectedInformation = Environment.replaceWorkingFolder(
-				EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, m_information.getWorkingFolder());
+				EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, m_context.getWorkingFolder());
 
 		if (!new File(fileCollectedInformation).exists()) {
-			throw new FailedExecution(this.m_information.getExecutionId(),
+			throw new FailedExecution(this.m_context.getExecutionId(),
 					fileCollectedInformation + " must exist in the working directory if '"
-							+ m_information.getConfiguration().getExecuteCollectInformation().getName()
+							+ m_context.getConfiguration().getExecuteCollectInformation().getName()
 							+ "' is set to 'false'.");
 		}
 
@@ -110,7 +110,7 @@ public class TestWorkflow extends AbstractWorkflow {
 
 		try {
 			List<String> data = TextFileData.readFromFile(Environment.replaceWorkingFolder(
-					EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, m_information.getWorkingFolder()));
+					EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, m_context.getWorkingFolder()));
 			testInformation.addAll(CollectedInformation.parseInformationCollectorData(data));
 		} catch (IOException ex) {
 			LOG.fatal("When loading existing collected-information", ex);

@@ -7,14 +7,14 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 
 public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 	private static final String EXEC_ID_ANALYSIS_COLLECTOR = "ANACOL";
 
-	public AnalysisInformationCollectorStep(ExecutionInformation information) {
+	public AnalysisInformationCollectorStep(ExecutionContext information) {
 		super(information);
 	}
 

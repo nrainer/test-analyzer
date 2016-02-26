@@ -12,7 +12,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.MethodModifierRetrievalOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 /** Collect the access modifier of methods. */
@@ -24,7 +24,7 @@ public class MethodModifierRetrievalStep extends AbstractExecutionStep {
 	private final Map<MethodIdentifier, String> m_modifierPerMethod;
 
 	/** Constructor. */
-	public MethodModifierRetrievalStep(ExecutionInformation information) {
+	public MethodModifierRetrievalStep(ExecutionContext information) {
 		super(information);
 
 		m_modifierPerMethod = new HashMap<>();
