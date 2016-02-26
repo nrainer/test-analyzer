@@ -1,19 +1,27 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
   <version class="com.teamscale.index.configuration.service.EProjectConfigurationVersion">PROJECT_CONFIGURATION_VERSION_3</version>
   <payload class="org.conqat.engine.index.configuration.instance.ProjectConfiguration">
-    <name>TestAnalyzer</name>
-    <id>testanalyzer</id>
-    <profile>Java adjusted</profile>
+    <name>test-analyzer</name>
+    <id>test-analyzer</id>
+    <profile>Java (naming convention test-analyzer)</profile>
     <connectors>
       <org.conqat.engine.index.configuration.instance.ConnectorConfiguration>
         <options class="linked-hash-map">
           <entry>
-            <string>URL</string>
-            <string>file://D:\TestAnalyzer\repo</string>
+            <string>Branch Name</string>
+            <string>master</string>
+          </entry>
+          <entry>
+            <string>Account</string>
+            <string>test-analyzer-git</string>
+          </entry>
+          <entry>
+            <string>Path suffix</string>
+            <string></string>
           </entry>
           <entry>
             <string>Repository identifier</string>
-            <string>repository1</string>
+            <string>test-analyzer-git</string>
           </entry>
           <entry>
             <string>Included file names</string>
@@ -72,7 +80,7 @@
             <string></string>
           </entry>
         </options>
-        <type>Git</type>
+        <type>Git Remote</type>
       </org.conqat.engine.index.configuration.instance.ConnectorConfiguration>
     </connectors>
   </payload>

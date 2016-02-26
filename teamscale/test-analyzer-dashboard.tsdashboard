@@ -1,8 +1,8 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
   <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_8</version>
   <payload class="com.teamscale.index.dashboard.DashboardDescriptor">
-    <name>Testanalyzer</name>
-    <owner>admin</owner>
+    <name>Test Analyzer Overview</name>
+    <owner>niedermayr</owner>
     <descriptorJSON><![CDATA[{
   "widgets": [
     {
@@ -15,7 +15,7 @@
       },
       "Title": "LOC vs. Findings Trend",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -52,7 +52,7 @@
       },
       "Title": "Clone Coverage",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -78,7 +78,7 @@
       },
       "Title": "LOC",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -104,7 +104,7 @@
       },
       "Title": "Findings Count",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -131,7 +131,7 @@
       },
       "Title": "Findings Summary",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -154,7 +154,7 @@
       },
       "Title": "Clone Coverage Treemap",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": ""
       },
       "Area Metric": "Lines of Code",
@@ -174,7 +174,7 @@
       },
       "Title": "Method Length",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": ""
       },
       "Metric": "Method Length Assessment",
@@ -190,7 +190,7 @@
       },
       "Title": "SLOC",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -216,7 +216,7 @@
       },
       "Title": "SLOC without test",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "-architectures-/simple-app-and-test.architecture/application/-src-",
         "hiddenInWidgetTitle": false
       },
@@ -242,7 +242,7 @@
       },
       "Title": "Nesting Depth",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": ""
       },
       "Metric": "Nesting Depth Assessment",
@@ -258,7 +258,7 @@
       },
       "Title": "File Size",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -280,7 +280,7 @@
       },
       "Title": "Method Length",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -307,7 +307,7 @@
       },
       "Title": "Nesting Depth",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -334,7 +334,7 @@
       },
       "Title": "Findings",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -361,7 +361,7 @@
       },
       "Title": "Findings Density",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -387,7 +387,7 @@
       },
       "Title": "Metrics Table",
       "Path": {
-        "project": "testanalyzer",
+        "project": "test-analyzer",
         "path": "",
         "hiddenInWidgetTitle": false
       },
@@ -399,11 +399,25 @@
         "value": "30",
         "type": "timespan"
       },
-      "Metric Threshold Configuration": "TestAnalyzer"
+      "Metric Threshold Configuration": "Test Analyzer"
     }
   ]
 }]]></descriptorJSON>
-    <author>admin</author>
+    <author>niedermayr</author>
     <comment>Created from template &apos;admin/Overview Dashboard&apos;</comment>
+    <groupAccessEntries>
+      <com.teamscale.index.dashboard.DashboardAccessEntry>
+        <userOrGroup>Administrators</userOrGroup>
+        <accessRight>READ</accessRight>
+      </com.teamscale.index.dashboard.DashboardAccessEntry>
+      <com.teamscale.index.dashboard.DashboardAccessEntry>
+        <userOrGroup>Project Admins</userOrGroup>
+        <accessRight>READ</accessRight>
+      </com.teamscale.index.dashboard.DashboardAccessEntry>
+      <com.teamscale.index.dashboard.DashboardAccessEntry>
+        <userOrGroup>demousers</userOrGroup>
+        <accessRight>READ</accessRight>
+      </com.teamscale.index.dashboard.DashboardAccessEntry>
+    </groupAccessEntries>
   </payload>
 </com.teamscale.core.migration.TeamscaleVersionContainer>

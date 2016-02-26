@@ -7,7 +7,7 @@
         <string>linked-hash-map</string>
       </entry>
     </options>
-    <name>TestAnalyzer</name>
+    <name>Test Analyzer</name>
     <metricThresholdGroupList>
       <org.conqat.engine.index.configuration.instance.MetricThresholdGroup>
         <name>General</name>
@@ -16,19 +16,25 @@
             <name>Findings Density</name>
             <thresholdYellow>5.0</thresholdYellow>
             <thresholdRed>10.0</thresholdRed>
-            <timeDependent>true</timeDependent>
+            <timeDependent>false</timeDependent>
           </org.conqat.engine.index.configuration.instance.MetricThreshold>
           <org.conqat.engine.index.configuration.instance.MetricThreshold>
             <name>Clone Coverage</name>
-            <thresholdYellow>0.5</thresholdYellow>
-            <thresholdRed>0.1</thresholdRed>
+            <thresholdYellow>0.15</thresholdYellow>
+            <thresholdRed>0.05</thresholdRed>
             <timeDependent>false</timeDependent>
           </org.conqat.engine.index.configuration.instance.MetricThreshold>
           <org.conqat.engine.index.configuration.instance.MetricThreshold>
-            <name>Maximum Nesting Depth</name>
-            <thresholdYellow>3.0</thresholdYellow>
-            <thresholdRed>4.0</thresholdRed>
+            <name>Method Length Assessment</name>
+            <thresholdYellow>0.15</thresholdYellow>
+            <thresholdRed>0.05</thresholdRed>
             <timeDependent>false</timeDependent>
+          </org.conqat.engine.index.configuration.instance.MetricThreshold>
+          <org.conqat.engine.index.configuration.instance.MetricThreshold>
+            <name>Comment Completeness Assessment</name>
+            <thresholdYellow>0.5</thresholdYellow>
+            <thresholdRed>0.2</thresholdRed>
+            <timeDependent>true</timeDependent>
           </org.conqat.engine.index.configuration.instance.MetricThreshold>
         </metricThresholdList>
       </org.conqat.engine.index.configuration.instance.MetricThresholdGroup>
