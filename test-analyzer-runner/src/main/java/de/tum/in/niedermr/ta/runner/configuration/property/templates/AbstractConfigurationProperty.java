@@ -68,11 +68,6 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 		return "[" + toString(getName(), getValue()) + "]";
 	}
 
-	@Override
-	public boolean isDeprecated() {
-		return false;
-	}
-
 	public static String toString(String name, Object value) {
 		return name + " = " + value;
 	}
