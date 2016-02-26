@@ -47,16 +47,13 @@ public class InstructionCounterOperation extends AbstractCodeAnalyzeOperation {
 					continue;
 				}
 
-				m_result.put(MethodIdentifier.create(cn.name, methodNode), BytecodeUtility.countMethodInstructions(methodNode));
+				m_result.put(MethodIdentifier.create(cn.name, methodNode),
+						BytecodeUtility.countMethodInstructions(methodNode));
 			}
 		}
 	}
 
 	public Map<MethodIdentifier, Integer> getResult() {
 		return m_result;
-	}
-
-	public void reset() {
-		m_result.clear();
 	}
 }
