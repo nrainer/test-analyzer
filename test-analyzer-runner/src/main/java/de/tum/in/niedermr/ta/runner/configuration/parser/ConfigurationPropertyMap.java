@@ -6,10 +6,10 @@ import java.util.Map;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
-class ConfigurationPropertyManager {
+class ConfigurationPropertyMap {
 	private Map<String, IConfigurationProperty<?>> m_allProperties;
 
-	public ConfigurationPropertyManager(AbstractConfiguration configuration) {
+	public ConfigurationPropertyMap(AbstractConfiguration configuration) {
 		initPropertiesAsMap(configuration);
 	}
 

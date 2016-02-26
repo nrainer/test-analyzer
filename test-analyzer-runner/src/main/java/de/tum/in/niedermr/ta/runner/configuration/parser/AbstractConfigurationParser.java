@@ -22,11 +22,11 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 abstract class AbstractConfigurationParser {
 	private static final Logger LOG = LogManager.getLogger(AbstractConfigurationParser.class);
 
-	private ConfigurationPropertyManager m_propertyManager;
+	private ConfigurationPropertyMap m_propertyMap;
 	private Set<IConfigurationProperty<?>> m_processedPropertiesInCurrentFile;
 
 	protected AbstractConfigurationParser(AbstractConfiguration result) {
-		this.m_propertyManager = new ConfigurationPropertyManager(result);
+		this.m_propertyMap = new ConfigurationPropertyMap(result);
 		this.m_processedPropertiesInCurrentFile = new HashSet<>();
 	}
 
@@ -128,7 +128,7 @@ abstract class AbstractConfigurationParser {
 	}
 
 	protected IConfigurationProperty<?> getPropertyByKey(String key) {
-		return m_propertyManager.getPropertyByKey(key);
+		return m_propertyMap.getPropertyByKey(key);
 	}
 
 	/**
