@@ -11,8 +11,6 @@ import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
-import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollector;
-import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.InstructionCounterOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
@@ -36,32 +34,32 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 
 	@Override
 	protected void runInternal() throws Throwable {
-		ITestClassDetector testClassDetector = TestRunnerUtil.getTestClassDetector(m_configuration, true);
+		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(m_configuration, true);
 
 		for (String sourceJar : m_configuration.getCodePathToMutate().getElements()) {
-			this.m_instructionsPerMethod.putAll(getCountInstructionsData(Mode.METHOD, testClassDetector, sourceJar));
+			this.m_instructionsPerMethod.putAll(getCountInstructionsData(Mode.METHOD, testCollector, sourceJar));
 		}
 
 		for (String testJar : m_configuration.getCodePathToTest().getElements()) {
-			this.m_instructionsPerTestcase.putAll(getCountInstructionsData(Mode.TESTCASE, testClassDetector, testJar));
+			this.m_instructionsPerTestcase.putAll(getCountInstructionsData(Mode.TESTCASE, testCollector, testJar));
 		}
 
 		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_instructionsPerTestcase);
 	}
 
-	private Map<MethodIdentifier, Integer> getCountInstructionsData(Mode mode, ITestClassDetector testClassDetector,
+	private Map<MethodIdentifier, Integer> getCountInstructionsData(Mode mode, ITestCollector testCollector,
 			String inputJarFile) throws Throwable {
 		try {
 			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
 					m_configuration.getOperateFaultTolerant().getValue());
 
 			if (mode == Mode.TESTCASE) {
-				ITestCollector testCollector = new TestCollector(testClassDetector);
 				iterator.execute(testCollector);
 				this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
 			}
 
-			InstructionCounterOperation operation = new InstructionCounterOperation(testClassDetector, mode);
+			InstructionCounterOperation operation = new InstructionCounterOperation(
+					testCollector.getTestClassDetector(), mode);
 
 			iterator.execute(operation);
 

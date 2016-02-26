@@ -56,7 +56,8 @@ public class TestCollector implements ITestCollector {
 
 		testcases.addAll(collectTestcasesInThisClass(cn, testClassType));
 
-		if ((collectTestcasesInNonAbstractSuperClasses() || collectTestcasesInAbstractSuperClasses()) && JavaUtility.hasSuperClassOtherThanObject(cn)) {
+		if ((collectTestcasesInNonAbstractSuperClasses() || collectTestcasesInAbstractSuperClasses())
+				&& JavaUtility.hasSuperClassOtherThanObject(cn)) {
 			testcases.addAll(collectTestcasesInSuperClasses(cn.superName, testClassType));
 		}
 
@@ -87,7 +88,8 @@ public class TestCollector implements ITestCollector {
 
 			boolean isAbstract = BytecodeUtility.isAbstractClass(cnSuper);
 
-			if ((isAbstract && collectTestcasesInAbstractSuperClasses()) || (!isAbstract && collectTestcasesInNonAbstractSuperClasses())) {
+			if ((isAbstract && collectTestcasesInAbstractSuperClasses())
+					|| (!isAbstract && collectTestcasesInNonAbstractSuperClasses())) {
 				testcases.addAll(collectTestcasesInThisClass(cnSuper, testClassType));
 			}
 
@@ -109,5 +111,10 @@ public class TestCollector implements ITestCollector {
 	@Override
 	public Map<Class<?>, Set<String>> getTestClassesWithTestcases() {
 		return m_result;
+	}
+
+	@Override
+	public ITestClassDetector getTestClassDetector() {
+		return m_testClassDetector;
 	}
 }
