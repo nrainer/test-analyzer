@@ -12,9 +12,14 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoaderTest;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
 
 public class ConfigurationParserTest {
+
+	private static final ConfigurationExtensionKey EXTENSION_PROPERTY_1 = ConfigurationExtensionKey
+			.create("data.compress");
+
 	@After
 	public void after() {
 		ConfigurationLoader.setFastFail(false);
@@ -28,6 +33,7 @@ public class ConfigurationParserTest {
 		expected.getExecuteCollectInformation().setValue(true);
 		expected.getExecuteMutateAndTest().setValue(false);
 		expected.getWorkingFolder().setValue("E:/");
+		expected.getConfigurationExtension().setRawValue(EXTENSION_PROPERTY_1, Boolean.TRUE.toString());
 
 		Configuration result = new Configuration();
 

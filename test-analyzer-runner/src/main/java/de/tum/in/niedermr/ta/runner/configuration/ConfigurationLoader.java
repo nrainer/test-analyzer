@@ -197,6 +197,8 @@ public class ConfigurationLoader implements FileSystemConstants {
 			result.add(property.getName() + KEY_VALUE_SEPARATOR_SET + property.getValueAsString());
 		}
 
+		result.addAll(configuration.getConfigurationExtension().toStringLines());
+
 		return result;
 	}
 
