@@ -15,8 +15,10 @@ public class PersistResultStep extends AbstractExecutionStep {
 	private static final String DB_INSERT_INSTRUCTIONS_PER_METHOD = "INSERT INTO Method_Instructions (method, countInstructions) VALUES ('%s', '%s');";
 	private static final String DB_INSERT_INSTRUCTIONS_PER_TESTCASE = "INSERT INTO Testcase_Instructions (testcase, countInstructions) VALUES ('%s', '%s');";
 	private static final String DB_INSERT_ASSERTIONS_PER_TESTCASE = "INSERT INTO Testcase_Assertions (testcase, countAssertions) VALUES ('%s', '%s');";
+	private static final String DB_INSERT_MODIFIER_PER_METHOD = "INSERT INTO Method_Modifiers (method, modifier) VALUES ('%s', '%s');";
 
-	private static final String RESULT_FILE = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics" + FILE_EXTENSION_SQL_TXT;
+	private static final String RESULT_FILE = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics"
+			+ FILE_EXTENSION_SQL_TXT;
 
 	private final List<String> m_result;
 
@@ -43,15 +45,19 @@ public class PersistResultStep extends AbstractExecutionStep {
 		addResultInternal(DB_INSERT_ASSERTIONS_PER_TESTCASE, codeInformation);
 	}
 
-	private void addResultInternal(String genericSqlStatement, Map<MethodIdentifier, Integer> codeInformation) {
+	public void addResultModifierPerMethod(Map<MethodIdentifier, String> codeInformation) {
+		addResultInternal(DB_INSERT_MODIFIER_PER_METHOD, codeInformation);
+	}
+
+	private void addResultInternal(String genericSqlStatement, Map<MethodIdentifier, ?> codeInformation) {
 		List<String> convertedData = convertToSqlStatements(genericSqlStatement, codeInformation);
 		this.m_result.addAll(convertedData);
 	}
 
-	private List<String> convertToSqlStatements(String genericSqlStatement, Map<MethodIdentifier, Integer> codeInformation) {
+	private List<String> convertToSqlStatements(String genericSqlStatement, Map<MethodIdentifier, ?> codeInformation) {
 		List<String> sqlStatements = new LinkedList<>();
 
-		for (Entry<MethodIdentifier, Integer> methodData : codeInformation.entrySet()) {
+		for (Entry<MethodIdentifier, ?> methodData : codeInformation.entrySet()) {
 			sqlStatements.add(String.format(genericSqlStatement, methodData.getKey().get(), methodData.getValue()));
 		}
 

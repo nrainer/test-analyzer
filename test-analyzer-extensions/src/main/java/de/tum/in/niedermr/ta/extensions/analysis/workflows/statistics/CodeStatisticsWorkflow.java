@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.AssertionCounterStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.InstructionCounterStep;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.MethodModifierRetrievalStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.PersistResultStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
@@ -12,6 +13,8 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 			.create("code.statistics.method.instructions");
 	public static final ConfigurationExtensionKey COUNT_ASSERTIONS = ConfigurationExtensionKey
 			.create("code.statistics.method.assertions");
+	public static final ConfigurationExtensionKey COLLECT_ACCESS_MODIFIER = ConfigurationExtensionKey
+			.create("code.statistics.method.modifier");
 
 	@Override
 	public void start() throws FailedExecution {
@@ -28,6 +31,12 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 			AssertionCounterStep countAssertionsStep = new AssertionCounterStep(super.m_information);
 			countAssertionsStep.run();
 			persistResultStep.addResultAssertionsPerTestcase(countAssertionsStep.getAssertionsPerTestcase());
+		}
+
+		if (m_information.getConfiguration().getConfigurationExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
+			MethodModifierRetrievalStep modifierRetrievalStep = new MethodModifierRetrievalStep(super.m_information);
+			modifierRetrievalStep.run();
+			persistResultStep.addResultModifierPerMethod(modifierRetrievalStep.getModifierPerMethod());
 		}
 
 		persistResultStep.run();
