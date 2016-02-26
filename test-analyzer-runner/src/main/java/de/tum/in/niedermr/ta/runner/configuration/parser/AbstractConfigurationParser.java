@@ -16,17 +16,20 @@ import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 abstract class AbstractConfigurationParser {
 	private static final Logger LOG = LogManager.getLogger(AbstractConfigurationParser.class);
 
+	private AbstractConfiguration m_configuration;
 	private ConfigurationPropertyMap m_propertyMap;
 	private Set<IConfigurationProperty<?>> m_processedPropertiesInCurrentFile;
 
-	protected AbstractConfigurationParser(AbstractConfiguration result) {
-		this.m_propertyMap = new ConfigurationPropertyMap(result);
+	protected AbstractConfigurationParser(AbstractConfiguration configuration) {
+		m_configuration = configuration;
+		this.m_propertyMap = new ConfigurationPropertyMap(configuration);
 		this.m_processedPropertiesInCurrentFile = new HashSet<>();
 	}
 
@@ -91,13 +94,24 @@ abstract class AbstractConfigurationParser {
 	}
 
 	private void parseLine(String line) throws ConfigurationException {
-		final AbstractConfigurationParser.LineType lineType = getLineType(line);
-		final String[] lineParts = line.split(Pattern.quote(lineType.m_separator));
+		AbstractConfigurationParser.LineType lineType = getLineType(line);
+		String[] lineParts = line.split(Pattern.quote(lineType.m_separator));
 
-		final String key = getKeyOfLine(lineParts);
+		String key = getKeyOfLine(lineParts);
+		String rawValue = getValueOfLine(lineParts);
+
+		if (isExtensionProperty(key)) {
+			handleExtensionProperty(lineType, key, rawValue);
+		} else {
+			handleBuiltInProperty(line, lineType, key, rawValue);
+		}
+	}
+
+	private void handleBuiltInProperty(String key, LineType lineType, String line, String rawValue)
+			throws ConfigurationException {
 		final IConfigurationProperty<?> property = getPropertyByKey(key);
 
-		final String stringValue = adjustValue(property, getValueOfLine(lineParts));
+		final String stringValue = adjustValue(property, rawValue);
 
 		if (property == null) {
 			throw new IllegalStateException("Property not found: " + key);
@@ -105,7 +119,6 @@ abstract class AbstractConfigurationParser {
 
 		if (lineType == LineType.SET) {
 			checkIfAlreadySet(property, line);
-
 			property.setValueUnsafe(stringValue);
 		} else if (lineType == LineType.APPEND) {
 			property.setValueUnsafe(property.getValueAsString() + stringValue);
@@ -116,6 +129,20 @@ abstract class AbstractConfigurationParser {
 		if (property instanceof ConfigurationVersionProperty) {
 			execConfigurationVersionLoaded(((ConfigurationVersionProperty) property).getValue());
 		}
+	}
+
+	private void handleExtensionProperty(LineType lineType, String key, String rawValue) {
+		if (lineType != LineType.SET) {
+			throw new IllegalStateException(
+					"Extension properties only support assignments with " + lineType.m_separator);
+		}
+
+		m_configuration.getConfigurationExtension().setRawValue(ConfigurationExtensionKey.parse(key), rawValue);
+	}
+
+	/** Check if the key is an extension or a built-in property. */
+	private boolean isExtensionProperty(String key) {
+		return key.startsWith(ConfigurationExtensionKey.EXTENSION_PROPERTY_PREFIX);
 	}
 
 	/**
@@ -147,7 +174,7 @@ abstract class AbstractConfigurationParser {
 		} else if (line.contains(LineType.SET.m_separator)) {
 			return LineType.SET;
 		} else {
-			throw new IllegalStateException();
+			throw new IllegalStateException("Unknown line type");
 		}
 	}
 
@@ -193,6 +220,7 @@ abstract class AbstractConfigurationParser {
 		}
 	}
 
+	/** Line type used to separate the key and value in the configuration file. */
 	private enum LineType {
 		SET(ConfigurationLoader.KEY_VALUE_SEPARATOR_SET), APPEND(ConfigurationLoader.KEY_VALUE_SEPARATOR_APPEND);
 

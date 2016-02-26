@@ -65,5 +65,8 @@ public class ConfigurationLoaderTest {
 			assertEquals(cProperties1.get(i).getName(), cProperties2.get(i).getName());
 			assertEquals(cProperties1.get(i).getValue(), cProperties2.get(i).getValue());
 		}
+
+		assertEquals(configuration1.getConfigurationExtension().toStringLines(),
+				configuration2.getConfigurationExtension().toStringLines());
 	}
 }
