@@ -9,7 +9,7 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.collection.AnalysisInformationCollectionLogic;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
@@ -71,7 +71,7 @@ public class AnalysisInformationCollector {
 			System.exit(0);
 		} catch (Throwable t) {
 			LOG.error(t);
-			throw new FailedExecution(executionId, t);
+			throw new ExecutionException(executionId, t);
 		}
 	}
 }

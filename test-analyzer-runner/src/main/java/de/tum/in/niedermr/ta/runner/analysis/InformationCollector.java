@@ -8,7 +8,7 @@ import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.InformationCollectionLogic;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
@@ -75,7 +75,7 @@ public class InformationCollector {
 			System.exit(0);
 		} catch (Throwable t) {
 			LOG.error(t);
-			throw new FailedExecution(executionId, t);
+			throw new ExecutionException(executionId, t);
 		}
 	}
 }

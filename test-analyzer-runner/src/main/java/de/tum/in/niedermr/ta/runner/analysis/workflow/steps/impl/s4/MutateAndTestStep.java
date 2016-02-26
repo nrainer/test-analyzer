@@ -21,7 +21,7 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionSte
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
@@ -69,7 +69,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 
 		if (m_aborted) {
 			LOG.warn("MANUALLY ABORTED.");
-			throw new FailedExecution(getFullExecId(EXEC_ID_TEST_RUN), "Aborted");
+			throw new ExecutionException(getFullExecId(EXEC_ID_TEST_RUN), "Aborted");
 		} else {
 			LOG.info("ALL THREADS FINISHED. " + getSummary(countSuccessful, countSkipped, countTimeout, countError));
 		}
@@ -81,11 +81,11 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		new AbortCheckerThread().start();
 	}
 
-	private void loadReturnValueGenerators(Configuration configuration) throws FailedExecution {
+	private void loadReturnValueGenerators(Configuration configuration) throws ExecutionException {
 		try {
 			this.m_returnValueGenerators = configuration.getReturnValueGenerators().createInstances();
 		} catch (ReflectiveOperationException ex) {
-			throw new FailedExecution(getFullExecId(EXEC_ID_TEST_RUN),
+			throw new ExecutionException(getFullExecId(EXEC_ID_TEST_RUN),
 					"Return value generator is not on the classpath (" + ex.getMessage() + ")");
 		}
 	}

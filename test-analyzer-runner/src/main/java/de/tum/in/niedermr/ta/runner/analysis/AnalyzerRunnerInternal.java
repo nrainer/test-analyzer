@@ -15,7 +15,7 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
@@ -78,7 +78,7 @@ public class AnalyzerRunnerInternal {
 		} catch (Throwable t) {
 			t.printStackTrace();
 			LOG.fatal("Execution failed", t);
-			throw new FailedExecution(executionId, AnalyzerRunnerInternal.class.getName() + " was not successful.");
+			throw new ExecutionException(executionId, AnalyzerRunnerInternal.class.getName() + " was not successful.");
 		}
 	}
 
@@ -103,7 +103,7 @@ public class AnalyzerRunnerInternal {
 		try {
 			return configuration.getTestWorkflows().createInstances();
 		} catch (Throwable t) {
-			throw new FailedExecution(executionId, "Error when creating the test workflows");
+			throw new ExecutionException(executionId, "Error when creating the test workflows");
 		}
 	}
 
@@ -114,7 +114,7 @@ public class AnalyzerRunnerInternal {
 
 			return workflow;
 		} catch (Throwable t) {
-			throw new FailedExecution(executionId, "Error when initializing the test workflow");
+			throw new ExecutionException(executionId, "Error when initializing the test workflow");
 		}
 	}
 

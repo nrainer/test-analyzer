@@ -17,7 +17,7 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
@@ -72,7 +72,7 @@ public class TestRun {
 			System.exit(0);
 		} catch (Throwable t) {
 			LOG.error("Failed execution " + s_executionId, t);
-			throw new FailedExecution(s_executionId, t);
+			throw new ExecutionException(s_executionId, t);
 		}
 	}
 

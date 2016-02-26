@@ -7,7 +7,7 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s1.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
  * Computes the minimum and maximum distance on the call stack between test case and method.
@@ -19,7 +19,7 @@ public class StackDistanceAnalysisWorkflow extends AbstractWorkflow {
 	protected CleanupStep m_cleanupStep;
 
 	@Override
-	public void startInternal(ExecutionContext context, Configuration configuration) throws FailedExecution {
+	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		m_prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
 		m_analysisInstrumentationStep = createAndInitializeExecutionStep(AnalysisInstrumentationStep.class);
 		m_analysisInformationCollectorStep = createAndInitializeExecutionStep(AnalysisInformationCollectorStep.class);

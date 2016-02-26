@@ -18,7 +18,7 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
  * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed classpath.<br/>
@@ -89,7 +89,7 @@ public class AnalyzerRunnerStart {
 					classpath, arguments);
 
 			print("DONE.");
-		} catch (FailedExecution ex) {
+		} catch (ExecutionException ex) {
 			print("ERROR. (" + ex.getMessage() + ")");
 		}
 	}

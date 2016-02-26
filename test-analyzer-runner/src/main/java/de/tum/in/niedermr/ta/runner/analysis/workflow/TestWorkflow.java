@@ -19,7 +19,7 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
 public class TestWorkflow extends AbstractWorkflow {
@@ -38,7 +38,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	}
 
 	@Override
-	public void startInternal(ExecutionContext context, Configuration configuration) throws FailedExecution {
+	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		setUpExecutionSteps();
 
 		beforeExecution();
@@ -62,7 +62,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		afterExecution();
 	}
 
-	protected void setUpExecutionSteps() throws FailedExecution {
+	protected void setUpExecutionSteps() throws ExecutionException {
 		m_prepareWorkingFolderStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
 		m_instrumentationStep = createAndInitializeExecutionStep(InstrumentationStep.class);
 		m_informationCollectorStep = createAndInitializeExecutionStep(InformationCollectorStep.class);
@@ -70,15 +70,15 @@ public class TestWorkflow extends AbstractWorkflow {
 		m_finalizeResultStep = createAndInitializeExecutionStep(FinalizeResultStep.class);
 	}
 
-	protected void beforeExecution() throws FailedExecution {
+	protected void beforeExecution() throws ExecutionException {
 		m_prepareWorkingFolderStep.run();
 	}
 
-	protected void afterExecution() throws FailedExecution {
+	protected void afterExecution() throws ExecutionException {
 		m_finalizeResultStep.run();
 	}
 
-	protected ConcurrentLinkedQueue<TestInformation> collectInformation() throws FailedExecution {
+	protected ConcurrentLinkedQueue<TestInformation> collectInformation() throws ExecutionException {
 		m_instrumentationStep.run();
 		m_informationCollectorStep.run();
 
@@ -86,13 +86,13 @@ public class TestWorkflow extends AbstractWorkflow {
 	}
 
 	protected ConcurrentLinkedQueue<TestInformation> loadExistingTestInformation(ExecutionContext context,
-			Configuration configuration) throws FailedExecution {
+			Configuration configuration) throws ExecutionException {
 		String workingFolder = context.getWorkingFolder();
 		String fileCollectedInformation = Environment
 				.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, workingFolder);
 
 		if (!new File(fileCollectedInformation).exists()) {
-			throw new FailedExecution(context.getExecutionId(),
+			throw new ExecutionException(context.getExecutionId(),
 					fileCollectedInformation + " must exist in the working directory if '"
 							+ configuration.getExecuteCollectInformation().getName() + "' is set to 'false'.");
 		}
@@ -114,7 +114,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		return testInformation;
 	}
 
-	protected void executeMutateAndTest(ConcurrentLinkedQueue<TestInformation> testInformation) throws FailedExecution {
+	protected void executeMutateAndTest(ConcurrentLinkedQueue<TestInformation> testInformation) throws ExecutionException {
 		m_mutateAndTestStep.setInputData(testInformation);
 
 		m_mutateAndTestStep.run();

@@ -8,7 +8,7 @@ import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public abstract class AbstractExecutionStep implements IExecutionStep, EnvironmentConstants {
 	private static final Logger LOG = LogManager.getLogger(AbstractExecutionStep.class);
@@ -39,9 +39,9 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	}
 
 	@Override
-	public final void run() throws FailedExecution {
+	public final void run() throws ExecutionException {
 		if (!m_initialized) {
-			throw new FailedExecution("UNKNOWN", "Not initialized");
+			throw new ExecutionException("UNKNOWN", "Not initialized");
 		}
 
 		try {
@@ -53,10 +53,10 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 
 			LOG.info("COMPLETED: " + getDescription());
 			LOG.info("DURATION: " + duration + " seconds.");
-		} catch (FailedExecution ex) {
+		} catch (ExecutionException ex) {
 			throw ex;
 		} catch (Throwable t) {
-			throw new FailedExecution(m_context.getExecutionId(), t);
+			throw new ExecutionException(m_context.getExecutionId(), t);
 		}
 	}
 

@@ -6,7 +6,7 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.TestInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.TestInstrumentationOperation;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
  * (INSTRU) Instruments all classes of a jar file by injecting logging statements into each method (except constructors
@@ -20,7 +20,7 @@ public class SourceInstrumentation extends AbstractInstrumentation {
 	}
 
 	public void injectLoggingStatements(String[] jarsToBeInstrumented, String genericJarOutputPath,
-			ITestRunner testRunner, String[] testClassIncludes, String[] testClassExcludes) throws FailedExecution {
+			ITestRunner testRunner, String[] testClassIncludes, String[] testClassExcludes) throws ExecutionException {
 		// true as argument in order not to instrument abstract test classes
 		ITestClassDetector detector = testRunner.getTestClassDetector(true, testClassIncludes, testClassExcludes);
 

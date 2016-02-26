@@ -13,7 +13,7 @@ import org.conqat.lib.commons.io.ProcessUtils.ExecutionResult;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 
 public class ProcessExecution {
@@ -49,21 +49,21 @@ public class ProcessExecution {
 	}
 
 	public String executeGetSysout(String executionId, int timeout, String mainClass, String classpath,
-			List<String> arguments) throws FailedExecution, IOException {
+			List<String> arguments) throws ExecutionException, IOException {
 		ExecutionResult result = execute(executionId, timeout, mainClass, classpath, arguments);
 
 		return result.getStdout();
 	}
 
 	public String executeAndGetSyserr(String executionId, int timeout, String mainClass, String classpath,
-			List<String> arguments) throws FailedExecution, IOException {
+			List<String> arguments) throws ExecutionException, IOException {
 		ExecutionResult result = execute(executionId, timeout, mainClass, classpath, arguments);
 
 		return result.getStderr();
 	}
 
 	public ExecutionResult execute(String executionId, int timeout, String mainClass, String classpath,
-			List<String> arguments) throws FailedExecution, IOException {
+			List<String> arguments) throws ExecutionException, IOException {
 		List<String> command = new LinkedList<>();
 
 		command.add(COMMAND_JAVA);
@@ -95,7 +95,7 @@ public class ProcessExecution {
 		}
 
 		if (result.getReturnCode() != 0) {
-			throw new FailedExecution(executionId,
+			throw new ExecutionException(executionId,
 					"Execution id '" + executionId + "' returned with other code than 0");
 		}
 

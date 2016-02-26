@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.runner.analysis.workflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.IExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public abstract class AbstractWorkflow implements IWorkflow {
 
@@ -15,15 +15,15 @@ public abstract class AbstractWorkflow implements IWorkflow {
 	}
 
 	@Override
-	public void start() throws FailedExecution {
+	public void start() throws ExecutionException {
 		if (m_context == null) {
-			throw new FailedExecution("UNKNOWN", "Not initialized");
+			throw new ExecutionException("UNKNOWN", "Not initialized");
 		}
 
 		startInternal(m_context, m_context.getConfiguration());
 	}
 
-	protected abstract void startInternal(ExecutionContext context, Configuration configuration) throws FailedExecution;
+	protected abstract void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException;
 
 	@Override
 	public String getName() {
@@ -31,13 +31,13 @@ public abstract class AbstractWorkflow implements IWorkflow {
 	}
 
 	protected <T extends IExecutionStep> T createAndInitializeExecutionStep(Class<T> executionStepClass)
-			throws FailedExecution {
+			throws ExecutionException {
 		try {
 			T executionStep = executionStepClass.newInstance();
 			executionStep.initialize(m_context);
 			return executionStep;
 		} catch (Exception e) {
-			throw new FailedExecution(m_context.getExecutionId(), e);
+			throw new ExecutionException(m_context.getExecutionId(), e);
 		}
 	}
 }

@@ -2,7 +2,7 @@ package de.tum.in.niedermr.ta.runner.analysis.workflow.steps;
 
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
  * An execution step is a part of a {@link IWorkflow}. <br/>
@@ -14,5 +14,5 @@ public interface IExecutionStep {
 	void initialize(ExecutionContext information);
 
 	/** Execute the step. */
-	void run() throws FailedExecution;
+	void run() throws ExecutionException;
 }

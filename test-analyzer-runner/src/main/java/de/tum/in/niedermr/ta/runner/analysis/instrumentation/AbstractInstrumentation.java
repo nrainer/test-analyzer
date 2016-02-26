@@ -9,7 +9,7 @@ import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterato
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class AbstractInstrumentation {
 	private static final Logger LOG = LogManager.getLogger(AbstractInstrumentation.class);
@@ -31,7 +31,7 @@ public class AbstractInstrumentation {
 	}
 
 	protected void instrumentJars(String[] jarsToBeInstrumented, String genericJarOutputPath,
-			ICodeModificationOperation operation) throws FailedExecution {
+			ICodeModificationOperation operation) throws ExecutionException {
 		try {
 			for (int i = 0; i < jarsToBeInstrumented.length; i++) {
 				JarModificationIterator jarWork = new JarInstrumentationIterator(jarsToBeInstrumented[i],
@@ -41,10 +41,10 @@ public class AbstractInstrumentation {
 		} catch (NoClassDefFoundError ex) {
 			LOG.error("Incomplete classpath!");
 			LOG.error(ex);
-			throw new FailedExecution(m_executionId, ex);
+			throw new ExecutionException(m_executionId, ex);
 		} catch (Throwable t) {
 			LOG.error(t);
-			throw new FailedExecution(m_executionId, t);
+			throw new ExecutionException(m_executionId, t);
 		}
 	}
 

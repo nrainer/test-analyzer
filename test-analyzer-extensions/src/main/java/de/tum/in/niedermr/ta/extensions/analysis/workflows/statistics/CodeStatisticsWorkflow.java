@@ -8,7 +8,7 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	public static final ConfigurationExtensionKey COUNT_INSTRUCTIONS = ConfigurationExtensionKey
@@ -19,7 +19,7 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 			.create("code.statistics.method.modifier");
 
 	@Override
-	public void startInternal(ExecutionContext context, Configuration configuration) throws FailedExecution {
+	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		PersistResultStep persistResultStep = createAndInitializeExecutionStep(PersistResultStep.class);
 
 		if (configuration.getConfigurationExtension().getBooleanValue(COUNT_INSTRUCTIONS)) {

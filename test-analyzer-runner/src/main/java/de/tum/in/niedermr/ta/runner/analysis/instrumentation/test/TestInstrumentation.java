@@ -4,7 +4,7 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.tests.runner.special.UsesOtherDetectorForTestcaseInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractInstrumentation;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.FailedExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
  * The test instrumentation modifies testcases. At the beginning of each testcase an instruction to set the mode of the
@@ -19,7 +19,7 @@ public class TestInstrumentation extends AbstractInstrumentation {
 	}
 
 	public void injectTestingModeStatements(String[] jarsWithTests, String genericJarOutputPath, ITestRunner testRunner,
-			String[] testClassIncludes, String[] testClassExcludes) throws FailedExecution {
+			String[] testClassIncludes, String[] testClassExcludes) throws ExecutionException {
 		TestInstrumentationOperation operation = createTestInstrumentationOperation(testRunner, testClassIncludes,
 				testClassExcludes);
 		instrumentJars(jarsWithTests, genericJarOutputPath, operation);
