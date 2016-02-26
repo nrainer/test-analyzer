@@ -12,11 +12,11 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
-import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.InstructionCounterOperation;
 import de.tum.in.niedermr.ta.runner.analysis.jars.iteration.FaultTolerantJarAnalyzeIterator;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class InstructionCounterStep extends AbstractExecutionStep {
 	private static final Logger LOG = LogManager.getLogger(InstructionCounterStep.class);
@@ -36,10 +36,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 
 	@Override
 	protected void runInternal() throws Throwable {
-		ITestRunner testRunner = m_configuration.getTestRunner().createInstance();
-		ITestClassDetector testClassDetector = testRunner.getTestClassDetector(true,
-				m_configuration.getTestClassIncludes().getElements(),
-				m_configuration.getTestClassExcludes().getElements());
+		ITestClassDetector testClassDetector = TestRunnerUtil.getTestClassDetector(m_configuration, true);
 
 		for (String sourceJar : m_configuration.getCodePathToMutate().getElements()) {
 			this.m_instructionsPerMethod.putAll(getCountInstructionsData(Mode.METHOD, testClassDetector, sourceJar));

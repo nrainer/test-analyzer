@@ -12,9 +12,9 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
-import de.tum.in.niedermr.ta.core.code.tests.runner.TestRunnerUtil;
 import de.tum.in.niedermr.ta.runner.analysis.jars.iteration.FaultTolerantJarAnalyzeIterator;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
+import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public abstract class AbstractInformationCollectionLogic {
 	private static final Logger LOG = LogManager.getLogger(AbstractInformationCollectionLogic.class);

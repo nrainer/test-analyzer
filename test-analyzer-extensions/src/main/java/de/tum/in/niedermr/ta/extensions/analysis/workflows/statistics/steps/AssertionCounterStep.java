@@ -15,11 +15,11 @@ import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
-import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
 import de.tum.in.niedermr.ta.runner.analysis.jars.iteration.FaultTolerantJarAnalyzeIterator;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionInformation;
+import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class AssertionCounterStep extends AbstractExecutionStep {
 	private static final Logger LOG = LogManager.getLogger(AssertionCounterStep.class);
@@ -79,10 +79,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 
 	@Override
 	protected void runInternal() throws Throwable {
-		ITestRunner testRunner = m_configuration.getTestRunner().createInstance();
-		ITestClassDetector testClassDetector = testRunner.getTestClassDetector(true,
-				m_configuration.getTestClassIncludes().getElements(),
-				m_configuration.getTestClassExcludes().getElements());
+		ITestClassDetector testClassDetector = TestRunnerUtil.getTestClassDetector(m_configuration, true);
 
 		for (String testJar : m_configuration.getCodePathToTest().getElements()) {
 			this.m_assertionsPerTestcase.putAll(getCountAssertionsData(testClassDetector, testJar));
