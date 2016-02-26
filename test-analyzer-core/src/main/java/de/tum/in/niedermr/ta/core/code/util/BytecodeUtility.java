@@ -36,7 +36,8 @@ public class BytecodeUtility {
 	 * Returns true, if the method node represents a constructor or a static initializer.
 	 */
 	public static boolean isConstructor(String name) {
-		return name.equals(BytecodeConstants.NAME_CONSTRUCTOR) || name.equals(BytecodeConstants.NAME_STATIC_INITIALIZER);
+		return name.equals(BytecodeConstants.NAME_CONSTRUCTOR)
+				|| name.equals(BytecodeConstants.NAME_STATIC_INITIALIZER);
 	}
 
 	public static boolean isAbstractClass(ClassNode cn) {
@@ -54,16 +55,16 @@ public class BytecodeUtility {
 	public static int countMethodInstructions(MethodNode methodNode) {
 		if (methodNode.instructions == null) {
 			return 0;
-		} else {
-			int count = 0;
-
-			for (AbstractInsnNode node : methodNode.instructions.toArray()) {
-				if (node.getOpcode() != -1) {
-					count++;
-				}
-			}
-
-			return count;
 		}
+
+		int count = 0;
+
+		for (AbstractInsnNode node : methodNode.instructions.toArray()) {
+			if (node.getOpcode() != -1) {
+				count++;
+			}
+		}
+
+		return count;
 	}
 }
