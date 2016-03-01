@@ -17,7 +17,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Trend": {
         "type": "timespan",
@@ -29,8 +29,8 @@
         "Number of Findings"
       ],
       "Colors": [
-        "rgb(99, 156, 206)",
-        "rgb(255, 102, 51)",
+        "rgb(51, 102, 255)",
+        "rgb(255, 0, 0)",
         "rgb(0, 153, 0)",
         "rgb(102, 204, 102)",
         "rgb(102, 102, 102)"
@@ -80,7 +80,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Lines of Code",
       "Boundaries": "",
@@ -133,14 +133,14 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Findings since": {
         "type": "timespan",
         "value": 0
       },
       "Show details": false,
-      "Horizontal orientation": true,
+      "Horizontal orientation": false,
       "Sort by findings count": false,
       "Show assessment": false
     },
@@ -155,14 +155,21 @@
       "Title": "Clone Coverage Treemap",
       "Path": {
         "project": "test-analyzer",
-        "path": ""
+        "path": "",
+        "hiddenInWidgetTitle": true
       },
       "Area Metric": "Lines of Code",
       "Color Metric": "Clone Coverage",
       "Color": [
         "rgb(0, 0, 255)"
       ],
-      "Enable cushion": false
+      "Enable cushion": false,
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ]
     },
     {
       "widget-id": "assessment-pie-chart",
@@ -175,10 +182,17 @@
       "Title": "Method Length",
       "Path": {
         "project": "test-analyzer",
-        "path": ""
+        "path": "",
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Method Length Assessment",
-      "Legend": true
+      "Legend": true,
+      "Trend": {
+        "value": 0,
+        "type": "timespan"
+      },
+      "Show absolute values": false,
+      "Assessment thresholds": ""
     },
     {
       "widget-id": "numeric-metric-value",
@@ -192,7 +206,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Source Lines of Code",
       "Boundaries": "",
@@ -243,10 +257,17 @@
       "Title": "Nesting Depth",
       "Path": {
         "project": "test-analyzer",
-        "path": ""
+        "path": "",
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Nesting Depth Assessment",
-      "Legend": true
+      "Legend": true,
+      "Trend": {
+        "value": 0,
+        "type": "timespan"
+      },
+      "Show absolute values": false,
+      "Assessment thresholds": ""
     },
     {
       "widget-id": "assessment-pie-chart",
@@ -260,7 +281,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Metric": "File Size Assessment",
       "Trend": {
@@ -268,7 +289,8 @@
         "type": "timespan"
       },
       "Legend": true,
-      "Assessment thresholds": ""
+      "Assessment thresholds": "",
+      "Show absolute values": false
     },
     {
       "widget-id": "treemap",
@@ -282,7 +304,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Area Metric": "Lines of Code",
       "Color Metric": "Method Length Assessment",
@@ -309,7 +331,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Area Metric": "Lines of Code",
       "Color Metric": "Nesting Depth Assessment",
@@ -336,7 +358,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Area Metric": "Lines of Code",
       "Color Metric": "Number of Findings",
@@ -389,7 +411,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Show actions": false,
       "Show values": true,
@@ -400,6 +422,56 @@
         "type": "timespan"
       },
       "Metric Threshold Configuration": "Test Analyzer"
+    },
+    {
+      "widget-id": "assessment-pie-chart",
+      "position": {
+        "x": 7,
+        "y": 23,
+        "width": 5,
+        "height": 3
+      },
+      "Title": "Comments",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "",
+        "hiddenInWidgetTitle": true
+      },
+      "Metric": "Comment Completeness Assessment",
+      "Trend": {
+        "value": "30",
+        "type": "timespan"
+      },
+      "Legend": true,
+      "Show absolute values": false,
+      "Assessment thresholds": ""
+    },
+    {
+      "widget-id": "codecity",
+      "position": {
+        "x": 0,
+        "y": 23,
+        "width": 7,
+        "height": 3
+      },
+      "Title": "Code City",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "",
+        "hiddenInWidgetTitle": true
+      },
+      "Area Metric": "Lines of Code",
+      "Color Metric": "File Size Assessment",
+      "Color": [
+        "rgb(0, 0, 255)"
+      ],
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ],
+      "Height Metric": "Lines of Code"
     }
   ]
 }]]></descriptorJSON>
