@@ -77,9 +77,9 @@ public class InformationCollector {
 			final boolean operateFaultTolerant = Boolean
 					.parseBoolean(argsReader.getArgument(ARGS_OPERATE_FAULT_TOLERANT, Boolean.FALSE.toString()));
 			final String[] testClassIncludes = ProcessExecution
-					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_INCLUDES));
+					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_INCLUDES, true));
 			final String[] testClassExcludes = ProcessExecution
-					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_EXCLUDES));
+					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_EXCLUDES, true));
 
 			informationCollectionLogic.setTestRunner(testRunner);
 			informationCollectionLogic.setOutputFile(dataOutputPath);

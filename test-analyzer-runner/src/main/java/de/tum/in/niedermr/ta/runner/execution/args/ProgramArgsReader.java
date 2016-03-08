@@ -11,12 +11,11 @@ public class ProgramArgsReader extends AbstractProgramArgsManager {
 	}
 
 	public String getArgument(ProgramArgsKey key) {
-		checkProgramArgsKey(key);
-		return getArgumentUnsafe(key.getIndex());
+		return getArgument(key, true);
 	}
 
 	public String getArgument(ProgramArgsKey key, String defaultValue) {
-		String value = getArgument(key);
+		String value = getArgument(key, true);
 
 		if (StringUtility.isNullOrEmpty(value)) {
 			return defaultValue;
@@ -25,11 +24,24 @@ public class ProgramArgsReader extends AbstractProgramArgsManager {
 		return value;
 	}
 
+	public String getArgument(ProgramArgsKey key, boolean allowEmpty) {
+		checkProgramArgsKey(key);
+		String value = getArgumentUnsafe(key.getIndex());
+
+		if (!allowEmpty && StringUtility.isNullOrEmpty(value)) {
+			throw new IllegalArgumentException(key + " is empty.");
+		}
+
+		return value;
+	}
+
 	public String getArgumentUnsafe(int index) {
 		String value = m_args[index];
 
-		// needed for linux
-		value = value.replace(CommonConstants.QUOTATION_MARK, "");
+		if (value != null) {
+			// needed for linux
+			value = value.replace(CommonConstants.QUOTATION_MARK, "");
+		}
 
 		return value;
 	}

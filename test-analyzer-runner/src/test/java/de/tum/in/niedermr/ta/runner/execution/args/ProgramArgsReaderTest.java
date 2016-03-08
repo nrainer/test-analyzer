@@ -29,12 +29,18 @@ public class ProgramArgsReaderTest {
 
 		assertEquals(args[0], reader.getArgument(ARGS_0));
 		assertEquals(args[0], reader.getArgumentUnsafe(0));
-		assertEquals(args[1], reader.getArgument(ARGS_1));
+		assertEquals(args[1], reader.getArgument(ARGS_1, true));
 		assertEquals("xyz", reader.getArgument(ARGS_1, "xyz"));
 		assertEquals(args[2].replace(CommonConstants.QUOTATION_MARK, ""), reader.getArgument(ARGS_2));
 
 		assertEquals("[0] = abc; [1] = ; [2] = x\"y;", reader.toArgsInfoString());
 		assertEquals("[1] = ; [2] = x\"y;", reader.toArgsInfoString(1));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetWithEmptyNotAllowed() {
+		ProgramArgsReader reader = new ProgramArgsReader(PROGRAM_CLASS, new String[ARGS_COUNT]);
+		reader.getArgument(ARGS_0, false);
 	}
 
 	@Test
