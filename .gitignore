@@ -8,6 +8,7 @@
 **/info/archive/
 /RemoveTestAssertions/
 /StaticReturnTypeAnalyzer/
+/DebuggingUtil/
 *.log
 **/src/test/temp/
 /teamscale/backups
