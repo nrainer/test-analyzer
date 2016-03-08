@@ -1,18 +1,24 @@
 package de.tum.in.niedermr.ta.runner.execution.args;
 
+/** Key to access a program argument. */
 public final class ProgramArgsKey {
+	/** Main class */
 	private final Class<?> m_programClass;
+	/** Index in the args array. */
 	private final int m_index;
 
+	/** Constructor. */
 	public ProgramArgsKey(Class<?> programClass, int index) {
 		m_programClass = programClass;
 		m_index = index;
 	}
 
-	public Class<?> getProgramClass() {
-		return m_programClass;
+	/** Check if this key is suitable for the given program class. */
+	public boolean isForProgramClass(Class<?> programClass) {
+		return m_programClass == programClass;
 	}
 
+	/** @see #m_index */
 	public int getIndex() {
 		return m_index;
 	}

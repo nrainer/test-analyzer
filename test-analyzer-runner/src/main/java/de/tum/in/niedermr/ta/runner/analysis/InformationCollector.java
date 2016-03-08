@@ -43,13 +43,6 @@ public class InformationCollector {
 	public static final ProgramArgsKey ARGS_TEST_CLASS_INCLUDES = new ProgramArgsKey(InformationCollector.class, 5);
 	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(InformationCollector.class, 6);
 
-	/**
-	 * args[0]: execution id args[1]: path to the jars with tests to run (separated by
-	 * {@link de.tum.in.niedermr.ta.core.common.constants.CommonConstants#SEPARATOR_DEFAULT}) args[2]: path to the
-	 * output text file (result will be written there) args[3]: name of the test runner args[4]: operate in fault
-	 * tolerant mode args[5]: (optional): name of test classes not to be checked (separated by
-	 * {@link de.tum.in.niedermr.ta.core.common.constants.CommonConstants#SEPARATOR_DEFAULT})
-	 */
 	public static void main(String[] args) {
 		if (args.length == 0) {
 			LoggingUtil.printDontStartThisClass(InformationCollector.class, AnalyzerRunnerStart.class);
