@@ -12,6 +12,7 @@ import org.conqat.lib.commons.io.ProcessUtils.ExecutionResult;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
@@ -48,22 +49,13 @@ public class ProcessExecution {
 		this.m_workingFolderForClasspath = workingFolderForClasspath;
 	}
 
-	public String executeGetSysout(String executionId, int timeout, String mainClass, String classpath,
-			List<String> arguments) throws ExecutionException, IOException {
-		ExecutionResult result = execute(executionId, timeout, mainClass, classpath, arguments);
-
-		return result.getStdout();
-	}
-
-	public String executeAndGetSyserr(String executionId, int timeout, String mainClass, String classpath,
-			List<String> arguments) throws ExecutionException, IOException {
-		ExecutionResult result = execute(executionId, timeout, mainClass, classpath, arguments);
-
-		return result.getStderr();
+	public ExecutionResult execute(String executionId, int timeout, String mainClass, String classpath,
+			ProgramArgsWriter argsWriter) throws ExecutionException, IOException {
+		return execute(executionId, timeout, mainClass, classpath, argsWriter.getArgs());
 	}
 
 	public ExecutionResult execute(String executionId, int timeout, String mainClass, String classpath,
-			List<String> arguments) throws ExecutionException, IOException {
+			String[] arguments) throws ExecutionException, IOException {
 		List<String> command = new LinkedList<>();
 
 		command.add(COMMAND_JAVA);
@@ -71,7 +63,6 @@ public class ProcessExecution {
 		command.add(Environment.makeClasspathCanonical(Environment.replaceFolders(classpath,
 				this.m_programFolderForClasspath, this.m_workingFolderForClasspath)));
 		command.add(mainClass);
-		command.add(executionId);
 
 		for (String arg : arguments) {
 			command.add(CommonConstants.QUOTATION_MARK + arg + CommonConstants.QUOTATION_MARK);

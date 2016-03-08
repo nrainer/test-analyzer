@@ -14,6 +14,9 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
@@ -32,6 +35,12 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 public class AnalyzerRunnerInternal {
 	private static final Logger LOG = LogManager.getLogger(AnalyzerRunnerInternal.class);
 
+	/** Number of args. */
+	private static final int ARGS_COUNT = 3;
+	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(AnalyzerRunnerInternal.class, 0);
+	public static final ProgramArgsKey ARGS_PROGRAM_PATH = new ProgramArgsKey(AnalyzerRunnerInternal.class, 1);
+	public static final ProgramArgsKey ARGS_CONFIG_FILE = new ProgramArgsKey(AnalyzerRunnerInternal.class, 2);
+
 	public static final String EXECUTION_ID_FOR_TESTS = "TEST";
 	private static final String RELATIVE_WORKING_FOLDER = FileSystemConstants.CURRENT_FOLDER;
 
@@ -46,9 +55,11 @@ public class AnalyzerRunnerInternal {
 			return;
 		}
 
-		final String executionId = getExecutionId(args);
-		final String programPath = CommonUtility.getArgument(args, 1);
-		final String configurationFileToUse = Environment.replaceWorkingFolder(CommonUtility.getArgument(args, 2),
+		ProgramArgsReader argsReader = new ProgramArgsReader(AnalyzerRunnerInternal.class, args);
+
+		final String executionId = getExecutionId(argsReader);
+		final String programPath = argsReader.getArgument(ARGS_PROGRAM_PATH);
+		final String configurationFileToUse = Environment.replaceWorkingFolder(argsReader.getArgument(ARGS_CONFIG_FILE),
 				RELATIVE_WORKING_FOLDER);
 
 		try {
@@ -80,6 +91,10 @@ public class AnalyzerRunnerInternal {
 			LOG.fatal("Execution failed", t);
 			throw new ExecutionException(executionId, AnalyzerRunnerInternal.class.getName() + " was not successful.");
 		}
+	}
+
+	public static ProgramArgsWriter createProgramArgsWriter() {
+		return new ProgramArgsWriter(AnalyzerRunnerInternal.class, ARGS_COUNT);
 	}
 
 	private static Configuration loadAndValidateTheConfiguration(String configurationFileToUse)
@@ -118,12 +133,12 @@ public class AnalyzerRunnerInternal {
 		}
 	}
 
-	private static String getExecutionId(String[] args) {
-		if (CommonUtility.getArgument(args, 0).equals(EXECUTION_ID_FOR_TESTS)) {
+	private static String getExecutionId(ProgramArgsReader argsReader) {
+		if (argsReader.getArgument(ARGS_EXECUTION_ID).equals(EXECUTION_ID_FOR_TESTS)) {
 			return EXECUTION_ID_FOR_TESTS;
-		} else {
-			return CommonUtility.createRandomId();
 		}
+
+		return CommonUtility.createRandomId();
 	}
 
 	private static String getDuration(final long startTime) {

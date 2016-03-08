@@ -3,8 +3,6 @@ package de.tum.in.niedermr.ta.runner.start;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
@@ -16,6 +14,7 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
@@ -82,12 +81,13 @@ public class AnalyzerRunnerStart {
 			final String classpath = configuration.getTestAnalyzerClasspath().getValue() + FileSystemConstants.CP_SEP
 					+ Environment.prefixClasspathInWorkingFolder(configuration.getFullClasspath());
 
-			List<String> arguments = new LinkedList<>();
-			arguments.add(currentCanonicalPath);
-			arguments.add(EnvironmentConstants.FILE_INPUT_USED_CONFIG);
+			ProgramArgsWriter argsWriter = AnalyzerRunnerInternal.createProgramArgsWriter();
+			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_EXECUTION_ID, s_usedExecId);
+			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_PROGRAM_PATH, currentCanonicalPath);
+			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_CONFIG_FILE, EnvironmentConstants.FILE_INPUT_USED_CONFIG);
 
 			pExecution.execute(s_usedExecId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class.getName(),
-					classpath, arguments);
+					classpath, argsWriter);
 
 			print("DONE.");
 		} catch (ExecutionException ex) {

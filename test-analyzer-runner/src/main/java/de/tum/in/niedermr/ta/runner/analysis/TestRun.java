@@ -14,9 +14,10 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
-import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
-import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
@@ -32,15 +33,21 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 public class TestRun {
 	private static final Logger LOG = LogManager.getLogger(TestRun.class);
 
+	/** Number of args. */
+	private static final int ARGS_COUNT = 7;
+	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(TestRun.class, 0);
+	public static final ProgramArgsKey ARGS_FILE_WITH_TESTS_TO_RUN = new ProgramArgsKey(TestRun.class, 1);
+	public static final ProgramArgsKey ARGS_FILE_WITH_RESULTS = new ProgramArgsKey(TestRun.class, 2);
+	public static final ProgramArgsKey ARGS_MUTATED_METHOD_IDENTIFIER = new ProgramArgsKey(TestRun.class, 3);
+	public static final ProgramArgsKey ARGS_TEST_RUNNER_CLASS = new ProgramArgsKey(TestRun.class, 4);
+	public static final ProgramArgsKey ARGS_RETURN_VALUE_GENERATOR_CLASS = new ProgramArgsKey(TestRun.class, 5);
+	/** Result presentation: 'TEXT', 'DB' or the name of a class implementing {@link IResultPresentation}. */
+	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(TestRun.class, 6);
+
 	private static String s_executionId;
 
 	/**
 	 * Note that the jar file of the class to be tested must be on the classpath!
-	 * 
-	 * args[0]: execution id args[1]: path to file with tests to run args[2]: path to file with the results (will be
-	 * appended) args[3]: identifier of the mutated method (to record the parameters) args[4]: name of the test runner
-	 * args[5]: name of the return value generator (to record the parameters) args[6] (optional): result presentation:
-	 * 'TEXT' (default), 'DB', or the name of a class implementing IResultPresentation
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		if (args.length == 0) {
@@ -48,18 +55,20 @@ public class TestRun {
 			return;
 		}
 
-		TestRun.s_executionId = CommonUtility.getArgument(args, 0);
+		ProgramArgsReader argsReader = new ProgramArgsReader(TestRun.class, args);
+
+		TestRun.s_executionId = argsReader.getArgument(ARGS_EXECUTION_ID);
 		LOG.info(LoggingConstants.EXECUTION_ID_PREFIX + s_executionId);
-		LOG.info(LoggingUtil.getInputArgumentsF1(args));
+		LOG.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {
-			final String fileWithTestsToRun = CommonUtility.getArgument(args, 1);
-			final String fileWithResults = CommonUtility.getArgument(args, 2);
-			final MethodIdentifier mutatedMethod = MethodIdentifier.parse(CommonUtility.getArgument(args, 3));
-			final ITestRunner testRunner = JavaUtility.createInstance(CommonUtility.getArgument(args, 4));
-			final String usedReturnValueGenerator = CommonUtility.getArgument(args, 5);
-			final String resultPresentationChoice = CommonUtility.getArgument(args, 6,
-					ResultPresentationProperty.RESULT_PRESENTATION_TEXT);
+			final String fileWithTestsToRun = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN);
+			final String fileWithResults = argsReader.getArgument(ARGS_FILE_WITH_RESULTS);
+			final MethodIdentifier mutatedMethod = MethodIdentifier
+					.parse(argsReader.getArgument(ARGS_MUTATED_METHOD_IDENTIFIER));
+			final ITestRunner testRunner = JavaUtility.createInstance(argsReader.getArgument(ARGS_TEST_RUNNER_CLASS));
+			final String usedReturnValueGenerator = argsReader.getArgument(ARGS_RETURN_VALUE_GENERATOR_CLASS);
+			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
 
 			final IResultPresentation resultPresentation = ResultPresentationUtil
 					.getResultPresentation(resultPresentationChoice, s_executionId);
@@ -74,6 +83,10 @@ public class TestRun {
 			LOG.error("Failed execution " + s_executionId, t);
 			throw new ExecutionException(s_executionId, t);
 		}
+	}
+
+	public static ProgramArgsWriter createProgramArgsWriter() {
+		return new ProgramArgsWriter(TestRun.class, ARGS_COUNT);
 	}
 
 	private static List<String> runTestsFromFile(ITestRunner testRunner, String fileWithTestsToRun,

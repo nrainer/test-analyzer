@@ -6,8 +6,10 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
-import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.InformationCollectionLogic;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
@@ -31,6 +33,16 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 public class InformationCollector {
 	private static final Logger LOG = LogManager.getLogger(InformationCollector.class);
 
+	/** Number of args. */
+	private static final int ARGS_COUNT = 7;
+	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(InformationCollector.class, 0);
+	public static final ProgramArgsKey ARGS_FILE_WITH_TESTS_TO_RUN = new ProgramArgsKey(InformationCollector.class, 1);
+	public static final ProgramArgsKey ARGS_FILE_WITH_RESULTS = new ProgramArgsKey(InformationCollector.class, 2);
+	public static final ProgramArgsKey ARGS_TEST_RUNNER_CLASS = new ProgramArgsKey(InformationCollector.class, 3);
+	public static final ProgramArgsKey ARGS_OPERATE_FAULT_TOLERANT = new ProgramArgsKey(InformationCollector.class, 4);
+	public static final ProgramArgsKey ARGS_TEST_CLASS_INCLUDES = new ProgramArgsKey(InformationCollector.class, 5);
+	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(InformationCollector.class, 6);
+
 	/**
 	 * args[0]: execution id args[1]: path to the jars with tests to run (separated by
 	 * {@link de.tum.in.niedermr.ta.core.common.constants.CommonConstants#SEPARATOR_DEFAULT}) args[2]: path to the
@@ -44,28 +56,30 @@ public class InformationCollector {
 			return;
 		}
 
-		final String executionId = CommonUtility.getArgument(args, 0);
+		ProgramArgsReader argsReader = new ProgramArgsReader(InformationCollector.class, args);
+
+		final String executionId = argsReader.getArgument(ARGS_EXECUTION_ID);
 		final InformationCollectionLogic informationCollectionLogic = new InformationCollectionLogic(executionId);
 
-		main(args, informationCollectionLogic);
+		main(argsReader, executionId, informationCollectionLogic);
 	}
 
-	public static void main(String[] args, InformationCollectionLogic informationCollectionLogic) {
-		final String executionId = CommonUtility.getArgument(args, 0);
-
+	public static void main(ProgramArgsReader argsReader, String executionId,
+			InformationCollectionLogic informationCollectionLogic) {
 		LOG.info(LoggingConstants.EXECUTION_ID_PREFIX + executionId);
-		LOG.info(LoggingUtil.getInputArgumentsF1(args));
+		LOG.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {
-			final String[] jarsWithTests = CommonUtility.getArgument(args, 1).split(CommonConstants.SEPARATOR_DEFAULT);
-			final String dataOutputPath = CommonUtility.getArgument(args, 2);
-			final ITestRunner testRunner = JavaUtility.createInstance(CommonUtility.getArgument(args, 3));
+			final String[] jarsWithTests = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN)
+					.split(CommonConstants.SEPARATOR_DEFAULT);
+			final String dataOutputPath = argsReader.getArgument(ARGS_FILE_WITH_RESULTS);
+			final ITestRunner testRunner = JavaUtility.createInstance(argsReader.getArgument(ARGS_TEST_RUNNER_CLASS));
 			final boolean operateFaultTolerant = Boolean
-					.parseBoolean(CommonUtility.getArgument(args, 4, Boolean.FALSE.toString()));
+					.parseBoolean(argsReader.getArgument(ARGS_OPERATE_FAULT_TOLERANT, Boolean.FALSE.toString()));
 			final String[] testClassIncludes = ProcessExecution
-					.unwrapAndSplitPattern(CommonUtility.getArgument(args, 5));
+					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_INCLUDES));
 			final String[] testClassExcludes = ProcessExecution
-					.unwrapAndSplitPattern(CommonUtility.getArgument(args, 6));
+					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_EXCLUDES));
 
 			informationCollectionLogic.setTestRunner(testRunner);
 			informationCollectionLogic.setOutputFile(dataOutputPath);
@@ -77,5 +91,9 @@ public class InformationCollector {
 			LOG.error(t);
 			throw new ExecutionException(executionId, t);
 		}
+	}
+
+	public static ProgramArgsWriter createProgramArgsWriter() {
+		return new ProgramArgsWriter(InformationCollector.class, ARGS_COUNT);
 	}
 }
