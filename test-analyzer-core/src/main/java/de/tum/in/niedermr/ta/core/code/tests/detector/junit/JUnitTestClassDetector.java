@@ -11,6 +11,7 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class JUnitTestClassDetector extends AbstractTestClassDetector {
+
 	private static final String JUNIT_3_TEST_METHOD_NAME_PREFIX = "test";
 	private static final String JUNIT_4_TEST_ANNOTATION = "Lorg/junit/Test;";
 	private static final String JUNIT_4_IGNORE_ANNOTATION = "Lorg/junit/Ignore;";
@@ -20,6 +21,7 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected ClassType isTestClassInternal(ClassNode cn) {
 		if (isJUnit3TestClass(cn)) {
@@ -50,6 +52,7 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 		return method.name.startsWith(JUNIT_3_TEST_METHOD_NAME_PREFIX);
 	}
 
+	/** Check if the method is a JUnit 4 test case. */
 	@SuppressWarnings("unchecked")
 	private boolean isJUnit4Testcase(MethodNode method) {
 		if (method.visibleAnnotations == null) {
@@ -67,12 +70,22 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 			}
 		}
 
-		return IGNORE_IGNORED_TEST_CASES ? (isTestCase && !isIgnored) : isTestCase;
+		if (isTestCase) {
+			return IGNORE_IGNORED_TEST_CASES ? !isIgnored : true;
+		}
+
+		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean analyzeIsTestcase(MethodNode methodNode, ClassType testClassType) {
-		return (testClassType == JUnitClassTypeResult.TEST_CLASS_JUNIT_3 && isJUnit3Testcase(methodNode))
-				|| (testClassType == JUnitClassTypeResult.TEST_CLASS_JUNIT_4 && isJUnit4Testcase(methodNode));
+		if (testClassType == JUnitClassTypeResult.TEST_CLASS_JUNIT_3) {
+			return isJUnit3Testcase(methodNode);
+		} else if (testClassType == JUnitClassTypeResult.TEST_CLASS_JUNIT_4) {
+			return isJUnit4Testcase(methodNode);
+		}
+
+		return false;
 	}
 }

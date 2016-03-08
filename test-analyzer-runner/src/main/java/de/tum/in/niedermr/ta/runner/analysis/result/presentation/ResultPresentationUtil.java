@@ -6,16 +6,9 @@ import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
 
 public class ResultPresentationUtil {
-	public static IResultPresentation getResultPresentation(String resultPresentation, String executionId) throws ReflectiveOperationException {
-		IResultPresentation presentation;
-
-		if (resultPresentation.equals(ResultPresentationProperty.RESULT_PRESENTATION_TEXT)) {
-			presentation = new TextResultPresentation();
-		} else if (resultPresentation.equals(ResultPresentationProperty.RESULT_PRESENTATION_DB)) {
-			presentation = new DatabaseResultPresentation();
-		} else {
-			presentation = JavaUtility.createInstance(resultPresentation);
-		}
+	public static IResultPresentation getResultPresentation(String resultPresentation, String executionId)
+			throws ReflectiveOperationException {
+		IResultPresentation presentation = createResultPresentation(resultPresentation);
 
 		if (executionId.length() >= CommonUtility.LENGTH_OF_RANDOM_ID) {
 			presentation.setShortExecutionId(executionId.substring(0, CommonUtility.LENGTH_OF_RANDOM_ID));
@@ -24,5 +17,17 @@ public class ResultPresentationUtil {
 		}
 
 		return presentation;
+	}
+
+	/** Create the appropriate instance of {@link IResultPresentation}. */
+	private static IResultPresentation createResultPresentation(String resultPresentation)
+			throws ReflectiveOperationException {
+		if (resultPresentation.equals(ResultPresentationProperty.RESULT_PRESENTATION_TEXT)) {
+			return new TextResultPresentation();
+		} else if (resultPresentation.equals(ResultPresentationProperty.RESULT_PRESENTATION_DB)) {
+			return new DatabaseResultPresentation();
+		}
+
+		return JavaUtility.createInstance(resultPresentation);
 	}
 }
