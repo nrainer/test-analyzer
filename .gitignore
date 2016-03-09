@@ -9,6 +9,7 @@
 /RemoveTestAssertions/
 /StaticReturnTypeAnalyzer/
 /DebuggingUtil/
+/CoverageInfoParser/
 *.log
 **/src/test/temp/
 /teamscale/backups
