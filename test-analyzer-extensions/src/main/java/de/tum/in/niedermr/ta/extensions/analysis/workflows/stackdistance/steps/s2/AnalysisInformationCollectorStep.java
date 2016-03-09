@@ -1,14 +1,12 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s2;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 
 public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
@@ -20,20 +18,25 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 				+ getSourceInstrumentedJarFilesClasspath(configuration) + CP_SEP
 				+ configuration.getCodePathToTest().getValue() + CP_SEP + configuration.getClasspath().getValue();
 
-		List<String> arguments = new LinkedList<>();
-		arguments.add(configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
-		arguments.add(getFileInWorkingArea(AnalysisConstants.FILE_OUTPUT_ANALYSIS_INFORMATION));
-		arguments.add(configuration.getTestRunner().getValue());
-		arguments.add(configuration.getOperateFaultTolerant().getValueAsString());
-		arguments.add(ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
-		arguments.add(ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
+		String executionId = getFullExecId(EXEC_ID_ANALYSIS_COLLECTOR);
 
-		processExecution.execute(getFullExecId(EXEC_ID_ANALYSIS_COLLECTOR), ProcessExecution.NO_TIMEOUT,
-				getClassNameToRun(), classPath, arguments);
-	}
+		ProgramArgsWriter argsWriter = AnalysisInformationCollector.createProgramArgsWriter();
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_EXECUTION_ID, executionId);
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_FILE_WITH_TESTS_TO_RUN,
+				configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_RESULT_FILE,
+				getFileInWorkingArea(AnalysisConstants.FILE_OUTPUT_ANALYSIS_INFORMATION));
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_TEST_RUNNER_CLASS,
+				configuration.getTestRunner().getValue());
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_OPERATE_FAULT_TOLERANT,
+				configuration.getOperateFaultTolerant().getValueAsString());
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_TEST_CLASS_INCLUDES,
+				ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_TEST_CLASS_EXCLUDES,
+				ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
 
-	protected String getClassNameToRun() {
-		return AnalysisInformationCollector.class.getName();
+		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalysisInformationCollector.class.getName(),
+				classPath, argsWriter);
 	}
 
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {

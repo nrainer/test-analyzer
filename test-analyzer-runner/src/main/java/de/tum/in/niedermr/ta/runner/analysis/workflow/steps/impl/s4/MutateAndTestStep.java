@@ -9,6 +9,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.conqat.lib.commons.io.ProcessUtils.ExecutionResult;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
@@ -20,6 +21,7 @@ import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
@@ -229,7 +231,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		 * Note that the full original classpath is used. However, the mutated jar is inserted at the beginning of the
 		 * classpath, thus the mutated class is considered first in that jar file.
 		 */
-		protected void runTestsAndRecordResult(String execId, String fileWithTestsToRun, String fileWithResults,
+		protected void runTestsAndRecordResult(String executionId, String fileWithTestsToRun, String fileWithResults,
 				IReturnValueGenerator retValGen) throws IOException {
 			final String usedReturnValueGenerator = retValGen.getClass().getName();
 			final String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
@@ -237,25 +239,23 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 					+ m_configuration.getFullClasspath();
 			final int timeout = m_configuration.computeTestingTimeout(m_currentTestcases.size());
 
-			List<String> arguments = new LinkedList<>();
-			arguments.add(getFileInWorkingArea(fileWithTestsToRun));
-			arguments.add(getFileInWorkingArea(fileWithResults));
-			arguments.add(m_currentMethodUnderTest.get());
-			arguments.add(m_configuration.getTestRunner().getValue());
-			arguments.add(usedReturnValueGenerator);
-			arguments.add(m_configuration.getResultPresentation().getValue());
+			ProgramArgsWriter argsWriter = TestRun.createProgramArgsWriter();
+			argsWriter.setValue(TestRun.ARGS_EXECUTION_ID, executionId);
+			argsWriter.setValue(TestRun.ARGS_FILE_WITH_TESTS_TO_RUN, getFileInWorkingArea(fileWithTestsToRun));
+			argsWriter.setValue(TestRun.ARGS_FILE_WITH_RESULTS, getFileInWorkingArea(fileWithResults));
+			argsWriter.setValue(TestRun.ARGS_MUTATED_METHOD_IDENTIFIER, m_currentMethodUnderTest.get());
+			argsWriter.setValue(TestRun.ARGS_TEST_RUNNER_CLASS, m_configuration.getTestRunner().getValue());
+			argsWriter.setValue(TestRun.ARGS_RETURN_VALUE_GENERATOR_CLASS, usedReturnValueGenerator);
+			argsWriter.setValue(TestRun.ARGS_RESULT_PRESENTATION, m_configuration.getResultPresentation().getValue());
 
-			String sysErr = m_processExecution.executeAndGetSyserr(execId, timeout, getClassNameOfTestRun(), classPath,
-					arguments);
+			ExecutionResult executionResult = m_processExecution.execute(executionId, timeout, TestRun.class.getName(),
+					classPath, argsWriter);
 
-			if (!sysErr.isEmpty()) {
+			if (!executionResult.getStderr().isEmpty()) {
 				LOG_TEST_SYS_ERR.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get()
-						+ " with " + usedReturnValueGenerator + ": " + LoggingUtil.shorten(300, sysErr));
+						+ " with " + usedReturnValueGenerator + ": "
+						+ LoggingUtil.shorten(300, executionResult.getStderr()));
 			}
-		}
-
-		protected String getClassNameOfTestRun() {
-			return TestRun.class.getName();
 		}
 
 		@Override

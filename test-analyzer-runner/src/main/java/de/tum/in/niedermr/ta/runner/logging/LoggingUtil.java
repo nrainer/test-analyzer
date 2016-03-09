@@ -2,31 +2,21 @@ package de.tum.in.niedermr.ta.runner.logging;
 
 import java.util.Collection;
 
-import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 
 public class LoggingUtil {
 	private static final String MSG_DONT_START_THIS_CLASS = "Don't start %s! Use %s!";
 	static final String INPUT_ARGUMENTS_ARE = "Input arguments are: ";
 
-	public static String getInputArgumentsF1(String[] args) {
-		return getInputArguments(args, 1);
+	public static String getInputArgumentsF1(ProgramArgsReader argsReader) {
+		return getInputArguments(argsReader, 1);
 	}
 
-	public static String getInputArguments(String[] args, int fromIndex) {
+	public static String getInputArguments(ProgramArgsReader argsReader, int fromIndex) {
 		StringBuilder logText = new StringBuilder();
-
 		logText.append(INPUT_ARGUMENTS_ARE);
-
-		for (int i = fromIndex; i < args.length; i++) {
-			logText.append("[");
-			logText.append(i);
-			logText.append("] = ");
-			logText.append(args[i]);
-			logText.append(CommonConstants.SEPARATOR_DEFAULT);
-			logText.append(" ");
-		}
-
-		return logText.toString().trim();
+		logText.append(argsReader.toArgsInfoString(fromIndex));
+		return logText.toString();
 	}
 
 	/**
@@ -55,7 +45,8 @@ public class LoggingUtil {
 	 * @param includeCountInResult
 	 *            inserts the size of the collection in the result before singular or plural
 	 */
-	public static String singularOrPlural(Collection<?> collection, String singular, String plural, boolean includeCountInResult) {
+	public static String singularOrPlural(Collection<?> collection, String singular, String plural,
+			boolean includeCountInResult) {
 		return singularOrPlural(collection.size(), singular, plural, includeCountInResult);
 	}
 

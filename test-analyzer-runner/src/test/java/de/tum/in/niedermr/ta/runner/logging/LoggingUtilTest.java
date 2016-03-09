@@ -7,12 +7,14 @@ import java.util.LinkedList;
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 
 public class LoggingUtilTest {
 	@Test
 	public void testGetInputArgumentsF1() {
+		ProgramArgsReader argsReader = new ProgramArgsReader(LoggingUtilTest.class, new String[] { "x", "y" });
 		assertEquals(LoggingUtil.INPUT_ARGUMENTS_ARE + "[1] = y" + CommonConstants.SEPARATOR_DEFAULT,
-				LoggingUtil.getInputArgumentsF1(new String[] { "x", "y" }));
+				LoggingUtil.getInputArgumentsF1(argsReader));
 	}
 
 	@Test

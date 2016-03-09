@@ -11,12 +11,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
+import de.tum.in.niedermr.ta.core.common.util.StringUtility;
+import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.parser.ConfigurationParser;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractConfigurationProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 
 /**
  * Configurations can be loaded from the arguments, from the console or from a file.<br/>
@@ -105,10 +107,16 @@ public class ConfigurationLoader implements FileSystemConstants {
 	private void loadFromArgs(String[] args) throws ConfigurationException {
 		LOG.info("Configuration from args");
 
+		ProgramArgsReader argsReader = new ProgramArgsReader(AnalyzerRunnerInternal.class, args);
 		int i = 0;
 
 		for (IConfigurationProperty<?> property : m_configuration.getAllPropertiesOrdered()) {
-			String stringValue = CommonUtility.getArgument(args, i, AbstractConfigurationProperty.PLACEHOLDER_DEFAULT);
+			String stringValue = argsReader.getArgumentUnsafe(i);
+
+			if (StringUtility.isNullOrEmpty(stringValue)) {
+				stringValue = AbstractConfigurationProperty.PLACEHOLDER_DEFAULT;
+			}
+
 			property.setValueUnsafe(stringValue);
 			i++;
 		}

@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s3;
 
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -12,6 +11,7 @@ import de.tum.in.niedermr.ta.runner.analysis.InformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
@@ -31,16 +31,24 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 				+ getTestInstrumentedJarFilesClasspath(configuration) + CP_SEP
 				+ configuration.getClasspath().getValue();
 
-		List<String> arguments = new LinkedList<>();
-		arguments.add(configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
-		arguments.add(getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
-		arguments.add(configuration.getTestRunner().getValue());
-		arguments.add(configuration.getOperateFaultTolerant().getValueAsString());
-		arguments.add(ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
-		arguments.add(ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
+		String executionId = getFullExecId(EXEC_ID);
 
-		processExecution.execute(getFullExecId(EXEC_ID), ProcessExecution.NO_TIMEOUT,
-				getClassNameOfInformationCollector(), classPath, arguments);
+		ProgramArgsWriter argsWriter = InformationCollector.createProgramArgsWriter();
+		argsWriter.setValue(InformationCollector.ARGS_EXECUTION_ID, executionId);
+		argsWriter.setValue(InformationCollector.ARGS_FILE_WITH_TESTS_TO_RUN,
+				configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
+		argsWriter.setValue(InformationCollector.ARGS_FILE_WITH_RESULTS,
+				getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
+		argsWriter.setValue(InformationCollector.ARGS_TEST_RUNNER_CLASS, configuration.getTestRunner().getValue());
+		argsWriter.setValue(InformationCollector.ARGS_OPERATE_FAULT_TOLERANT,
+				configuration.getOperateFaultTolerant().getValueAsString());
+		argsWriter.setValue(InformationCollector.ARGS_TEST_CLASS_INCLUDES,
+				ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
+		argsWriter.setValue(InformationCollector.ARGS_TEST_CLASS_EXCLUDES,
+				ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
+
+		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class.getName(),
+				classPath, argsWriter);
 
 		loadCollectedData();
 	}
@@ -49,10 +57,6 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 		List<String> data = TextFileData.readFromFile(getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
 
 		m_methodsToMutateAndTestsToRun.addAll(CollectedInformation.parseInformationCollectorData(data));
-	}
-
-	protected String getClassNameOfInformationCollector() {
-		return InformationCollector.class.getName();
 	}
 
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {
