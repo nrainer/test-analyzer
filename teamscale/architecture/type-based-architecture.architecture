@@ -66,11 +66,14 @@
   <allow source="runner.configuration" target="runner.analysis" />
   <tolerate source="runner.configuration" target="runner.execution">
     <dependency source="de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractClasspathProperty" target="de.tum.in.niedermr.ta.runner.execution.environment.Environment" />
+    <dependency source="de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader" target="de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader" />
   </tolerate>
   <allow source="runner.execution" target="core.analysis" />
   <allow source="runner.execution" target="runner.analysis" />
   <allow source="runner.execution" target="runner.configuration" />
+  <allow source="runner.execution" target="runner.start" />
   <allow source="runner.execution" target="runner.test" />
+  <allow source="runner.logging" target="runner.execution" />
   <allow source="runner.start" target="runner.analysis" />
   <allow source="runner.start" target="runner.configuration" />
   <tolerate source="runner.start" target="runner.constants">
