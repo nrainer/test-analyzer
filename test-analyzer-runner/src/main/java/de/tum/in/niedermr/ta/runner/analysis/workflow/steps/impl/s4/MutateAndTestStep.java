@@ -24,6 +24,7 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ProcessExecutionFailedException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
@@ -60,13 +61,13 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		int countTimeout = 0;
 		int countError = 0;
 
-		for (MutateAndTestThread t : threadList) {
-			t.join();
+		for (MutateAndTestThread workerThread : threadList) {
+			workerThread.join();
 
-			countSuccessful += t.m_countSuccessful;
-			countSkipped += t.m_countSkipped;
-			countTimeout += t.m_countTimeout;
-			countError += t.m_countError;
+			countSuccessful += workerThread.m_countSuccessful;
+			countSkipped += workerThread.m_countSkipped;
+			countTimeout += workerThread.m_countTimeout;
+			countError += workerThread.m_countError;
 		}
 
 		if (m_aborted) {
@@ -98,10 +99,10 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		List<MutateAndTestThread> threadList = new LinkedList<>();
 
 		for (int index = 0; index < numberOfThreads; index++) {
-			MutateAndTestThread t = new MutateAndTestThread(index, configuration, processExecution);
+			MutateAndTestThread workerThread = new MutateAndTestThread(index, configuration, processExecution);
 
-			threadList.add(t);
-			t.start();
+			threadList.add(workerThread);
+			workerThread.start();
 		}
 
 		return threadList;
@@ -112,12 +113,13 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		return "Mutating methods and running testcases";
 	}
 
-	private String getSummary(int countSuccessful, int countSkipped, int countTimeout, int countError) {
+	private static String getSummary(int countSuccessful, int countSkipped, int countTimeout, int countError) {
 		return "(" + (countSuccessful + countSkipped + countTimeout + countError) + " methods. " + countSuccessful
 				+ " processed successfully. " + countSkipped + " skipped. " + countTimeout + " with timeout. "
 				+ countError + " failed.)";
 	}
 
+	/** Worker thread that polls methods to mutate and triggers the test executions. */
 	protected class MutateAndTestThread extends Thread {
 		private final int m_threadIndex;
 		private final Configuration m_configuration;
@@ -132,7 +134,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		private Set<TestcaseIdentifier> m_currentTestcases;
 
 		public MutateAndTestThread(int index, Configuration configuration, ProcessExecution processExecution) {
-			this.m_threadIndex = index;
+			m_threadIndex = index;
 			m_configuration = configuration;
 			m_processExecution = processExecution;
 
@@ -196,6 +198,10 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				LOG.error("Mutate and test failed due to timeout (" + ex.getMessage() + "): "
 						+ m_currentMethodUnderTest.get());
 				m_countTimeout++;
+			} catch (ProcessExecutionFailedException ex) {
+				// likely cause: a test invoked a method that contains System.exit
+				LOG.error("Test execution did not complete: " + m_currentMethodUnderTest.get(), ex);
+				m_countError++;
 			} catch (Exception ex) {
 				LOG.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
 				m_countError++;

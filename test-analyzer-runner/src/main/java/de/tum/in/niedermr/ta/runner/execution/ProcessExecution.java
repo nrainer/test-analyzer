@@ -15,6 +15,7 @@ import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ProcessExecutionFailedException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 
 public class ProcessExecution {
@@ -86,7 +87,7 @@ public class ProcessExecution {
 		}
 
 		if (result.getReturnCode() != 0) {
-			throw new ExecutionException(executionId,
+			throw new ProcessExecutionFailedException(executionId,
 					"Execution id '" + executionId + "' returned with other code than 0");
 		}
 

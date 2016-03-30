@@ -47,7 +47,7 @@ public class TestRun {
 	private static String s_executionId;
 
 	/**
-	 * Note that the jar file of the class to be tested must be on the classpath!
+	 * Main method. Note that the jar file of the class to be tested must be on the classpath!
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
 		if (args.length == 0) {
@@ -91,7 +91,7 @@ public class TestRun {
 
 	private static List<String> runTestsFromFile(ITestRunner testRunner, String fileWithTestsToRun,
 			IResultPresentation resultPresentation, MethodIdentifier methodUnderTest, String usedReturnValueGenerator)
-					throws IOException, ReflectiveOperationException {
+			throws IOException, ReflectiveOperationException {
 		List<TestcaseIdentifier> allTestsToRun = parseTestcasesToRun(TextFileData.readFromFile(fileWithTestsToRun));
 		List<String> result = new LinkedList<>();
 

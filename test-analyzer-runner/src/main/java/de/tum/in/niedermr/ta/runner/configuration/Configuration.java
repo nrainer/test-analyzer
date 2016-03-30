@@ -386,7 +386,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 
 	/**
 	 * Get the full classpath consisting of the properties {@link #jarsWithMethodsToMutate}, {@link #jarsWithTestsToRun}
-	 * and {@link #classpath}
+	 * and {@link #classpath}.
 	 */
 	public final String getFullClasspath() {
 		return m_codePathToMutate.getValue() + CP_SEP + m_codePathToTest.getValue() + CP_SEP + m_classpath.getValue()

@@ -17,6 +17,7 @@ public class JUnitTestRunner implements ITestRunner {
 
 	@Override
 	public JUnitTestRunResult runTest(Class<?> testClass, String testcaseName) {
+		// may cause the program to terminate if the test case or one of its invoked methods invokes System.exit
 		Result result = m_jUnitCore.run(Request.method(testClass, testcaseName));
 
 		return new JUnitTestRunResult(result);
