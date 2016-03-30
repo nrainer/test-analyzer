@@ -8,12 +8,10 @@
 **/info/archive/
 /RemoveTestAssertions/
 /StaticReturnTypeAnalyzer/
-/DebuggingUtil/
-/CoverageInfoParser/
 *.log
 **/src/test/temp/
 /teamscale/backups
 /test-analyzer-core/src/test/data/JarIteratorTest/temp_1.jar
 /test-analyzer-core/src/test/data/JarIteratorTest/temp_2.jar
 /test-analyzer-test-int/src/test/program
-
+/test-analyzer-utilities/
