@@ -5,7 +5,11 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 
 public interface IResultPresentation {
-	String formatResultInformation(TestcaseIdentifier testcaseIdentifier, ITestRunResult testResult, MethodIdentifier methodUnderTest, String returnValueGenerator);
+	String formatResultInformation(TestcaseIdentifier testcaseIdentifier, ITestRunResult testResult,
+			MethodIdentifier methodUnderTest, String returnValueGenerator);
+
+	String formatTestAbortInformation(MethodIdentifier methodUnderTest, String returnValueGenerator,
+			TestAbortType abortType);
 
 	void setShortExecutionId(String execId);
 }

@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s4;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -11,12 +12,15 @@ import org.apache.logging.log4j.Logger;
 import org.conqat.lib.commons.io.ProcessUtils.ExecutionResult;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortType;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -188,7 +192,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			}
 		}
 
-		protected void mutateAndTestInternal(String testingId, IReturnValueGenerator returnValueGenerator) {
+		protected void mutateAndTestInternal(String executionId, IReturnValueGenerator returnValueGenerator) {
 			LOG.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
 					+ returnValueGenerator.getClass().getName());
 
@@ -198,7 +202,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 						m_configuration.getMethodFilters().createInstances());
 
 				if (wasSuccessfullyMutated) {
-					handleSuccessfullyMutatedMethod(testingId, returnValueGenerator);
+					handleSuccessfullyMutatedMethod(executionId, returnValueGenerator);
 				} else {
 					LOG.info("Skipped: " + m_currentMethodUnderTest.get());
 					m_countSkipped++;
@@ -206,10 +210,12 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			} catch (TimeoutException ex) {
 				LOG.error("Mutate and test failed due to timeout (" + ex.getMessage() + "): "
 						+ m_currentMethodUnderTest.get());
+				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortType.TEST_TIMEOUT);
 				m_countTimeout++;
 			} catch (ProcessExecutionFailedException ex) {
 				// likely cause: a test invoked a method that contains System.exit
 				LOG.error("Test execution did not complete: " + m_currentMethodUnderTest.get(), ex);
+				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortType.TEST_DIED);
 				m_countError++;
 			} catch (Exception ex) {
 				LOG.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
@@ -217,7 +223,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			}
 		}
 
-		protected void handleSuccessfullyMutatedMethod(String testingId, IReturnValueGenerator returnValueGenerator)
+		protected void handleSuccessfullyMutatedMethod(String executionId, IReturnValueGenerator returnValueGenerator)
 				throws IOException {
 			LOG.info("Mutated: " + m_currentMethodUnderTest.get());
 
@@ -227,9 +233,27 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			LOG.info("Testing: " + m_currentMethodUnderTest.get() + " with "
 					+ LoggingUtil.appendPluralS(m_currentTestcases, "testcase", true) + ".");
 
-			runTestsAndRecordResult(testingId, fileWithTestsToRun,
+			runTestsAndRecordResult(executionId, fileWithTestsToRun,
 					getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex), returnValueGenerator);
 			m_countSuccessful++;
+		}
+
+		protected void handleAbortedTestExecution(String executionId, IReturnValueGenerator returnValueGenerator,
+				TestAbortType abortType) {
+			try {
+				IResultPresentation resultPresentation = ResultPresentationUtil
+						.getResultPresentation(m_configuration.getResultPresentation().getValue(), executionId);
+
+				String testAbortInformation = resultPresentation.formatTestAbortInformation(m_currentMethodUnderTest,
+						returnValueGenerator.getClass().getName(), abortType);
+
+				String fileWithResults = getFileInWorkingArea(
+						getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex));
+				TextFileData.appendToFile(fileWithResults, Arrays.asList(testAbortInformation));
+
+			} catch (ReflectiveOperationException | IOException e) {
+				LOG.error("handleAbortedTestExecution", e);
+			}
 		}
 
 		protected final List<String> testcasesToStringList() {
