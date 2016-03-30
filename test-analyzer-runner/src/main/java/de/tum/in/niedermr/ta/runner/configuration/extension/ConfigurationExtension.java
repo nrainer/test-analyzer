@@ -26,11 +26,19 @@ public class ConfigurationExtension {
 		return m_dataMap.containsKey(key);
 	}
 
+	public String getStringValue(ConfigurationExtensionKey key) {
+		return getStringValue(key, null);
+	}
+
 	public String getStringValue(ConfigurationExtensionKey key, String valueIfNotSet) {
 		return m_dataMap.getOrDefault(key, valueIfNotSet);
 	}
 
-	public Integer getIntValue(ConfigurationExtensionKey key, Integer valueIfNotSet) {
+	public Integer getIntegerValue(ConfigurationExtensionKey key) {
+		return getIntegerValue(key, null);
+	}
+
+	public Integer getIntegerValue(ConfigurationExtensionKey key, Integer valueIfNotSet) {
 		String stringValue = getStringValue(key, null);
 
 		if (stringValue == null) {
@@ -38,6 +46,10 @@ public class ConfigurationExtension {
 		}
 
 		return Integer.parseInt(stringValue);
+	}
+
+	public boolean getBooleanValue(ConfigurationExtensionKey key) {
+		return getBooleanValue(key, false);
 	}
 
 	public boolean getBooleanValue(ConfigurationExtensionKey key, boolean valueIfNotSet) {
@@ -48,10 +60,6 @@ public class ConfigurationExtension {
 		}
 
 		return Boolean.parseBoolean(stringValue);
-	}
-
-	public boolean getBooleanValue(ConfigurationExtensionKey key) {
-		return getBooleanValue(key, false);
 	}
 
 	@Override

@@ -27,6 +27,7 @@ public class ConfigurationExtensionTest {
 
 		configurationExtension.setRawValue(extensionKey1, Boolean.TRUE.toString());
 		assertTrue(configurationExtension.isSet(extensionKey1));
+		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKey1));
 		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKey1, null));
 		assertTrue(configurationExtension.getBooleanValue(extensionKey1));
 
