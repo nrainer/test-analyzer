@@ -137,7 +137,7 @@ abstract class AbstractConfigurationParser {
 					"Extension properties only support assignments with " + lineType.m_separator);
 		}
 
-		m_configuration.getConfigurationExtension().setRawValue(ConfigurationExtensionKey.parse(key), rawValue);
+		m_configuration.getExtension().setRawValue(ConfigurationExtensionKey.parse(key), rawValue);
 	}
 
 	/** Check if the key is an extension or a built-in property. */

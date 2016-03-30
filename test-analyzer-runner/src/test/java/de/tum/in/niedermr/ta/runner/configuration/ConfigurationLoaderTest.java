@@ -37,10 +37,10 @@ public class ConfigurationLoaderTest {
 
 		ConfigurationExtensionKey extensionKeyForTuningAlgorithm = ConfigurationExtensionKey
 				.create("tuning.speedup.algorithm");
-		expected.getConfigurationExtension().setRawValue(extensionKeyForTuningAlgorithm, "ER3z");
+		expected.getExtension().setRawValue(extensionKeyForTuningAlgorithm, "ER3z");
 		ConfigurationExtensionKey extensionKeyForTuningFactor = ConfigurationExtensionKey
 				.create("tuning.speedup.factor");
-		expected.getConfigurationExtension().setRawValue(extensionKeyForTuningFactor, "4");
+		expected.getExtension().setRawValue(extensionKeyForTuningFactor, "4");
 
 		Configuration result = ConfigurationLoader.getConfigurationFromFile("testConfigurationFromFile.config",
 				"./src/test/data/ConfigurationLoaderTest/");
@@ -74,7 +74,7 @@ public class ConfigurationLoaderTest {
 			assertEquals(cProperties1.get(i).getValue(), cProperties2.get(i).getValue());
 		}
 
-		assertEquals(configuration1.getConfigurationExtension().toStringLines(),
-				configuration2.getConfigurationExtension().toStringLines());
+		assertEquals(configuration1.getExtension().toStringLines(),
+				configuration2.getExtension().toStringLines());
 	}
 }

@@ -22,7 +22,7 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		PersistResultStep persistResultStep = createAndInitializeExecutionStep(PersistResultStep.class);
 
-		if (configuration.getConfigurationExtension().getBooleanValue(COUNT_INSTRUCTIONS)) {
+		if (configuration.getExtension().getBooleanValue(COUNT_INSTRUCTIONS)) {
 			InstructionCounterStep countInstructionsStep = createAndInitializeExecutionStep(
 					InstructionCounterStep.class);
 			countInstructionsStep.run();
@@ -30,13 +30,13 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 			persistResultStep.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
 		}
 
-		if (configuration.getConfigurationExtension().getBooleanValue(COUNT_ASSERTIONS)) {
+		if (configuration.getExtension().getBooleanValue(COUNT_ASSERTIONS)) {
 			AssertionCounterStep countAssertionsStep = createAndInitializeExecutionStep(AssertionCounterStep.class);
 			countAssertionsStep.run();
 			persistResultStep.addResultAssertionsPerTestcase(countAssertionsStep.getAssertionsPerTestcase());
 		}
 
-		if (configuration.getConfigurationExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
+		if (configuration.getExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
 			MethodModifierRetrievalStep modifierRetrievalStep = createAndInitializeExecutionStep(
 					MethodModifierRetrievalStep.class);
 			modifierRetrievalStep.run();

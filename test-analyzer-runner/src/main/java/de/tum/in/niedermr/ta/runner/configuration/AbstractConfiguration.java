@@ -29,7 +29,7 @@ public abstract class AbstractConfiguration {
 		return m_configurationVersion;
 	}
 
-	public ConfigurationExtension getConfigurationExtension() {
+	public ConfigurationExtension getExtension() {
 		return m_configurationExtension;
 	}
 

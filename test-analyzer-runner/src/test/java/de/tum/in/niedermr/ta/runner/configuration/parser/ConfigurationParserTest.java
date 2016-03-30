@@ -33,7 +33,7 @@ public class ConfigurationParserTest {
 		expected.getExecuteCollectInformation().setValue(true);
 		expected.getExecuteMutateAndTest().setValue(false);
 		expected.getWorkingFolder().setValue("E:/");
-		expected.getConfigurationExtension().setRawValue(EXTENSION_PROPERTY_1, Boolean.TRUE.toString());
+		expected.getExtension().setRawValue(EXTENSION_PROPERTY_1, Boolean.TRUE.toString());
 
 		Configuration result = new Configuration();
 
