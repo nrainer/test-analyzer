@@ -35,5 +35,8 @@ public class ConfigurationExtensionTest {
 		assertEquals(1, configurationExtensionLines.size());
 		assertEquals(ConfigurationExtensionKey.EXTENSION_PROPERTY_PREFIX + propertyName + " = true",
 				configurationExtensionLines.get(0));
+
+		configurationExtension.removeEntry(extensionKey1);
+		assertFalse(configurationExtension.isSet(extensionKey1));
 	}
 }

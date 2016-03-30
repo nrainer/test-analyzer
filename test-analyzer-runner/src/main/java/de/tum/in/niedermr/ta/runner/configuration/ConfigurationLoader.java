@@ -11,6 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -204,6 +205,10 @@ public class ConfigurationLoader implements FileSystemConstants {
 		result.addAll(configuration.getConfigurationExtension().toStringLines());
 
 		return result;
+	}
+
+	public static void writeToFile(Configuration configuration, String file) throws IOException {
+		TextFileData.writeToFile(file, toFileLines(configuration));
 	}
 
 	private static void writeToConsole(String output) {

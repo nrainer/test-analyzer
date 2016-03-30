@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -98,7 +97,7 @@ public class AnalyzerRunnerStart {
 	private static void copyConfigurationIntoWorkingFolder(String file, Configuration configuration)
 			throws IOException {
 		FileSystemUtils.ensureDirectoryExists(new File(file).getParentFile());
-		TextFileData.writeToFile(file, ConfigurationLoader.toFileLines(configuration));
+		ConfigurationLoader.writeToFile(configuration, file);
 	}
 
 	private static void print(String value) {

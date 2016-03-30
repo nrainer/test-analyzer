@@ -22,6 +22,10 @@ public class ConfigurationExtension {
 		m_dataMap.put(key, value);
 	}
 
+	public void removeEntry(ConfigurationExtensionKey key) {
+		m_dataMap.remove(key);
+	}
+
 	public boolean isSet(ConfigurationExtensionKey key) {
 		return m_dataMap.containsKey(key);
 	}

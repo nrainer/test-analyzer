@@ -179,7 +179,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	 * 
 	 * @see AbstractClasspathProperty#parseValue(String)
 	 */
-	public AbstractClasspathProperty getClasspath() {
+	public ClasspathProperty getClasspath() {
 		return m_classpath;
 	}
 
