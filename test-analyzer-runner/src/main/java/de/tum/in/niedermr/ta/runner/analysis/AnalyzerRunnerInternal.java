@@ -74,15 +74,7 @@ public class AnalyzerRunnerInternal {
 			IWorkflow[] testWorkflows = createTestWorkflows(executionId, configuration);
 
 			for (IWorkflow workFlow : testWorkflows) {
-				LOG.info("WORKFLOW " + workFlow.getName() + " START (" + new Date() + ")");
-				long startTime = System.currentTimeMillis();
-
-				IWorkflow workflow = initializeTestWorkflow(executionId, workFlow, configuration, programPath);
-				workflow.start();
-
-				LOG.info("Workflow execution id was: '" + executionId + "'");
-				LOG.info("Workflow duration was: " + getDuration(startTime));
-				LOG.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
+				executeWorkflow(executionId, programPath, configuration, workFlow);
 			}
 
 			LOG.info("TEST ANALYZER END");
@@ -91,6 +83,20 @@ public class AnalyzerRunnerInternal {
 			LOG.fatal("Execution failed", t);
 			throw new ExecutionException(executionId, AnalyzerRunnerInternal.class.getName() + " was not successful.");
 		}
+	}
+
+	/** Execute the given workflow. */
+	private static void executeWorkflow(String executionId, String programPath, Configuration configuration,
+			IWorkflow workFlow) {
+		LOG.info("WORKFLOW " + workFlow.getName() + " START (" + new Date() + ")");
+		long startTime = System.currentTimeMillis();
+
+		IWorkflow workflow = initializeTestWorkflow(executionId, workFlow, configuration, programPath);
+		workflow.start();
+
+		LOG.info("Workflow execution id was: '" + executionId + "'");
+		LOG.info("Workflow duration was: " + getDuration(startTime));
+		LOG.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
 	}
 
 	public static ProgramArgsWriter createProgramArgsWriter() {
