@@ -16,7 +16,7 @@ public abstract class AbstractProgramArgsManager {
 
 	/** Check if a key is suitable for the program and if its index is in the args range. */
 	protected void checkProgramArgsKey(ProgramArgsKey key) {
-		if (key.isForProgramClass(m_programClass)) {
+		if (!key.isForProgramClass(m_programClass)) {
 			throw new IllegalArgumentException("Key is not suitable for " + m_programClass.getName());
 		}
 
