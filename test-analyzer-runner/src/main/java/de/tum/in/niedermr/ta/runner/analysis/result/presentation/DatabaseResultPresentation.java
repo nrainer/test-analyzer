@@ -1,7 +1,7 @@
 package de.tum.in.niedermr.ta.runner.analysis.result.presentation;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
-import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortType;
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortReason;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
@@ -16,14 +16,16 @@ public class DatabaseResultPresentation implements IResultPresentation {
 	private static final String SQL_INSERT_TEST_ABORT = "INSERT INTO Test_Abort (execution, method, retValGen, cause) VALUES ('%s', '%s', '%s', '%s');";
 	private String m_execId;
 
+	/** {@inheritDoc} */
 	@Override
-	public String formatResultInformation(TestcaseIdentifier testcaseIdentifier, ITestRunResult testResult,
+	public String formatTestResultEntry(TestcaseIdentifier testcaseIdentifier, ITestRunResult testResult,
 			MethodIdentifier mutatedMethod, String returnValueGenerator) {
 		return String.format(SQL_INSERT_TEST_RESULT, m_execId, testcaseIdentifier.toMethodIdentifier().get(),
 				mutatedMethod.get(), returnValueGenerator, testResult.getFailureCount() > 0,
 				testResult.isAssertionError(), getFirstExceptionName(testResult));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void setShortExecutionId(String execId) {
 		this.m_execId = execId;
@@ -35,9 +37,10 @@ public class DatabaseResultPresentation implements IResultPresentation {
 		return t == null ? "" : t.getClass().getName();
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public String formatTestAbortInformation(MethodIdentifier methodUnderTest, String returnValueGenerator,
-			TestAbortType abortType) {
+	public String formatTestAbortEntry(MethodIdentifier methodUnderTest, String returnValueGenerator,
+			TestAbortReason abortType) {
 		return String.format(SQL_INSERT_TEST_ABORT, m_execId, methodUnderTest.get(), returnValueGenerator,
 				abortType.toString());
 	}

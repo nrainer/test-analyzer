@@ -13,7 +13,7 @@ import org.conqat.lib.commons.io.ProcessUtils.ExecutionResult;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
-import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortType;
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortReason;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
@@ -186,40 +186,44 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				final String testingId = getFullExecId(
 						EXEC_ID_TEST_RUN + "_T" + m_threadIndex + "_C" + m_countMethods + "_R" + retValGenIndex);
 
-				mutateAndTestInternal(testingId, returnValueGen);
+				mutateAndTest(testingId, returnValueGen);
 
 				retValGenIndex++;
 			}
 		}
 
-		protected void mutateAndTestInternal(String executionId, IReturnValueGenerator returnValueGenerator) {
-			LOG.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
-					+ returnValueGenerator.getClass().getName());
-
+		protected void mutateAndTest(String executionId, IReturnValueGenerator returnValueGenerator) {
 			try {
-				boolean wasSuccessfullyMutated = MethodMutation.createJarWithMutatedMethod(m_currentMethodUnderTest,
-						getFileInWorkingArea(getWithIndex(FILE_TEMP_JAR_X, m_threadIndex)), returnValueGenerator,
-						m_configuration.getMethodFilters().createInstances());
-
-				if (wasSuccessfullyMutated) {
-					handleSuccessfullyMutatedMethod(executionId, returnValueGenerator);
-				} else {
-					LOG.info("Skipped: " + m_currentMethodUnderTest.get());
-					m_countSkipped++;
-				}
+				mutateAndTestInternal(executionId, returnValueGenerator);
 			} catch (TimeoutException ex) {
 				LOG.error("Mutate and test failed due to timeout (" + ex.getMessage() + "): "
 						+ m_currentMethodUnderTest.get());
-				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortType.TEST_TIMEOUT);
+				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortReason.TEST_TIMEOUT);
 				m_countTimeout++;
 			} catch (ProcessExecutionFailedException ex) {
-				// likely cause: a test invoked a method that contains System.exit
 				LOG.error("Test execution did not complete: " + m_currentMethodUnderTest.get(), ex);
-				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortType.TEST_DIED);
+				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortReason.TEST_DIED);
 				m_countError++;
 			} catch (Exception ex) {
 				LOG.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
 				m_countError++;
+			}
+		}
+
+		private void mutateAndTestInternal(String executionId, IReturnValueGenerator returnValueGenerator)
+				throws Exception {
+			LOG.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
+					+ returnValueGenerator.getClass().getName());
+
+			boolean wasSuccessfullyMutated = MethodMutation.createJarWithMutatedMethod(m_currentMethodUnderTest,
+					getFileInWorkingArea(getWithIndex(FILE_TEMP_JAR_X, m_threadIndex)), returnValueGenerator,
+					m_configuration.getMethodFilters().createInstances());
+
+			if (wasSuccessfullyMutated) {
+				handleSuccessfullyMutatedMethod(executionId, returnValueGenerator);
+			} else {
+				LOG.info("Skipped: " + m_currentMethodUnderTest.get());
+				m_countSkipped++;
 			}
 		}
 
@@ -239,12 +243,12 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		}
 
 		protected void handleAbortedTestExecution(String executionId, IReturnValueGenerator returnValueGenerator,
-				TestAbortType abortType) {
+				TestAbortReason abortType) {
 			try {
 				IResultPresentation resultPresentation = ResultPresentationUtil
 						.getResultPresentation(m_configuration.getResultPresentation().getValue(), executionId);
 
-				String testAbortInformation = resultPresentation.formatTestAbortInformation(m_currentMethodUnderTest,
+				String testAbortInformation = resultPresentation.formatTestAbortEntry(m_currentMethodUnderTest,
 						returnValueGenerator.getClass().getName(), abortType);
 
 				String fileWithResults = getFileInWorkingArea(
