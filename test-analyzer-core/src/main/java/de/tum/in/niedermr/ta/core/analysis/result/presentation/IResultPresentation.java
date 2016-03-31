@@ -17,4 +17,7 @@ public interface IResultPresentation {
 	/** Format an entry about an aborted test execution. */
 	String formatTestAbortEntry(MethodIdentifier methodUnderTest, String returnValueGeneratorName,
 			TestAbortReason abortType);
+
+	/** Format an entry about a method-testcase-mapping. */
+	String formatMethodAndTestcaseMapping(MethodIdentifier methodUnderTest, TestcaseIdentifier testcase);
 }

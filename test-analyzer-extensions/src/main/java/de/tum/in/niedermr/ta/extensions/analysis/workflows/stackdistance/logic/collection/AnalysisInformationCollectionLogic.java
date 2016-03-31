@@ -27,20 +27,11 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 
 	private final String m_shortExecutionId;
 	private final List<String> m_result;
-	private String m_outputFile;
 
 	public AnalysisInformationCollectionLogic(String executionId) {
 		super(executionId);
 		m_shortExecutionId = getExecutionId().substring(0, CommonUtility.LENGTH_OF_RANDOM_ID);
 		m_result = new LinkedList<>();
-	}
-
-	public String getOutputFile() {
-		return m_outputFile;
-	}
-
-	public void setOutputFile(String outputFile) {
-		this.m_outputFile = outputFile;
 	}
 
 	@Override
@@ -87,6 +78,6 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 	}
 
 	protected void writeResultsToFile() throws IOException {
-		TextFileData.writeToFile(m_outputFile, m_result);
+		TextFileData.writeToFile(getOutputFile(), m_result);
 	}
 }

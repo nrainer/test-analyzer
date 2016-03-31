@@ -3,10 +3,12 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.collection.AnalysisInformationCollectionLogic;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
@@ -29,7 +31,7 @@ public class AnalysisInformationCollector {
 	private static final Logger LOG = LogManager.getLogger(AnalysisInformationCollector.class);
 
 	/** Number of args. */
-	private static final int ARGS_COUNT = 7;
+	private static final int ARGS_COUNT = 8;
 	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(AnalysisInformationCollector.class, 0);
 	public static final ProgramArgsKey ARGS_FILE_WITH_TESTS_TO_RUN = new ProgramArgsKey(
 			AnalysisInformationCollector.class, 1);
@@ -42,6 +44,9 @@ public class AnalysisInformationCollector {
 			5);
 	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(AnalysisInformationCollector.class,
 			6);
+	/** Result presentation: 'TEXT', 'DB' or the name of a class implementing {@link IResultPresentation}. */
+	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(AnalysisInformationCollector.class,
+			7);
 
 	public static void main(String[] args) {
 		if (args.length == 0) {
@@ -75,9 +80,14 @@ public class AnalysisInformationCollector {
 					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_INCLUDES, true));
 			final String[] testClassExcludes = ProcessExecution
 					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_EXCLUDES, true));
+			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
+
+			final IResultPresentation resultPresentation = ResultPresentationUtil
+					.getResultPresentation(resultPresentationChoice, executionId);
 
 			analysisInformationCollectionLogic.setTestRunner(testRunner);
 			analysisInformationCollectionLogic.setOutputFile(dataOutputPath);
+			analysisInformationCollectionLogic.setResultPresentation(resultPresentation);
 			analysisInformationCollectionLogic.execute(jarsWithTests, testClassIncludes, testClassExcludes,
 					operateFaultTolerant);
 

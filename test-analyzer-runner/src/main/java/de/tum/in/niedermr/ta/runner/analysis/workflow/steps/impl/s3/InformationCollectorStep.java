@@ -46,6 +46,8 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 				ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
 		argsWriter.setValue(InformationCollector.ARGS_TEST_CLASS_EXCLUDES,
 				ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
+		argsWriter.setValue(InformationCollector.ARGS_RESULT_PRESENTATION,
+				configuration.getResultPresentation().getValue());
 
 		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class.getName(),
 				classPath, argsWriter);

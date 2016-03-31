@@ -6,14 +6,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 
 public class CollectedInformation {
-	protected static final String DB_INSERT_STATEMENT = "INSERT INTO Collected_Information (execution, method, testcase) VALUES ('%s', '%s', '%s');";
-
 	public static List<String> toPlainText(Collection<TestInformation> data) {
 		List<String> output = new LinkedList<>();
 
@@ -30,12 +29,12 @@ public class CollectedInformation {
 		return output;
 	}
 
-	public static List<String> toSQLStatements(Collection<TestInformation> data, String executionId) {
+	public static List<String> toResult(Collection<TestInformation> testInformationCollection, IResultPresentation resultPresentation) {
 		List<String> output = new LinkedList<>();
 
-		for (TestInformation info : data) {
+		for (TestInformation info : testInformationCollection) {
 			for (TestcaseIdentifier testcase : info.getTestcases()) {
-				output.add(String.format(DB_INSERT_STATEMENT, executionId, info.getMethodUnderTest().get(), testcase.toMethodIdentifier().get()));
+				output.add(resultPresentation.formatMethodAndTestcaseMapping(info.getMethodUnderTest(), testcase));
 			}
 		}
 

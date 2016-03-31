@@ -16,26 +16,16 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
-import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class InformationCollectionLogic extends AbstractInformationCollectionLogic {
 	private static final Logger LOG = LogManager.getLogger(InformationCollectionLogic.class);
 
 	protected final Map<MethodIdentifier, TestInformation> m_methodInformation;
-	private String m_outputFile;
 
 	public InformationCollectionLogic(String executionId) {
 		super(executionId);
 		this.m_methodInformation = new HashMap<>();
-	}
-
-	public String getOutputFile() {
-		return m_outputFile;
-	}
-
-	public void setOutputFile(String outputFile) {
-		this.m_outputFile = outputFile;
 	}
 
 	@Override
@@ -73,32 +63,30 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
 				+ ".");
 
-		final String shortExecutionId = getExecutionId().substring(0, CommonUtility.LENGTH_OF_RANDOM_ID);
-
 		try {
-			writeResultToFiles(shortExecutionId, result);
+			writeResultToFiles(result);
 		} catch (IOException ex) {
 			LOG.error("When writing data to file", ex);
 		}
 	}
 
-	protected void writeResultToFiles(String shortExecutionId, Collection<TestInformation> result) throws IOException {
-		TextFileData.writeToFile(m_outputFile, CollectedInformation.toPlainText(result));
-		TextFileData.writeToFile(getAdditionalSqlOutputFile(m_outputFile),
-				CollectedInformation.toSQLStatements(result, shortExecutionId));
+	protected void writeResultToFiles(Collection<TestInformation> result) throws IOException {
+		TextFileData.writeToFile(getOutputFile(), CollectedInformation.toPlainText(result));
+		TextFileData.writeToFile(getAdditionalResultOutputFile(getOutputFile()),
+				CollectedInformation.toResult(result, getResultPresentation()));
 	}
 
-	protected String getAdditionalSqlOutputFile(String mainOutputFile) {
-		String additionalSqlOutputFile = mainOutputFile;
+	protected String getAdditionalResultOutputFile(String mainOutputFile) {
+		String additionalResultOutputFile = mainOutputFile;
 
 		if (mainOutputFile.endsWith(FileSystemConstants.FILE_EXTENSION_TXT)) {
-			additionalSqlOutputFile = additionalSqlOutputFile.substring(0,
-					additionalSqlOutputFile.lastIndexOf(FileSystemConstants.FILE_EXTENSION_TXT));
+			additionalResultOutputFile = additionalResultOutputFile.substring(0,
+					additionalResultOutputFile.lastIndexOf(FileSystemConstants.FILE_EXTENSION_TXT));
 		}
 
-		additionalSqlOutputFile += FileSystemConstants.FILE_EXTENSION_SQL_TXT;
+		additionalResultOutputFile += FileSystemConstants.FILE_EXTENSION_SQL_TXT;
 
-		return additionalSqlOutputFile;
+		return additionalResultOutputFile;
 	}
 
 	protected void resetInvocationLog() {

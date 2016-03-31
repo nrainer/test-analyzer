@@ -34,6 +34,8 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 				ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
 		argsWriter.setValue(AnalysisInformationCollector.ARGS_TEST_CLASS_EXCLUDES,
 				ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_RESULT_PRESENTATION,
+				configuration.getResultPresentation().getValue());
 
 		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalysisInformationCollector.class.getName(),
 				classPath, argsWriter);

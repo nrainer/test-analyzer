@@ -67,4 +67,20 @@ public class TextResultPresentation implements IResultPresentation {
 
 		return sB.toString();
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String formatMethodAndTestcaseMapping(MethodIdentifier methodUnderTest, TestcaseIdentifier testcase) {
+		StringBuilder sB = new StringBuilder();
+
+		sB.append("Method: " + methodUnderTest.get());
+		sB.append(CommonConstants.NEW_LINE);
+
+		sB.append("Tested by: " + testcase.toMethodIdentifier().get());
+		sB.append(CommonConstants.NEW_LINE);
+
+		sB.append(CommonConstants.SEPARATOR_END_OF_BLOCK);
+
+		return sB.toString();
+	}
 }

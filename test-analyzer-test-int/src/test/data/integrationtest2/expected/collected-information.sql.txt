@@ -1,63 +1,189 @@
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation$1.compareTo(de.tum.in.ma.simpleproject.core.Calculation)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.comparable()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.parse(java.lang.String)', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.isPositive()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.mult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.mult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.mult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.mult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.constructor()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add0()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add5()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResultAsString()', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.stringCorrect()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResultAsString()', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.stringReturnNotNull()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.intArray()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.stringCorrect()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.constructor()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add0()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add5()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.stringReturnNotNull()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.getResultAsArray()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.intArray()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation$1.compareTo(java.lang.Object)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.comparable()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add0()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add5()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.trimString(java.lang.String)', 'de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.clear()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.sub(int)', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.getComparable()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.comparable()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.increment()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.increment()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.increment()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.core.Calculation.getResultAsList()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()');
-INSERT INTO Collected_Information (execution, method, testcase) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.isEven()', 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()');
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResultAsString()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.stringCorrect()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResultAsString()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.stringReturnNotNull()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.intArray()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.stringCorrect()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.stringReturnNotNull()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add5()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.constructor()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add0()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.getResult()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add5()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.constructor()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add0()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.mult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.mult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.mult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.mult(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.clear()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation$1.compareTo(de.tum.in.ma.simpleproject.core.Calculation)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.comparable()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult2()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult3()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.clear()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add5()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.mult1()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add0()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.add(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.isEven()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation$1.compareTo(java.lang.Object)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.comparable()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.isPositive()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.getResultAsList()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.resultAsList()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.parse(java.lang.String)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.getComparable()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.comparable()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.getResultAsArray()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.intArray()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.trimString(java.lang.String)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.increment()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.even()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.increment()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.increment()
+.
+Method: de.tum.in.ma.simpleproject.lite.CalculationLite.increment()
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.positive()
+.
+Method: de.tum.in.ma.simpleproject.core.Calculation.sub(int)
+Tested by: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.sub()
+.
