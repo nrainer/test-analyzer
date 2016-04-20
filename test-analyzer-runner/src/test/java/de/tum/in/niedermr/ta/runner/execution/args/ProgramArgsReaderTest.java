@@ -47,7 +47,7 @@ public class ProgramArgsReaderTest {
 	public void testCheckValidProgramArgsKey() {
 		try {
 			ProgramArgsReader reader = new ProgramArgsReader(PROGRAM_CLASS, new String[ARGS_COUNT]);
-			reader.checkProgramArgsKey(ARGS_0);
+			reader.checkProgramArgsKey(ARGS_0, true);
 		} catch (IllegalArgumentException e) {
 			fail();
 		}

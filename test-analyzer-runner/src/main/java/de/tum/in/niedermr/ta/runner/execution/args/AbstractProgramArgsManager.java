@@ -15,12 +15,12 @@ public abstract class AbstractProgramArgsManager {
 	}
 
 	/** Check if a key is suitable for the program and if its index is in the args range. */
-	protected void checkProgramArgsKey(ProgramArgsKey key) {
+	protected void checkProgramArgsKey(ProgramArgsKey key, boolean checkIndex) {
 		if (!key.isForProgramClass(m_programClass)) {
 			throw new IllegalArgumentException("Key is not suitable for " + m_programClass.getName());
 		}
 
-		if (key.getIndex() >= m_args.length) {
+		if (checkIndex && key.getIndex() >= m_args.length) {
 			throw new IllegalArgumentException("Index is out of range: " + key.getIndex());
 		}
 	}

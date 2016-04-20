@@ -23,7 +23,7 @@ public class ProgramArgsWriter extends AbstractProgramArgsManager {
 
 	/** Set an argument by its key. A key check is performed. */
 	public void setValue(ProgramArgsKey key, String value) {
-		checkProgramArgsKey(key);
+		checkProgramArgsKey(key, true);
 		m_args[key.getIndex()] = value;
 	}
 }

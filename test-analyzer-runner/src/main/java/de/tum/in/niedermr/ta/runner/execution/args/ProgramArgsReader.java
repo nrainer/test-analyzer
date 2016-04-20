@@ -18,7 +18,7 @@ public class ProgramArgsReader extends AbstractProgramArgsManager {
 	 *             if the value is null or empty
 	 */
 	public String getArgument(ProgramArgsKey key) {
-		return getArgument(key, true);
+		return getArgument(key, false);
 	}
 
 	/** Get an argument by its key or return {@code defaultValue} if the value is null or empty. */
@@ -39,7 +39,7 @@ public class ProgramArgsReader extends AbstractProgramArgsManager {
 	 *             if {@code allowEmpty} is false and the value is null or empty
 	 */
 	public String getArgument(ProgramArgsKey key, boolean allowEmpty) {
-		checkProgramArgsKey(key);
+		checkProgramArgsKey(key, !allowEmpty);
 		String value = getArgumentUnsafe(key.getIndex());
 
 		if (!allowEmpty && StringUtility.isNullOrEmpty(value)) {
@@ -49,8 +49,12 @@ public class ProgramArgsReader extends AbstractProgramArgsManager {
 		return value;
 	}
 
-	/** Get an argument by its index. No index checks are performed. Quotation marks are replaced! */
+	/** Get an argument by its index. Returns null if out of argument bounds. Quotation marks are replaced! */
 	public String getArgumentUnsafe(int index) {
+		if (index >= m_args.length) {
+			return null;
+		}
+
 		String value = m_args[index];
 
 		if (value != null) {
