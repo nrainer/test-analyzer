@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s4;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,7 +28,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class MutateAndTestStep extends AbstractExecutionStep {
-	private static final Logger LOG = LogManager.getLogger(MutateAndTestStep.class);
+	static final Logger LOG = LogManager.getLogger(MutateAndTestStep.class);
 	private static final Logger LOG_TEST_SYS_ERR = LogManager.getLogger("TestSysErr");
 
 	protected static final String EXEC_ID_TEST_RUN = "TSTRUN";
@@ -81,7 +80,17 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	private void startAbortChecker() {
 		this.m_aborted = false;
 
-		new AbortCheckerThread().start();
+		String fileName = getFileInWorkingArea(EnvironmentConstants.FILE_TEMP_IS_RUNNING_TESTS);
+
+		AbortCheckerThread abortCheckerThread = new AbortCheckerThread(fileName, TIME_INTERVAL_ABORT_CHECK) {
+			@Override
+			protected void execAbort() {
+				m_methodsToMutateAndTestsToRun.clear();
+				m_aborted = true;
+			}
+		};
+
+		abortCheckerThread.start();
 	}
 
 	private void loadReturnValueGenerators(Configuration configuration) throws ExecutionException {
@@ -267,62 +276,6 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		@Override
 		public String toString() {
 			return MutateAndTestThread.class.getSimpleName() + " [index = " + m_threadIndex + "]";
-		}
-	}
-
-	/**
-	 * Places a file named {@link #FILE_TEMP_IS_RUNNING_TESTS} in the temp folder of the execution directory and checks
-	 * every {@link TIME_INTERVAL_ABORT_CHECK} seconds whether the file still exists. If the file has been deleted, the
-	 * testing process will be stopped gently. <br/>
-	 * <br/>
-	 * This is a daemon thread by default.
-	 *
-	 */
-	protected class AbortCheckerThread extends Thread {
-		private File m_isRunningFile;
-
-		public AbortCheckerThread() {
-			this.setDaemon(true);
-		}
-
-		@Override
-		public void run() {
-			try {
-				setUp();
-
-				while (true) {
-					sleepUntilNextCheck();
-
-					if (isToBeAborted()) {
-						abort();
-						LOG.info("Abort signal received and processed.");
-						return;
-					}
-				}
-			} catch (Throwable t) {
-				LOG.warn(AbortCheckerThread.class.getSimpleName() + " is inactive because of thrown exception!", t);
-				return;
-			}
-		}
-
-		private void setUp() throws IOException {
-			String fileName = getFileInWorkingArea(FILE_TEMP_IS_RUNNING_TESTS);
-
-			m_isRunningFile = new File(fileName);
-			m_isRunningFile.createNewFile();
-		}
-
-		private void sleepUntilNextCheck() throws InterruptedException {
-			Thread.sleep(TIME_INTERVAL_ABORT_CHECK * 1000);
-		}
-
-		private boolean isToBeAborted() {
-			return !(m_isRunningFile.exists());
-		}
-
-		private void abort() {
-			m_methodsToMutateAndTestsToRun.clear();
-			m_aborted = true;
 		}
 	}
 }
