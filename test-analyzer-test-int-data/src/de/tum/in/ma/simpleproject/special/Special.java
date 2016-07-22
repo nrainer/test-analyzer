@@ -1,37 +1,36 @@
 package de.tum.in.ma.simpleproject.special;
 
-public class Special implements Comparable<Integer>
-{
-	public int noReturnStatement()
-	{
+public class Special implements Comparable<Integer> {
+	public int noReturnStatement() {
 		throw new IllegalArgumentException();
 	}
 
 	@Override
-	public int compareTo(Integer o)
-	{
+	public int compareTo(Integer o) {
 		return o;
 	}
-	
-	public int tryCatchBlock(String s)
-	{
-		try
-		{
+
+	public int tryCatchBlock(String s) {
+		try {
 			return Integer.parseInt(s);
-		}
-		catch (NumberFormatException ex)
-		{
+		} catch (NumberFormatException ex) {
 			return Integer.MAX_VALUE;
 		}
 	}
-	
-	public int add(int x, int y, int z)
-	{
+
+	public int add(int x, int y, int z) {
 		return x + y + z;
 	}
-	
-	public static int staticMethod()
-	{
+
+	public static int staticMethod() {
 		return 2;
+	}
+
+	public static int returnFiveForTestNotToCauseATimeout() {
+		return 5;
+	}
+
+	public static int returnFiveForTestNotToExit() {
+		return 5;
 	}
 }

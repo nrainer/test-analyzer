@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
@@ -22,6 +23,8 @@ public abstract class AbstractInformationCollectionLogic {
 
 	private final String m_executionId;
 	private ITestRunner m_testRunner;
+	private String m_outputFile;
+	private IResultPresentation resultPresentation;
 
 	protected AbstractInformationCollectionLogic(String executionId) {
 		this.m_executionId = executionId;
@@ -35,8 +38,24 @@ public abstract class AbstractInformationCollectionLogic {
 		this.m_testRunner = testRunner;
 	}
 
-	public ITestRunner getTestRunner() {
+	protected ITestRunner getTestRunner() {
 		return m_testRunner;
+	}
+
+	protected String getOutputFile() {
+		return m_outputFile;
+	}
+
+	public void setOutputFile(String outputFile) {
+		this.m_outputFile = outputFile;
+	}
+
+	public void setResultPresentation(IResultPresentation resultPresentation) {
+		this.resultPresentation = resultPresentation;
+	}
+
+	protected IResultPresentation getResultPresentation() {
+		return resultPresentation;
 	}
 
 	public void execute(String[] jarsWithTests, String[] testClassIncludes, String[] testClassExcludes,

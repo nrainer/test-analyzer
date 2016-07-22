@@ -98,7 +98,7 @@ public class TestRun {
 		for (TestcaseIdentifier testcase : allTestsToRun) {
 			ITestRunResult testResult = testRunner.runTest(testcase.resolveTestClass(), testcase.getTestcaseName());
 
-			result.add(resultPresentation.formatResultInformation(testcase, testResult, methodUnderTest,
+			result.add(resultPresentation.formatTestResultEntry(testcase, testResult, methodUnderTest,
 					usedReturnValueGenerator));
 		}
 

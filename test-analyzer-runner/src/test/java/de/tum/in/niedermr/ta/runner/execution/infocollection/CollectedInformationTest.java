@@ -10,10 +10,12 @@ import java.util.Set;
 
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 
 public class CollectedInformationTest implements CommonConstants {
 	@Test
@@ -44,10 +46,14 @@ public class CollectedInformationTest implements CommonConstants {
 	public void testToSQLStatements() {
 		final String executionId = "TEST";
 
-		String expected = String.format(CollectedInformation.DB_INSERT_STATEMENT, executionId,
-				"de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()", "de.tum.in.ma.project.example.UnitTest.stringCorrect()");
+		String expected = String.format(DatabaseResultPresentation.SQL_INSERT_METHOD_TEST_CASE_MAPPING, executionId,
+				"de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()",
+				"de.tum.in.ma.project.example.UnitTest.stringCorrect()");
 
-		List<String> result = CollectedInformation.toSQLStatements(getShortTestData(), executionId);
+		IResultPresentation resultPresentation = new DatabaseResultPresentation();
+		resultPresentation.setShortExecutionId(executionId);
+
+		List<String> result = CollectedInformation.toResult(getShortTestData(), resultPresentation);
 
 		assertNotNull(result);
 		assertEquals(1, result.size());
@@ -57,8 +63,10 @@ public class CollectedInformationTest implements CommonConstants {
 	private List<TestInformation> getShortTestData() {
 		List<TestInformation> data = new LinkedList<>();
 
-		TestInformation testInformation = new TestInformation(MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()"));
-		testInformation.addTestcase(TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "stringCorrect"));
+		TestInformation testInformation = new TestInformation(
+				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()"));
+		testInformation.addTestcase(TestcaseIdentifier
+				.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "stringCorrect"));
 		data.add(testInformation);
 
 		return data;
@@ -71,13 +79,18 @@ public class CollectedInformationTest implements CommonConstants {
 
 		TestInformation testInformation;
 
-		testInformation = new TestInformation(MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.increment()"));
-		testInformation.addTestcase(TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "even"));
-		testInformation.addTestcase(TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "increment"));
+		testInformation = new TestInformation(
+				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.increment()"));
+		testInformation.addTestcase(
+				TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "even"));
+		testInformation.addTestcase(
+				TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "increment"));
 		data.add(testInformation);
 
-		testInformation = new TestInformation(MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.isEven()"));
-		testInformation.addTestcase(TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "even"));
+		testInformation = new TestInformation(
+				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.isEven()"));
+		testInformation.addTestcase(
+				TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "even"));
 		data.add(testInformation);
 
 		return data;

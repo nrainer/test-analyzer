@@ -46,13 +46,13 @@ public class PresentationTest implements CommonConstants {
 		Result result;
 
 		result = new Result();
-		output = presentation.formatResultInformation(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
+		output = presentation.formatTestResultEntry(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
 				SAMPLE_METHOD_IDENTIFIER, SAMPLE_RET_VAL_GEN_NAME);
 		expected = String.format(genericExpected, "OK");
 		assertEquals(expected, output);
 
 		result = new JUnitCore().run(Request.method(SampleJUnitTestClass.class, "b"));
-		output = presentation.formatResultInformation(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
+		output = presentation.formatTestResultEntry(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
 				SAMPLE_METHOD_IDENTIFIER, SAMPLE_RET_VAL_GEN_NAME);
 		expected = String.format(genericExpected, "1 of 1 FAILED" + NEW_LINE + "Exception: java.lang.AssertionError");
 		assertEquals(expected, output);
@@ -70,13 +70,13 @@ public class PresentationTest implements CommonConstants {
 		Result result;
 
 		result = new Result();
-		output = presentation.formatResultInformation(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
+		output = presentation.formatTestResultEntry(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
 				SAMPLE_METHOD_IDENTIFIER, SAMPLE_RET_VAL_GEN_NAME);
 		expected = String.format(genericExpected, SAMPLE_RET_VAL_GEN_NAME, false, false, "");
 		assertEquals(expected, output);
 
 		result = new JUnitCore().run(Request.method(SampleJUnitTestClass.class, "b"));
-		output = presentation.formatResultInformation(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
+		output = presentation.formatTestResultEntry(SAMPLE_TEST_IDENTIFIER, new JUnitTestRunResult(result),
 				SAMPLE_METHOD_IDENTIFIER, SAMPLE_RET_VAL_GEN_NAME);
 		expected = String.format(genericExpected, SAMPLE_RET_VAL_GEN_NAME, true, true, AssertionError.class.getName());
 		assertEquals(expected, output);
