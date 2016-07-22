@@ -11,7 +11,7 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 public class IntegrationTest1 extends AbstractSystemTest {
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
-		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_LITE));
+		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformation());
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResult());
 

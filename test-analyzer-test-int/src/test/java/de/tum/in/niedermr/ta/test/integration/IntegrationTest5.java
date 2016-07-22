@@ -14,7 +14,7 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 public class IntegrationTest5 extends AbstractSystemTest {
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
-		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_SPECIAL));
+		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformation());
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResult());
 
@@ -22,11 +22,14 @@ public class IntegrationTest5 extends AbstractSystemTest {
 
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResult());
 
-		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, false, getFileExpectedCollectedInformation(), getFileOutputCollectedInformation());
+		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, false, getFileExpectedCollectedInformation(),
+				getFileOutputCollectedInformation());
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResult(), getFileOutputResult());
-		
+
 		List<String> expectedLogFileTextChunks = new ArrayList<>();
-		expectedLogFileTextChunks.add(TestcaseIdentifier.create("de.tum.in.ma.simpleproject.special.HasFailingTest", "failingTest").get() + " will be skipped!");
+		expectedLogFileTextChunks
+				.add(TestcaseIdentifier.create("de.tum.in.ma.simpleproject.special.HasFailingTest", "failingTest").get()
+						+ " will be skipped!");
 		// Lambda mutation is not supported
 		expectedLogFileTextChunks.add("Skipped: de.tum.in.ma.simpleproject.special.Java8.lambda$1");
 		assertLogFileContains(expectedLogFileTextChunks);

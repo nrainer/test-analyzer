@@ -13,12 +13,13 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
 /**
- * Jar: simple-project-core.jar Multi-threaded: no Comments: skipping one test class, skipping setters and getters
+ * Jar: simple-project-core.jar Multi-threaded: no Comments: skipping one test
+ * class, skipping setters and getters
  */
 public class IntegrationTest2 extends AbstractSystemTest {
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
-		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_CORE));
+		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformation());
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsSql());
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResult());
@@ -31,12 +32,14 @@ public class IntegrationTest2 extends AbstractSystemTest {
 
 		List<TestInformation> expectedTestInformationList = CollectedInformation
 				.parseInformationCollectorData(getContent(getFileExpectedCollectedInformation()));
-		List<TestInformation> outputTestInformationList = CollectedInformation.parseInformationCollectorData(getContent(getFileOutputCollectedInformation()));
+		List<TestInformation> outputTestInformationList = CollectedInformation
+				.parseInformationCollectorData(getContent(getFileOutputCollectedInformation()));
 		Set<TestInformation> expectedTestInformationSet = new HashSet<>(expectedTestInformationList);
 		Set<TestInformation> outputTestInformationSet = new HashSet<>(outputTestInformationList);
 		assertEquals(MSG_NOT_EQUAL_COLLECTED_INFORMATION, expectedTestInformationSet, outputTestInformationSet);
 
-		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, false, getFileExpectedCollectedInformationAsSql(), getFileOutputCollectedInformationAsSql());
+		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, false, getFileExpectedCollectedInformationAsSql(),
+				getFileOutputCollectedInformationAsSql());
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResult(), getFileOutputResult());
 	}
 }
