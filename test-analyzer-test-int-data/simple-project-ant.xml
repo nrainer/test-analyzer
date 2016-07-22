@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Testing" default="buildJars">
+  
+	<property name="source" value="./bin" />
+	<property name="destination" value="./jars" />
+	<property name="rootPackage" value="de/tum/in/ma/simpleproject" />
+	
+	<property name="jar_TestProject" value="${destination}/test-project.jar" />
+	<property name="jar_TestProjectTestNgTests" value="${destination}/test-project-testng-tests.jar" />
+	
+	<property name="include_SimpleProjectLite" value="${rootPackage}/lite/*" />
+	<property name="include_SimpleProjectCore" value="${rootPackage}/core/*" />
+	<property name="include_SimpleProjectSystem" value="${rootPackage}/system/*" />
+	<property name="include_SimpleProjectSpecial" value="${rootPackage}/special/*" />
+	<property name="include_SimpleProjectTestNg" value="${rootPackage}/testng/*" />
+	
+	<target name="buildJars">
+  		<jar destfile="${jar_TestProject}" update="false">
+  			<fileset dir="${source}" includes="${include_SimpleProjectLite}"/>
+  			<fileset dir="${source}" includes="${include_SimpleProjectCore}"/>
+  			<fileset dir="${source}" includes="${include_SimpleProjectSystem}"/>
+  			<fileset dir="${source}" includes="${include_SimpleProjectSpecial}"/>
+  		</jar>
+		<jar destfile="${jar_TestProjectTestNgTests}" update="false">
+  			<fileset dir="${source}" includes="${include_SimpleProjectTestNg}"/>
+  		</jar>
+  	</target>
+	
+</project>
