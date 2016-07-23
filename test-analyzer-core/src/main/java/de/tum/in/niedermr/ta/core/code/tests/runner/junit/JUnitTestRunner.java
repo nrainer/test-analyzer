@@ -29,7 +29,7 @@ public class JUnitTestRunner implements ITestRunner {
 	}
 
 	@Override
-	public ITestClassDetector getTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+	public ITestClassDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
 			String[] testClassExcludes) {
 		return new JUnitTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
 	}

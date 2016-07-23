@@ -26,7 +26,7 @@ public class JUnitSuiteRunner extends JUnitTestRunner
 	}
 
 	@Override
-	public JUnitSuiteDetector getTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
+	public JUnitSuiteDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
 			String[] testClassExcludes) {
 		return new JUnitSuiteDetector(testClassIncludes, testClassExcludes);
 	}
@@ -35,7 +35,7 @@ public class JUnitSuiteRunner extends JUnitTestRunner
 	public JUnitSuiteCollector getTestCollector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
 			String[] testClassExcludes) {
 		return new JUnitSuiteCollector(
-				getTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes));
+				createTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes));
 	}
 
 	private junit.framework.Test getTestByName(Class<?> testClass, String testcaseName) {

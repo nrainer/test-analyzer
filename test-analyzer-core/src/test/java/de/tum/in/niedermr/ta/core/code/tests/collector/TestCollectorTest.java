@@ -21,7 +21,7 @@ public class TestCollectorTest {
 	@Test
 	public void testCollectDefault() throws Exception {
 		ITestCollector collector = new TestCollector(
-				JUNIT_TEST_RUNNER.getTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS));
+				JUNIT_TEST_RUNNER.createTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS));
 
 		String className;
 
@@ -61,7 +61,7 @@ public class TestCollectorTest {
 	private void checkCollectInheritedMethodsInternal(final boolean collectInNonAbstractClasses,
 			final boolean collectInAbstractClasses) throws Exception {
 		TestCollector collector = new TestCollector(
-				JUNIT_TEST_RUNNER.getTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS)) {
+				JUNIT_TEST_RUNNER.createTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS)) {
 			@Override
 			public boolean collectTestcasesInNonAbstractSuperClasses() {
 				return collectInNonAbstractClasses;

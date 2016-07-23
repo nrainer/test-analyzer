@@ -38,7 +38,7 @@ public class TestInstrumentation extends AbstractInstrumentation {
 					.getTestClassDetectorForTestcaseInstrumentation(testClassIncludes, testClassExcludes);
 		} else {
 			// true as argument in order to get also testcases in abstract classes
-			return testRunner.getTestClassDetector(true, testClassIncludes, testClassExcludes);
+			return testRunner.createTestClassDetector(true, testClassIncludes, testClassExcludes);
 		}
 	}
 }

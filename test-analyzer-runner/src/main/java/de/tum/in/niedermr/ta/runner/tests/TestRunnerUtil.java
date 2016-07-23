@@ -23,14 +23,14 @@ public class TestRunnerUtil {
 		}
 
 		return new TestCollector(
-				testRunner.getTestClassDetector(acceptAbstractClasses, testClassIncludes, testClassExcludes));
+				testRunner.createTestClassDetector(acceptAbstractClasses, testClassIncludes, testClassExcludes));
 	}
 
 	/** Create the test class detector. */
 	public static ITestClassDetector getTestClassDetector(Configuration configuration, boolean acceptAbstractClasses)
 			throws ReflectiveOperationException {
 		ITestRunner testRunner = configuration.getTestRunner().createInstance();
-		return testRunner.getTestClassDetector(acceptAbstractClasses,
+		return testRunner.createTestClassDetector(acceptAbstractClasses,
 				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());
 	}
 }
