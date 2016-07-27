@@ -12,11 +12,13 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
+/** Execution step to write the result to a file. */
 public class PersistResultStep extends AbstractExecutionStep {
-	private static final String DB_INSERT_INSTRUCTIONS_PER_METHOD = "INSERT INTO Method_Instructions (execution, method, countInstructions) VALUES ('%s', '%s', '%s');";
-	private static final String DB_INSERT_INSTRUCTIONS_PER_TESTCASE = "INSERT INTO Testcase_Instructions (execution, testcase, countInstructions) VALUES ('%s', '%s', '%s');";
-	private static final String DB_INSERT_ASSERTIONS_PER_TESTCASE = "INSERT INTO Testcase_Assertions (execution, testcase, countAssertions) VALUES ('%s', '%s', '%s');";
-	private static final String DB_INSERT_MODIFIER_PER_METHOD = "INSERT INTO Method_Modifiers (execution, method, modifier) VALUES ('%s', '%s', '%s');";
+	private static final String DB_INSERT_METHOD_INFO = "INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('%s', '%s', %s, %s, '%s');";
+	private static final String DB_INSERT_TESTCASE_INFO = "INSERT INTO Testcase_Info_Import (execution, testcase, intValue, stringValue, valueName) VALUES ('%s', '%s', %s, %s, '%s');";
+	private static final String VALUE_NAME_ASSERTIONS = "assertions";
+	private static final String VALUE_NAME_MODIFIER = "modifier";
+	private static final String VALUE_NAME_INSTRUCTIONS = "instructions";
 
 	private static final String RESULT_FILE = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics"
 			+ FILE_EXTENSION_SQL_TXT;
@@ -29,35 +31,56 @@ public class PersistResultStep extends AbstractExecutionStep {
 	}
 
 	public void addResultInstructionsPerMethod(Map<MethodIdentifier, Integer> codeInformation) {
-		addResultInternal(DB_INSERT_INSTRUCTIONS_PER_METHOD, codeInformation);
-	}
-
-	public void addResultInstructionsPerTestcase(Map<MethodIdentifier, Integer> codeInformation) {
-		addResultInternal(DB_INSERT_INSTRUCTIONS_PER_TESTCASE, codeInformation);
-	}
-
-	public void addResultAssertionsPerTestcase(Map<MethodIdentifier, Integer> codeInformation) {
-		addResultInternal(DB_INSERT_ASSERTIONS_PER_TESTCASE, codeInformation);
+		addResultInternal(DB_INSERT_METHOD_INFO, codeInformation, null, VALUE_NAME_INSTRUCTIONS);
 	}
 
 	public void addResultModifierPerMethod(Map<MethodIdentifier, String> codeInformation) {
-		addResultInternal(DB_INSERT_MODIFIER_PER_METHOD, codeInformation);
+		addResultInternal(DB_INSERT_METHOD_INFO, null, codeInformation, VALUE_NAME_MODIFIER);
 	}
 
-	private void addResultInternal(String genericSqlStatement, Map<MethodIdentifier, ?> codeInformation) {
-		List<String> convertedData = convertToSqlStatements(genericSqlStatement, codeInformation);
+	public void addResultInstructionsPerTestcase(Map<MethodIdentifier, Integer> codeInformation) {
+		addResultInternal(DB_INSERT_TESTCASE_INFO, codeInformation, null, VALUE_NAME_INSTRUCTIONS);
+	}
+
+	public void addResultAssertionsPerTestcase(Map<MethodIdentifier, Integer> codeInformation) {
+		addResultInternal(DB_INSERT_TESTCASE_INFO, codeInformation, null, VALUE_NAME_ASSERTIONS);
+	}
+
+	private void addResultInternal(String genericSqlStatement, Map<MethodIdentifier, Integer> intValueInformation,
+			Map<MethodIdentifier, String> stringValueInformation, String valueName) {
+		List<String> convertedData = convertToSqlStatements(genericSqlStatement, intValueInformation,
+				stringValueInformation, valueName);
 		this.m_result.addAll(convertedData);
 	}
 
-	private List<String> convertToSqlStatements(String genericSqlStatement, Map<MethodIdentifier, ?> codeInformation) {
+	private List<String> convertToSqlStatements(String genericSqlStatement,
+			Map<MethodIdentifier, Integer> intValueInformation, Map<MethodIdentifier, String> stringValueInformation,
+			String valueName) {
 		List<String> sqlStatements = new LinkedList<>();
 
-		for (Entry<MethodIdentifier, ?> methodData : codeInformation.entrySet()) {
-			sqlStatements.add(String.format(genericSqlStatement, getExecutionId(), methodData.getKey().get(),
-					methodData.getValue()));
+		if (intValueInformation != null) {
+			for (Entry<MethodIdentifier, Integer> methodData : intValueInformation.entrySet()) {
+				sqlStatements.add(createSqlStatement(genericSqlStatement, methodData.getKey(), methodData.getValue(),
+						null, valueName));
+			}
+		}
+
+		if (stringValueInformation != null) {
+			for (Entry<MethodIdentifier, String> methodData : stringValueInformation.entrySet()) {
+				sqlStatements.add(createSqlStatement(genericSqlStatement, methodData.getKey(), null,
+						methodData.getValue(), valueName));
+			}
 		}
 
 		return sqlStatements;
+	}
+
+	private String createSqlStatement(String genericSqlStatement, MethodIdentifier methodIdentifier, Integer intValue,
+			String stringValue, String valueName) {
+		String intValueAsString = intValue == null ? "NULL" : "'" + intValue.toString() + "'";
+		String stringValueAsString = stringValue == null ? "NULL" : "'" + stringValue.toString() + "'";
+		return String.format(genericSqlStatement, getExecutionId(), methodIdentifier.get(), intValueAsString,
+				stringValueAsString, valueName);
 	}
 
 	@Override
