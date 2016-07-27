@@ -1,3 +1,6 @@
+-- DROP VIEW IF EXISTS V_Method_State_Info_Extended;
+-- DROP VIEW IF EXISTS V_Method_State_Info;
+-- DROP VIEW IF EXISTS V_Tested_Methods_Info;
 -- DROP VIEW IF EXISTS V_Name_Mapping;
 -- DROP TABLE IF EXISTS Method_Info;
 -- DROP TABLE IF EXISTS Testcase_Info;
@@ -68,6 +71,59 @@ CREATE VIEW V_Name_Mapping
 	INNER JOIN Testcase_Info ti
 	ON ri.execution = ti.execution
 	AND ri.testcaseId = ti.testcaseId;
+	
+/* Methods that were tested (they have a test result or all tests aborted). */
+CREATE VIEW V_Tested_Methods_Info
+(
+	execution,
+	methodId
+) AS
+	SELECT DISTINCT t.execution, mapping.methodId
+	FROM Test_Result_Info t
+	INNER JOIN V_Name_Mapping mapping
+	ON t.relationId = mapping.relationId
+	UNION
+	SELECT DISTINCT m.execution, m.methodId
+	FROM Method_Test_Abort_Info m;
+	
+/* Test result of methods that were successfully tested. */
+CREATE VIEW V_Method_State_Info
+(
+	execution,
+	methodId,
+	method,
+	killed
+) AS 
+	SELECT t.execution, mapping.methodId, mapping.method, SUM(t.killed) > 0
+	FROM Test_Result_Info t
+	INNER JOIN V_Name_Mapping mapping
+	ON t.execution = mapping.execution
+	AND t.relationId = mapping.relationId
+	GROUP BY t.execution, mapping.methodId, mapping.method;
+
+/** Test result of methods for which tests were started (and run successfully or were aborted). */
+CREATE VIEW V_Method_State_Info_Extended
+(
+	execution,
+	methodId,
+	method,
+	testCompleted,
+	killed,
+	aborted
+) AS 
+	SELECT tmi.execution, tmi.methodId, mapping.method, COUNT(tr.killed) > 0, SUM(tr.killed) > 0, COUNT(ta.methodId) > 0
+	FROM V_Tested_Methods_Info tmi
+	INNER JOIN V_Name_Mapping mapping
+	ON tmi.execution = mapping.execution
+	AND tmi.methodId = mapping.methodId
+	LEFT OUTER JOIN Test_Result_Info tr
+	ON tr.execution = tmi.execution
+	AND tr.relationId = mapping.relationId
+	AND mapping.methodId = tmi.methodId
+	LEFT OUTER JOIN Method_Test_Abort_Info ta
+	ON ta.execution = tmi.execution
+	AND ta.methodId = tmi.methodId
+	GROUP BY tmi.execution, tmi.methodId, mapping.method;
 	
 CREATE INDEX idx_aly_mi_1 ON Method_Info(execution);
 CREATE INDEX idx_aly_mi_2 ON Method_Info(method(50));
