@@ -58,9 +58,11 @@ AND t.processed = 0;
 UPDATE Relation_Info ri
 INNER JOIN V_Name_Mapping mapping
 ON ri.relationId = mapping.relationId
+AND ri.execution = mapping.execution
 INNER JOIN Stack_Info_Import sii
 ON sii.method = mapping.method
 AND sii.testcase = mapping.testcase
+AND sii.execution = mapping.execution
 SET ri.minStackDistance = sii.minStackDistance,
 ri.maxStackDistance = sii.maxStackDistance
 WHERE sii.execution = @executionId;
@@ -69,8 +71,10 @@ WHERE sii.execution = @executionId;
 UPDATE Method_Info mi
 INNER JOIN V_Name_Mapping mapping
 ON mi.methodId = mapping.methodId
+AND mi.execution = mapping.execution
 INNER JOIN Method_Info_Import mii
 ON mii.method = mapping.method
+AND mii.execution = mapping.execution
 SET mi.instructions = mii.intValue
 WHERE mii.execution = @executionId
 AND mii.valueName = 'instructions';
@@ -79,8 +83,10 @@ AND mii.valueName = 'instructions';
 UPDATE Method_Info mi
 INNER JOIN V_Name_Mapping mapping
 ON mi.methodId = mapping.methodId
+AND mi.execution = mapping.execution
 INNER JOIN Method_Info_Import mii
 ON mii.method = mapping.method
+AND mii.execution = mapping.execution
 SET mi.modifier = mii.stringValue
 WHERE mii.execution = @executionId
 AND mii.valueName = 'modifier';
@@ -89,8 +95,10 @@ AND mii.valueName = 'modifier';
 UPDATE Testcase_Info ti
 INNER JOIN V_Name_Mapping mapping
 ON ti.testcaseId = mapping.testcaseId
+AND ti.execution = mapping.execution
 INNER JOIN Testcase_Info_Import tii
 ON tii.testcase = mapping.testcase
+AND tii.execution = mapping.execution
 SET ti.instructions = tii.intValue
 WHERE tii.execution = @executionId
 AND tii.valueName = 'instructions';
@@ -99,8 +107,10 @@ AND tii.valueName = 'instructions';
 UPDATE Testcase_Info ti
 INNER JOIN V_Name_Mapping mapping
 ON ti.testcaseId = mapping.testcaseId
+AND ti.execution = mapping.execution
 INNER JOIN Testcase_Info_Import tii
 ON tii.testcase = mapping.testcase
+AND tii.execution = mapping.execution
 SET ti.assertions = tii.intValue
 WHERE tii.execution = @executionId
 AND tii.valueName = 'assertions';
