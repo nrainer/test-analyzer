@@ -11,10 +11,13 @@ import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class CodeStatisticsWorkflow extends AbstractWorkflow {
+	/** <code>extension.code.statistics.method.instructions</code> */
 	public static final ConfigurationExtensionKey COUNT_INSTRUCTIONS = ConfigurationExtensionKey
 			.create("code.statistics.method.instructions");
+	/** <code>extension.code.statistics.method.assertions</code> */
 	public static final ConfigurationExtensionKey COUNT_ASSERTIONS = ConfigurationExtensionKey
 			.create("code.statistics.method.assertions");
+	/** <code>extension.code.statistics.method.modifier</code> */
 	public static final ConfigurationExtensionKey COLLECT_ACCESS_MODIFIER = ConfigurationExtensionKey
 			.create("code.statistics.method.modifier");
 
@@ -22,7 +25,7 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		PersistResultStep persistResultStep = createAndInitializeExecutionStep(PersistResultStep.class);
 
-		if (configuration.getExtension().getBooleanValue(COUNT_INSTRUCTIONS)) {
+		if (configuration.getExtension().getBooleanValue(COUNT_INSTRUCTIONS, true)) {
 			InstructionCounterStep countInstructionsStep = createAndInitializeExecutionStep(
 					InstructionCounterStep.class);
 			countInstructionsStep.run();
@@ -30,13 +33,13 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 			persistResultStep.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
 		}
 
-		if (configuration.getExtension().getBooleanValue(COUNT_ASSERTIONS)) {
+		if (configuration.getExtension().getBooleanValue(COUNT_ASSERTIONS, true)) {
 			AssertionCounterStep countAssertionsStep = createAndInitializeExecutionStep(AssertionCounterStep.class);
 			countAssertionsStep.run();
 			persistResultStep.addResultAssertionsPerTestcase(countAssertionsStep.getAssertionsPerTestcase());
 		}
 
-		if (configuration.getExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
+		if (configuration.getExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER, true)) {
 			MethodModifierRetrievalStep modifierRetrievalStep = createAndInitializeExecutionStep(
 					MethodModifierRetrievalStep.class);
 			modifierRetrievalStep.run();
