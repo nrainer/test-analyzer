@@ -13,10 +13,10 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class PersistResultStep extends AbstractExecutionStep {
-	private static final String DB_INSERT_INSTRUCTIONS_PER_METHOD = "INSERT INTO Method_Instructions (method, countInstructions) VALUES ('%s', '%s');";
-	private static final String DB_INSERT_INSTRUCTIONS_PER_TESTCASE = "INSERT INTO Testcase_Instructions (testcase, countInstructions) VALUES ('%s', '%s');";
-	private static final String DB_INSERT_ASSERTIONS_PER_TESTCASE = "INSERT INTO Testcase_Assertions (testcase, countAssertions) VALUES ('%s', '%s');";
-	private static final String DB_INSERT_MODIFIER_PER_METHOD = "INSERT INTO Method_Modifiers (method, modifier) VALUES ('%s', '%s');";
+	private static final String DB_INSERT_INSTRUCTIONS_PER_METHOD = "INSERT INTO Method_Instructions (execution, method, countInstructions) VALUES ('%s', '%s', '%s');";
+	private static final String DB_INSERT_INSTRUCTIONS_PER_TESTCASE = "INSERT INTO Testcase_Instructions (execution, testcase, countInstructions) VALUES ('%s', '%s', '%s');";
+	private static final String DB_INSERT_ASSERTIONS_PER_TESTCASE = "INSERT INTO Testcase_Assertions (execution, testcase, countAssertions) VALUES ('%s', '%s', '%s');";
+	private static final String DB_INSERT_MODIFIER_PER_METHOD = "INSERT INTO Method_Modifiers (execution, method, modifier) VALUES ('%s', '%s', '%s');";
 
 	private static final String RESULT_FILE = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics"
 			+ FILE_EXTENSION_SQL_TXT;
@@ -53,7 +53,8 @@ public class PersistResultStep extends AbstractExecutionStep {
 		List<String> sqlStatements = new LinkedList<>();
 
 		for (Entry<MethodIdentifier, ?> methodData : codeInformation.entrySet()) {
-			sqlStatements.add(String.format(genericSqlStatement, methodData.getKey().get(), methodData.getValue()));
+			sqlStatements.add(String.format(genericSqlStatement, getExecutionId(), methodData.getKey().get(),
+					methodData.getValue()));
 		}
 
 		return sqlStatements;

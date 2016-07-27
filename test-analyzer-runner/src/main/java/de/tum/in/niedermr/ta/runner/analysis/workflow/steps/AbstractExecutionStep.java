@@ -56,7 +56,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		} catch (ExecutionException ex) {
 			throw ex;
 		} catch (Throwable t) {
-			throw new ExecutionException(m_context.getExecutionId(), t);
+			throw new ExecutionException(getExecutionId(), t);
 		}
 	}
 
@@ -65,8 +65,14 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 
 	protected abstract String getDescription();
 
+	/** Get the full execution id with the process id. */
 	protected final String getFullExecId(String processId) {
-		return m_context.getExecutionId() + "_" + processId;
+		return getExecutionId() + "_" + processId;
+	}
+
+	/** Get the execution id. */
+	protected final String getExecutionId() {
+		return m_context.getExecutionId();
 	}
 
 	protected final String getWithIndex(String fileName, int index) {
