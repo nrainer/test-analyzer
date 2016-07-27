@@ -31,7 +31,7 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 	/**
 	 * @param constant
 	 */
-	protected T createInstanceFromConstant(String constant) {
+	protected T createInstanceFromConstant(String constant) throws ReflectiveOperationException {
 		return null;
 	}
 

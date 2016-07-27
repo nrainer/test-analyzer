@@ -20,7 +20,6 @@ import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
-import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -245,8 +244,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		protected void handleAbortedTestExecution(String executionId, IReturnValueGenerator returnValueGenerator,
 				TestAbortReason abortType) {
 			try {
-				IResultPresentation resultPresentation = ResultPresentationUtil
-						.getResultPresentation(m_configuration.getResultPresentation().getValue(), executionId);
+				IResultPresentation resultPresentation = m_configuration.getResultPresentation()
+						.createInstance(executionId);
 
 				String testAbortInformation = resultPresentation.formatTestAbortEntry(m_currentMethodUnderTest,
 						returnValueGenerator.getClass().getName(), abortType);

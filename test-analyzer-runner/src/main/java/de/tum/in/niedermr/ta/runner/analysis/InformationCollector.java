@@ -80,7 +80,7 @@ public class InformationCollector {
 			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
 
 			final IResultPresentation resultPresentation = ResultPresentationUtil
-					.getResultPresentation(resultPresentationChoice, executionId);
+					.createResultPresentation(resultPresentationChoice, executionId);
 
 			informationCollectionLogic.setTestRunner(testRunner);
 			informationCollectionLogic.setOutputFile(dataOutputPath);

@@ -83,7 +83,7 @@ public class AnalysisInformationCollector {
 			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
 
 			final IResultPresentation resultPresentation = ResultPresentationUtil
-					.getResultPresentation(resultPresentationChoice, executionId);
+					.createResultPresentation(resultPresentationChoice, executionId);
 
 			analysisInformationCollectionLogic.setTestRunner(testRunner);
 			analysisInformationCollectionLogic.setOutputFile(dataOutputPath);

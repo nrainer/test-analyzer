@@ -71,7 +71,7 @@ public class TestRun {
 			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
 
 			final IResultPresentation resultPresentation = ResultPresentationUtil
-					.getResultPresentation(resultPresentationChoice, s_executionId);
+					.createResultPresentation(resultPresentationChoice, s_executionId);
 
 			List<String> result = runTestsFromFile(testRunner, fileWithTestsToRun, resultPresentation, mutatedMethod,
 					usedReturnValueGenerator);

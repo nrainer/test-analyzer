@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.runner.configuration.property;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractClassnameProperty;
 
 public class ResultPresentationProperty extends AbstractClassnameProperty<IResultPresentation> {
@@ -28,8 +29,15 @@ public class ResultPresentationProperty extends AbstractClassnameProperty<IResul
 	}
 
 	@Override
-	protected IResultPresentation createInstanceFromConstant(String value) {
-		throw new UnsupportedOperationException();
+	protected IResultPresentation createInstanceFromConstant(String value) throws ReflectiveOperationException {
+		return ResultPresentationUtil.createResultPresentationWithoutExecutionId(value);
+	}
+
+	/** Create an instance and set the execution id. */
+	public IResultPresentation createInstance(String executionId) throws ReflectiveOperationException {
+		IResultPresentation resultPresentation = super.createInstance();
+		resultPresentation.setShortExecutionId(executionId);
+		return resultPresentation;
 	}
 
 	@Override
