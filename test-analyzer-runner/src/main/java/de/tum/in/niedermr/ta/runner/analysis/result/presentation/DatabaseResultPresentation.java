@@ -15,9 +15,9 @@ import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
  */
 public class DatabaseResultPresentation implements IResultPresentation {
 	public static final String SQL_INSERT_EXECUTION_INFORMATION = "INSERT INTO ExecutionInformation (execution, date, project, configurationContent) VALUES ('%s', NOW(), '?', '%s');";
-	public static final String SQL_INSERT_METHOD_TEST_CASE_MAPPING = "INSERT INTO Collected_Information (execution, method, testcase) VALUES ('%s', '%s', '%s');";
-	public static final String SQL_INSERT_TEST_RESULT = "INSERT INTO Test_Result (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('%s', '%s', '%s', '%s', %s, %s, '%s');";
-	public static final String SQL_INSERT_TEST_ABORT = "INSERT INTO Test_Abort (execution, method, retValGen, cause) VALUES ('%s', '%s', '%s', '%s');";
+	public static final String SQL_INSERT_METHOD_TEST_CASE_MAPPING = "INSERT INTO Collected_Information_Import (execution, method, testcase) VALUES ('%s', '%s', '%s');";
+	public static final String SQL_INSERT_TEST_RESULT = "INSERT INTO Test_Result_Import (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('%s', '%s', '%s', '%s', %s, %s, '%s');";
+	public static final String SQL_INSERT_TEST_ABORT = "INSERT INTO Test_Abort_Import (execution, method, retValGen, cause) VALUES ('%s', '%s', '%s', '%s');";
 
 	private String m_executionId;
 
