@@ -19,11 +19,7 @@ import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformation
 public class AnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
 	private static final Logger LOG = LogManager.getLogger(AnalysisInformationCollectionLogic.class);
 
-	private static final String SQL_CREATE_TABLE_STACK_INFO = "CREATE TABLE IF NOT EXISTS Stack_Info (execution VARCHAR(5), testcase VARCHAR(1024), method VARCHAR(1024), minStackDistance INT(8), maxStackDistance INT(8));";
-	private static final String SQL_CREATE_INDEX_STACK_INFO_1 = "ALTER TABLE Stack_Info ADD INDEX (execution);";
-	private static final String SQL_CREATE_INDEX_STACK_INFO_2 = "ALTER TABLE Stack_Info ADD INDEX (testcase(100));";
-	private static final String SQL_CREATE_INDEX_STACK_INFO_3 = "ALTER TABLE Stack_Info ADD INDEX (method(100));";
-	private static final String SQL_INSERT_STACK_INFO = "INSERT INTO Stack_Info (execution, testcase, method, minStackDistance, maxStackDistance) VALUES ('%s', '%s', '%s', %s, %s);";
+	private static final String SQL_INSERT_STACK_INFO = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, maxStackDistance) VALUES ('%s', '%s', '%s', %s, %s);";
 
 	private final String m_shortExecutionId;
 	private final List<String> m_result;
@@ -32,16 +28,6 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 		super(executionId);
 		m_shortExecutionId = getExecutionId().substring(0, CommonUtility.LENGTH_OF_RANDOM_ID);
 		m_result = new LinkedList<>();
-	}
-
-	@Override
-	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
-		m_result.add("-- Execution ID: " + m_shortExecutionId);
-		m_result.add("-- " + SQL_CREATE_TABLE_STACK_INFO);
-		m_result.add("-- " + SQL_CREATE_INDEX_STACK_INFO_1);
-		m_result.add("-- " + SQL_CREATE_INDEX_STACK_INFO_2);
-		m_result.add("-- " + SQL_CREATE_INDEX_STACK_INFO_3);
-		m_result.add("-- -------");
 	}
 
 	@Override
