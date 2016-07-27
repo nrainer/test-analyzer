@@ -5,6 +5,8 @@ import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortReason;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
+import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 
@@ -65,6 +67,6 @@ public class DatabaseResultPresentation implements IResultPresentation {
 	/** Format the execution information. */
 	public String formatExecutionInformation(Configuration configuration) {
 		return String.format(SQL_INSERT_EXECUTION_INFORMATION, m_executionId,
-				ConfigurationLoader.toFileLines(configuration, false));
+				StringUtility.join(ConfigurationLoader.toFileLines(configuration, false), CommonConstants.NEW_LINE));
 	}
 }
