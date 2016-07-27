@@ -5,16 +5,16 @@ import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortReason;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
+import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 
 /**
- * <code>
- * CREATE TABLE IF NOT EXISTS Collected_Information (execution VARCHAR(5), method VARCHAR(1024), testcase VARCHAR(1024)); <br/>
- * CREATE TABLE IF NOT EXISTS Test_Result (execution VARCHAR(5), testcase VARCHAR(1024), method VARCHAR(1024), retValGen
- * VARCHAR(1024), killed BOOLEAN, assertErr BOOLEAN, exception VARCHAR(256));<br/>
- * CREATE TABLE IF NOT EXISTS Test_Abort (execution VARCHAR(5), method VARCHAR(1024), retValGen VARCHAR(1024), cause VARCHAR(32));
- * </code>
+ * Result presentation that produces SQL statements.
+ * 
+ * @see "schema.sql"
  */
 public class DatabaseResultPresentation implements IResultPresentation {
+	public static final String SQL_INSERT_EXECUTION_INFORMATION = "INSERT INTO ExecutionInformation (execution, date, project, configurationContent) VALUES ('%s', NOW(), '?', '%s');";
 	public static final String SQL_INSERT_METHOD_TEST_CASE_MAPPING = "INSERT INTO Collected_Information (execution, method, testcase) VALUES ('%s', '%s', '%s');";
 	public static final String SQL_INSERT_TEST_RESULT = "INSERT INTO Test_Result (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('%s', '%s', '%s', '%s', %s, %s, '%s');";
 	public static final String SQL_INSERT_TEST_ABORT = "INSERT INTO Test_Abort (execution, method, retValGen, cause) VALUES ('%s', '%s', '%s', '%s');";
@@ -60,5 +60,11 @@ public class DatabaseResultPresentation implements IResultPresentation {
 	public String formatMethodAndTestcaseMapping(MethodIdentifier methodUnderTest, TestcaseIdentifier testcase) {
 		return String.format(SQL_INSERT_METHOD_TEST_CASE_MAPPING, m_executionId, methodUnderTest.get(),
 				testcase.toMethodIdentifier().get());
+	}
+
+	/** Format the execution information. */
+	public String formatExecutionInformation(Configuration configuration) {
+		return String.format(SQL_INSERT_EXECUTION_INFORMATION, m_executionId,
+				ConfigurationLoader.toFileLines(configuration, false));
 	}
 }

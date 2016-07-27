@@ -34,4 +34,6 @@ public interface EnvironmentConstants extends FileSystemConstants {
 	public static final String FILE_OUTPUT_RESULT_NO_ENDING = PATH_WORKING_AREA_RESULT + "result";
 	public static final String FILE_OUTPUT_RESULT_TXT = PATH_WORKING_AREA_RESULT + "result" + FILE_EXTENSION_TXT;
 	public static final String FILE_OUTPUT_RESULT_SQL = PATH_WORKING_AREA_RESULT + "result" + FILE_EXTENSION_SQL_TXT;
+	public static final String FILE_OUTPUT_EXECUTION_INFORMATION = PATH_WORKING_AREA_RESULT + "execution-information"
+			+ FILE_EXTENSION_SQL_TXT;
 }

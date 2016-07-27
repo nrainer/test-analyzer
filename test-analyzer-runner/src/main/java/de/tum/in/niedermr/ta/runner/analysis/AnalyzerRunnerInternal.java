@@ -1,15 +1,20 @@
 package de.tum.in.niedermr.ta.runner.analysis;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
@@ -18,6 +23,7 @@ import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
+import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
@@ -71,6 +77,8 @@ public class AnalyzerRunnerInternal {
 			LOG.info("Configuration is valid.");
 			LOG.info("Configuration is:" + CommonConstants.NEW_LINE + configuration.toMultiLineString());
 
+			writeExecutionInformationFile(executionId, configuration);
+
 			IWorkflow[] testWorkflows = createTestWorkflows(executionId, configuration);
 
 			for (IWorkflow workFlow : testWorkflows) {
@@ -82,6 +90,20 @@ public class AnalyzerRunnerInternal {
 			t.printStackTrace();
 			LOG.fatal("Execution failed", t);
 			throw new ExecutionException(executionId, AnalyzerRunnerInternal.class.getName() + " was not successful.");
+		}
+	}
+
+	/** Write a file with execution information. */
+	private static void writeExecutionInformationFile(String executionId, Configuration configuration)
+			throws ReflectiveOperationException, IOException {
+		IResultPresentation resultPresentation = configuration.getResultPresentation().createInstance(executionId);
+
+		if (resultPresentation instanceof DatabaseResultPresentation) {
+			String fileName = Environment.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_EXECUTION_INFORMATION,
+					configuration.getWorkingFolder().getValue());
+			List<String> content = Arrays.asList(
+					((DatabaseResultPresentation) resultPresentation).formatExecutionInformation(configuration));
+			TextFileData.writeToFile(fileName, content);
 		}
 	}
 
