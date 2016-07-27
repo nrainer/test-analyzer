@@ -1,3 +1,4 @@
+-- DROP VIEW IF EXISTS V_Test_Result_Info;
 -- DROP VIEW IF EXISTS V_Method_State_Info_Extended;
 -- DROP VIEW IF EXISTS V_Method_State_Info;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info;
@@ -124,6 +125,24 @@ CREATE VIEW V_Method_State_Info_Extended
 	ON ta.execution = tmi.execution
 	AND ta.methodId = tmi.methodId
 	GROUP BY tmi.execution, tmi.methodId, mapping.method;
+	
+/** Test result, extended by test and method ids and names. */
+CREATE VIEW V_Test_Result_Info
+(
+	execution,
+	relationId,
+	methodId,
+	testcaseId,
+	method,
+	testcase,
+	retValGen,
+	killed
+) AS 
+	SELECT t.execution, t.relationId, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGen, t.killed
+	FROM Test_Result_Info t
+	INNER JOIN V_Name_Mapping mapping
+	ON t.execution = mapping.execution
+	AND t.relationId = mapping.relationId;
 	
 CREATE INDEX idx_aly_mi_1 ON Method_Info(execution);
 CREATE INDEX idx_aly_mi_2 ON Method_Info(method(50));
