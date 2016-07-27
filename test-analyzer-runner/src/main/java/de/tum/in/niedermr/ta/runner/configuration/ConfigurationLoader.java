@@ -185,10 +185,6 @@ public class ConfigurationLoader implements FileSystemConstants {
 		return result;
 	}
 
-	public static List<String> toFileLines(Configuration configuration) {
-		return toFileLines(configuration, false);
-	}
-
 	public static List<String> toFileLines(Configuration configuration, boolean includeDescriptionAsComment) {
 		List<String> result = new LinkedList<>();
 
@@ -208,7 +204,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 	}
 
 	public static void writeToFile(Configuration configuration, String file) throws IOException {
-		TextFileData.writeToFile(file, toFileLines(configuration));
+		TextFileData.writeToFile(file, toFileLines(configuration, false));
 	}
 
 	private static void writeToConsole(String output) {

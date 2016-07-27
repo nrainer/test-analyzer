@@ -38,7 +38,7 @@ public class ConfigurationParserTest {
 		Configuration result = new Configuration();
 
 		TestConfigurationParser1 parser = new TestConfigurationParser1(result,
-				ConfigurationLoader.toFileLines(expected));
+				ConfigurationLoader.toFileLines(expected, false));
 
 		parser.parse();
 
