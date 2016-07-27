@@ -182,26 +182,26 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			int retValGenIndex = 0;
 
 			for (IReturnValueGenerator returnValueGen : m_returnValueGenerators) {
-				final String testingId = getFullExecId(
+				final String fullExecutionId = getFullExecId(
 						EXEC_ID_TEST_RUN + "_T" + m_threadIndex + "_C" + m_countMethods + "_R" + retValGenIndex);
 
-				mutateAndTest(testingId, returnValueGen);
+				mutateAndTest(fullExecutionId, returnValueGen);
 
 				retValGenIndex++;
 			}
 		}
 
-		protected void mutateAndTest(String executionId, IReturnValueGenerator returnValueGenerator) {
+		protected void mutateAndTest(String fullExecutionId, IReturnValueGenerator returnValueGenerator) {
 			try {
-				mutateAndTestInternal(executionId, returnValueGenerator);
+				mutateAndTestInternal(fullExecutionId, returnValueGenerator);
 			} catch (TimeoutException ex) {
 				LOG.error("Mutate and test failed due to timeout (" + ex.getMessage() + "): "
 						+ m_currentMethodUnderTest.get());
-				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortReason.TEST_TIMEOUT);
+				handleAbortedTestExecution(returnValueGenerator, TestAbortReason.TEST_TIMEOUT);
 				m_countTimeout++;
 			} catch (ProcessExecutionFailedException ex) {
 				LOG.error("Test execution did not complete: " + m_currentMethodUnderTest.get(), ex);
-				handleAbortedTestExecution(executionId, returnValueGenerator, TestAbortReason.TEST_DIED);
+				handleAbortedTestExecution(returnValueGenerator, TestAbortReason.TEST_DIED);
 				m_countError++;
 			} catch (Exception ex) {
 				LOG.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
@@ -209,7 +209,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			}
 		}
 
-		private void mutateAndTestInternal(String executionId, IReturnValueGenerator returnValueGenerator)
+		private void mutateAndTestInternal(String fullExecutionId, IReturnValueGenerator returnValueGenerator)
 				throws Exception {
 			LOG.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
 					+ returnValueGenerator.getClass().getName());
@@ -219,15 +219,15 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 					m_configuration.getMethodFilters().createInstances());
 
 			if (wasSuccessfullyMutated) {
-				handleSuccessfullyMutatedMethod(executionId, returnValueGenerator);
+				handleSuccessfullyMutatedMethod(fullExecutionId, returnValueGenerator);
 			} else {
 				LOG.info("Skipped: " + m_currentMethodUnderTest.get());
 				m_countSkipped++;
 			}
 		}
 
-		protected void handleSuccessfullyMutatedMethod(String executionId, IReturnValueGenerator returnValueGenerator)
-				throws IOException {
+		protected void handleSuccessfullyMutatedMethod(String fullExecutionId,
+				IReturnValueGenerator returnValueGenerator) throws IOException {
 			LOG.info("Mutated: " + m_currentMethodUnderTest.get());
 
 			String fileWithTestsToRun = getWithIndex(EnvironmentConstants.FILE_TEMP_TESTS_TO_RUN_X, m_threadIndex);
@@ -236,16 +236,16 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			LOG.info("Testing: " + m_currentMethodUnderTest.get() + " with "
 					+ LoggingUtil.appendPluralS(m_currentTestcases, "testcase", true) + ".");
 
-			runTestsAndRecordResult(executionId, fileWithTestsToRun,
+			runTestsAndRecordResult(fullExecutionId, fileWithTestsToRun,
 					getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex), returnValueGenerator);
 			m_countSuccessful++;
 		}
 
-		protected void handleAbortedTestExecution(String executionId, IReturnValueGenerator returnValueGenerator,
+		protected void handleAbortedTestExecution(IReturnValueGenerator returnValueGenerator,
 				TestAbortReason abortType) {
 			try {
 				IResultPresentation resultPresentation = m_configuration.getResultPresentation()
-						.createInstance(executionId);
+						.createInstance(getExecutionId());
 
 				String testAbortInformation = resultPresentation.formatTestAbortEntry(m_currentMethodUnderTest,
 						returnValueGenerator.getClass().getName(), abortType);
@@ -273,8 +273,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		 * Note that the full original classpath is used. However, the mutated jar is inserted at the beginning of the
 		 * classpath, thus the mutated class is considered first in that jar file.
 		 */
-		protected void runTestsAndRecordResult(String executionId, String fileWithTestsToRun, String fileWithResults,
-				IReturnValueGenerator retValGen) throws IOException {
+		protected void runTestsAndRecordResult(String fullExecutionId, String fileWithTestsToRun,
+				String fileWithResults, IReturnValueGenerator retValGen) throws IOException {
 			final String usedReturnValueGenerator = retValGen.getClass().getName();
 			final String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
 					+ getFileInWorkingArea(getWithIndex(FILE_TEMP_JAR_X, m_threadIndex)) + CP_SEP
@@ -282,7 +282,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			final int timeout = m_configuration.computeTestingTimeout(m_currentTestcases.size());
 
 			ProgramArgsWriter argsWriter = TestRun.createProgramArgsWriter();
-			argsWriter.setValue(TestRun.ARGS_EXECUTION_ID, executionId);
+			argsWriter.setValue(TestRun.ARGS_EXECUTION_ID, fullExecutionId);
 			argsWriter.setValue(TestRun.ARGS_FILE_WITH_TESTS_TO_RUN, getFileInWorkingArea(fileWithTestsToRun));
 			argsWriter.setValue(TestRun.ARGS_FILE_WITH_RESULTS, getFileInWorkingArea(fileWithResults));
 			argsWriter.setValue(TestRun.ARGS_MUTATED_METHOD_IDENTIFIER, m_currentMethodUnderTest.get());
@@ -290,8 +290,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			argsWriter.setValue(TestRun.ARGS_RETURN_VALUE_GENERATOR_CLASS, usedReturnValueGenerator);
 			argsWriter.setValue(TestRun.ARGS_RESULT_PRESENTATION, m_configuration.getResultPresentation().getValue());
 
-			ExecutionResult executionResult = m_processExecution.execute(executionId, timeout, TestRun.class.getName(),
-					classPath, argsWriter);
+			ExecutionResult executionResult = m_processExecution.execute(fullExecutionId, timeout,
+					TestRun.class.getName(), classPath, argsWriter);
 
 			if (!executionResult.getStderr().isEmpty()) {
 				LOG_TEST_SYS_ERR.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get()
