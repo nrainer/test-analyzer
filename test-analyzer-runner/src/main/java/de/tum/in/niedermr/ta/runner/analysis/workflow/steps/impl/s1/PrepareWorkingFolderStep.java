@@ -12,6 +12,11 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 public class PrepareWorkingFolderStep extends AbstractExecutionStep {
 
 	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "PREFOL";
+	}
+
+	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		final File workingAreaTemp = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP));
 		final File workingAreaResult = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_RESULT));

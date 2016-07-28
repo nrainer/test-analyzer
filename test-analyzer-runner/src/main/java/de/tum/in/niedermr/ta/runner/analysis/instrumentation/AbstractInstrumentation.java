@@ -8,21 +8,22 @@ import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterator;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class AbstractInstrumentation {
 	private static final Logger LOG = LogManager.getLogger(AbstractInstrumentation.class);
 
-	private final String m_executionId;
+	private final IExecutionId m_executionId;
 	private final boolean m_operateFaultTolerant;
 
-	public AbstractInstrumentation(String executionId, boolean operateFaultTolerant) {
+	public AbstractInstrumentation(IExecutionId executionId, boolean operateFaultTolerant) {
 		this.m_executionId = executionId;
 		this.m_operateFaultTolerant = operateFaultTolerant;
 	}
 
-	public String getExecutionId() {
+	public IExecutionId getExecutionId() {
 		return m_executionId;
 	}
 

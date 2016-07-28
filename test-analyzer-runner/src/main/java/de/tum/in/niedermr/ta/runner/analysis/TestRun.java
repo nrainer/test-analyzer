@@ -14,11 +14,13 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
@@ -44,8 +46,6 @@ public class TestRun {
 	/** Result presentation: 'TEXT', 'DB' or the name of a class implementing {@link IResultPresentation}. */
 	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(TestRun.class, 6);
 
-	private static String s_executionId;
-
 	/**
 	 * Main method. Note that the jar file of the class to be tested must be on the classpath!
 	 */
@@ -57,8 +57,9 @@ public class TestRun {
 
 		ProgramArgsReader argsReader = new ProgramArgsReader(TestRun.class, args);
 
-		TestRun.s_executionId = argsReader.getArgument(ARGS_EXECUTION_ID);
-		LOG.info(LoggingConstants.EXECUTION_ID_PREFIX + s_executionId);
+		IFullExecutionId executionId = ExecutionIdFactory
+				.parseFullExecutionId(argsReader.getArgument(ARGS_EXECUTION_ID));
+		LOG.info(LoggingConstants.EXECUTION_ID_TEXT + executionId.get());
 		LOG.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {
@@ -71,17 +72,17 @@ public class TestRun {
 			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
 
 			final IResultPresentation resultPresentation = ResultPresentationUtil
-					.createResultPresentation(resultPresentationChoice, s_executionId);
+					.createResultPresentation(resultPresentationChoice, executionId);
 
-			List<String> result = runTestsFromFile(testRunner, fileWithTestsToRun, resultPresentation, mutatedMethod,
-					usedReturnValueGenerator);
+			List<String> result = runTestsFromFile(executionId, testRunner, fileWithTestsToRun, resultPresentation,
+					mutatedMethod, usedReturnValueGenerator);
 
 			TextFileData.appendToFile(fileWithResults, result);
 
 			System.exit(0);
 		} catch (Throwable t) {
-			LOG.error("Failed execution " + s_executionId, t);
-			throw new ExecutionException(s_executionId, t);
+			LOG.error("Failed execution " + executionId.get(), t);
+			throw new ExecutionException(executionId, t);
 		}
 	}
 
@@ -89,9 +90,9 @@ public class TestRun {
 		return new ProgramArgsWriter(TestRun.class, ARGS_COUNT);
 	}
 
-	private static List<String> runTestsFromFile(ITestRunner testRunner, String fileWithTestsToRun,
-			IResultPresentation resultPresentation, MethodIdentifier methodUnderTest, String usedReturnValueGenerator)
-			throws IOException, ReflectiveOperationException {
+	private static List<String> runTestsFromFile(IFullExecutionId executionId, ITestRunner testRunner,
+			String fileWithTestsToRun, IResultPresentation resultPresentation, MethodIdentifier methodUnderTest,
+			String usedReturnValueGenerator) throws IOException, ReflectiveOperationException {
 		List<TestcaseIdentifier> allTestsToRun = parseTestcasesToRun(TextFileData.readFromFile(fileWithTestsToRun));
 		List<String> result = new LinkedList<>();
 
@@ -102,7 +103,7 @@ public class TestRun {
 					usedReturnValueGenerator));
 		}
 
-		LOG.info(s_executionId + ": "
+		LOG.info(executionId.get() + ": "
 				+ LoggingUtil.singularOrPlural(allTestsToRun, "testcase was", "testcases were", true)
 				+ " run successfully.");
 

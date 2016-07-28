@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
-import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogger;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
@@ -21,12 +21,10 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 
 	private static final String SQL_INSERT_STACK_INFO = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, maxStackDistance) VALUES ('%s', '%s', '%s', %s, %s);";
 
-	private final String m_shortExecutionId;
 	private final List<String> m_result;
 
-	public AnalysisInformationCollectionLogic(String executionId) {
+	public AnalysisInformationCollectionLogic(IFullExecutionId executionId) {
 		super(executionId);
-		m_shortExecutionId = getExecutionId().substring(0, CommonUtility.LENGTH_OF_RANDOM_ID);
 		m_result = new LinkedList<>();
 	}
 
@@ -48,7 +46,7 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 			int minInvocationDistance = invocationMinDistances.get(invokedMethod);
 			int maxInvocationDistance = invocationMaxDistances.get(invokedMethod);
 
-			m_result.add(String.format(SQL_INSERT_STACK_INFO, m_shortExecutionId,
+			m_result.add(String.format(SQL_INSERT_STACK_INFO, getExecutionId().getShortId(),
 					testCaseIdentifier.toMethodIdentifier().get(), invokedMethod.get(), minInvocationDistance,
 					maxInvocationDistance));
 		}

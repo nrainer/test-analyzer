@@ -1,29 +1,32 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow;
 
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.IExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 public abstract class AbstractWorkflow implements IWorkflow {
 
 	private ExecutionContext m_context;
 
 	@Override
-	public void init(String execId, Configuration configuration, String programPath, String workingFolder) {
-		m_context = new ExecutionContext(execId, configuration, programPath, workingFolder);
+	public void init(IExecutionId executionId, Configuration configuration, String programPath, String workingFolder) {
+		m_context = new ExecutionContext(executionId, configuration, programPath, workingFolder);
 	}
 
 	@Override
 	public void start() throws ExecutionException {
 		if (m_context == null) {
-			throw new ExecutionException("UNKNOWN", "Not initialized");
+			throw new ExecutionException(ExecutionIdFactory.NOT_SPECIFIED, "Not initialized");
 		}
 
 		startInternal(m_context, m_context.getConfiguration());
 	}
 
-	protected abstract void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException;
+	protected abstract void startInternal(ExecutionContext context, Configuration configuration)
+			throws ExecutionException;
 
 	@Override
 	public String getName() {

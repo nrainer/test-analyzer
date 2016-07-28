@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow;
 
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
@@ -10,7 +11,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 public interface IWorkflow {
 	public void start() throws ExecutionException;
 
-	public void init(String execId, Configuration configuration, String programPath, String workingFolder);
+	public void init(IExecutionId executionId, Configuration configuration, String programPath, String workingFolder);
 
 	public String getName();
 }

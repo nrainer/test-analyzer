@@ -14,6 +14,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.junit.JUnitTestRunResult;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 import de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;
 import junit.framework.TestCase;
 
@@ -25,12 +26,16 @@ public class PresentationTest implements CommonConstants {
 
 	@Test
 	public void testGetResultPresentation() throws ReflectiveOperationException {
-		assertEquals(DatabaseResultPresentation.class, ResultPresentationUtil
-				.createResultPresentation(ResultPresentationProperty.RESULT_PRESENTATION_DB, "").getClass());
-		assertEquals(TextResultPresentation.class, ResultPresentationUtil
-				.createResultPresentation(ResultPresentationProperty.RESULT_PRESENTATION_TEXT, "").getClass());
+		assertEquals(DatabaseResultPresentation.class,
+				ResultPresentationUtil
+						.createResultPresentationWithoutExecutionId(ResultPresentationProperty.RESULT_PRESENTATION_DB)
+						.getClass());
 		assertEquals(TextResultPresentation.class,
-				ResultPresentationUtil.createResultPresentation(TextResultPresentation.class.getName(), "").getClass());
+				ResultPresentationUtil
+						.createResultPresentationWithoutExecutionId(ResultPresentationProperty.RESULT_PRESENTATION_TEXT)
+						.getClass());
+		assertEquals(TextResultPresentation.class, ResultPresentationUtil
+				.createResultPresentationWithoutExecutionId(TextResultPresentation.class.getName()).getClass());
 	}
 
 	@Test
@@ -61,7 +66,7 @@ public class PresentationTest implements CommonConstants {
 	@Test
 	public void testDatabaseResultPresentation() {
 		IResultPresentation presentation = new DatabaseResultPresentation();
-		presentation.setShortExecutionId("EXEC");
+		presentation.setExecutionId(ExecutionIdFactory.parseShortExecutionId("EXEC"));
 
 		final String genericExpected = "INSERT INTO Test_Result_Import (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('EXEC', 'junit.framework.TestCase.test()', 'java.lang.Object.hashCode()', '%s', %s, %s, '%s');";
 

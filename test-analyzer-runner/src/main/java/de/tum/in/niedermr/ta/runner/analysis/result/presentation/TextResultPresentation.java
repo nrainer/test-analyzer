@@ -8,6 +8,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 
 public class TextResultPresentation implements IResultPresentation {
 
@@ -43,7 +44,7 @@ public class TextResultPresentation implements IResultPresentation {
 
 	/** {@inheritDoc} */
 	@Override
-	public void setShortExecutionId(String execId) {
+	public void setExecutionId(IExecutionId executionId) {
 		// not needed
 	}
 

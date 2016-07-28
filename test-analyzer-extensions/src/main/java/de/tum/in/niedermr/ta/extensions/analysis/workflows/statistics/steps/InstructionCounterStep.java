@@ -32,6 +32,11 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 	}
 
 	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "INSCOUNT";
+	}
+
+	@Override
 	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
 		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 

@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s2;
 
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.source.SourceInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.TestInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -8,7 +9,11 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 
 public class InstrumentationStep extends AbstractExecutionStep {
-	private static final String EXEC_ID_INSTRUMENTATION = "INSTRU";
+
+	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "INSTRU";
+	}
 
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
@@ -17,7 +22,7 @@ public class InstrumentationStep extends AbstractExecutionStep {
 		 * these.
 		 */
 
-		final String executionId = getFullExecId(EXEC_ID_INSTRUMENTATION);
+		IFullExecutionId executionId = createFullExecutionId();
 		final boolean operateFaultTolerant = configuration.getOperateFaultTolerant().getValue();
 		ITestRunner testRunner = configuration.getTestRunner().createInstance();
 

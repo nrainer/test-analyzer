@@ -3,12 +3,6 @@ package de.tum.in.niedermr.ta.core.common.util;
 import java.util.Random;
 
 public class CommonUtility {
-	public static final int LENGTH_OF_RANDOM_ID = 4;
-
-	public static String createRandomId() {
-		return createRandomId(LENGTH_OF_RANDOM_ID);
-	}
-
 	public static String createRandomId(int length) {
 		Random rd = new Random();
 
@@ -25,5 +19,9 @@ public class CommonUtility {
 		}
 
 		return sB.toString();
+	}
+
+	public static long getDuration(long startTime) {
+		return (System.currentTimeMillis() - startTime) / 1000;
 	}
 }

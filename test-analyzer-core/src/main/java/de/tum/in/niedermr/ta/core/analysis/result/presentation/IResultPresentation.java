@@ -5,12 +5,13 @@ import java.util.List;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 
 /** Format the result of the workflow execution. */
 public interface IResultPresentation {
 
 	/** Set the execution id to identify the workflow execution. */
-	void setShortExecutionId(String execId);
+	void setExecutionId(IExecutionId executionId);
 
 	/** Format an entry about a completed test execution. */
 	String formatTestResultEntry(TestcaseIdentifier testcaseIdentifier, ITestRunResult testResult,

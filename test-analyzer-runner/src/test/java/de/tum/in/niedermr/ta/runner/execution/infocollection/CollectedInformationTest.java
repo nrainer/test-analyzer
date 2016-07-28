@@ -15,7 +15,9 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 public class CollectedInformationTest implements CommonConstants {
 	@Test
@@ -44,14 +46,14 @@ public class CollectedInformationTest implements CommonConstants {
 
 	@Test
 	public void testToSQLStatements() {
-		final String executionId = "TEST";
+		final IExecutionId executionId = ExecutionIdFactory.parseShortExecutionId("TEST");
 
-		String expected = String.format(DatabaseResultPresentation.SQL_INSERT_METHOD_TEST_CASE_MAPPING, executionId,
-				"de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()",
+		String expected = String.format(DatabaseResultPresentation.SQL_INSERT_METHOD_TEST_CASE_MAPPING,
+				executionId.getShortId(), "de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()",
 				"de.tum.in.ma.project.example.UnitTest.stringCorrect()");
 
 		IResultPresentation resultPresentation = new DatabaseResultPresentation();
-		resultPresentation.setShortExecutionId(executionId);
+		resultPresentation.setExecutionId(executionId);
 
 		List<String> result = CollectedInformation.toResult(getShortTestData(), resultPresentation);
 

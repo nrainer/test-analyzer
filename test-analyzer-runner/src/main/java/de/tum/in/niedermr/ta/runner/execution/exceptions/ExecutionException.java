@@ -1,21 +1,23 @@
 package de.tum.in.niedermr.ta.runner.execution.exceptions;
 
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
+
 public class ExecutionException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 
-	private final String m_executionId;
+	private final IExecutionId m_executionId;
 
-	public ExecutionException(String executionId, String info) {
+	public ExecutionException(IExecutionId executionId, String info) {
 		super(info);
 		this.m_executionId = executionId;
 	}
 
-	public ExecutionException(String executionId, Throwable t) {
+	public ExecutionException(IExecutionId executionId, Throwable t) {
 		super(t);
 		this.m_executionId = executionId;
 	}
 
-	public String getExecutionId() {
+	public IExecutionId getExecutionId() {
 		return m_executionId;
 	}
 }

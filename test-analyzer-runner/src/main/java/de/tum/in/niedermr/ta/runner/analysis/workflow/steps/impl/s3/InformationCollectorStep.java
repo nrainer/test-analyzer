@@ -7,6 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.InformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -16,12 +17,15 @@ import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
 public class InformationCollectorStep extends AbstractExecutionStep {
-	private static final String EXEC_ID = "INFCOL";
-
 	private final ConcurrentLinkedQueue<TestInformation> m_methodsToMutateAndTestsToRun;
 
 	public InformationCollectorStep() {
 		this.m_methodsToMutateAndTestsToRun = new ConcurrentLinkedQueue<>();
+	}
+
+	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "INFCOL";
 	}
 
 	@Override
@@ -31,10 +35,10 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 				+ getTestInstrumentedJarFilesClasspath(configuration) + CP_SEP
 				+ configuration.getClasspath().getValue();
 
-		String executionId = getFullExecId(EXEC_ID);
+		IFullExecutionId executionId = createFullExecutionId();
 
 		ProgramArgsWriter argsWriter = InformationCollector.createProgramArgsWriter();
-		argsWriter.setValue(InformationCollector.ARGS_EXECUTION_ID, executionId);
+		argsWriter.setValue(InformationCollector.ARGS_EXECUTION_ID, executionId.getFullId());
 		argsWriter.setValue(InformationCollector.ARGS_FILE_WITH_TESTS_TO_RUN,
 				configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
 		argsWriter.setValue(InformationCollector.ARGS_FILE_WITH_RESULTS,

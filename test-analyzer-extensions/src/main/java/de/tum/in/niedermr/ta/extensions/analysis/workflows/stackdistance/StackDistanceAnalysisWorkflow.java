@@ -2,7 +2,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s1.AnalysisInstrumentationStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s2.AnalysisInformationCollectorStep;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s3.CleanupStep;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s3.TearDownStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s1.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -16,14 +16,14 @@ public class StackDistanceAnalysisWorkflow extends AbstractWorkflow {
 	protected PrepareWorkingFolderStep m_prepareStep;
 	protected AnalysisInstrumentationStep m_analysisInstrumentationStep;
 	protected AnalysisInformationCollectorStep m_analysisInformationCollectorStep;
-	protected CleanupStep m_cleanupStep;
+	protected TearDownStep m_cleanupStep;
 
 	@Override
 	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		m_prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
 		m_analysisInstrumentationStep = createAndInitializeExecutionStep(AnalysisInstrumentationStep.class);
 		m_analysisInformationCollectorStep = createAndInitializeExecutionStep(AnalysisInformationCollectorStep.class);
-		m_cleanupStep = createAndInitializeExecutionStep(CleanupStep.class);
+		m_cleanupStep = createAndInitializeExecutionStep(TearDownStep.class);
 
 		m_prepareStep.run();
 		m_analysisInstrumentationStep.run();

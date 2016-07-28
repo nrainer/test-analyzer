@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s2;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -10,7 +11,11 @@ import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 
 public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
-	private static final String EXEC_ID_ANALYSIS_COLLECTOR = "ANACOL";
+
+	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "ANACOL";
+	}
 
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
@@ -18,10 +23,10 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 				+ getSourceInstrumentedJarFilesClasspath(configuration) + CP_SEP
 				+ configuration.getCodePathToTest().getValue() + CP_SEP + configuration.getClasspath().getValue();
 
-		String executionId = getFullExecId(EXEC_ID_ANALYSIS_COLLECTOR);
+		IFullExecutionId fullExecutionId = createFullExecutionId();
 
 		ProgramArgsWriter argsWriter = AnalysisInformationCollector.createProgramArgsWriter();
-		argsWriter.setValue(AnalysisInformationCollector.ARGS_EXECUTION_ID, executionId);
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_EXECUTION_ID, fullExecutionId.getFullId());
 		argsWriter.setValue(AnalysisInformationCollector.ARGS_FILE_WITH_TESTS_TO_RUN,
 				configuration.getCodePathToTest().getWithAlternativeSeparator(CommonConstants.SEPARATOR_DEFAULT));
 		argsWriter.setValue(AnalysisInformationCollector.ARGS_RESULT_FILE,
@@ -37,8 +42,8 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 		argsWriter.setValue(AnalysisInformationCollector.ARGS_RESULT_PRESENTATION,
 				configuration.getResultPresentation().getValue());
 
-		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalysisInformationCollector.class.getName(),
-				classPath, argsWriter);
+		processExecution.execute(fullExecutionId, ProcessExecution.NO_TIMEOUT,
+				AnalysisInformationCollector.class.getName(), classPath, argsWriter);
 	}
 
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {

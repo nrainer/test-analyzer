@@ -14,6 +14,11 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 public class FinalizeResultStep extends AbstractExecutionStep {
 
 	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "FNZRES";
+	}
+
+	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		boolean removeTempFilesAfterwards = configuration.getRemoveTempData().getValue();
 
