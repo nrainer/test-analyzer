@@ -12,7 +12,8 @@ CREATE TABLE Execution_Information
 	execution varchar(5) NOT NULL,
 	date date NOT NULL,
 	project varchar(64) NOT NULL,
-	description varchar(256),
+	description varchar(512),
+	notes varchar(512),
 	configurationContent text
 );
 

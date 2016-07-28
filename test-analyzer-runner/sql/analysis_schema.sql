@@ -112,7 +112,7 @@ CREATE VIEW V_Method_State_Info_Extended
 	killed,
 	aborted
 ) AS 
-	SELECT tmi.execution, tmi.methodId, mapping.method, COUNT(tr.killed) > 0, SUM(tr.killed) > 0, COUNT(ta.methodId) > 0
+	SELECT tmi.execution, tmi.methodId, mapping.method, COUNT(tr.killed) > 0, COALESCE(SUM(tr.killed) > 0, 0), COUNT(ta.methodId) > 0
 	FROM V_Tested_Methods_Info tmi
 	INNER JOIN V_Name_Mapping mapping
 	ON tmi.execution = mapping.execution
