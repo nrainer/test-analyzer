@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.runner.analysis.result.presentation;
 
+import java.util.List;
+
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortReason;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
@@ -82,5 +84,17 @@ public class TextResultPresentation implements IResultPresentation {
 		sB.append(CommonConstants.SEPARATOR_END_OF_BLOCK);
 
 		return sB.toString();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String formatExecutionInformation(List<String> configurationLines) {
+		return configurationLines.toString();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String formatExecutionSummary(String summary) {
+		return summary;
 	}
 }

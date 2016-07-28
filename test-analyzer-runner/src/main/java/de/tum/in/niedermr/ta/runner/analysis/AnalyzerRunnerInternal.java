@@ -14,7 +14,6 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
-import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
@@ -98,13 +97,12 @@ public class AnalyzerRunnerInternal {
 			throws ReflectiveOperationException, IOException {
 		IResultPresentation resultPresentation = configuration.getResultPresentation().createInstance(executionId);
 
-		if (resultPresentation instanceof DatabaseResultPresentation) {
-			String fileName = Environment.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_EXECUTION_INFORMATION,
-					configuration.getWorkingFolder().getValue());
-			List<String> content = Arrays.asList(
-					((DatabaseResultPresentation) resultPresentation).formatExecutionInformation(configuration));
-			TextFileData.writeToFile(fileName, content);
-		}
+		String fileName = Environment.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_EXECUTION_INFORMATION,
+				configuration.getWorkingFolder().getValue());
+		List<String> configurationLines = ConfigurationLoader.toFileLines(configuration, false);
+		List<String> formattedContent = Arrays
+				.asList(resultPresentation.formatExecutionInformation(configurationLines));
+		TextFileData.writeToFile(fileName, formattedContent);
 	}
 
 	/** Execute the given workflow. */

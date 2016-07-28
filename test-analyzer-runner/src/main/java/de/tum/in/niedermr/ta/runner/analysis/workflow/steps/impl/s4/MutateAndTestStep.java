@@ -76,7 +76,25 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			LOG.warn("MANUALLY ABORTED.");
 			throw new ExecutionException(getFullExecId(EXEC_ID_TEST_RUN), "Aborted");
 		} else {
-			LOG.info("ALL THREADS FINISHED. " + getSummary(countSuccessful, countSkipped, countTimeout, countError));
+			String summary = getSummary(countSuccessful, countSkipped, countTimeout, countError);
+			LOG.info("ALL THREADS FINISHED. " + summary);
+			writeSummaryToFile(configuration, summary);
+		}
+	}
+
+	/**
+	 * Write the summary of the test execution to the file
+	 * {@link EnvironmentConstants#FILE_OUTPUT_EXECUTION_INFORMATION}.
+	 */
+	private void writeSummaryToFile(Configuration configuration, String summary) {
+		try {
+			IResultPresentation resultPresentation = configuration.getResultPresentation()
+					.createInstance(getExecutionId());
+			String sqlStatement = resultPresentation.formatExecutionSummary(summary);
+			TextFileData.appendToFile(getFileInWorkingArea(FILE_OUTPUT_EXECUTION_INFORMATION),
+					Arrays.asList(sqlStatement));
+		} catch (ReflectiveOperationException | IOException e) {
+			LOG.error("When writing the summary to the file", e);
 		}
 	}
 

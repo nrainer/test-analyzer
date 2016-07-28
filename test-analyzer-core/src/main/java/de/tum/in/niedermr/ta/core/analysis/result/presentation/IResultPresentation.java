@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.core.analysis.result.presentation;
 
+import java.util.List;
+
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
@@ -20,4 +22,10 @@ public interface IResultPresentation {
 
 	/** Format an entry about a method-testcase-mapping. */
 	String formatMethodAndTestcaseMapping(MethodIdentifier methodUnderTest, TestcaseIdentifier testcase);
+
+	/** Format the execution information. */
+	String formatExecutionInformation(List<String> configurationLines);
+
+	/** Format the execution information summary. */
+	String formatExecutionSummary(String summary);
 }
