@@ -20,30 +20,6 @@ public class SourceInstrumentationOperationTest {
 	private Class<?> m_instrumentedClass;
 	private Object m_instanceOfInstrumentedClass;
 
-	public static class ClassToBeInstrumented {
-		public int compute(int value) {
-			if (value < 0) {
-				return handleNegativeValue();
-			} else if (value == 0) {
-				return 0;
-			}
-
-			return computeInternal(value);
-		}
-
-		private int computeInternal(int value) {
-			return increase(value) + 5;
-		}
-
-		private int increase(int value) {
-			return value + 7;
-		}
-
-		private int handleNegativeValue() {
-			throw new IllegalArgumentException();
-		}
-	}
-
 	@Before
 	public void createInstrumentedClass() throws Exception {
 		ICodeModificationOperation modificationOperation = new SourceInstrumentationOperation(new NoTestClassDetector(),
