@@ -23,18 +23,18 @@ public class IntegrationTest2 extends AbstractSystemTest {
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
 		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformation());
+		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsText());
 		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsSql());
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResult());
+		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsText());
 
 		executeTestAnalyzerWithConfiguration();
 
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformation());
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformationAsSql());
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResult());
+		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResultAsText());
 
 		List<TestInformation> expectedTestInformationList = CollectedInformation
-				.parseInformationCollectorData(getContent(getFileExpectedCollectedInformation()));
+				.parseInformationCollectorData(getContent(getFileExpectedCollectedInformationAsText()));
 		List<TestInformation> outputTestInformationList = CollectedInformation
 				.parseInformationCollectorData(getContent(getFileOutputCollectedInformation()));
 		Set<TestInformation> expectedTestInformationSet = new HashSet<>(expectedTestInformationList);
@@ -43,6 +43,6 @@ public class IntegrationTest2 extends AbstractSystemTest {
 
 		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, false, getFileExpectedCollectedInformationAsSql(),
 				getFileOutputCollectedInformationAsSql());
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResult(), getFileOutputResult());
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResultAsText(), getFileOutputResultAsText());
 	}
 }

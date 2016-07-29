@@ -23,7 +23,6 @@ import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
@@ -141,7 +140,7 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 		return TEST_WORKING_AREA_TO_ROOT + folder;
 	}
 
-	protected File getFileExpectedCollectedInformation() {
+	protected File getFileExpectedCollectedInformationAsText() {
 		return getExpectedFile(getFileName(EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION));
 	}
 
@@ -150,8 +149,12 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 				.replace(FILE_EXTENSION_TXT, FILE_EXTENSION_SQL_TXT)));
 	}
 
-	protected File getFileExpectedResult() {
-		return getExpectedFile(getFileName(Environment.getGenericFilePathOfOutputResult(m_configuration)));
+	protected File getFileExpectedResultAsText() {
+		return getExpectedFile(getFileName(EnvironmentConstants.FILE_OUTPUT_RESULT_TXT));
+	}
+
+	protected File getFileExpectedResultAsSql() {
+		return getExpectedFile(getFileName(EnvironmentConstants.FILE_OUTPUT_RESULT_SQL));
 	}
 
 	protected File getFileOutputCollectedInformation() {
@@ -163,8 +166,12 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 				.replace(FILE_EXTENSION_TXT, FILE_EXTENSION_SQL_TXT)));
 	}
 
-	protected File getFileOutputResult() {
-		return getOutputFile(getFileName(Environment.getGenericFilePathOfOutputResult(m_configuration)));
+	protected File getFileOutputResultAsText() {
+		return getOutputFile(getFileName(EnvironmentConstants.FILE_OUTPUT_RESULT_TXT));
+	}
+
+	protected File getFileOutputResultAsSql() {
+		return getOutputFile(getFileName(EnvironmentConstants.FILE_OUTPUT_RESULT_SQL));
 	}
 
 	protected File getExpectedFile(String fileName) {

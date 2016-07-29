@@ -17,12 +17,12 @@ public class IntegrationTest6 extends AbstractSystemTest implements FileSystemCo
 	public void testSystemInternal() throws ConfigurationException, IOException {
 		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
 		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TESTNG_TESTS));
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResult());
+		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsText());
 
 		executeTestAnalyzerWithConfiguration();
 
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResult());
+		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResultAsText());
 
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResult(), getFileOutputResult());
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResultAsText(), getFileOutputResultAsText());
 	}
 }
