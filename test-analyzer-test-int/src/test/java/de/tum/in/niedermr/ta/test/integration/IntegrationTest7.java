@@ -7,7 +7,10 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 /**
- * Jar: simple-project-core.jar Multi-threaded: no Comments: stack analysis workflow
+ * Integration test with extensions involved.<br/>
+ * Code-statistics workflow. Stack-analysis workflow.
+ * 
+ * @see "configuration file in test data"
  */
 public class IntegrationTest7 extends AbstractSystemTest {
 	private static final String ANALYSIS_INFORMATION_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT

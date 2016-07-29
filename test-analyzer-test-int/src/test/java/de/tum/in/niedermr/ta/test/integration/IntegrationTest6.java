@@ -7,7 +7,10 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
- * Jar: simple-project-testng.jar Multi-threaded: yes (4) Comments: -
+ * Integration test.<br/>
+ * Multi-threaded. Uses testNG.
+ * 
+ * @see "configuration file in test data"
  */
 public class IntegrationTest6 extends AbstractSystemTest implements FileSystemConstants {
 	@Override

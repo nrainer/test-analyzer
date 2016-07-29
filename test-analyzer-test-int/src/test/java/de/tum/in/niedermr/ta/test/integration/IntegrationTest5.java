@@ -9,7 +9,10 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
- * Jar: simple-project-special.jar Multi-threaded: yes (4) Comments: -
+ * Integration test.<br/>
+ * Multi-threaded. Mutation with special code. Log file checks.
+ * 
+ * @see "configuration file in test data"
  */
 public class IntegrationTest5 extends AbstractSystemTest {
 	@Override

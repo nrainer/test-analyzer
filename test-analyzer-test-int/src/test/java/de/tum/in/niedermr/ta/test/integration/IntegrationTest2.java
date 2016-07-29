@@ -13,10 +13,13 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
 /**
- * Jar: simple-project-core.jar Multi-threaded: no Comments: skipping one test
- * class, skipping setters and getters
+ * Integration test.<br/>
+ * Nothing special.
+ * 
+ * @see "configuration file in test data"
  */
 public class IntegrationTest2 extends AbstractSystemTest {
+
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
 		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));

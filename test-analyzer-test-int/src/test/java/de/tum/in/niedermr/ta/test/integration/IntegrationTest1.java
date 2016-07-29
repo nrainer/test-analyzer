@@ -6,7 +6,10 @@ import java.io.IOException;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
- * Jar: simple-project-lite.jar Multi-threaded: no Comments: -
+ * Integration test.<br/>
+ * Nothing special.
+ * 
+ * @see "configuration file in test data"
  */
 public class IntegrationTest1 extends AbstractSystemTest {
 	@Override
@@ -20,7 +23,8 @@ public class IntegrationTest1 extends AbstractSystemTest {
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformation());
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResult());
 
-		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, true, getFileExpectedCollectedInformation(), getFileOutputCollectedInformation());
+		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, true, getFileExpectedCollectedInformation(),
+				getFileOutputCollectedInformation());
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, true, getFileExpectedResult(), getFileOutputResult());
 	}
 }

@@ -6,9 +6,10 @@ import java.io.IOException;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
- * Jar: simple-project-system.jar Multi-threaded: yes (4) Comments: different
- * jars for mutating and testing, skip simple setters and getters, presentation
- * DB
+ * Integration test.<br/>
+ * Multi-threaded.
+ * 
+ * @see "configuration file in test data"
  */
 public class IntegrationTest4 extends AbstractSystemTest {
 	@Override

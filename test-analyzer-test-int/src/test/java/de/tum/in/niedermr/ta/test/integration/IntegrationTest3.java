@@ -8,7 +8,10 @@ import org.conqat.lib.commons.filesystem.FileSystemUtils;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
- * Jar: simple-project-lite.jar Multi-threaded: yes (4) Comments: no information collection, presentation DB
+ * Integration test.<br/>
+ * Multi-threaded.
+ * 
+ * @see "configuration file in test data"
  */
 public class IntegrationTest3 extends AbstractSystemTest {
 	@Override
