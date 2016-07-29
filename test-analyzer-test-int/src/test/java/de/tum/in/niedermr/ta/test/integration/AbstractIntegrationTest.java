@@ -26,7 +26,9 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
-public abstract class AbstractSystemTest implements SystemTestConstants, FileSystemConstants {
+/** Base class for integration tests. */
+public abstract class AbstractIntegrationTest implements IntegrationTestConstants, FileSystemConstants {
+
 	private final static String TEST_WORKING_AREA = "./src/test/temp/";
 	private final static String TEST_DATA_FOLDER = "./src/test/data/";
 	private final static String TEST_DATA_COMMON_FOLDER = TEST_DATA_FOLDER + "common/";
@@ -43,7 +45,7 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 	private final String m_systemTestName;
 	private boolean m_wasSuccessful;
 
-	public AbstractSystemTest() {
+	public AbstractIntegrationTest() {
 		this.m_systemTestName = this.getClass().getSimpleName().toLowerCase();
 	}
 
@@ -76,7 +78,7 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 
 	@After
 	public void afterTest() {
-		if (SystemTestConstants.DELETE_OUTPUT_AT_TEAR_DOWN_IF_SUCCESSFUL && m_wasSuccessful) {
+		if (IntegrationTestConstants.DELETE_OUTPUT_AT_TEAR_DOWN_IF_SUCCESSFUL && m_wasSuccessful) {
 			File file = new File(getSpecificFolderTestWorkingArea());
 
 			if (file.exists()) {

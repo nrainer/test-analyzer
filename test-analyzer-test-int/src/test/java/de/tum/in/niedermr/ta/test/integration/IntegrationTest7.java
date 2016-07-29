@@ -12,7 +12,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
  * 
  * @see "configuration file in test data"
  */
-public class IntegrationTest7 extends AbstractSystemTest {
+public class IntegrationTest7 extends AbstractIntegrationTest {
 	private static final String ANALYSIS_INFORMATION_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
 			+ "analysis-information" + FILE_EXTENSION_SQL_TXT;
 	private static final String CODE_STATISTICS_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT

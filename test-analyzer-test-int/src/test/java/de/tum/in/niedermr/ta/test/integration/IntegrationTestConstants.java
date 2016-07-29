@@ -1,6 +1,6 @@
 package de.tum.in.niedermr.ta.test.integration;
 
-public interface SystemTestConstants {
+public interface IntegrationTestConstants {
 	public final static boolean DELETE_OUTPUT_AT_TEAR_DOWN_IF_SUCCESSFUL = true;
 
 	public static final String MSG_NOT_EQUAL_RESULT = "Result not equal";

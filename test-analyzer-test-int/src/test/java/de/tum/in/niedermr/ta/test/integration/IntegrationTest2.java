@@ -18,7 +18,7 @@ import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformatio
  * 
  * @see "configuration file in test data"
  */
-public class IntegrationTest2 extends AbstractSystemTest {
+public class IntegrationTest2 extends AbstractIntegrationTest {
 
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
