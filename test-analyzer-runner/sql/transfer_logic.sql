@@ -148,4 +148,8 @@ WHERE execution = @executionId
 AND processed = 1
 AND @removeImportData = 1;
 
+UPDATE Execution_Information
+SET importProcessed = importProcessed + 1
+WHERE execution = @executionId;
+
 COMMIT;

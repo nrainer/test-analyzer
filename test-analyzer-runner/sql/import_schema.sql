@@ -14,7 +14,8 @@ CREATE TABLE Execution_Information
 	project varchar(64) NOT NULL,
 	description varchar(512),
 	notes varchar(512),
-	configurationContent text
+	configurationContent text,
+	importProcessed tinyint(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Collected_Information_Import
