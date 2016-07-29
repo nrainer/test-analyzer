@@ -19,6 +19,7 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
@@ -30,14 +31,8 @@ import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
 /**
- * <b>Starts the whole workflow</b> which consists of the core steps INSTRU (instrumentation), INFCOL (information
- * collection), METKIL (mutation) and TSTRUN (test run).<br/>
- * This project <b>contains</b> the steps <b>INSTRU and METKIL</b> and invokes INFCOL and TSTRUN in own processes.<br/>
- * <br/>
- * Contains the jar files of: the testing projects<br/>
- * Dependencies: ASM, log4j, ccsm-commons, core.<br/>
+ * Starts the workflows. <br/>
  * Further dependencies: jars to be processed and dependencies
- * 
  */
 public class AnalyzerRunnerInternal {
 	private static final Logger LOG = LogManager.getLogger(AnalyzerRunnerInternal.class);
@@ -78,7 +73,7 @@ public class AnalyzerRunnerInternal {
 			LOG.info("Configuration is valid.");
 			LOG.info("Configuration is:" + CommonConstants.NEW_LINE + configuration.toMultiLineString());
 
-			IWorkflow[] testWorkflows = createTestWorkflows(executionId, configuration);
+			IWorkflow[] testWorkflows = configuration.getTestWorkflows().createInstances();
 
 			for (IWorkflow workFlow : testWorkflows) {
 				executeWorkflow(executionId, programPath, configuration, workFlow);
@@ -114,7 +109,7 @@ public class AnalyzerRunnerInternal {
 		LOG.info("WORKFLOW " + workFlow.getName() + " START (" + new Date() + ")");
 		long startTime = System.currentTimeMillis();
 
-		IWorkflow workflow = initializeTestWorkflow(executionId, workFlow, configuration, programPath);
+		IWorkflow workflow = initializeWorkflow(executionId, workFlow, configuration, programPath);
 		workflow.start();
 
 		LOG.info("Workflow execution id was: '" + executionId.get() + "'");
@@ -143,22 +138,24 @@ public class AnalyzerRunnerInternal {
 		return configuration;
 	}
 
-	private static IWorkflow[] createTestWorkflows(IExecutionId executionId, Configuration configuration) {
-		try {
-			return configuration.getTestWorkflows().createInstances();
-		} catch (Throwable t) {
-			throw new ExecutionException(executionId, "Error when creating the test workflows");
-		}
-	}
-
-	private static IWorkflow initializeTestWorkflow(IExecutionId executionId, IWorkflow workflow,
+	/** Initialize a workflow. */
+	private static IWorkflow initializeWorkflow(IExecutionId executionId, IWorkflow workflow,
 			Configuration configuration, String programPath) {
 		try {
-			workflow.init(executionId, configuration, programPath, RELATIVE_WORKING_FOLDER);
+			// create a new context instance for each workflow
+			ExecutionContext executionContext = createExecutionContext(executionId, configuration, programPath,
+					RELATIVE_WORKING_FOLDER);
+			workflow.initWorkflow(executionContext);
 
 			return workflow;
 		} catch (Throwable t) {
 			throw new ExecutionException(executionId, "Error when initializing the test workflow");
 		}
+	}
+
+	/** Create the execution context for a workflow. */
+	private static ExecutionContext createExecutionContext(IExecutionId executionId, Configuration configuration,
+			String programPath, String workingFolder) {
+		return new ExecutionContext(executionId, configuration, programPath, workingFolder);
 	}
 }

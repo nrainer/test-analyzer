@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow;
 
-import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.IExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
@@ -12,8 +11,8 @@ public abstract class AbstractWorkflow implements IWorkflow {
 	private ExecutionContext m_context;
 
 	@Override
-	public void init(IExecutionId executionId, Configuration configuration, String programPath, String workingFolder) {
-		m_context = new ExecutionContext(executionId, configuration, programPath, workingFolder);
+	public void initWorkflow(ExecutionContext executionContext) {
+		m_context = executionContext;
 	}
 
 	@Override
