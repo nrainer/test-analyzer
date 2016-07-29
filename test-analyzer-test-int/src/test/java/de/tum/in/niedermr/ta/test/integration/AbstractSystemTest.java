@@ -92,7 +92,7 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 	}
 
 	protected void assertFileExists(String errorMsg, File file) {
-		assertTrue(errorMsg, file.exists());
+		assertTrue(errorMsg + "(" + file.getPath() + ")", file.exists());
 	}
 
 	protected void assertFileContentEqual(String errorMsg, boolean orderIsRelevant, File fileWithExpectedContent,
@@ -107,15 +107,15 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 
 		assertEquals(errorMsg, expectedContent, outputContent);
 	}
-	
+
 	protected void assertLogFileContains(List<String> expectedText) {
 		if (expectedText.isEmpty()) {
 			return;
 		}
-		
+
 		List<String> logFileContentLines = getContent(getLogFile());
 		String logFileContent = StringUtility.join(logFileContentLines, CommonConstants.NEW_LINE);
-		
+
 		for (String text : expectedText) {
 			assertTrue("Log file does not contain: '" + text + "'", logFileContent.contains(text));
 		}
@@ -174,7 +174,7 @@ public abstract class AbstractSystemTest implements SystemTestConstants, FileSys
 	protected File getOutputFile(String fileName) {
 		return new File(getSpecificFolderTestWorkingArea() + FOLDER_OUTPUT + fileName);
 	}
-	
+
 	protected File getLogFile() {
 		return new File(getSpecificFolderTestWorkingArea() + FOLDER_LOG + "TestAnalyzer.log");
 	}

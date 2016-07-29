@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.runner.analysis.result.presentation;
 
 import static org.junit.Assert.assertEquals;
-import junit.framework.TestCase;
 
 import org.junit.Test;
 import org.junit.runner.JUnitCore;
@@ -16,6 +15,7 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.junit.JUnitTestRunResult;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
 import de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;
+import junit.framework.TestCase;
 
 public class PresentationTest implements CommonConstants {
 	private static final TestcaseIdentifier SAMPLE_TEST_IDENTIFIER = TestcaseIdentifier.create(TestCase.class, "test");
@@ -63,7 +63,7 @@ public class PresentationTest implements CommonConstants {
 		IResultPresentation presentation = new DatabaseResultPresentation();
 		presentation.setShortExecutionId("EXEC");
 
-		final String genericExpected = "INSERT INTO Test_Result (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('EXEC', 'junit.framework.TestCase.test()', 'java.lang.Object.hashCode()', '%s', %s, %s, '%s');";
+		final String genericExpected = "INSERT INTO Test_Result_Import (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('EXEC', 'junit.framework.TestCase.test()', 'java.lang.Object.hashCode()', '%s', %s, %s, '%s');";
 
 		String output;
 		String expected;

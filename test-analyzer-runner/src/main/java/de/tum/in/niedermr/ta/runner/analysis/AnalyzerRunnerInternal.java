@@ -76,13 +76,14 @@ public class AnalyzerRunnerInternal {
 			LOG.info("Configuration is valid.");
 			LOG.info("Configuration is:" + CommonConstants.NEW_LINE + configuration.toMultiLineString());
 
-			writeExecutionInformationFile(executionId, configuration);
-
 			IWorkflow[] testWorkflows = createTestWorkflows(executionId, configuration);
 
 			for (IWorkflow workFlow : testWorkflows) {
 				executeWorkflow(executionId, programPath, configuration, workFlow);
 			}
+
+			// must be executed after the workflow because it requires the existence of the results folder
+			writeExecutionInformationFile(executionId, configuration);
 
 			LOG.info("TEST ANALYZER END");
 		} catch (Throwable t) {
@@ -98,7 +99,7 @@ public class AnalyzerRunnerInternal {
 		IResultPresentation resultPresentation = configuration.getResultPresentation().createInstance(executionId);
 
 		String fileName = Environment.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_EXECUTION_INFORMATION,
-				configuration.getWorkingFolder().getValue());
+				RELATIVE_WORKING_FOLDER);
 		List<String> configurationLines = ConfigurationLoader.toFileLines(configuration, false);
 		List<String> formattedContent = Arrays
 				.asList(resultPresentation.formatExecutionInformation(configurationLines));
