@@ -149,9 +149,9 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	}
 
 	private static String getSummary(int countSuccessful, int countSkipped, int countTimeout, int countError) {
-		return "(" + (countSuccessful + countSkipped + countTimeout + countError) + " methods. " + countSuccessful
+		return (countSuccessful + countSkipped + countTimeout + countError) + " methods. " + countSuccessful
 				+ " processed successfully. " + countSkipped + " skipped. " + countTimeout + " with timeout. "
-				+ countError + " failed.)";
+				+ countError + " failed.";
 	}
 
 	/** Worker thread that polls methods to mutate and triggers the test executions. */
@@ -197,8 +197,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				m_countMethods++;
 			}
 
-			LOG.info("THREAD FINISHED: T_" + m_threadIndex + " "
-					+ getSummary(m_countSuccessful, m_countSkipped, m_countTimeout, m_countError));
+			LOG.info("THREAD FINISHED: T_" + m_threadIndex + " ("
+					+ getSummary(m_countSuccessful, m_countSkipped, m_countTimeout, m_countError) + ")");
 		}
 
 		protected void mutateAndTest() {
