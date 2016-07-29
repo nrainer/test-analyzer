@@ -176,6 +176,10 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		return getOutputFile(getFileName(EnvironmentConstants.FILE_OUTPUT_RESULT_SQL));
 	}
 
+	protected File getFileOutputExecutionInformationAsSql() {
+		return getOutputFile(getFileName(EnvironmentConstants.FILE_OUTPUT_EXECUTION_INFORMATION));
+	}
+
 	protected File getExpectedFile(String fileName) {
 		return new File(getSpecificFolderTestData() + FOLDER_EXPECTED + fileName);
 	}
