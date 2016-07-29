@@ -14,6 +14,7 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
@@ -24,6 +25,7 @@ import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
@@ -46,7 +48,6 @@ public class AnalyzerRunnerInternal {
 	public static final ProgramArgsKey ARGS_PROGRAM_PATH = new ProgramArgsKey(AnalyzerRunnerInternal.class, 1);
 	public static final ProgramArgsKey ARGS_CONFIG_FILE = new ProgramArgsKey(AnalyzerRunnerInternal.class, 2);
 
-	public static final String EXECUTION_ID_FOR_TESTS = "TEST";
 	private static final String RELATIVE_WORKING_FOLDER = FileSystemConstants.CURRENT_FOLDER;
 
 	/**
@@ -62,7 +63,8 @@ public class AnalyzerRunnerInternal {
 
 		ProgramArgsReader argsReader = new ProgramArgsReader(AnalyzerRunnerInternal.class, args);
 
-		final String executionId = getExecutionId(argsReader);
+		final IExecutionId executionId = ExecutionIdFactory
+				.parseShortExecutionId(argsReader.getArgument(ARGS_EXECUTION_ID));
 		final String programPath = argsReader.getArgument(ARGS_PROGRAM_PATH);
 		final String configurationFileToUse = Environment.replaceWorkingFolder(argsReader.getArgument(ARGS_CONFIG_FILE),
 				RELATIVE_WORKING_FOLDER);
@@ -94,7 +96,7 @@ public class AnalyzerRunnerInternal {
 	}
 
 	/** Write a file with execution information. */
-	private static void writeExecutionInformationFile(String executionId, Configuration configuration)
+	private static void writeExecutionInformationFile(IExecutionId executionId, Configuration configuration)
 			throws ReflectiveOperationException, IOException {
 		IResultPresentation resultPresentation = configuration.getResultPresentation().createInstance(executionId);
 
@@ -107,7 +109,7 @@ public class AnalyzerRunnerInternal {
 	}
 
 	/** Execute the given workflow. */
-	private static void executeWorkflow(String executionId, String programPath, Configuration configuration,
+	private static void executeWorkflow(IExecutionId executionId, String programPath, Configuration configuration,
 			IWorkflow workFlow) {
 		LOG.info("WORKFLOW " + workFlow.getName() + " START (" + new Date() + ")");
 		long startTime = System.currentTimeMillis();
@@ -115,8 +117,8 @@ public class AnalyzerRunnerInternal {
 		IWorkflow workflow = initializeTestWorkflow(executionId, workFlow, configuration, programPath);
 		workflow.start();
 
-		LOG.info("Workflow execution id was: '" + executionId + "'");
-		LOG.info("Workflow duration was: " + getDuration(startTime));
+		LOG.info("Workflow execution id was: '" + executionId.get() + "'");
+		LOG.info("Workflow duration was: " + CommonUtility.getDuration(startTime) + " seconds");
 		LOG.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
 	}
 
@@ -141,7 +143,7 @@ public class AnalyzerRunnerInternal {
 		return configuration;
 	}
 
-	private static IWorkflow[] createTestWorkflows(String executionId, Configuration configuration) {
+	private static IWorkflow[] createTestWorkflows(IExecutionId executionId, Configuration configuration) {
 		try {
 			return configuration.getTestWorkflows().createInstances();
 		} catch (Throwable t) {
@@ -149,8 +151,8 @@ public class AnalyzerRunnerInternal {
 		}
 	}
 
-	private static IWorkflow initializeTestWorkflow(String executionId, IWorkflow workflow, Configuration configuration,
-			String programPath) {
+	private static IWorkflow initializeTestWorkflow(IExecutionId executionId, IWorkflow workflow,
+			Configuration configuration, String programPath) {
 		try {
 			workflow.init(executionId, configuration, programPath, RELATIVE_WORKING_FOLDER);
 
@@ -158,20 +160,5 @@ public class AnalyzerRunnerInternal {
 		} catch (Throwable t) {
 			throw new ExecutionException(executionId, "Error when initializing the test workflow");
 		}
-	}
-
-	private static String getExecutionId(ProgramArgsReader argsReader) {
-		if (argsReader.getArgument(ARGS_EXECUTION_ID).equals(EXECUTION_ID_FOR_TESTS)) {
-			return EXECUTION_ID_FOR_TESTS;
-		}
-
-		return CommonUtility.createRandomId();
-	}
-
-	private static String getDuration(final long startTime) {
-		final long endTime = System.currentTimeMillis();
-		final long duration = endTime - startTime;
-
-		return (duration / 1000) + " seconds";
 	}
 }

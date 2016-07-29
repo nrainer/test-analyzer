@@ -1,14 +1,15 @@
 package de.tum.in.niedermr.ta.runner.execution;
 
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 
 public class ExecutionContext {
-	private final String m_executionId;
+	private final IExecutionId m_executionId;
 	private final Configuration m_configuration;
 	private final String m_programPath;
 	private final String m_workingFolder;
 
-	public ExecutionContext(String executionId, Configuration configuration, String programPath,
+	public ExecutionContext(IExecutionId executionId, Configuration configuration, String programPath,
 			String workingFolder) {
 		this.m_executionId = executionId;
 		this.m_configuration = configuration;
@@ -16,7 +17,7 @@ public class ExecutionContext {
 		this.m_workingFolder = workingFolder;
 	}
 
-	public String getExecutionId() {
+	public IExecutionId getExecutionId() {
 		return m_executionId;
 	}
 

@@ -26,6 +26,11 @@ public class PersistResultStep extends AbstractExecutionStep {
 	private final List<String> m_result = new LinkedList<>();
 
 	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "PERDAT";
+	}
+
+	@Override
 	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
 		TextFileData.writeToFile(getFileInWorkingArea(RESULT_FILE), m_result);
 	}
@@ -79,8 +84,8 @@ public class PersistResultStep extends AbstractExecutionStep {
 			String stringValue, String valueName) {
 		String intValueAsString = intValue == null ? "NULL" : "'" + intValue.toString() + "'";
 		String stringValueAsString = stringValue == null ? "NULL" : "'" + stringValue.toString() + "'";
-		return String.format(genericSqlStatement, getExecutionId(), methodIdentifier.get(), intValueAsString,
-				stringValueAsString, valueName);
+		return String.format(genericSqlStatement, getExecutionId().getShortId(), methodIdentifier.get(),
+				intValueAsString, stringValueAsString, valueName);
 	}
 
 	@Override

@@ -41,6 +41,11 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		this.m_assertionInformation = getAssertionInformation();
 	}
 
+	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "ASSCOUNT";
+	}
+
 	private AssertionInformation getAssertionInformation() {
 		Class<?>[] assertionClasses = getAvailableAssertionClasses().toArray(new Class[0]);
 		return new AssertionInformation(assertionClasses) {

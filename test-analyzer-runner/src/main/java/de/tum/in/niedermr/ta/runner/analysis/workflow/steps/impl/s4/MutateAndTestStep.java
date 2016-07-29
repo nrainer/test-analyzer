@@ -18,6 +18,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -34,12 +35,16 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	static final Logger LOG = LogManager.getLogger(MutateAndTestStep.class);
 	private static final Logger LOG_TEST_SYS_ERR = LogManager.getLogger("TestSysErr");
 
-	protected static final String EXEC_ID_TEST_RUN = "TSTRUN";
 	protected static final int TIME_INTERVAL_ABORT_CHECK = 30;
 
 	protected ConcurrentLinkedQueue<TestInformation> m_methodsToMutateAndTestsToRun;
 	protected boolean m_aborted;
 	protected IReturnValueGenerator[] m_returnValueGenerators;
+
+	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "TSTRUN";
+	}
 
 	public void setInputData(ConcurrentLinkedQueue<TestInformation> methodsToMutateAndTestsToRun) {
 		this.m_methodsToMutateAndTestsToRun = methodsToMutateAndTestsToRun;
@@ -74,7 +79,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 
 		if (m_aborted) {
 			LOG.warn("MANUALLY ABORTED.");
-			throw new ExecutionException(getFullExecId(EXEC_ID_TEST_RUN), "Aborted");
+			throw new ExecutionException(createFullExecutionId(), "Aborted");
 		} else {
 			String summary = getSummary(countSuccessful, countSkipped, countTimeout, countError);
 			LOG.info("ALL THREADS FINISHED. " + summary);
@@ -118,7 +123,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		try {
 			this.m_returnValueGenerators = configuration.getReturnValueGenerators().createInstances();
 		} catch (ReflectiveOperationException ex) {
-			throw new ExecutionException(getFullExecId(EXEC_ID_TEST_RUN),
+			throw new ExecutionException(createFullExecutionId(),
 					"Return value generator is not on the classpath (" + ex.getMessage() + ")");
 		}
 	}
@@ -200,8 +205,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			int retValGenIndex = 0;
 
 			for (IReturnValueGenerator returnValueGen : m_returnValueGenerators) {
-				final String fullExecutionId = getFullExecId(
-						EXEC_ID_TEST_RUN + "_T" + m_threadIndex + "_C" + m_countMethods + "_R" + retValGenIndex);
+				IFullExecutionId fullExecutionId = getExecutionId().createFullExecutionId(getSuffixForFullExecutionId()
+						+ "_T" + m_threadIndex + "_C" + m_countMethods + "_R" + retValGenIndex);
 
 				mutateAndTest(fullExecutionId, returnValueGen);
 
@@ -209,7 +214,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			}
 		}
 
-		protected void mutateAndTest(String fullExecutionId, IReturnValueGenerator returnValueGenerator) {
+		protected void mutateAndTest(IFullExecutionId fullExecutionId, IReturnValueGenerator returnValueGenerator) {
 			try {
 				mutateAndTestInternal(fullExecutionId, returnValueGenerator);
 			} catch (TimeoutException ex) {
@@ -227,7 +232,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			}
 		}
 
-		private void mutateAndTestInternal(String fullExecutionId, IReturnValueGenerator returnValueGenerator)
+		private void mutateAndTestInternal(IFullExecutionId fullExecutionId, IReturnValueGenerator returnValueGenerator)
 				throws Exception {
 			LOG.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
 					+ returnValueGenerator.getClass().getName());
@@ -244,7 +249,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			}
 		}
 
-		protected void handleSuccessfullyMutatedMethod(String fullExecutionId,
+		protected void handleSuccessfullyMutatedMethod(IFullExecutionId fullExecutionId,
 				IReturnValueGenerator returnValueGenerator) throws IOException {
 			LOG.info("Mutated: " + m_currentMethodUnderTest.get());
 
@@ -291,7 +296,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		 * Note that the full original classpath is used. However, the mutated jar is inserted at the beginning of the
 		 * classpath, thus the mutated class is considered first in that jar file.
 		 */
-		protected void runTestsAndRecordResult(String fullExecutionId, String fileWithTestsToRun,
+		protected void runTestsAndRecordResult(IFullExecutionId fullExecutionId, String fileWithTestsToRun,
 				String fileWithResults, IReturnValueGenerator retValGen) throws IOException {
 			final String usedReturnValueGenerator = retValGen.getClass().getName();
 			final String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
@@ -300,7 +305,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			final int timeout = m_configuration.computeTestingTimeout(m_currentTestcases.size());
 
 			ProgramArgsWriter argsWriter = TestRun.createProgramArgsWriter();
-			argsWriter.setValue(TestRun.ARGS_EXECUTION_ID, fullExecutionId);
+			argsWriter.setValue(TestRun.ARGS_EXECUTION_ID, fullExecutionId.getFullId());
 			argsWriter.setValue(TestRun.ARGS_FILE_WITH_TESTS_TO_RUN, getFileInWorkingArea(fileWithTestsToRun));
 			argsWriter.setValue(TestRun.ARGS_FILE_WITH_RESULTS, getFileInWorkingArea(fileWithResults));
 			argsWriter.setValue(TestRun.ARGS_MUTATED_METHOD_IDENTIFIER, m_currentMethodUnderTest.get());

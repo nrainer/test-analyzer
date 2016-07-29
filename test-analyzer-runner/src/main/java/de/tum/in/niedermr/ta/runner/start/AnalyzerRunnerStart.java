@@ -8,6 +8,7 @@ import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
@@ -17,6 +18,7 @@ import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 /**
  * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed classpath.<br/>
@@ -24,8 +26,9 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
  *
  */
 public class AnalyzerRunnerStart {
-	private static final String DEFAULT_EXEC_ID = "ANALYS";
-	private static String s_usedExecId = DEFAULT_EXEC_ID;
+	public static final IExecutionId EXECUTION_ID_FOR_TESTS = ExecutionIdFactory.parseShortExecutionId("TEST");
+
+	private static boolean s_inTestMode = false;
 
 	/**
 	 * Main method.
@@ -59,6 +62,12 @@ public class AnalyzerRunnerStart {
 	}
 
 	public static void execute(Configuration configuration, File locationTestAnalyzer) throws IOException {
+		IExecutionId executionId = ExecutionIdFactory.createNewShortExecutionId();
+
+		if (s_inTestMode) {
+			executionId = EXECUTION_ID_FOR_TESTS;
+		}
+
 		final String currentCanonicalPath = locationTestAnalyzer.getCanonicalPath();
 		final String workingFolder = configuration.getWorkingFolder().getValue();
 
@@ -81,11 +90,11 @@ public class AnalyzerRunnerStart {
 					+ Environment.prefixClasspathInWorkingFolder(configuration.getFullClasspath());
 
 			ProgramArgsWriter argsWriter = AnalyzerRunnerInternal.createProgramArgsWriter();
-			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_EXECUTION_ID, s_usedExecId);
+			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_EXECUTION_ID, executionId.get());
 			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_PROGRAM_PATH, currentCanonicalPath);
 			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_CONFIG_FILE, EnvironmentConstants.FILE_INPUT_USED_CONFIG);
 
-			pExecution.execute(s_usedExecId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class.getName(),
+			pExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class.getName(),
 					classpath, argsWriter);
 
 			print("DONE.");
@@ -109,6 +118,6 @@ public class AnalyzerRunnerStart {
 	 * comparison.
 	 */
 	public static void setTestMode() {
-		s_usedExecId = AnalyzerRunnerInternal.EXECUTION_ID_FOR_TESTS;
+		s_inTestMode = true;
 	}
 }

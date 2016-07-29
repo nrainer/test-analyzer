@@ -12,7 +12,10 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
  * methods.
  */
 public class AnalysisInstrumentationStep extends AbstractExecutionStep {
-	private static final String EXEC_ID_ANALYSIS_INSTRUMENTATION = "ANAINS";
+	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "ANAINS";
+	}
 
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
@@ -20,11 +23,10 @@ public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 		 * Instrument the methods of the jars to compute the min and max stack distance to the testcase.
 		 */
 
-		final String executionId = getFullExecId(EXEC_ID_ANALYSIS_INSTRUMENTATION);
 		final boolean operateFaultTolerant = configuration.getOperateFaultTolerant().getValue();
 		ITestRunner testRunner = configuration.getTestRunner().createInstance();
 
-		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(executionId,
+		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(createFullExecutionId(),
 				operateFaultTolerant);
 		analysisInstrumentation.injectAnalysisStatements(configuration.getCodePathToMutate().getElements(),
 				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,

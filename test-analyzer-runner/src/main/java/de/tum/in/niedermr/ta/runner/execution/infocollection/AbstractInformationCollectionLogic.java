@@ -14,6 +14,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
@@ -21,16 +22,16 @@ public abstract class AbstractInformationCollectionLogic {
 	private static final Logger LOG = LogManager.getLogger(AbstractInformationCollectionLogic.class);
 	private static final boolean LOG_FULL_STACKTRACE_OF_FAILED_UNMODIFIED_TESTS = false;
 
-	private final String m_executionId;
+	private final IFullExecutionId m_executionId;
 	private ITestRunner m_testRunner;
 	private String m_outputFile;
 	private IResultPresentation resultPresentation;
 
-	protected AbstractInformationCollectionLogic(String executionId) {
+	protected AbstractInformationCollectionLogic(IFullExecutionId executionId) {
 		this.m_executionId = executionId;
 	}
 
-	public String getExecutionId() {
+	public IFullExecutionId getExecutionId() {
 		return m_executionId;
 	}
 

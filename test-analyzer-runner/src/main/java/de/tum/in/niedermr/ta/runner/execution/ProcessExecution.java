@@ -12,6 +12,7 @@ import org.conqat.lib.commons.io.ProcessUtils.ExecutionResult;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
@@ -50,12 +51,12 @@ public class ProcessExecution {
 		this.m_workingFolderForClasspath = workingFolderForClasspath;
 	}
 
-	public ExecutionResult execute(String executionId, int timeout, String mainClass, String classpath,
+	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClass, String classpath,
 			ProgramArgsWriter argsWriter) throws ExecutionException, IOException {
 		return execute(executionId, timeout, mainClass, classpath, argsWriter.getArgs());
 	}
 
-	public ExecutionResult execute(String executionId, int timeout, String mainClass, String classpath,
+	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClass, String classpath,
 			String[] arguments) throws ExecutionException, IOException {
 		List<String> command = new LinkedList<>();
 
@@ -72,7 +73,7 @@ public class ProcessExecution {
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.directory(new File(m_directory));
 
-		LOG.info("EXECUTING PROCESS: '" + executionId + "' " + command.toString());
+		LOG.info("EXECUTING PROCESS: '" + executionId.get() + "' " + command.toString());
 
 		ExecutionResult result = ProcessUtils.execute(processBuilder, null, timeout);
 
@@ -88,7 +89,7 @@ public class ProcessExecution {
 
 		if (result.getReturnCode() != 0) {
 			throw new ProcessExecutionFailedException(executionId,
-					"Execution id '" + executionId + "' returned with other code than 0");
+					"Execution id '" + executionId.get() + "' returned with other code than 0");
 		}
 
 		return result;

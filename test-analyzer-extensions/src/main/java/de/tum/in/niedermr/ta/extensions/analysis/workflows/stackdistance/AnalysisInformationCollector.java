@@ -7,6 +7,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentati
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.collection.AnalysisInformationCollectionLogic;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -14,6 +15,7 @@ import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 import de.tum.in.niedermr.ta.runner.logging.LoggingConstants;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
@@ -56,17 +58,18 @@ public class AnalysisInformationCollector {
 
 		ProgramArgsReader argsReader = new ProgramArgsReader(AnalysisInformationCollector.class, args);
 
-		final String executionId = argsReader.getArgument(ARGS_EXECUTION_ID);
+		final IFullExecutionId fullExecutionId = ExecutionIdFactory
+				.parseFullExecutionId(argsReader.getArgument(ARGS_EXECUTION_ID));
 		final AnalysisInformationCollectionLogic analysisInformationCollectionLogic = new AnalysisInformationCollectionLogic(
-				executionId);
+				fullExecutionId);
 
-		main(argsReader, executionId, analysisInformationCollectionLogic);
+		main(argsReader, fullExecutionId, analysisInformationCollectionLogic);
 	}
 
-	private static void main(ProgramArgsReader argsReader, String executionId,
+	private static void main(ProgramArgsReader argsReader, IFullExecutionId executionId,
 			AnalysisInformationCollectionLogic analysisInformationCollectionLogic) {
 
-		LOG.info(LoggingConstants.EXECUTION_ID_PREFIX + executionId);
+		LOG.info(LoggingConstants.EXECUTION_ID_TEXT + executionId.get());
 		LOG.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {

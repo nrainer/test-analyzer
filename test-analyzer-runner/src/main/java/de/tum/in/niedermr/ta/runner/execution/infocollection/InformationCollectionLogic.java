@@ -16,6 +16,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class InformationCollectionLogic extends AbstractInformationCollectionLogic {
@@ -23,7 +24,7 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 
 	protected final Map<MethodIdentifier, TestInformation> m_methodInformation;
 
-	public InformationCollectionLogic(String executionId) {
+	public InformationCollectionLogic(IFullExecutionId executionId) {
 		super(executionId);
 		this.m_methodInformation = new HashMap<>();
 	}

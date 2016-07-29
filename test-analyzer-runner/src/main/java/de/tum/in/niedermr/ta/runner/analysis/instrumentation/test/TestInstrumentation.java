@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.runner.analysis.instrumentation.test;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.tests.runner.special.UsesOtherDetectorForTestcaseInstrumentation;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractInstrumentation;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
@@ -14,7 +15,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
  * 
  */
 public class TestInstrumentation extends AbstractInstrumentation {
-	public TestInstrumentation(String executionId, boolean operateFaultTolerant) {
+	public TestInstrumentation(IExecutionId executionId, boolean operateFaultTolerant) {
 		super(executionId, operateFaultTolerant);
 	}
 

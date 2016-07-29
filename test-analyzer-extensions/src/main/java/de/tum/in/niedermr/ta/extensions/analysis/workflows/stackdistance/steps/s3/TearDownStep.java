@@ -9,7 +9,12 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
-public class CleanupStep extends AbstractExecutionStep {
+public class TearDownStep extends AbstractExecutionStep {
+
+	@Override
+	protected String getSuffixForFullExecutionId() {
+		return "TEARDOWN";
+	}
 
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {

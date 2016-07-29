@@ -2,11 +2,12 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.
 
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
+import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractInstrumentation;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class AnalysisInstrumentation extends AbstractInstrumentation {
-	public AnalysisInstrumentation(String executionId, boolean operateFaultTolerant) {
+	public AnalysisInstrumentation(IFullExecutionId executionId, boolean operateFaultTolerant) {
 		super(executionId, operateFaultTolerant);
 	}
 
