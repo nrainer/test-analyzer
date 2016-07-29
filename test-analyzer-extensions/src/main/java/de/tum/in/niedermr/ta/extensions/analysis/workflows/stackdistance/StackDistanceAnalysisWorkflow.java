@@ -4,7 +4,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s2.AnalysisInformationCollectorStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s3.TearDownStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
-import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s1.PrepareWorkingFolderStep;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.preparation.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
@@ -13,21 +13,20 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
  * Computes the minimum and maximum distance on the call stack between test case and method.
  */
 public class StackDistanceAnalysisWorkflow extends AbstractWorkflow {
-	protected PrepareWorkingFolderStep m_prepareStep;
-	protected AnalysisInstrumentationStep m_analysisInstrumentationStep;
-	protected AnalysisInformationCollectorStep m_analysisInformationCollectorStep;
-	protected TearDownStep m_cleanupStep;
 
+	/** {@inheritDoc} */
 	@Override
-	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
-		m_prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
-		m_analysisInstrumentationStep = createAndInitializeExecutionStep(AnalysisInstrumentationStep.class);
-		m_analysisInformationCollectorStep = createAndInitializeExecutionStep(AnalysisInformationCollectorStep.class);
-		m_cleanupStep = createAndInitializeExecutionStep(TearDownStep.class);
+	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
+		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
+		AnalysisInstrumentationStep analysisInstrumentationStep = createAndInitializeExecutionStep(
+				AnalysisInstrumentationStep.class);
+		AnalysisInformationCollectorStep analysisInformationCollectorStep = createAndInitializeExecutionStep(
+				AnalysisInformationCollectorStep.class);
+		TearDownStep cleanupStep = createAndInitializeExecutionStep(TearDownStep.class);
 
-		m_prepareStep.run();
-		m_analysisInstrumentationStep.run();
-		m_analysisInformationCollectorStep.run();
-		m_cleanupStep.run();
+		prepareStep.run();
+		analysisInstrumentationStep.run();
+		analysisInformationCollectorStep.run();
+		cleanupStep.run();
 	}
 }

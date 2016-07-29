@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
-import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s1.PrepareWorkingFolderStep;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.preparation.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s2.InstrumentationStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s3.InformationCollectorStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s4.MutateAndTestStep;
@@ -37,8 +37,9 @@ public class TestWorkflow extends AbstractWorkflow {
 	public TestWorkflow() {
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
+	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		setUpExecutionSteps();
 
 		beforeExecution();
@@ -114,9 +115,9 @@ public class TestWorkflow extends AbstractWorkflow {
 		return testInformation;
 	}
 
-	protected void executeMutateAndTest(ConcurrentLinkedQueue<TestInformation> testInformation) throws ExecutionException {
+	protected void executeMutateAndTest(ConcurrentLinkedQueue<TestInformation> testInformation)
+			throws ExecutionException {
 		m_mutateAndTestStep.setInputData(testInformation);
-
 		m_mutateAndTestStep.run();
 	}
 }

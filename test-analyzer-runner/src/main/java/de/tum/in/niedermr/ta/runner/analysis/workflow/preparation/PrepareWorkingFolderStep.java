@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s1;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.preparation;
 
 import java.io.File;
 
@@ -9,6 +9,10 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
+/**
+ * This step prepares the working folder. It should be executed before each workflow to ensure that the temp folder is
+ * empty.
+ */
 public class PrepareWorkingFolderStep extends AbstractExecutionStep {
 
 	@Override

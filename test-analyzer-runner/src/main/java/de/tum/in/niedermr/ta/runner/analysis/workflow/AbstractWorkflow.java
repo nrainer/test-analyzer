@@ -16,7 +16,7 @@ public abstract class AbstractWorkflow implements IWorkflow {
 	}
 
 	@Override
-	public void start() throws ExecutionException {
+	public final void start() throws ExecutionException {
 		if (m_context == null) {
 			throw new ExecutionException(ExecutionIdFactory.NOT_SPECIFIED, "Not initialized");
 		}

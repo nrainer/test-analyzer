@@ -23,13 +23,14 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	private Configuration m_configuration;
 	private ProcessExecution m_processExecution;
 
+	/** {@inheritDoc} */
 	@Override
-	public void initialize(ExecutionContext information) {
-		this.m_context = information;
-		this.m_configuration = information.getConfiguration();
-		this.m_processExecution = new ProcessExecution(information.getWorkingFolder(), information.getProgramPath(),
-				information.getWorkingFolder());
-		execInitialized(information);
+	public final void initialize(ExecutionContext context) {
+		this.m_context = context;
+		this.m_configuration = context.getConfiguration();
+		this.m_processExecution = new ProcessExecution(context.getWorkingFolder(), context.getProgramPath(),
+				context.getWorkingFolder());
+		execInitialized(context);
 		m_initialized = true;
 	}
 
@@ -42,6 +43,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		// NOP
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void run() throws ExecutionException {
 		if (!m_initialized) {
