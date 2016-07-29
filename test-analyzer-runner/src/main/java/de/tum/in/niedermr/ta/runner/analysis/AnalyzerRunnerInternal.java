@@ -13,6 +13,7 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
+import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -117,7 +118,7 @@ public class AnalyzerRunnerInternal {
 		workflow.start();
 
 		LOG.info("Workflow execution id was: '" + executionId.get() + "'");
-		LOG.info("Workflow duration was: " + getDuration(startTime));
+		LOG.info("Workflow duration was: " + CommonUtility.getDuration(startTime) + " seconds");
 		LOG.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
 	}
 
@@ -159,12 +160,5 @@ public class AnalyzerRunnerInternal {
 		} catch (Throwable t) {
 			throw new ExecutionException(executionId, "Error when initializing the test workflow");
 		}
-	}
-
-	private static String getDuration(final long startTime) {
-		final long endTime = System.currentTimeMillis();
-		final long duration = endTime - startTime;
-
-		return (duration / 1000) + " seconds";
 	}
 }
