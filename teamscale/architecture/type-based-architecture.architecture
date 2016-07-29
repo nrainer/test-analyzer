@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="false" scope-include="" scope-exclude="">
-  <component name="core.analysis" dim="140,40" pos="551,21">
+  <component name="core.analysis" dim="140,40" pos="471,21">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.analysis.*" />
   </component>
-  <component name="core.code" dim="120,40" pos="731,21" stereotype="public">
+  <component name="core.code" dim="120,40" pos="841,21" stereotype="public">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.code.*" />
   </component>
-  <component name="core.common" dim="140,40" pos="361,21" stereotype="public">
+  <component name="core.common" dim="140,40" pos="261,21" stereotype="public">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.common.*" />
+  </component>
+  <component name="core.execution" dim="150,40" pos="681,21">
+    <code-mapping type="include" regex="de\.tum\.in\.niedermr\.ta\.core\.execution\..*" />
   </component>
   <component name="extensions.analysis" dim="170,40" pos="551,621">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.extensions.analysis.*" />
@@ -37,7 +40,7 @@
   <component name="runner.start" dim="160,40" pos="951,401">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.start.*" />
   </component>
-  <component name="runner.test" dim="120,40" pos="181,281">
+  <component name="runner.test" dim="120,40" pos="51,281">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.test.*" />
   </component>
   <component name="test.integration" dim="170,40" pos="951,541">
@@ -46,7 +49,9 @@
   <component name="test.sample" dim="120,40" pos="981,21" stereotype="public">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.sample.*" />
   </component>
+  <allow source="core.analysis" target="core.execution" />
   <allow source="extensions.analysis" target="core.analysis" />
+  <allow source="extensions.analysis" target="core.execution" />
   <allow source="extensions.analysis" target="runner.analysis" />
   <allow source="extensions.analysis" target="runner.configuration" />
   <allow source="extensions.analysis" target="runner.execution" />
@@ -55,6 +60,7 @@
   </tolerate>
   <allow source="extensions.analysis" target="runner.test" />
   <allow source="runner.analysis" target="core.analysis" />
+  <allow source="runner.analysis" target="core.execution" />
   <allow source="runner.analysis" target="runner.configuration" />
   <allow source="runner.analysis" target="runner.execution" />
   <tolerate source="runner.analysis" target="runner.start">
@@ -63,17 +69,22 @@
     <dependency source="de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
   </tolerate>
   <allow source="runner.configuration" target="core.analysis" />
+  <tolerate source="runner.configuration" target="core.execution">
+    <dependency source="de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty" target="de.tum.in.niedermr.ta.core.execution.id.IExecutionId" />
+  </tolerate>
   <allow source="runner.configuration" target="runner.analysis" />
   <tolerate source="runner.configuration" target="runner.execution">
     <dependency source="de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractClasspathProperty" target="de.tum.in.niedermr.ta.runner.execution.environment.Environment" />
     <dependency source="de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader" target="de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader" />
   </tolerate>
   <allow source="runner.execution" target="core.analysis" />
+  <allow source="runner.execution" target="core.execution" />
   <allow source="runner.execution" target="runner.analysis" />
   <allow source="runner.execution" target="runner.configuration" />
   <allow source="runner.execution" target="runner.start" />
   <allow source="runner.execution" target="runner.test" />
   <allow source="runner.logging" target="runner.execution" />
+  <allow source="runner.start" target="core.execution" />
   <allow source="runner.start" target="runner.analysis" />
   <allow source="runner.start" target="runner.configuration" />
   <tolerate source="runner.start" target="runner.constants">

@@ -10,9 +10,6 @@
     <code-mapping type="include" regex="test-analyzer-core/src/test.*" />
     <code-mapping type="exclude" regex="test-analyzer-core/src/test/resources/de/tum/in/niedermr/ta/sample/.*" />
   </component>
-  <component name="test.analyzer.core test-res" dim="220,40" pos="841,21">
-    <code-mapping type="include" regex="test-analyzer-core/src/test/resources/de/tum/in/niedermr/ta/sample/.*" />
-  </component>
   <component name="test.analyzer.extensions app" dim="220,40" pos="21,231">
     <code-mapping type="include" regex="test-analyzer-extensions/src/main.*" />
   </component>
@@ -29,14 +26,13 @@
     <code-mapping type="include" regex="test-analyzer-test-int/src/test.*" />
   </component>
   <allow source="test.analyzer.core test" target="test.analyzer.core app" />
-  <allow source="test.analyzer.core test" target="test.analyzer.core test-res" />
   <allow source="test.analyzer.extensions app" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions app" target="test.analyzer.runner app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.extensions app" />
   <allow source="test.analyzer.runner app" target="test.analyzer.core app" />
   <allow source="test.analyzer.runner test" target="test.analyzer.core app" />
-  <allow source="test.analyzer.runner test" target="test.analyzer.core test-res" />
+  <allow source="test.analyzer.runner test" target="test.analyzer.core test" />
   <allow source="test.analyzer.runner test" target="test.analyzer.runner app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.core app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.runner app" />
