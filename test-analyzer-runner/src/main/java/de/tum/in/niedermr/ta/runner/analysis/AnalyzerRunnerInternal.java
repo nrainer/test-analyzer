@@ -16,6 +16,7 @@ import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.preparation.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -73,14 +74,15 @@ public class AnalyzerRunnerInternal {
 			LOG.info("Configuration is valid.");
 			LOG.info("Configuration is:" + CommonConstants.NEW_LINE + configuration.toMultiLineString());
 
+			prepareWorkingDirectory(executionId, configuration, programPath);
+			// must be done before starting the workflows because the steps may append information to the file
+			writeExecutionInformationFile(executionId, configuration);
+
 			IWorkflow[] testWorkflows = configuration.getTestWorkflows().createInstances();
 
 			for (IWorkflow workFlow : testWorkflows) {
 				executeWorkflow(executionId, programPath, configuration, workFlow);
 			}
-
-			// must be executed after the workflow because it requires the existence of the results folder
-			writeExecutionInformationFile(executionId, configuration);
 
 			LOG.info("TEST ANALYZER END");
 		} catch (Throwable t) {
@@ -88,6 +90,15 @@ public class AnalyzerRunnerInternal {
 			LOG.fatal("Execution failed", t);
 			throw new ExecutionException(executionId, AnalyzerRunnerInternal.class.getName() + " was not successful.");
 		}
+	}
+
+	/** Prepare the working directory before running workflows. */
+	private static void prepareWorkingDirectory(IExecutionId executionId, Configuration configuration,
+			String programPath) {
+		ExecutionContext executionContext = createExecutionContext(executionId, configuration, programPath);
+		PrepareWorkingFolderStep prepareWorkingFolderStep = new PrepareWorkingFolderStep();
+		prepareWorkingFolderStep.initialize(executionContext);
+		prepareWorkingFolderStep.run();
 	}
 
 	/** Write a file with execution information. */
@@ -143,8 +154,7 @@ public class AnalyzerRunnerInternal {
 			Configuration configuration, String programPath) {
 		try {
 			// create a new context instance for each workflow
-			ExecutionContext executionContext = createExecutionContext(executionId, configuration, programPath,
-					RELATIVE_WORKING_FOLDER);
+			ExecutionContext executionContext = createExecutionContext(executionId, configuration, programPath);
 			workflow.initWorkflow(executionContext);
 
 			return workflow;
@@ -155,7 +165,7 @@ public class AnalyzerRunnerInternal {
 
 	/** Create the execution context for a workflow. */
 	private static ExecutionContext createExecutionContext(IExecutionId executionId, Configuration configuration,
-			String programPath, String workingFolder) {
-		return new ExecutionContext(executionId, configuration, programPath, workingFolder);
+			String programPath) {
+		return new ExecutionContext(executionId, configuration, programPath, RELATIVE_WORKING_FOLDER);
 	}
 }
