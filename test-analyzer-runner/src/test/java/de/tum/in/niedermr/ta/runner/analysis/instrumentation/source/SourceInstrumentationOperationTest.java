@@ -12,7 +12,8 @@ import org.junit.Test;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger.LoggingMode;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
-import de.tum.in.niedermr.ta.core.code.tests.detector.NoTestClassDetector;
+import de.tum.in.niedermr.ta.core.code.tests.detector.BiasedTestClassDetector;
+import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.visitor.BytecodeModificationTestUtility;
 
 public class SourceInstrumentationOperationTest {
@@ -22,8 +23,8 @@ public class SourceInstrumentationOperationTest {
 
 	@Before
 	public void createInstrumentedClass() throws Exception {
-		ICodeModificationOperation modificationOperation = new SourceInstrumentationOperation(new NoTestClassDetector(),
-				null);
+		ICodeModificationOperation modificationOperation = new SourceInstrumentationOperation(
+				new BiasedTestClassDetector(ClassType.NO_TEST_CLASS), null);
 		m_instrumentedClass = BytecodeModificationTestUtility.createAndLoadModifiedClass(ClassToBeInstrumented.class,
 				modificationOperation);
 		m_instanceOfInstrumentedClass = m_instrumentedClass.newInstance();
