@@ -9,74 +9,74 @@
 CREATE TABLE Execution_Information
 (
 	id int(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
+	execution VARCHAR(5) NOT NULL,
 	date date NOT NULL,
-	project varchar(64) NOT NULL,
-	description varchar(512),
-	notes varchar(512),
+	project VARCHAR(64) NOT NULL,
+	description VARCHAR(512),
+	notes VARCHAR(512),
 	configurationContent text,
-	importProcessed tinyint(1) NOT NULL DEFAULT 0
+	importProcessed TINYINT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Collected_Information_Import
 (
-	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	method varchar(1024) NOT NULL COLLATE utf8_bin,
-	testcase varchar(1024) NOT NULL COLLATE utf8_bin,
-	processed tinyint(1) NOT NULL DEFAULT 0
+	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
+	testcase VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
+	processed TINYINT(1) NOT NULL DEFAULT 0
  );
 
 CREATE TABLE Test_Result_Import
 (
-	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	testcase varchar(1024) NOT NULL COLLATE utf8_bin,
-	method varchar(1024) NOT NULL COLLATE utf8_bin,
-	retValGen varchar(256) NOT NULL,
-	killed tinyint(1) NOT NULL,
-	assertErr tinyint(1),
-	exception varchar(256),
-	processed tinyint(1) NOT NULL DEFAULT 0
+	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	testcase VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
+	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
+	retValGen VARCHAR(256) NOT NULL,
+	killed TINYINT(1) NOT NULL,
+	assertErr TINYINT(1),
+	exception VARCHAR(256),
+	processed TINYINT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Test_Abort_Import
 (
-	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	method VARCHAR(1024) COLLATE utf8_bin,
+	method VARCHAR(1024) COLLATE UTF8_BIN,
 	retValGen VARCHAR(256),
 	cause VARCHAR(32),
-	processed tinyint(1) NOT NULL DEFAULT 0
+	processed TINYINT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Stack_Info_Import
 (
-	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	testcase VARCHAR(1024) COLLATE utf8_bin,
-	method VARCHAR(1024) COLLATE utf8_bin,
+	testcase VARCHAR(1024) COLLATE UTF8_BIN,
+	method VARCHAR(1024) COLLATE UTF8_BIN,
 	minStackDistance INT(8),
 	maxStackDistance INT(8)
 );
 
 CREATE TABLE Method_Info_Import
 (
-	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	method VARCHAR(1024) NOT NULL COLLATE utf8_bin,
+	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	intValue INT(8),
-	stringValue VARCHAR(20) COLLATE utf8_bin,
+	stringValue VARCHAR(20) COLLATE UTF8_BIN,
 	valueName VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE Testcase_Info_Import
 (
-	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	testcase VARCHAR(1024) COLLATE utf8_bin,
+	testcase VARCHAR(1024) COLLATE UTF8_BIN,
 	intValue INT(8),
-	stringValue VARCHAR(20) COLLATE utf8_bin,
+	stringValue VARCHAR(20) COLLATE UTF8_BIN,
 	valueName VARCHAR(20) NOT NULL
 );
 

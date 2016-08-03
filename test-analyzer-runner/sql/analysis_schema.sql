@@ -12,54 +12,54 @@
 
 CREATE TABLE Method_Info
 (
-	methodId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	method varchar(1024) NOT NULL COLLATE utf8_bin,
+	methodId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
     instructions INT(8),
     modifier VARCHAR(10)
 );
 
 CREATE TABLE Testcase_Info
 (
-	testcaseId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	testcase varchar(1024) NOT NULL COLLATE utf8_bin,
+	testcaseId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	testcase VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
     instructions INT(8),
     assertions INT(8)
 );
 
 CREATE TABLE Relation_Info
 (
-	relationId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	methodId int(11) NOT NULL,
-	testcaseId int(11) NOT NULL,
+	relationId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	methodId INT(11) NOT NULL,
+	testcaseId INT(11) NOT NULL,
 	minStackDistance INT(8),
 	maxStackDistance INT(8)
 );
 
 CREATE TABLE RetValGen_Info
 (
-	retValGenId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	retValGen varchar(256) NOT NULL
+	retValGenId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	retValGen VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE Test_Result_Info
 (
-	resultId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	relationId int(11) NOT NULL,
-	retValGenId int(11) NOT NULL,
-	killed tinyint(1) NOT NULL
+	resultId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	relationId INT(11) NOT NULL,
+	retValGenId INT(11) NOT NULL,
+	killed TINYINT(1) NOT NULL
 );
 
 CREATE TABLE Method_Test_Abort_Info
 (
-	abortId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution varchar(5) NOT NULL,
-	methodId int(11) NOT NULL,
-	retValGenId int(11) NOT NULL
+	abortId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution VARCHAR(5) NOT NULL,
+	methodId INT(11) NOT NULL,
+	retValGenId INT(11) NOT NULL
 );
 
 /* Mapping between relationId, methodId, testcaseId and method (name) and testcase (name). */
