@@ -1,4 +1,10 @@
-SET @executionId = '';
+DROP PROCEDURE IF EXISTS RevertTransfer;
+
+DELIMITER //
+CREATE PROCEDURE RevertTransfer (IN execution VARCHAR(5))
+BEGIN
+
+SET @executionId = execution;
 
 START TRANSACTION;
 
@@ -40,3 +46,6 @@ SET processed = 0
 WHERE execution = @executionId;
 
 COMMIT;
+
+END //
+DELIMITER ;

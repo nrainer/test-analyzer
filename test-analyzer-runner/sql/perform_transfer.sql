@@ -1,5 +1,10 @@
-SET @executionId = '';
-SET @removeImportData = 0;
+DROP PROCEDURE IF EXISTS Transfer;
+
+DELIMITER //
+CREATE PROCEDURE Transfer (IN execution VARCHAR(5))
+BEGIN
+
+SET @executionId = execution;
 
 START TRANSACTION;
 
@@ -132,24 +137,6 @@ UPDATE Test_Abort_Import t
 SET t.processed = 1
 WHERE t.execution = @executionId;
 
-/* Delete data from Collected_Information_Import if @removeImportData is 1. */
-DELETE FROM Collected_Information_Import
-WHERE execution = @executionId
-AND processed = 1
-AND @removeImportData = 1;
-
-/* Delete data from Test_Result_Import if @removeImportData is 1. */
-DELETE FROM Test_Result_Import
-WHERE execution = @executionId
-AND processed = 1
-AND @removeImportData = 1;
-
-/* Delete data from Test_Abort_Import if @removeImportData is 1. */
-DELETE FROM Test_Abort_Import
-WHERE execution = @executionId
-AND processed = 1
-AND @removeImportData = 1;
-
 /* Mark the execution as processed. */
 UPDATE Execution_Information
 SET processed = processed + 1
@@ -175,3 +162,6 @@ FROM RetValGen_Info r
 WHERE r.execution = @executionId
 GROUP BY nonUniqueMd5Hash
 HAVING COUNT(*) > 1;
+
+END //
+DELIMITER ;
