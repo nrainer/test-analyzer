@@ -33,24 +33,37 @@ ON c.testcase = ti.testcase
 WHERE c.execution = @executionId
 AND c.processed = 0;
 
+/* Create an entry for each return value generatoro. */
+INSERT INTO RetValGen_Info
+(execution, retValGen)
+SELECT DISTINCT @executionId, retValGen
+FROM Test_Result_Import
+WHERE execution = @executionId;
+
 /* Create an entry for each entry in Test_Result. */
 INSERT INTO Test_Result_Info
-(execution, relationId, retValGen, killed)
-SELECT @executionId, mapping.relationId, t.retValGen, t.killed
+(execution, relationId, retValGenId, killed)
+SELECT @executionId, mapping.relationId, rvg.retValGenId, t.killed
 FROM Test_Result_Import t
 INNER JOIN V_Name_Mapping mapping
 ON mapping.execution = t.execution
 AND mapping.method = t.method
+INNER JOIN RetValGen_Info rvg
+ON mapping.execution = rvg.execution
+AND t.retValGen = rvg.retValGen
 WHERE t.execution = @executionId
 AND t.processed = 0;
 
 /* Create an entry for each entry in Test_Abort. */
 INSERT INTO Method_Test_Abort_Info
-(execution, methodId, retValGen)
-SELECT @executionId, mi.methodId, t.retValGen
+(execution, methodId, retValGenId)
+SELECT @executionId, mi.methodId, rvg.retValGenId
 FROM Test_Abort_Import t
 INNER JOIN Method_Info mi
 ON t.method = mi.method
+INNER JOIN RetValGen_Info rvg
+ON t.execution = rvg.execution
+AND t.retValGen = rvg.retValGen
 WHERE t.execution = @executionId
 AND t.processed = 0;
 

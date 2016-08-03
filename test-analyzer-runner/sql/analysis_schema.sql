@@ -6,6 +6,7 @@
 -- DROP TABLE IF EXISTS Method_Info;
 -- DROP TABLE IF EXISTS Testcase_Info;
 -- DROP TABLE IF EXISTS Relation_Info;
+-- DROP TABLE IF EXISTS RetValGen_Info;
 -- DROP TABLE IF EXISTS Test_Result_Info;
 -- DROP TABLE IF EXISTS Method_Test_Abort_Info;
 
@@ -37,12 +38,19 @@ CREATE TABLE Relation_Info
 	maxStackDistance INT(8)
 );
 
+CREATE TABLE RetValGen_Info
+(
+	retValGenId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+	execution varchar(5) NOT NULL,
+	retValGen varchar(256) NOT NULL
+);
+
 CREATE TABLE Test_Result_Info
 (
 	resultId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution varchar(5) NOT NULL,
 	relationId int(11) NOT NULL,
-	retValGen varchar(256) NOT NULL,
+	retValGenId int(11) NOT NULL,
 	killed tinyint(1) NOT NULL
 );
 
@@ -51,7 +59,7 @@ CREATE TABLE Method_Test_Abort_Info
 	abortId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution varchar(5) NOT NULL,
 	methodId int(11) NOT NULL,
-	retValGen varchar(256) NOT NULL
+	retValGenId int(11) NOT NULL
 );
 
 /* Mapping between relationId, methodId, testcaseId and method (name) and testcase (name). */
@@ -135,10 +143,10 @@ CREATE VIEW V_Test_Result_Info
 	testcaseId,
 	method,
 	testcase,
-	retValGen,
+	retValGenId,
 	killed
 ) AS 
-	SELECT t.execution, t.relationId, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGen, t.killed
+	SELECT t.execution, t.relationId, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed
 	FROM Test_Result_Info t
 	INNER JOIN V_Name_Mapping mapping
 	ON t.execution = mapping.execution
@@ -151,5 +159,7 @@ CREATE INDEX idx_aly_ti_2 ON Testcase_Info(testcase(50));
 CREATE INDEX idx_aly_ri_1 ON Relation_Info(execution);
 CREATE INDEX idx_aly_ri_2 ON Relation_Info(methodId);
 CREATE INDEX idx_aly_ri_3 ON Relation_Info(testcaseId);
+CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution);
+CREATE INDEX idx_aly_rvgi_2 ON RetValGen_Info(retValGen(50));
 CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution);
 CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(relationId);
