@@ -33,7 +33,7 @@ ON c.testcase = ti.testcase
 WHERE c.execution = @executionId
 AND c.processed = 0;
 
-/* Create an entry for each return value generatoro. */
+/* Create an entry for each return value generator. */
 INSERT INTO RetValGen_Info
 (execution, retValGen)
 SELECT DISTINCT @executionId, retValGen
@@ -83,51 +83,39 @@ WHERE sii.execution = @executionId;
 
 /* Enrich data with method information: instructions. */
 UPDATE Method_Info mi
-INNER JOIN V_Name_Mapping mapping
-ON mi.methodId = mapping.methodId
-AND mi.execution = mapping.execution
-INNER JOIN Method_Info_Import mii
-ON mii.method = mapping.method
-AND mii.execution = mapping.execution
-SET mi.instructions = mii.intValue
-WHERE mii.execution = @executionId
-AND mii.valueName = 'instructions';
+INNER JOIN Method_Info_Import mix
+ON mi.method = mix.method
+AND mi.execution = mix.execution
+SET mi.instructions = mix.intValue
+WHERE mix.execution = @executionId
+AND mix.valueName = 'instructions';
 
 /* Enrich data with method information: modifier. */
 UPDATE Method_Info mi
-INNER JOIN V_Name_Mapping mapping
-ON mi.methodId = mapping.methodId
-AND mi.execution = mapping.execution
-INNER JOIN Method_Info_Import mii
-ON mii.method = mapping.method
-AND mii.execution = mapping.execution
-SET mi.modifier = mii.stringValue
-WHERE mii.execution = @executionId
-AND mii.valueName = 'modifier';
+INNER JOIN Method_Info_Import mix
+ON mi.method = mix.method
+AND mi.execution = mix.execution
+SET mi.modifier = mix.stringValue
+WHERE mix.execution = @executionId
+AND mix.valueName = 'modifier';
 
 /* Enrich data with test information: instructions. */
 UPDATE Testcase_Info ti
-INNER JOIN V_Name_Mapping mapping
-ON ti.testcaseId = mapping.testcaseId
-AND ti.execution = mapping.execution
-INNER JOIN Testcase_Info_Import tii
-ON tii.testcase = mapping.testcase
-AND tii.execution = mapping.execution
-SET ti.instructions = tii.intValue
-WHERE tii.execution = @executionId
-AND tii.valueName = 'instructions';
+INNER JOIN Testcase_Info_Import tix
+ON ti.testcase = tix.testcase
+AND ti.execution = tix.execution
+SET ti.instructions = tix.intValue
+WHERE tix.execution = @executionId
+AND tix.valueName = 'instructions';
 
 /* Enrich data with test information: assertions. */
 UPDATE Testcase_Info ti
-INNER JOIN V_Name_Mapping mapping
-ON ti.testcaseId = mapping.testcaseId
-AND ti.execution = mapping.execution
-INNER JOIN Testcase_Info_Import tii
-ON tii.testcase = mapping.testcase
-AND tii.execution = mapping.execution
-SET ti.assertions = tii.intValue
-WHERE tii.execution = @executionId
-AND tii.valueName = 'assertions';
+INNER JOIN Testcase_Info_Import tix
+ON ti.testcase = tix.testcase
+AND ti.execution = tix.execution
+SET ti.assertions = tix.intValue
+WHERE tix.execution = @executionId
+AND tix.valueName = 'assertions';
 
 /* Mark all entries in Collected_Information_Import as processed. */
 UPDATE Collected_Information_Import c
@@ -179,5 +167,11 @@ UNION ALL
 SELECT 'TestCase_Info.testcase' AS location, @executionId AS execution, MD5(t.testcase) AS nonUniqueMd5Hash
 FROM Testcase_Info t
 WHERE t.execution = @executionId
+GROUP BY nonUniqueMd5Hash
+HAVING COUNT(*) > 1
+UNION ALL
+SELECT 'RetValGen_Info.retValGen' AS location, @executionId AS execution, MD5(r.retValGen) AS nonUniqueMd5Hash
+FROM RetValGen_Info r
+WHERE r.execution = @executionId
 GROUP BY nonUniqueMd5Hash
 HAVING COUNT(*) > 1;
