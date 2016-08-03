@@ -163,7 +163,7 @@ AND @removeImportData = 1;
 
 /* Mark the execution as processed. */
 UPDATE Execution_Information
-SET importProcessed = importProcessed + 1
+SET processed = processed + 1
 WHERE execution = @executionId;
 
 COMMIT;

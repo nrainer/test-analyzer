@@ -33,7 +33,7 @@ SET t.processed = 0
 WHERE t.execution = @executionId;
 
 UPDATE Execution_Information
-SET importProcessed = 0
+SET processed = 0
 WHERE execution = @executionId;
 
 COMMIT;

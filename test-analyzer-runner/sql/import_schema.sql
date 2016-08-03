@@ -15,7 +15,7 @@ CREATE TABLE Execution_Information
 	description VARCHAR(512),
 	notes VARCHAR(512),
 	configurationContent text,
-	importProcessed TINYINT(1) NOT NULL DEFAULT 0
+	processed TINYINT(1) NOT NULL DEFAULT 0
 );
 
 CREATE TABLE Collected_Information_Import
