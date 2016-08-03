@@ -13,7 +13,8 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 
 /**
  * Integration test.<br/>
- * Multi-threaded.
+ * Multi-threaded. <br/>
+ * executeCollectInformation disabled
  * 
  * @see "configuration file in test data"
  */
