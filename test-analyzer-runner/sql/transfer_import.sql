@@ -161,8 +161,22 @@ WHERE execution = @executionId
 AND processed = 1
 AND @removeImportData = 1;
 
+/* Mark the execution as processed. */
 UPDATE Execution_Information
 SET importProcessed = importProcessed + 1
 WHERE execution = @executionId;
 
 COMMIT;
+
+/* List potentially non-unique entries. */
+SELECT 'Method_Info.method' AS location, @executionId AS execution, MD5(m.method) AS nonUniqueMd5Hash
+FROM Method_Info m
+WHERE m.execution = @executionId
+GROUP BY nonUniqueMd5Hash
+HAVING COUNT(*) > 1
+UNION ALL
+SELECT 'TestCase_Info.testcase' AS location, @executionId AS execution, MD5(t.testcase) AS nonUniqueMd5Hash
+FROM Testcase_Info t
+WHERE t.execution = @executionId
+GROUP BY nonUniqueMd5Hash
+HAVING COUNT(*) > 1;
