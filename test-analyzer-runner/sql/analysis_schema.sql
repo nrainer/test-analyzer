@@ -163,3 +163,7 @@ CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution);
 CREATE INDEX idx_aly_rvgi_2 ON RetValGen_Info(retValGen(50));
 CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution);
 CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(relationId);
+
+ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId, testcaseId);
+ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, relationId, retValGenId);
+ALTER TABLE Method_Test_Abort_Info ADD CONSTRAINT uc_aly_mai_1 UNIQUE (execution, methodId, retValGenId);
