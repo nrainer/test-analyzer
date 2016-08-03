@@ -22,8 +22,8 @@ CREATE TABLE Collected_Information_Import
 (
 	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution varchar(5) NOT NULL,
-	method varchar(1024) NOT NULL,
-	testcase varchar(1024) NOT NULL,
+	method varchar(1024) NOT NULL COLLATE utf8_bin,
+	testcase varchar(1024) NOT NULL COLLATE utf8_bin,
 	processed tinyint(1) NOT NULL DEFAULT 0
  );
 
@@ -31,8 +31,8 @@ CREATE TABLE Test_Result_Import
 (
 	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution varchar(5) NOT NULL,
-	testcase varchar(1024) NOT NULL,
-	method varchar(1024) NOT NULL,
+	testcase varchar(1024) NOT NULL COLLATE utf8_bin,
+	method varchar(1024) NOT NULL COLLATE utf8_bin,
 	retValGen varchar(256) NOT NULL,
 	killed tinyint(1) NOT NULL,
 	assertErr tinyint(1),
@@ -44,7 +44,7 @@ CREATE TABLE Test_Abort_Import
 (
 	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	method VARCHAR(1024),
+	method VARCHAR(1024) COLLATE utf8_bin,
 	retValGen VARCHAR(256),
 	cause VARCHAR(32),
 	processed tinyint(1) NOT NULL DEFAULT 0
@@ -54,8 +54,8 @@ CREATE TABLE Stack_Info_Import
 (
 	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	testcase VARCHAR(1024),
-	method VARCHAR(1024),
+	testcase VARCHAR(1024) COLLATE utf8_bin,
+	method VARCHAR(1024) COLLATE utf8_bin,
 	minStackDistance INT(8),
 	maxStackDistance INT(8)
 );
@@ -64,9 +64,9 @@ CREATE TABLE Method_Info_Import
 (
 	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	method VARCHAR(1024) NOT NULL,
+	method VARCHAR(1024) NOT NULL COLLATE utf8_bin,
 	intValue INT(8),
-	stringValue VARCHAR(20),
+	stringValue VARCHAR(20) COLLATE utf8_bin,
 	valueName VARCHAR(20) NOT NULL
 );
 
@@ -74,9 +74,9 @@ CREATE TABLE Testcase_Info_Import
 (
 	id int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
-	testcase VARCHAR(1024),
+	testcase VARCHAR(1024) COLLATE utf8_bin,
 	intValue INT(8),
-	stringValue VARCHAR(20),
+	stringValue VARCHAR(20) COLLATE utf8_bin,
 	valueName VARCHAR(20) NOT NULL
 );
 

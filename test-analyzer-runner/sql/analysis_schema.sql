@@ -13,7 +13,7 @@ CREATE TABLE Method_Info
 (
 	methodId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution varchar(5) NOT NULL,
-	method varchar(1024) NOT NULL,
+	method varchar(1024) NOT NULL COLLATE utf8_bin,
     instructions INT(8),
     modifier VARCHAR(10)
 );
@@ -22,7 +22,7 @@ CREATE TABLE Testcase_Info
 (
 	testcaseId int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution varchar(5) NOT NULL,
-	testcase varchar(1024) NOT NULL,
+	testcase varchar(1024) NOT NULL COLLATE utf8_bin,
     instructions INT(8),
     assertions INT(8)
 );
