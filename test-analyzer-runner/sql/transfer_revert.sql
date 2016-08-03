@@ -17,6 +17,9 @@ WHERE execution = @executionId;
 DELETE FROM Method_Test_Abort_Info
 WHERE execution = @executionId;
 
+DELETE FROM RetValGen_Info
+WHERE execution = @executionId;
+
 /* Mark all entries in Collected_Information_Import as not processed. */
 UPDATE Collected_Information_Import c
 SET c.processed = 0

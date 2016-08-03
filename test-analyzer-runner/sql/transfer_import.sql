@@ -48,6 +48,7 @@ FROM Test_Result_Import t
 INNER JOIN V_Name_Mapping mapping
 ON mapping.execution = t.execution
 AND mapping.method = t.method
+AND mapping.testcase = t.testcase
 INNER JOIN RetValGen_Info rvg
 ON mapping.execution = rvg.execution
 AND t.retValGen = rvg.retValGen
