@@ -26,6 +26,9 @@ WHERE execution = @executionId;
 DELETE FROM RetValGen_Info
 WHERE execution = @executionId;
 
+DELETE FROM MV_Name_Mapping
+WHERE execution = @executionId;
+
 /* Mark all entries in Collected_Information_Import as not processed. */
 UPDATE Collected_Information_Import c
 SET c.processed = 0
