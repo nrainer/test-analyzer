@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s4;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +22,7 @@ abstract class AbortCheckerThread extends Thread {
 		this.setDaemon(true);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void run() {
 		try {

@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s3;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 
 import java.io.IOException;
 import java.util.List;
@@ -23,11 +23,13 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 		this.m_methodsToMutateAndTestsToRun = new ConcurrentLinkedQueue<>();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "INFCOL";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		final String classPath = configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
@@ -79,6 +81,7 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 		return m_methodsToMutateAndTestsToRun;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
 		return "Loading information about the testcases and the methods they are invoking";

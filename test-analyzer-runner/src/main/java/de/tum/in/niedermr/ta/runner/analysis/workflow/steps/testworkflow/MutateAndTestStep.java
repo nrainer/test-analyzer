@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s4;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -41,6 +41,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	protected boolean m_aborted;
 	protected IReturnValueGenerator[] m_returnValueGenerators;
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "TSTRUN";
@@ -50,6 +51,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		this.m_methodsToMutateAndTestsToRun = methodsToMutateAndTestsToRun;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		LOG.info("Using " + LoggingUtil.appendPluralS(configuration.getNumberOfThreads().getValue(), "thread", true)

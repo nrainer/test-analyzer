@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s5;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 
 import java.io.File;
 
@@ -13,11 +13,13 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 public class FinalizeResultStep extends AbstractExecutionStep {
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "FNZRES";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		boolean removeTempFilesAfterwards = configuration.getRemoveTempData().getValue();
@@ -48,6 +50,7 @@ public class FinalizeResultStep extends AbstractExecutionStep {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
 		return "Finalizing the result and removing temp files (if enabled)";

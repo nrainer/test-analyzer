@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.impl.s2;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
@@ -10,11 +10,13 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 
 public class InstrumentationStep extends AbstractExecutionStep {
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "INSTRU";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		/**
@@ -37,6 +39,7 @@ public class InstrumentationStep extends AbstractExecutionStep {
 				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
 		return "Instrumenting jar file";
