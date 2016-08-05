@@ -9,7 +9,6 @@
 -- DROP TABLE IF EXISTS RetValGen_Info;
 -- DROP TABLE IF EXISTS Test_Result_Info;
 -- DROP TABLE IF EXISTS Method_Test_Abort_Info;
--- DROP TABLE IF EXISTS MV_Name_Mapping;
 
 CREATE TABLE Method_Info
 (
@@ -82,11 +81,6 @@ CREATE VIEW V_Name_Mapping
 	ON ri.execution = ti.execution
 	AND ri.testcaseId = ti.testcaseId;
 	
-/* V_Name_Mapping as table. */
-CREATE TABLE MV_Name_Mapping
-AS SELECT * FROM V_Name_Mapping
-WHERE 1 = 0;
-
 /* Methods that were tested (they have a test result or all tests aborted). */
 CREATE VIEW V_Tested_Methods_Info
 (
@@ -169,15 +163,7 @@ CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution);
 CREATE INDEX idx_aly_rvgi_2 ON RetValGen_Info(retValGen(50));
 CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution);
 CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(relationId);
-CREATE INDEX idx_aly_mv_mn_1 ON MV_Name_Mapping(execution);
-CREATE INDEX idx_aly_mv_mn_2 ON MV_Name_Mapping(method(50));
-CREATE INDEX idx_aly_mv_mn_3 ON MV_Name_Mapping(testcase(50));
-CREATE INDEX idx_aly_mv_mn_4 ON MV_Name_Mapping(methodId);
-CREATE INDEX idx_aly_mv_mn_5 ON MV_Name_Mapping(testcaseId);
 
 ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId, testcaseId);
 ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, relationId, retValGenId);
 ALTER TABLE Method_Test_Abort_Info ADD CONSTRAINT uc_aly_mai_1 UNIQUE (execution, methodId, retValGenId);
-
-ALTER TABLE MV_Name_Mapping ADD CONSTRAINT uc_aly_mv_nm_1 UNIQUE (execution, methodId, testcaseId);
-ALTER TABLE MV_Name_Mapping ADD CONSTRAINT uc_aly_mv_nm_2 UNIQUE (execution, relationId);

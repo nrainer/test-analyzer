@@ -1,10 +1,10 @@
 DROP PROCEDURE IF EXISTS Transfer;
 
 DELIMITER //
-CREATE PROCEDURE Transfer (IN p_execution VARCHAR(5))
+CREATE PROCEDURE Transfer (IN execution VARCHAR(5))
 BEGIN
 
-SET @executionId = p_execution;
+SET @executionId = execution;
 
 START TRANSACTION;
 
@@ -38,11 +38,6 @@ ON c.testcase = ti.testcase
 WHERE c.execution = @executionId
 AND c.processed = 0;
 
-/* Fill the "materialized" view MV_Name_Mapping. This must be done after filling Relation_Info, Testcase_Info, Method_Info. */
-INSERT INTO MV_Name_Mapping
-SELECT * FROM V_Name_Mapping
-WHERE execution = @executionId;
-
 /* Create an entry for each return value generator. */
 INSERT INTO RetValGen_Info
 (execution, retValGen)
@@ -55,7 +50,7 @@ INSERT INTO Test_Result_Info
 (execution, relationId, retValGenId, killed)
 SELECT @executionId, mapping.relationId, rvg.retValGenId, t.killed
 FROM Test_Result_Import t
-INNER JOIN MV_Name_Mapping mapping
+INNER JOIN V_Name_Mapping mapping
 ON mapping.execution = t.execution
 AND mapping.method = t.method
 AND mapping.testcase = t.testcase
@@ -80,7 +75,7 @@ AND t.processed = 0;
 
 /* Enrich data with stack information. */
 UPDATE Relation_Info ri
-INNER JOIN MV_Name_Mapping mapping
+INNER JOIN V_Name_Mapping mapping
 ON ri.relationId = mapping.relationId
 AND ri.execution = mapping.execution
 INNER JOIN Stack_Info_Import sii
