@@ -13,7 +13,7 @@
 CREATE TABLE Method_Info
 (
 	methodId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution VARCHAR(5) NOT NULL,
+	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
     instructions INT(8),
     modifier VARCHAR(10)
@@ -22,7 +22,7 @@ CREATE TABLE Method_Info
 CREATE TABLE Testcase_Info
 (
 	testcaseId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution VARCHAR(5) NOT NULL,
+	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	testcase VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
     instructions INT(8),
     assertions INT(8)
@@ -31,9 +31,9 @@ CREATE TABLE Testcase_Info
 CREATE TABLE Relation_Info
 (
 	relationId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution VARCHAR(5) NOT NULL,
-	methodId INT(11) NOT NULL,
-	testcaseId INT(11) NOT NULL,
+	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
+	methodId INT(11) NOT NULL REFERENCES Method_Info(methodId),
+	testcaseId INT(11) NOT NULL REFERENCES Testcase_Info(testcaseId),
 	minStackDistance INT(8),
 	maxStackDistance INT(8)
 );
@@ -41,25 +41,25 @@ CREATE TABLE Relation_Info
 CREATE TABLE RetValGen_Info
 (
 	retValGenId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution VARCHAR(5) NOT NULL,
+	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	retValGen VARCHAR(256) NOT NULL
 );
 
 CREATE TABLE Test_Result_Info
 (
 	resultId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution VARCHAR(5) NOT NULL,
-	relationId INT(11) NOT NULL,
-	retValGenId INT(11) NOT NULL,
+	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
+	relationId INT(11) NOT NULL REFERENCES Relation_Info(relationId),
+	retValGenId INT(11) NOT NULL REFERENCES RetValGen_Info(retValGenId),
 	killed TINYINT(1) NOT NULL
 );
 
 CREATE TABLE Method_Test_Abort_Info
 (
 	abortId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	execution VARCHAR(5) NOT NULL,
-	methodId INT(11) NOT NULL,
-	retValGenId INT(11) NOT NULL
+	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
+	methodId INT(11) NOT NULL REFERENCES Method_Info(methodId),
+	retValGenId INT(11) NOT NULL REFERENCES RetValGen_Info(retValGenId)
 );
 
 /* Mapping between relationId, methodId, testcaseId and method (name) and testcase (name). */
