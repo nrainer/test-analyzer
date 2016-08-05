@@ -16,7 +16,8 @@ CREATE TABLE Method_Info
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
     instructions INT(8),
-    modifier VARCHAR(10)
+    modifier VARCHAR(10),
+	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL
 );
 
 CREATE TABLE Testcase_Info
@@ -25,7 +26,8 @@ CREATE TABLE Testcase_Info
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	testcase VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
     instructions INT(8),
-    assertions INT(8)
+    assertions INT(8),
+    testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL
 );
 
 CREATE TABLE Relation_Info
@@ -42,7 +44,8 @@ CREATE TABLE RetValGen_Info
 (
 	retValGenId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
-	retValGen VARCHAR(256) NOT NULL
+	retValGen VARCHAR(256) NOT NULL,
+	retValGenHash VARCHAR(32) GENERATED ALWAYS AS (MD5(retValGen)) VIRTUAL
 );
 
 CREATE TABLE Test_Result_Info
@@ -70,9 +73,11 @@ CREATE VIEW V_Name_Mapping
 	methodId, 
 	testcaseId, 
 	method, 
-	testcase
+	testcase,
+    methodHash,
+    testcaseHash
 ) AS
-	SELECT ri.execution, ri.relationId, ri.methodId, ri.testcaseId, mi.method, ti.testcase
+	SELECT ri.execution, ri.relationId, ri.methodId, ri.testcaseId, mi.method, ti.testcase, mi.methodHash, ti.testcaseHash
 	FROM Relation_Info ri
 	INNER JOIN Method_Info mi
 	ON ri.execution = mi.execution
@@ -101,14 +106,15 @@ CREATE VIEW V_Method_State_Info
 	execution,
 	methodId,
 	method,
-	killed
+	killed,
+    methodHash
 ) AS 
-	SELECT t.execution, mapping.methodId, mapping.method, SUM(t.killed) > 0
+	SELECT t.execution, mapping.methodId, mapping.method, SUM(t.killed) > 0, mapping.methodHash
 	FROM Test_Result_Info t
 	INNER JOIN V_Name_Mapping mapping
 	ON t.execution = mapping.execution
 	AND t.relationId = mapping.relationId
-	GROUP BY t.execution, mapping.methodId, mapping.method;
+	GROUP BY t.execution, mapping.methodId, mapping.methodHash, mapping.method;
 
 /** Test result of methods for which tests were started (and run successfully or were aborted). */
 CREATE VIEW V_Method_State_Info_Extended
@@ -118,9 +124,10 @@ CREATE VIEW V_Method_State_Info_Extended
 	method,
 	testCompleted,
 	killed,
-	aborted
+	aborted,
+    methodHash
 ) AS 
-	SELECT tmi.execution, tmi.methodId, mapping.method, COUNT(tr.killed) > 0, COALESCE(SUM(tr.killed) > 0, 0), COUNT(ta.methodId) > 0
+	SELECT tmi.execution, tmi.methodId, mapping.method, COUNT(tr.killed) > 0, COALESCE(SUM(tr.killed) > 0, 0), COUNT(ta.methodId) > 0, mapping.methodHash
 	FROM V_Tested_Methods_Info tmi
 	INNER JOIN V_Name_Mapping mapping
 	ON tmi.execution = mapping.execution
@@ -132,7 +139,7 @@ CREATE VIEW V_Method_State_Info_Extended
 	LEFT OUTER JOIN Method_Test_Abort_Info ta
 	ON ta.execution = tmi.execution
 	AND ta.methodId = tmi.methodId
-	GROUP BY tmi.execution, tmi.methodId, mapping.method;
+	GROUP BY tmi.execution, tmi.methodId, mapping.methodHash, mapping.method;
 	
 /** Test result, extended by test and method ids and names. */
 CREATE VIEW V_Test_Result_Info
@@ -144,23 +151,25 @@ CREATE VIEW V_Test_Result_Info
 	method,
 	testcase,
 	retValGenId,
-	killed
+	killed,
+    methodHash,
+    testcaseHash
 ) AS 
-	SELECT t.execution, t.relationId, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed
+	SELECT t.execution, t.relationId, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed, mapping.methodHash, mapping.testcaseHash
 	FROM Test_Result_Info t
 	INNER JOIN V_Name_Mapping mapping
 	ON t.execution = mapping.execution
 	AND t.relationId = mapping.relationId;
 	
 CREATE INDEX idx_aly_mi_1 ON Method_Info(execution);
-CREATE INDEX idx_aly_mi_2 ON Method_Info(method(50));
+CREATE INDEX idx_aly_mi_2 ON Method_Info(methodHash);
 CREATE INDEX idx_aly_ti_1 ON Testcase_Info(execution);
-CREATE INDEX idx_aly_ti_2 ON Testcase_Info(testcase(50));
+CREATE INDEX idx_aly_ti_2 ON Testcase_Info(testcaseHash);
 CREATE INDEX idx_aly_ri_1 ON Relation_Info(execution);
 CREATE INDEX idx_aly_ri_2 ON Relation_Info(methodId);
 CREATE INDEX idx_aly_ri_3 ON Relation_Info(testcaseId);
 CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution);
-CREATE INDEX idx_aly_rvgi_2 ON RetValGen_Info(retValGen(50));
+CREATE INDEX idx_aly_rvgi_2 ON RetValGen_Info(retValGenHash);
 CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution);
 CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(relationId);
 
