@@ -32,12 +32,13 @@ CREATE TABLE Testcase_Info
 
 CREATE TABLE Relation_Info
 (
-	relationId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	methodId INT(11) NOT NULL REFERENCES Method_Info(methodId),
 	testcaseId INT(11) NOT NULL REFERENCES Testcase_Info(testcaseId),
 	minStackDistance INT(8),
-	maxStackDistance INT(8)
+	maxStackDistance INT(8),
+	-- the execution does not need to be part of the primary key since methodId and testcaseId are already unique
+	PRIMARY KEY (methodId, testcaseId)
 );
 
 CREATE TABLE RetValGen_Info
@@ -52,7 +53,8 @@ CREATE TABLE Test_Result_Info
 (
 	resultId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
-	relationId INT(11) NOT NULL REFERENCES Relation_Info(relationId),
+	methodId INT(11) NOT NULL REFERENCES Method_Info(methodId),
+	testcaseId INT(11) NOT NULL REFERENCES Testcase_Info(testcaseId),
 	retValGenId INT(11) NOT NULL REFERENCES RetValGen_Info(retValGenId),
 	killed TINYINT(1) NOT NULL
 );
@@ -65,11 +67,10 @@ CREATE TABLE Method_Test_Abort_Info
 	retValGenId INT(11) NOT NULL REFERENCES RetValGen_Info(retValGenId)
 );
 
-/* Mapping between relationId, methodId, testcaseId and method (name) and testcase (name). */
+/* Mapping between methodId, testcaseId and method (name) and testcase (name). */
 CREATE VIEW V_Name_Mapping
 (
 	execution, 
-	relationId, 
 	methodId, 
 	testcaseId, 
 	method, 
@@ -77,7 +78,7 @@ CREATE VIEW V_Name_Mapping
     methodHash,
     testcaseHash
 ) AS
-	SELECT ri.execution, ri.relationId, ri.methodId, ri.testcaseId, mi.method, ti.testcase, mi.methodHash, ti.testcaseHash
+	SELECT ri.execution, ri.methodId, ri.testcaseId, mi.method, ti.testcase, mi.methodHash, ti.testcaseHash
 	FROM Relation_Info ri
 	INNER JOIN Method_Info mi
 	ON ri.execution = mi.execution
@@ -92,10 +93,8 @@ CREATE VIEW V_Tested_Methods_Info
 	execution,
 	methodId
 ) AS
-	SELECT DISTINCT t.execution, mapping.methodId
+	SELECT DISTINCT t.execution, t.methodId
 	FROM Test_Result_Info t
-	INNER JOIN V_Name_Mapping mapping
-	ON t.relationId = mapping.relationId
 	UNION
 	SELECT DISTINCT m.execution, m.methodId
 	FROM Method_Test_Abort_Info m;
@@ -109,12 +108,12 @@ CREATE VIEW V_Method_State_Info
 	killed,
     methodHash
 ) AS 
-	SELECT t.execution, mapping.methodId, mapping.method, SUM(t.killed) > 0, mapping.methodHash
+	SELECT t.execution, mi.methodId, mi.method, SUM(t.killed) > 0, mi.methodHash
 	FROM Test_Result_Info t
-	INNER JOIN V_Name_Mapping mapping
-	ON t.execution = mapping.execution
-	AND t.relationId = mapping.relationId
-	GROUP BY t.execution, mapping.methodId, mapping.methodHash, mapping.method;
+	INNER JOIN Method_Info mi
+	ON t.execution = mi.execution
+	AND t.methodId = mi.methodId
+	GROUP BY t.execution, mi.methodId, mi.methodHash, mi.method;
 
 /** Test result of methods for which tests were started (and run successfully or were aborted). */
 CREATE VIEW V_Method_State_Info_Extended
@@ -134,7 +133,8 @@ CREATE VIEW V_Method_State_Info_Extended
 	AND tmi.methodId = mapping.methodId
 	LEFT OUTER JOIN Test_Result_Info tr
 	ON tr.execution = tmi.execution
-	AND tr.relationId = mapping.relationId
+	AND tr.methodId = mapping.methodId
+	AND tr.testcaseId = mapping.testcaseId
 	AND mapping.methodId = tmi.methodId
 	LEFT OUTER JOIN Method_Test_Abort_Info ta
 	ON ta.execution = tmi.execution
@@ -145,7 +145,6 @@ CREATE VIEW V_Method_State_Info_Extended
 CREATE VIEW V_Test_Result_Info
 (
 	execution,
-	relationId,
 	methodId,
 	testcaseId,
 	method,
@@ -155,11 +154,12 @@ CREATE VIEW V_Test_Result_Info
     methodHash,
     testcaseHash
 ) AS 
-	SELECT t.execution, t.relationId, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed, mapping.methodHash, mapping.testcaseHash
+	SELECT t.execution, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed, mapping.methodHash, mapping.testcaseHash
 	FROM Test_Result_Info t
 	INNER JOIN V_Name_Mapping mapping
 	ON t.execution = mapping.execution
-	AND t.relationId = mapping.relationId;
+	AND t.methodId = mapping.methodId
+	AND t.testcaseId = mapping.testcaseId;
 	
 CREATE INDEX idx_aly_mi_1 ON Method_Info(execution);
 CREATE INDEX idx_aly_mi_2 ON Method_Info(methodHash);
@@ -171,8 +171,9 @@ CREATE INDEX idx_aly_ri_3 ON Relation_Info(testcaseId);
 CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution);
 CREATE INDEX idx_aly_rvgi_2 ON RetValGen_Info(retValGenHash);
 CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution);
-CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(relationId);
+CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(methodId);
+CREATE INDEX idx_aly_tri_3 ON Test_Result_Info(testcaseId);
 
 ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId, testcaseId);
-ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, relationId, retValGenId);
+ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, methodId, testcaseId, retValGenId);
 ALTER TABLE Method_Test_Abort_Info ADD CONSTRAINT uc_aly_mai_1 UNIQUE (execution, methodId, retValGenId);

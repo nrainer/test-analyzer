@@ -49,8 +49,8 @@ WHERE execution = @executionId;
 
 /* Create an entry for each entry in Test_Result. */
 INSERT INTO Test_Result_Info
-(execution, relationId, retValGenId, killed)
-SELECT @executionId, mapping.relationId, rvg.retValGenId, t.killed
+(execution, methodId, testcaseId, retValGenId, killed)
+SELECT @executionId, mapping.methodId, mapping.testcaseId, rvg.retValGenId, t.killed
 FROM Test_Result_Import t
 INNER JOIN V_Name_Mapping mapping
 ON mapping.execution = t.execution
@@ -82,7 +82,8 @@ AND t.processed = 0;
 /* Enrich data with stack information. */
 UPDATE Relation_Info ri
 INNER JOIN V_Name_Mapping mapping
-ON ri.relationId = mapping.relationId
+ON ri.methodId = mapping.methodId
+AND ri.testcaseId = mapping.testcaseId
 AND ri.execution = mapping.execution
 INNER JOIN Stack_Info_Import sii
 ON sii.methodHash = mapping.methodHash
