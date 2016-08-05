@@ -27,7 +27,7 @@ DELETE FROM Stack_Info_Import
 WHERE execution = @executionId;
 
 DELETE FROM Execution_Information
-WHERE execution = @execution;
+WHERE execution = @executionId;
 
 COMMIT;
 
