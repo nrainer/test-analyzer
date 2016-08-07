@@ -91,21 +91,15 @@ CREATE TABLE Testcase_Info_Import
 );
 
 CREATE INDEX idx_ei_1 ON Execution_Information(execution);
-CREATE INDEX idx_ci_1 ON Collected_Information_Import(execution);
-CREATE INDEX idx_ci_2 ON Collected_Information_Import(methodHash);
-CREATE INDEX idx_ci_3 ON Collected_Information_Import(testcaseHash);
-CREATE INDEX idx_tr_1 ON Test_Result_Import(execution);
-CREATE INDEX idx_tr_2 ON Test_Result_Import(methodHash);
-CREATE INDEX idx_tr_3 ON Test_Result_Import(testcaseHash);
-CREATE INDEX idx_tr_4 ON Test_Result_Import(retValGenHash);
-CREATE INDEX idx_ta_1 ON Test_Abort_Import(execution);
-CREATE INDEX idx_ta_2 ON Test_Abort_Import(methodHash);
-CREATE INDEX idx_sii_1 ON Stack_Info_Import(execution);
-CREATE INDEX idx_sii_2 ON Stack_Info_Import(methodHash);
-CREATE INDEX idx_sii_3 ON Stack_Info_Import(testcaseHash);
-CREATE INDEX idx_mii_1 ON Method_Info_Import(execution);
-CREATE INDEX idx_mii_2 ON Method_Info_Import(methodHash);
-CREATE INDEX idx_tii_1 ON Testcase_Info_Import(execution);
-CREATE INDEX idx_tii_2 ON Testcase_Info_Import(testcaseHash);
+CREATE INDEX idx_ci_1 ON Collected_Information_Import(execution, methodHash, testcaseHash);
+CREATE INDEX idx_ci_2 ON Collected_Information_Import(testcaseHash);
+CREATE INDEX idx_tr_1 ON Test_Result_Import(execution, methodHash, testcaseHash, retValGenHash);
+CREATE INDEX idx_tr_2 ON Test_Result_Import(testcaseHash);
+CREATE INDEX idx_tr_3 ON Test_Result_Import(retValGenHash);
+CREATE INDEX idx_ta_1 ON Test_Abort_Import(execution, methodHash);
+CREATE INDEX idx_sii_1 ON Stack_Info_Import(execution, methodHash, testcaseHash);
+CREATE INDEX idx_sii_2 ON Stack_Info_Import(testcaseHash);
+CREATE INDEX idx_mii_1 ON Method_Info_Import(execution, methodHash);
+CREATE INDEX idx_tii_1 ON Testcase_Info_Import(execution, testcaseHash);
 
 ALTER TABLE Execution_Information ADD CONSTRAINT uc_ei_1 UNIQUE (execution);

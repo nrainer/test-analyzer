@@ -161,18 +161,13 @@ CREATE VIEW V_Test_Result_Info
 	AND t.methodId = mapping.methodId
 	AND t.testcaseId = mapping.testcaseId;
 	
-CREATE INDEX idx_aly_mi_1 ON Method_Info(execution);
-CREATE INDEX idx_aly_mi_2 ON Method_Info(methodHash);
-CREATE INDEX idx_aly_ti_1 ON Testcase_Info(execution);
-CREATE INDEX idx_aly_ti_2 ON Testcase_Info(testcaseHash);
-CREATE INDEX idx_aly_ri_1 ON Relation_Info(execution);
-CREATE INDEX idx_aly_ri_2 ON Relation_Info(methodId);
-CREATE INDEX idx_aly_ri_3 ON Relation_Info(testcaseId);
-CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution);
-CREATE INDEX idx_aly_rvgi_2 ON RetValGen_Info(retValGenHash);
-CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution);
-CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(methodId);
-CREATE INDEX idx_aly_tri_3 ON Test_Result_Info(testcaseId);
+CREATE INDEX idx_aly_mi_1 ON Method_Info(execution, methodHash);
+CREATE INDEX idx_aly_ti_1 ON Testcase_Info(execution, testcaseHash);
+CREATE INDEX idx_aly_ri_1 ON Relation_Info(execution, methodId, testcaseId);
+CREATE INDEX idx_aly_ri_2 ON Relation_Info(testcaseId);
+CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution, retValGenHash);
+CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution, methodId, testcaseId);
+CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(testcaseId);
 
 ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId, testcaseId);
 ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, methodId, testcaseId, retValGenId);
