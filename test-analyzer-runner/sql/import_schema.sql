@@ -24,7 +24,6 @@ CREATE TABLE Collected_Information_Import
 	execution VARCHAR(5) NOT NULL,
 	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	testcase VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
-	processed TINYINT(1) NOT NULL DEFAULT 0,
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL,
     testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL
  );
@@ -39,7 +38,6 @@ CREATE TABLE Test_Result_Import
 	killed TINYINT(1) NOT NULL,
 	assertErr TINYINT(1),
 	exception VARCHAR(256),
-	processed TINYINT(1) NOT NULL DEFAULT 0,
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL,
     testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL,
     retValGenHash VARCHAR(32) GENERATED ALWAYS AS (MD5(retValGen)) VIRTUAL
@@ -52,7 +50,6 @@ CREATE TABLE Test_Abort_Import
 	method VARCHAR(1024) COLLATE UTF8_BIN,
 	retValGen VARCHAR(256),
 	cause VARCHAR(32),
-	processed TINYINT(1) NOT NULL DEFAULT 0,
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL
 );
 

@@ -14,8 +14,7 @@ INSERT INTO Method_Info
 SELECT c.execution, c.method
 FROM Collected_Information_Import c
 WHERE c.execution = @executionId
-GROUP BY c.methodHash, c.method
-HAVING SUM(c.processed) = 0;
+GROUP BY c.methodHash, c.method;
 
 /* Create an entry for each testcase. */
 INSERT INTO Testcase_Info
@@ -23,8 +22,7 @@ INSERT INTO Testcase_Info
 SELECT c.execution, c.testcase
 FROM Collected_Information_Import c
 WHERE c.execution = @executionId
-GROUP BY c.testcaseHash, c.testcase
-HAVING SUM(c.processed) = 0;
+GROUP BY c.testcaseHash, c.testcase;
 
 /* Create an entry for each entry in Collected_Information. */
 INSERT INTO Relation_Info
@@ -39,8 +37,7 @@ INNER JOIN Testcase_Info ti
 ON c.execution = ti.execution
 AND c.testcaseHash = ti.testcaseHash
 AND c.testcase = ti.testcase
-WHERE c.execution = @executionId
-AND c.processed = 0;
+WHERE c.execution = @executionId;
 
 /* Create an entry for each return value generator. */
 INSERT INTO RetValGen_Info
@@ -64,8 +61,7 @@ INNER JOIN RetValGen_Info rvg
 ON mapping.execution = rvg.execution
 AND t.retValGenHash = rvg.retValGenHash
 AND t.retValGen = rvg.retValGen
-WHERE t.execution = @executionId
-AND t.processed = 0;
+WHERE t.execution = @executionId;
 
 /* Create an entry for each entry in Test_Abort. */
 INSERT INTO Method_Test_Abort_Info
@@ -79,8 +75,7 @@ AND t.method = mi.method
 INNER JOIN RetValGen_Info rvg
 ON t.execution = rvg.execution
 AND t.retValGen = rvg.retValGen
-WHERE t.execution = @executionId
-AND t.processed = 0;
+WHERE t.execution = @executionId;
 
 /* Enrich data with stack information. */
 UPDATE Relation_Info ri
@@ -138,25 +133,10 @@ SET ti.assertions = tix.intValue
 WHERE tix.execution = @executionId
 AND tix.valueName = 'assertions';
 
-/* Mark all entries in Collected_Information_Import as processed. */
-UPDATE Collected_Information_Import c
-SET c.processed = 1
-WHERE c.execution = @executionId;
-
-/* Mark all entries in Test_Result_Import as processed. */
-UPDATE Test_Result_Import t
-SET t.processed = 1
-WHERE t.execution = @executionId;
-
-/* Mark all entries in Test_Abort_Import as processed. */
-UPDATE Test_Abort_Import t
-SET t.processed = 1
-WHERE t.execution = @executionId;
-
 /* Mark the execution as processed. */
-UPDATE Execution_Information
-SET processed = processed + 1
-WHERE execution = @executionId;
+UPDATE Execution_Information ei
+SET ei.processed = 1
+WHERE ei.execution = @executionId;
 
 COMMIT;
 
