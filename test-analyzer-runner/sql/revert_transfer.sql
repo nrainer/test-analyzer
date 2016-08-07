@@ -1,10 +1,10 @@
 DROP PROCEDURE IF EXISTS RevertTransfer;
 
 DELIMITER //
-CREATE PROCEDURE RevertTransfer (IN execution VARCHAR(5))
+CREATE PROCEDURE RevertTransfer (IN param_execution VARCHAR(5))
 BEGIN
 
-SET @executionId = execution;
+SET @executionId = param_execution;
 
 START TRANSACTION;
 

@@ -1,10 +1,10 @@
 DROP PROCEDURE IF EXISTS Transfer;
 
 DELIMITER //
-CREATE PROCEDURE Transfer (IN execution VARCHAR(5))
+CREATE PROCEDURE Transfer (IN param_execution VARCHAR(5))
 BEGIN
 
-SET @executionId = execution;
+SET @executionId = param_execution;
 
 START TRANSACTION;
 

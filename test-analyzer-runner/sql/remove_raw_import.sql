@@ -1,10 +1,10 @@
 DROP PROCEDURE IF EXISTS RemoveRawImport;
 
 DELIMITER //
-CREATE PROCEDURE RemoveRawImport (IN execution VARCHAR(5))
+CREATE PROCEDURE RemoveRawImport (IN param_execution VARCHAR(5))
 BEGIN
 
-SET @executionId = execution;
+SET @executionId = param_execution;
 
 START TRANSACTION;
 
