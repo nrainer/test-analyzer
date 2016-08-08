@@ -62,7 +62,7 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 		if (isAllowedConstant()) {
 			return;
 		} else {
-			validateClassname();
+			validateClassName();
 		}
 	}
 
@@ -80,11 +80,13 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 		return false;
 	}
 
-	private void validateClassname() throws ConfigurationException {
-		validateClassname(getValue(), getRequiredType(), this);
+	/** @see #validateClassName(String, Class, IConfigurationProperty) */
+	private void validateClassName() throws ConfigurationException {
+		validateClassName(getValue(), getRequiredType(), this);
 	}
 
-	public static void validateClassname(String className, Class<?> requiredType,
+	/** Validate that a class can be loaded, accessed and instantiated and be casted to a certain type. */
+	public static void validateClassName(String className, Class<?> requiredType,
 			IConfigurationProperty<?> propertyForExceptions) throws ConfigurationException {
 		Class<?> cls;
 
@@ -95,7 +97,7 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 			throw new ConfigurationException(propertyForExceptions, "Not in classpath: " + className + ".");
 		} catch (NoClassDefFoundError ex) {
 			throw new ConfigurationException(propertyForExceptions,
-					"Referenced class not in classpath: " + className + ".");
+					"Referenced class not in classpath: " + className + ". (" + ex.getMessage() + ")");
 		} catch (InstantiationException e) {
 			throw new ConfigurationException(propertyForExceptions,
 					"No parameterless constructor exists for " + className + ".");

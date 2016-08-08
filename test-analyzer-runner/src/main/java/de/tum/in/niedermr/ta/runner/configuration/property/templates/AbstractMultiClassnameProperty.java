@@ -44,7 +44,7 @@ public abstract class AbstractMultiClassnameProperty<T> extends AbstractMultiStr
 	@Override
 	protected final void validateFurther() throws ConfigurationException {
 		for (String className : getElements()) {
-			AbstractClassnameProperty.validateClassname(className, getRequiredType(), this);
+			AbstractClassnameProperty.validateClassName(className, getRequiredType(), this);
 		}
 	}
 }
