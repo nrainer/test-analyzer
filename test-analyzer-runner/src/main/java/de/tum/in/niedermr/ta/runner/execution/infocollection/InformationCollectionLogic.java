@@ -63,7 +63,7 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 		LOG.info("Collected " + LoggingUtil.appendPluralS(result, "method", true)
 				+ " which are directly or indirectly invoked by testcases.");
 		LOG.info("Collected " + LoggingUtil.appendPluralS(countTestcases(result), "successful testcase", true)
-				+ " out of "
+				+ " from "
 				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
 				+ ".");
 
