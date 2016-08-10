@@ -12,6 +12,7 @@ CREATE TABLE Execution_Information
 	execution VARCHAR(5) NOT NULL,
 	date date NOT NULL,
 	project VARCHAR(64) NOT NULL,
+	testType VARCHAR(64),
 	description VARCHAR(512),
 	notes VARCHAR(512),
 	configurationContent text,
