@@ -169,9 +169,12 @@ public abstract class AbstractInformationCollectionLogic {
 		// NOP
 	}
 
+	/** Handle a test case that was executed with a failure. */
 	protected void execTestcaseExecutedWithFailure(TestcaseIdentifier testCaseIdentifier, ITestRunResult testResult) {
+		Throwable firstException = testResult.getFirstException();
+
 		LOG.warn("Testcase running on the unmodified jar failed! " + testCaseIdentifier.get() + " will be skipped! ("
-				+ testResult.getFirstException().getMessage() + ")");
+				+ firstException.getClass().getName() + ": " + firstException.getMessage() + ")");
 
 		if (LOG_FULL_STACKTRACE_OF_FAILED_UNMODIFIED_TESTS) {
 			LOG.warn("Stacktrace is", testResult.getFirstException());

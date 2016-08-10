@@ -29,11 +29,13 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 		this.m_methodInformation = new HashMap<>();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execBeforeExecutingTestcase(TestcaseIdentifier testCaseIdentifier) {
 		resetInvocationLog();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
 		Set<String> methodsUnderTest = getInvocationLogContent();
@@ -53,6 +55,7 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execAllTestsExecuted(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		Collection<TestInformation> result = m_methodInformation.values();
@@ -60,7 +63,7 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 		LOG.info("Collected " + LoggingUtil.appendPluralS(result, "method", true)
 				+ " which are directly or indirectly invoked by testcases.");
 		LOG.info("Collected " + LoggingUtil.appendPluralS(countTestcases(result), "successful testcase", true)
-				+ " in a total of "
+				+ " out of "
 				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
 				+ ".");
 
