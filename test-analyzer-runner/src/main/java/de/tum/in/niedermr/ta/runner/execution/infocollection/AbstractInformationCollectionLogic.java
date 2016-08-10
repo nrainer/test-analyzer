@@ -25,7 +25,7 @@ public abstract class AbstractInformationCollectionLogic {
 	private final IFullExecutionId m_executionId;
 	private ITestRunner m_testRunner;
 	private String m_outputFile;
-	private IResultPresentation resultPresentation;
+	private IResultPresentation m_resultPresentation;
 
 	protected AbstractInformationCollectionLogic(IFullExecutionId executionId) {
 		this.m_executionId = executionId;
@@ -52,11 +52,11 @@ public abstract class AbstractInformationCollectionLogic {
 	}
 
 	public void setResultPresentation(IResultPresentation resultPresentation) {
-		this.resultPresentation = resultPresentation;
+		this.m_resultPresentation = resultPresentation;
 	}
 
 	protected IResultPresentation getResultPresentation() {
-		return resultPresentation;
+		return m_resultPresentation;
 	}
 
 	public void execute(String[] jarsWithTests, String[] testClassIncludes, String[] testClassExcludes,
