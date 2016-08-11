@@ -1,6 +1,4 @@
 -- DROP VIEW IF EXISTS V_Test_Result_Info;
--- DROP VIEW IF EXISTS V_Method_State_Info_Extended;
--- DROP VIEW IF EXISTS V_Method_State_Info;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info;
 -- DROP VIEW IF EXISTS V_Name_Mapping;
 
@@ -28,70 +26,44 @@ CREATE VIEW V_Name_Mapping
 CREATE VIEW V_Tested_Methods_Info
 (
 	execution,
-	methodId
-) AS
-	SELECT DISTINCT t.execution, t.methodId
-	FROM Test_Result_Info t
-	UNION
-	SELECT DISTINCT m.execution, m.methodId
-	FROM Method_Test_Abort_Info m;
-	
-/* Test result of methods that were successfully tested. */
-CREATE VIEW V_Method_State_Info
-(
-	execution,
 	methodId,
-	method,
-	killed,
-    methodHash
-) AS 
-	SELECT t.execution, mi.methodId, mi.method, SUM(t.killed) > 0, mi.methodHash
-	FROM Test_Result_Info t
-	INNER JOIN Method_Info mi
-	ON t.execution = mi.execution
-	AND t.methodId = mi.methodId
-	GROUP BY t.execution, mi.methodId, mi.methodHash, mi.method;
-
-/** Test result of methods for which tests were started (and run successfully or were aborted). */
-CREATE VIEW V_Method_State_Info_Extended
-(
-	execution,
-	methodId,
-	method,
-	testCompleted,
+	living,
 	killed,
 	aborted,
-    methodHash
-) AS 
-	SELECT tmi.execution, tmi.methodId, mapping.method, COUNT(tr.killed) > 0, COALESCE(SUM(tr.killed) > 0, 0), COUNT(ta.methodId) > 0, mapping.methodHash
-	FROM V_Tested_Methods_Info tmi
-	INNER JOIN V_Name_Mapping mapping
-	ON tmi.execution = mapping.execution
-	AND tmi.methodId = mapping.methodId
-	LEFT OUTER JOIN Test_Result_Info tr
-	ON tr.execution = tmi.execution
-	AND tr.methodId = mapping.methodId
-	AND tr.testcaseId = mapping.testcaseId
-	AND mapping.methodId = tmi.methodId
-	LEFT OUTER JOIN Method_Test_Abort_Info ta
-	ON ta.execution = tmi.execution
-	AND ta.methodId = tmi.methodId
-	GROUP BY tmi.execution, tmi.methodId, mapping.methodHash, mapping.method;
-	
+	minStackDistance,
+	method,
+	methodHash
+) AS
+	SELECT ri.execution, ri.methodId, COALESCE(1 - MIN(tri.killed), 0) AS living, COALESCE(MAX(tri.killed), 0) AS killed, COUNT(mtai.execution) > 0 AS aborted, MIN(ri.minStackDistance), mi.method, mi.methodHash
+    FROM Relation_Info ri
+    INNER JOIN Method_Info mi
+    ON ri.execution = mi.execution
+    AND ri.methodId = mi.methodId
+    LEFT OUTER JOIN Test_Result_Info tri
+    ON ri.execution = tri.execution
+    AND ri.methodId = tri.methodId
+    AND ri.testcaseId = tri.testcaseId
+    LEFT OUTER JOIN Method_Test_Abort_Info mtai
+    ON ri.execution = mtai.execution
+    AND ri.methodId = mtai.methodId
+    GROUP BY ri.execution, ri.methodId, mi.method, mi.methodHash
+    HAVING COUNT(tri.execution) > 0
+    OR COUNT(mtai.execution) > 0;
+    
 /** Test result, extended by test and method ids and names. */
 CREATE VIEW V_Test_Result_Info
 (
 	execution,
 	methodId,
 	testcaseId,
+	retValGenId,
 	method,
 	testcase,
-	retValGenId,
 	killed,
     methodHash,
     testcaseHash
 ) AS 
-	SELECT t.execution, mapping.methodId, mapping.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed, mapping.methodHash, mapping.testcaseHash
+	SELECT t.execution, t.methodId, t.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed, mapping.methodHash, mapping.testcaseHash
 	FROM Test_Result_Info t
 	INNER JOIN V_Name_Mapping mapping
 	ON t.execution = mapping.execution

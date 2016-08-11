@@ -412,14 +412,6 @@ WHERE testcase = 'de.tum.in.ma.simpleproject.core.CalculationDefaultTests.add0()
 CALL AssertEquals(17, @actualCount);
 
 SELECT COUNT(*) INTO @actualCount
-FROM V_Method_State_Info;
-CALL AssertEquals(10, @actualCount);
-
-SELECT COUNT(*) INTO @actualCount
-FROM V_Method_State_Info_Extended;
-CALL AssertEquals(10, @actualCount);
-
-SELECT COUNT(*) INTO @actualCount
 FROM V_Name_Mapping;
 CALL AssertEquals(65, @actualCount);
 
@@ -430,6 +422,18 @@ CALL AssertEquals(36, @actualCount);
 SELECT COUNT(*) INTO @actualCount
 FROM V_Tested_Methods_Info;
 CALL AssertEquals(10, @actualCount);
+
+SELECT COUNT(*) INTO @actualCount
+FROM V_Tested_Methods_Info
+WHERE method = 'de.tum.in.ma.simpleproject.lite.CalculationLite.isEven()'
+AND living = 0 AND killed = 1 AND aborted = 0 AND minStackDistance = 1;
+CALL AssertEquals(1, @actualCount);
+
+SELECT COUNT(*) INTO @actualCount
+FROM V_Tested_Methods_Info
+WHERE method = 'de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)'
+AND living = 1 AND killed = 1 AND aborted = 0 AND minStackDistance = 2;
+CALL AssertEquals(1, @actualCount);
 
 /* END TESTS */
 
