@@ -12,38 +12,35 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
-import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
+import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
+import de.tum.in.niedermr.ta.core.code.visitor.NoModificationClassVisitor;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.bytecode.TestModeClassVisitor;
 
-public class TestInstrumentationOperation implements ICodeModificationOperation {
-	private ITestClassDetector m_testClassDetector;
+public class TestInstrumentationOperation extends AbstractTestAwareCodeModificationOperation {
 
+	/** Constructor. */
 	public TestInstrumentationOperation(ITestClassDetector detector) {
-		this.m_testClassDetector = detector;
+		super(detector);
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public void modify(ClassReader cr, ClassWriter cw) throws Exception {
+	protected void modifyNonTestClass(ClassReader cr, ClassWriter cw) {
+		cr.accept(new NoModificationClassVisitor(Opcodes.ASM5, cw), 0);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void modifyTestClass(ClassReader cr, ClassWriter cw, ClassType classType) {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
-		ClassType testClassType = m_testClassDetector.analyzeIsTestClass(cn);
+		Set<MethodIdentifier> testcases = getTestcases(cn, classType);
 
-		ClassVisitor cv;
-
-		if (testClassType.isTestClass()) {
-			Set<MethodIdentifier> testcases = getTestcases(cn, testClassType);
-
-			cv = new TestModeClassVisitor(cn.name, cw, testcases);
-			cr.accept(cv, 0);
-		} else {
-			cv = new ClassVisitor(Opcodes.ASM5, cw) {
-				// NOP
-			};
-			cr.accept(cv, 0);
-		}
+		ClassVisitor cv = new TestModeClassVisitor(cn.name, cw, testcases);
+		cr.accept(cv, 0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -51,7 +48,7 @@ public class TestInstrumentationOperation implements ICodeModificationOperation 
 		Set<MethodIdentifier> result = new HashSet<>();
 
 		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
-			if (m_testClassDetector.analyzeIsTestcase(methodNode, testClassType)) {
+			if (getTestClassDetector().analyzeIsTestcase(methodNode, testClassType)) {
 				result.add(MethodIdentifier.create(cn.name, methodNode));
 			}
 		}
