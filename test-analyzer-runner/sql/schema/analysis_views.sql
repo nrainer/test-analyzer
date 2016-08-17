@@ -1,4 +1,5 @@
 -- DROP VIEW IF EXISTS V_Test_Result_Info;
+-- DROP VIEW IF EXISTS V_Tested_Methods_Info_2;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info;
 -- DROP VIEW IF EXISTS V_Name_Mapping;
 
@@ -49,6 +50,17 @@ CREATE VIEW V_Tested_Methods_Info
     GROUP BY ri.execution, ri.methodId, mi.method, mi.methodHash
     HAVING COUNT(tri.execution) > 0
     OR COUNT(mtai.execution) > 0;
+    
+/* Methods that were tested and their aggregated test result. */
+CREATE VIEW V_Tested_Methods_Info_2
+(
+	execution,
+	methodId,
+	killedResult,
+	minStackDistance
+) AS
+	SELECT vtmi.execution, vtmi.methodId, CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END, vtmi.minStackDistance
+    FROM V_Tested_Methods_Info vtmi;
     
 /** Test result, extended by test and method ids and names. */
 CREATE VIEW V_Test_Result_Info
