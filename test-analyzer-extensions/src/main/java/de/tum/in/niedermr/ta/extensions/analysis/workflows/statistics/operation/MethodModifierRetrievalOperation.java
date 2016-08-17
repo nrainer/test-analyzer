@@ -8,14 +8,14 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.operation.AbstractCodeAnalyzeOperation;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeAnalyzeOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 
-public class MethodModifierRetrievalOperation extends AbstractCodeAnalyzeOperation {
+public class MethodModifierRetrievalOperation extends AbstractTestAwareCodeAnalyzeOperation {
 	private final Map<MethodIdentifier, String> m_result = new HashMap<>();
 
 	public MethodModifierRetrievalOperation(ITestClassDetector testClassDetector) {

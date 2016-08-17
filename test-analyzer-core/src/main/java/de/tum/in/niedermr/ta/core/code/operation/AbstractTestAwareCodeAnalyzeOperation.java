@@ -1,31 +1,27 @@
-package de.tum.in.niedermr.ta.core.analysis.jars.operation;
+package de.tum.in.niedermr.ta.core.code.operation;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 
-import de.tum.in.niedermr.ta.core.code.operation.ICodeAnalyzeOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 
-public abstract class AbstractCodeAnalyzeOperation implements ICodeAnalyzeOperation {
-	protected final ITestClassDetector m_testClassDetector;
+/** Base class for a code analysis operation that is aware of test classes. */
+public abstract class AbstractTestAwareCodeAnalyzeOperation extends AbstractTestAwareCodeOperation
+		implements ICodeAnalyzeOperation {
 
-	public AbstractCodeAnalyzeOperation(ITestClassDetector testClassDetector) {
-		this.m_testClassDetector = testClassDetector;
+	/** Constructor. */
+	public AbstractTestAwareCodeAnalyzeOperation(ITestClassDetector testClassDetector) {
+		super(testClassDetector);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void analyze(ClassReader cr, String originalClassPath) throws Exception {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
-		ClassType classType;
-
-		if (m_testClassDetector != null) {
-			classType = m_testClassDetector.analyzeIsTestClass(cn);
-		} else {
-			classType = ClassType.NO_TEST_CLASS;
-		}
+		ClassType classType = analyzeClassType(cn);
 
 		if (classType.isTestClass()) {
 			analyzeTestClass(cn, originalClassPath, classType);

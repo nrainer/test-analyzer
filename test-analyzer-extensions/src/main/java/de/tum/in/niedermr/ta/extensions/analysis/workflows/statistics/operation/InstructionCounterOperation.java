@@ -7,14 +7,14 @@ import java.util.Map;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.operation.AbstractCodeAnalyzeOperation;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeAnalyzeOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.InstructionCounterStep.Mode;
 
-public class InstructionCounterOperation extends AbstractCodeAnalyzeOperation {
+public class InstructionCounterOperation extends AbstractTestAwareCodeAnalyzeOperation {
 	private final Map<MethodIdentifier, Integer> m_result = new HashMap<>();
 
 	private final Mode m_mode;
@@ -42,7 +42,7 @@ public class InstructionCounterOperation extends AbstractCodeAnalyzeOperation {
 	private void analyzeMethods(ClassNode cn, ClassType testClassType) {
 		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
 			if (!(BytecodeUtility.isConstructor(methodNode) || BytecodeUtility.isAbstractMethod(methodNode))) {
-				if (m_mode == Mode.TESTCASE && (!m_testClassDetector.analyzeIsTestcase(methodNode, testClassType))) {
+				if (m_mode == Mode.TESTCASE && (!getTestClassDetector().analyzeIsTestcase(methodNode, testClassType))) {
 					// skip non-test methods in test classes
 					continue;
 				}
