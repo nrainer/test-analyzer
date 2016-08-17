@@ -4,7 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
-import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
 
 public class AssertionCounterMethodVisitor extends MethodVisitor {
 	private final AssertionInformation m_assertionInformation;

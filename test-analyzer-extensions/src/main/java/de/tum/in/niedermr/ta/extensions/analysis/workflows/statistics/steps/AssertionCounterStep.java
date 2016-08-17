@@ -12,9 +12,9 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
-import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -50,10 +50,10 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		Class<?>[] assertionClasses = getAvailableAssertionClasses().toArray(new Class[0]);
 		return new AssertionInformation(assertionClasses) {
 			@Override
-			public Result isAssertionMethod(MethodIdentifier methodIdentifier) throws ClassNotFoundException {
+			public AssertionResult isAssertionMethod(MethodIdentifier methodIdentifier) throws ClassNotFoundException {
 				if (methodIdentifier.getOnlyMethodName().startsWith(PREFIX_UNREGISTERED_ASSERT_METHODS_1)
 						|| methodIdentifier.getOnlyMethodName().startsWith(PREFIX_UNREGISTERED_ASSERT_METHODS_2)) {
-					return new Result(true, methodIdentifier);
+					return new AssertionResult(true, methodIdentifier);
 				} else {
 					return super.isAssertionMethod(methodIdentifier);
 				}

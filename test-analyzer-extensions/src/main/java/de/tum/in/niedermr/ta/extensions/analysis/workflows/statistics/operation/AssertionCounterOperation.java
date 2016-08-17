@@ -9,10 +9,10 @@ import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeAnalyzeOperation;
-import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.bytecode.AssertionCounterMethodVisitor;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
 
 public class AssertionCounterOperation extends AbstractTestAwareCodeAnalyzeOperation {
 	private final Map<MethodIdentifier, Integer> m_assertionsPerTestcase;

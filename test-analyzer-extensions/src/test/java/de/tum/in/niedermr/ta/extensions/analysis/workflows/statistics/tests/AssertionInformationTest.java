@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.code.tests.assertions;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
-import de.tum.in.niedermr.ta.core.code.tests.assertions.AssertionInformation.Result;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation.AssertionResult;
 
 public class AssertionInformationTest {
 	@Test
@@ -52,7 +52,7 @@ public class AssertionInformationTest {
 		AssertionInformation assertionInformation = new AssertionInformation();
 
 		MethodIdentifier identifier = MethodIdentifier.create(Assert.class, "assertEquals", "(JJ)V");
-		Result result = assertionInformation.isAssertionMethod(identifier);
+		AssertionResult result = assertionInformation.isAssertionMethod(identifier);
 
 		assertTrue(result.isAssertion());
 		assertEquals(2, result.getPopInstructionOpcodes().length);

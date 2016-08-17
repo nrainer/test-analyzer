@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.code.tests.assertions;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
@@ -18,14 +20,17 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class AssertionInformation {
+	private static final Logger LOG = LogManager.getLogger(AssertionInformation.class);
+
 	@SuppressWarnings("deprecation")
 	private static final Class<?>[] CORE_ASSERTION_CLASSES = new Class<?>[] { org.junit.Assert.class,
 			junit.framework.Assert.class };
-	private final Result m_noAssertionResult = new Result(false, null);
+	private final AssertionResult m_noAssertionResult = new AssertionResult(false, null);
 
 	private final Set<Class<?>> m_assertionClassesInUse;
 	private final Map<MethodIdentifier, int[]> m_assertions;
 
+	/** Constructor. */
 	public AssertionInformation(Class<?>... furtherAssertionClasses) {
 		this.m_assertionClassesInUse = new HashSet<>();
 		this.m_assertions = new HashMap<>();
@@ -57,7 +62,7 @@ public class AssertionInformation {
 				}
 			}
 		} catch (IOException ex) {
-			ex.printStackTrace();
+			LOG.error("IOException", ex);
 		}
 	}
 
@@ -79,9 +84,9 @@ public class AssertionInformation {
 		return popOpcodes;
 	}
 
-	public Result isAssertionMethod(MethodIdentifier methodIdentifier) throws ClassNotFoundException {
+	public AssertionResult isAssertionMethod(MethodIdentifier methodIdentifier) throws ClassNotFoundException {
 		if (isKnownNativeAssertion(methodIdentifier)) {
-			return new Result(true, methodIdentifier);
+			return new AssertionResult(true, methodIdentifier);
 		}
 
 		Class<?> cls = Class.forName(methodIdentifier.getOnlyClassName());
@@ -95,7 +100,7 @@ public class AssertionInformation {
 						.parse(methodIdentifier.get().replace(cls.getName(), assertionClass.getName()));
 
 				if (isKnownNativeAssertion(newIdentifier)) {
-					return new Result(true, newIdentifier);
+					return new AssertionResult(true, newIdentifier);
 				} else {
 					return m_noAssertionResult;
 				}
@@ -109,11 +114,11 @@ public class AssertionInformation {
 		return m_assertions.containsKey(identifier);
 	}
 
-	public class Result {
+	public class AssertionResult {
 		private final boolean m_isAssertion;
 		private final int[] m_popInstructionOpcodes;
 
-		public Result(boolean isAssertion, MethodIdentifier originalMethodIdentifier) {
+		public AssertionResult(boolean isAssertion, MethodIdentifier originalMethodIdentifier) {
 			this.m_isAssertion = isAssertion;
 			this.m_popInstructionOpcodes = retrievePopInstructionOpcodes(originalMethodIdentifier);
 		}
