@@ -10,7 +10,8 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
-import de.tum.in.niedermr.ta.runner.analysis.workflow.preparation.PrepareWorkingFolderStep;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.common.CleanupStep;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow.FinalizeResultStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow.InformationCollectorStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow.InstrumentationStep;
@@ -30,6 +31,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	protected InformationCollectorStep m_informationCollectorStep;
 	protected MutateAndTestStep m_mutateAndTestStep;
 	protected FinalizeResultStep m_finalizeResultStep;
+	protected CleanupStep m_cleanupStep;
 
 	/**
 	 * Default constructor for reflective instantiation.
@@ -69,6 +71,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		m_informationCollectorStep = createAndInitializeExecutionStep(InformationCollectorStep.class);
 		m_mutateAndTestStep = createAndInitializeExecutionStep(MutateAndTestStep.class);
 		m_finalizeResultStep = createAndInitializeExecutionStep(FinalizeResultStep.class);
+		m_cleanupStep = createAndInitializeExecutionStep(CleanupStep.class);
 	}
 
 	protected void beforeExecution() throws ExecutionException {
@@ -77,6 +80,7 @@ public class TestWorkflow extends AbstractWorkflow {
 
 	protected void afterExecution() throws ExecutionException {
 		m_finalizeResultStep.run();
+		m_cleanupStep.run();
 	}
 
 	protected ConcurrentLinkedQueue<TestInformation> collectInformation() throws ExecutionException {

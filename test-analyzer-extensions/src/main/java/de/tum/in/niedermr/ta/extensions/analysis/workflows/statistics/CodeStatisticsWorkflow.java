@@ -5,7 +5,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.Inst
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.MethodModifierRetrievalStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.PersistResultStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
-import de.tum.in.niedermr.ta.runner.analysis.workflow.preparation.PrepareWorkingFolderStep;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;

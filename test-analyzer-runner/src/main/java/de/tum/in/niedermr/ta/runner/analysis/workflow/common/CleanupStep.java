@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s3;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.common;
 
 import java.io.File;
 
@@ -9,13 +9,16 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
-public class TearDownStep extends AbstractExecutionStep {
+/** Step to perform the cleanup. Removes temporary files. */
+public class CleanupStep extends AbstractExecutionStep {
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
-		return "TEARDOWN";
+		return "CLEANU";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		if (configuration.getRemoveTempData().getValue()) {
@@ -24,8 +27,9 @@ public class TearDownStep extends AbstractExecutionStep {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
-		return "Performing cleanup if enabled";
+		return "Performing cleanup (if enabled)";
 	}
 }

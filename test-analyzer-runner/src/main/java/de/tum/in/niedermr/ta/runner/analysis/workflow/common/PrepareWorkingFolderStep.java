@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.workflow.preparation;
+package de.tum.in.niedermr.ta.runner.analysis.workflow.common;
 
 import java.io.File;
 
@@ -15,11 +15,13 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
  */
 public class PrepareWorkingFolderStep extends AbstractExecutionStep {
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "PREFOL";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		final File workingAreaTemp = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP));
@@ -33,6 +35,7 @@ public class PrepareWorkingFolderStep extends AbstractExecutionStep {
 		FileSystemUtils.ensureDirectoryExists(workingAreaResult);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
 		return "Preparing the working folder";

@@ -2,9 +2,9 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s1.AnalysisInstrumentationStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s2.AnalysisInformationCollectorStep;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s3.TearDownStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
-import de.tum.in.niedermr.ta.runner.analysis.workflow.preparation.PrepareWorkingFolderStep;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.common.CleanupStep;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
@@ -22,7 +22,7 @@ public class StackDistanceAnalysisWorkflow extends AbstractWorkflow {
 				AnalysisInstrumentationStep.class);
 		AnalysisInformationCollectorStep analysisInformationCollectorStep = createAndInitializeExecutionStep(
 				AnalysisInformationCollectorStep.class);
-		TearDownStep cleanupStep = createAndInitializeExecutionStep(TearDownStep.class);
+		CleanupStep cleanupStep = createAndInitializeExecutionStep(CleanupStep.class);
 
 		prepareStep.run();
 		analysisInstrumentationStep.run();
