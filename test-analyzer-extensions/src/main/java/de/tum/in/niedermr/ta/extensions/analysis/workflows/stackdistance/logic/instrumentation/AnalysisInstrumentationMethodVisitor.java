@@ -9,6 +9,9 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLo
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractTryFinallyMethodVisitor;
 
 public class AnalysisInstrumentationMethodVisitor extends AbstractTryFinallyMethodVisitor {
+	/** Class path of {@link StackLogger}. */
+	private static final String STACK_LOGGER_CLASS_PATH = JavaUtility.toClassPathWithoutEnding(StackLogger.class);
+
 	private final MethodIdentifier m_identifier;
 
 	public AnalysisInstrumentationMethodVisitor(MethodVisitor mv, String className, String methodName, String desc) {
@@ -20,11 +23,12 @@ public class AnalysisInstrumentationMethodVisitor extends AbstractTryFinallyMeth
 	@Override
 	protected void execVisitBeforeFirstTryCatchBlock() {
 		visitLdcInsn(m_identifier.get());
-		mv.visitMethodInsn(Opcodes.INVOKESTATIC, JavaUtility.toClassPathWithoutEnding(StackLogger.class), "pushInvocation", "(Ljava/lang/String;)V", false);
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, STACK_LOGGER_CLASS_PATH, "pushInvocation", "(Ljava/lang/String;)V",
+				false);
 	}
 
 	@Override
 	protected void execVisitFinallyBlock() {
-		mv.visitMethodInsn(Opcodes.INVOKESTATIC, JavaUtility.toClassPathWithoutEnding(StackLogger.class), "popInvocation", "()V", false);
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, STACK_LOGGER_CLASS_PATH, "popInvocation", "()V", false);
 	}
 }
