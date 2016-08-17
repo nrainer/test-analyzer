@@ -31,7 +31,7 @@ public class SourceInstrumentationOperation extends AbstractTestAwareCodeModific
 
 	/** {@inheritDoc} */
 	@Override
-	protected void modifyNonTestClass(ClassReader cr, ClassWriter cw) {
+	protected void modifySourceClass(ClassReader cr, ClassWriter cw) {
 		ClassVisitor cv = new InstrumentationClassVisitor(cw, cr.getClassName());
 		cr.accept(cv, 0);
 	}

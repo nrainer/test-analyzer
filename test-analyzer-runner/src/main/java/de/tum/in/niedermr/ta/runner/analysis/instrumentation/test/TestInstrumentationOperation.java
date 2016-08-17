@@ -27,7 +27,7 @@ public class TestInstrumentationOperation extends AbstractTestAwareCodeModificat
 
 	/** {@inheritDoc} */
 	@Override
-	protected void modifyNonTestClass(ClassReader cr, ClassWriter cw) {
+	protected void modifySourceClass(ClassReader cr, ClassWriter cw) {
 		cr.accept(new NoModificationClassVisitor(Opcodes.ASM5, cw), 0);
 	}
 

@@ -2,24 +2,17 @@ package de.tum.in.niedermr.ta.core.code.operation;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 
 /** Base class for a code modification operation that is aware of test classes. */
-public abstract class AbstractTestAwareCodeModificationOperation implements ICodeModificationOperation {
-
-	private final ITestClassDetector m_testClassDetector;
+public abstract class AbstractTestAwareCodeModificationOperation extends AbstractTestAwareCodeOperation
+		implements ICodeModificationOperation {
 
 	/** Constructor. */
 	public AbstractTestAwareCodeModificationOperation(ITestClassDetector testClassDetector) {
-		m_testClassDetector = testClassDetector;
-	}
-
-	/** {@link #m_testClassDetector} */
-	protected ITestClassDetector getTestClassDetector() {
-		return m_testClassDetector;
+		super(testClassDetector);
 	}
 
 	/** {@inheritDoc} */
@@ -30,18 +23,11 @@ public abstract class AbstractTestAwareCodeModificationOperation implements ICod
 		if (classType.isTestClass()) {
 			modifyTestClass(cr, cw, classType);
 		} else {
-			modifyNonTestClass(cr, cw);
+			modifySourceClass(cr, cw);
 		}
 	}
 
-	protected abstract void modifyNonTestClass(ClassReader cr, ClassWriter cw);
+	protected abstract void modifySourceClass(ClassReader cr, ClassWriter cw);
 
 	protected abstract void modifyTestClass(ClassReader cr, ClassWriter cw, ClassType classType);
-
-	private ClassType analyzeClassType(ClassReader cr) {
-		ClassNode cn = new ClassNode();
-		cr.accept(cn, 0);
-
-		return m_testClassDetector.analyzeIsTestClass(cn);
-	}
 }
