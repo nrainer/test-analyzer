@@ -16,7 +16,7 @@ public class ValueGenerationSupportedFilter implements IMethodFilter {
 	}
 
 	@Override
-	public FilterResult acceptMethod(MethodIdentifier methodIdentifier, MethodNode method) {
+	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode method) {
 		if (ReturnValueGeneratorUtil.canHandleType(m_returnValueGenerator, methodIdentifier, method.desc)) {
 			return FilterResult.accepted();
 		} else {

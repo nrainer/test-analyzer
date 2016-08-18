@@ -136,6 +136,6 @@ public class FilterTest {
 
 	private boolean analyze(IMethodFilter filter, String className, String methodName, String desc, MethodNode node)
 			throws Exception {
-		return filter.acceptMethod(MethodIdentifier.create(className, methodName, desc), node).isAccepted();
+		return filter.apply(MethodIdentifier.create(className, methodName, desc), node).isAccepted();
 	}
 }

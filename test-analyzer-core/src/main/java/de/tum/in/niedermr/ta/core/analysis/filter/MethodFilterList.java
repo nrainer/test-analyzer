@@ -18,23 +18,23 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 /**
  * Combines multiple {@link IMethodFilter}s.
  */
-public class MethodFilterCollection {
-	private static final Logger LOG = LogManager.getLogger(MethodFilterCollection.class);
+public final class MethodFilterList implements IMethodFilter {
+	private static final Logger LOG = LogManager.getLogger(MethodFilterList.class);
 
 	private final List<IMethodFilter> m_filterList;
 
-	private MethodFilterCollection() {
+	private MethodFilterList() {
 		this.m_filterList = new ArrayList<>();
 	}
 
-	public static MethodFilterCollection createCollectionWithDefaultFilters() {
-		MethodFilterCollection filterCollection = new MethodFilterCollection();
+	public static MethodFilterList createWithDefaultFilters() {
+		MethodFilterList filterCollection = createEmpty();
 		filterCollection.addDefaultFilters();
 		return filterCollection;
 	}
 
-	public static MethodFilterCollection createEmptyCollection() {
-		return new MethodFilterCollection();
+	public static MethodFilterList createEmpty() {
+		return new MethodFilterList();
 	}
 
 	private void addDefaultFilters() {
@@ -54,22 +54,24 @@ public class MethodFilterCollection {
 		m_filterList.add(filter);
 	}
 
-	public void addFilterCollection(IMethodFilter[] additionalFilters) {
+	public void addFilters(IMethodFilter[] additionalFilters) {
 		m_filterList.addAll(Arrays.asList(additionalFilters));
 	}
 
-	public FilterResult acceptMethod(MethodIdentifier methodIdentifier, MethodNode method) {
+	/** {@inheritDoc} */
+	@Override
+	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode methodNode) {
 		FilterResult result = FilterResult.accepted();
 
 		for (IMethodFilter filter : m_filterList) {
 			try {
-				result = filter.acceptMethod(methodIdentifier, method);
+				result = filter.apply(methodIdentifier, methodNode);
 
 				if (!result.isAccepted()) {
 					return result;
 				}
 			} catch (Exception ex) {
-				LOG.error("Error when deciding whether to filter a method", ex);
+				LOG.error("Error when deciding whether to filter a method with filter: " + filter.getClass(), ex);
 				return FilterResult.reject(filter.getClass(), "Exception occurred: " + ex.getMessage());
 			}
 		}

@@ -47,6 +47,7 @@ public final class FilterResult {
 		return m_methodFilter;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString() {
 		if (isAccepted()) {

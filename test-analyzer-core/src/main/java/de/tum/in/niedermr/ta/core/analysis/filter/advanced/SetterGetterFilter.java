@@ -35,7 +35,7 @@ public class SetterGetterFilter implements IMethodFilter {
 
 	/** {@inheritDoc} */
 	@Override
-	public FilterResult acceptMethod(MethodIdentifier identifier, MethodNode method) throws IOException {
+	public FilterResult apply(MethodIdentifier identifier, MethodNode method) throws IOException {
 		ensureDataAvailability(identifier.getOnlyClassName());
 
 		if (m_setterGetterMethods.contains(identifier)) {

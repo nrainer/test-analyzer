@@ -4,7 +4,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
-import de.tum.in.niedermr.ta.core.analysis.filter.MethodFilterCollection;
+import de.tum.in.niedermr.ta.core.analysis.filter.MethodFilterList;
 import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
 import de.tum.in.niedermr.ta.core.analysis.jars.writer.JarFileWriter;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
@@ -28,10 +28,10 @@ public class MethodMutation {
 		ClassReader cr = new ClassReader(className);
 		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
 
-		MethodFilterCollection methodFilterCollection = MethodFilterCollection.createCollectionWithDefaultFilters();
+		MethodFilterList methodFilterCollection = MethodFilterList.createWithDefaultFilters();
 		methodFilterCollection.addNameFilter(methodIdentifier);
 		methodFilterCollection.addValueGenerationSupportedFilter(retValGen);
-		methodFilterCollection.addFilterCollection(additionalMethodFilters);
+		methodFilterCollection.addFilters(additionalMethodFilters);
 
 		MutateMethodsOperation operation = new MutateMethodsOperation(retValGen, methodFilterCollection);
 		operation.modify(cr, cw);

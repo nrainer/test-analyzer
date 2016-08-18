@@ -18,7 +18,7 @@ public class MethodNameFilter implements IMethodFilter {
 	}
 
 	@Override
-	public FilterResult acceptMethod(MethodIdentifier methodIdentifier, MethodNode method) {
+	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode method) {
 		return FilterResult.create(m_methodIdentifierSet.contains(methodIdentifier), MethodNameFilter.class);
 	}
 }

@@ -12,7 +12,7 @@ public class HashCodeMethodFilter implements IMethodFilter {
 
 	/** {@inheritDoc} */
 	@Override
-	public FilterResult acceptMethod(MethodIdentifier identifier, MethodNode method) {
+	public FilterResult apply(MethodIdentifier identifier, MethodNode method) {
 		boolean isHashcodeMethod = identifier.getOnlyMethodName().equals(HASH_CODE_METHOD_NAME);
 		return FilterResult.create(!isHashcodeMethod, HashCodeMethodFilter.class);
 	}

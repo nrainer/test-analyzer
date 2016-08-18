@@ -19,7 +19,7 @@ public class SimpleCodeComplexityFilter implements IMethodFilter {
 	}
 
 	@Override
-	public FilterResult acceptMethod(MethodIdentifier methodIdentifier, MethodNode method) {
+	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode method) {
 		boolean filterResult = isMethodMoreComplexThanThreshold(method.maxLocals, method.maxStack);
 		return FilterResult.create(filterResult, SimpleCodeComplexityFilter.class);
 	}

@@ -10,7 +10,7 @@ import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
-import de.tum.in.niedermr.ta.core.analysis.filter.MethodFilterCollection;
+import de.tum.in.niedermr.ta.core.analysis.filter.MethodFilterList;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.ReturnValueGeneratorUtil;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
@@ -19,10 +19,10 @@ import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 
 public class MutateMethodsOperation implements ICodeModificationOperation {
 	private final IReturnValueGenerator m_returnValueGenerator;
-	private final MethodFilterCollection m_methodFilters;
+	private final MethodFilterList m_methodFilters;
 	private final List<MethodIdentifier> m_mutatedMethods;
 
-	public MutateMethodsOperation(IReturnValueGenerator returnValueGen, MethodFilterCollection methodFilters) {
+	public MutateMethodsOperation(IReturnValueGenerator returnValueGen, MethodFilterList methodFilters) {
 		this.m_returnValueGenerator = returnValueGen;
 		this.m_methodFilters = methodFilters;
 
@@ -49,7 +49,7 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 	}
 
 	private boolean isToMutate(MethodNode method, MethodIdentifier identifier) {
-		return m_methodFilters.acceptMethod(identifier, method).isAccepted() && !isSynthetic(method);
+		return m_methodFilters.apply(identifier, method).isAccepted() && !isSynthetic(method);
 	}
 
 	private void mutate(MethodNode method, MethodIdentifier methodIdentifier) {
