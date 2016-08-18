@@ -1,16 +1,18 @@
 package de.tum.in.niedermr.ta.core.analysis.filter;
 
+/** Result of a filter operation. */
 public final class FilterResult {
 	private static final FilterResult ACCEPTED = new FilterResult(true, null, "");
 
 	private final boolean m_accepted;
 	private final Class<? extends IMethodFilter> m_methodFilter;
-	private final String m_skipReason;
+	private final String m_rejectReason;
 
-	private FilterResult(boolean accepted, Class<? extends IMethodFilter> methodFilter, String skipReason) {
+	/** Constructor. */
+	private FilterResult(boolean accepted, Class<? extends IMethodFilter> methodFilter, String rejectReason) {
 		this.m_accepted = accepted;
 		this.m_methodFilter = methodFilter;
-		this.m_skipReason = skipReason;
+		this.m_rejectReason = rejectReason;
 	}
 
 	public static FilterResult create(boolean accepted, Class<? extends IMethodFilter> methodFilter) {
@@ -21,11 +23,11 @@ public final class FilterResult {
 		return ACCEPTED;
 	}
 
-	public static FilterResult skip(Class<? extends IMethodFilter> filter) {
+	public static FilterResult reject(Class<? extends IMethodFilter> filter) {
 		return new FilterResult(false, filter, null);
 	}
 
-	public static FilterResult skip(Class<? extends IMethodFilter> filter, String reason) {
+	public static FilterResult reject(Class<? extends IMethodFilter> filter, String reason) {
 		return new FilterResult(false, filter, reason);
 	}
 
@@ -33,8 +35,8 @@ public final class FilterResult {
 		return m_accepted;
 	}
 
-	public String getSkipReason() {
-		return m_skipReason;
+	public String getRejectReason() {
+		return m_rejectReason;
 	}
 
 	/**
@@ -51,7 +53,7 @@ public final class FilterResult {
 			return "YES";
 		} else {
 			return "NO (" + getMethodFilter().getSimpleName()
-					+ (getSkipReason() != null ? (": " + getSkipReason()) : "") + ")";
+					+ (getRejectReason() != null ? (": " + getRejectReason()) : "") + ")";
 		}
 	}
 }

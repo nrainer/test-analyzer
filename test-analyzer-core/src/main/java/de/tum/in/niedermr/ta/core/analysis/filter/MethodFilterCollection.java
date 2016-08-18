@@ -70,7 +70,7 @@ public class MethodFilterCollection {
 				}
 			} catch (Exception ex) {
 				LOG.error("Error when deciding whether to filter a method", ex);
-				return FilterResult.skip(filter.getClass(), "Exception occurred: " + ex.getMessage());
+				return FilterResult.reject(filter.getClass(), "Exception occurred: " + ex.getMessage());
 			}
 		}
 

@@ -12,7 +12,7 @@ public class ConstructorFilter implements IMethodFilter {
 	@Override
 	public FilterResult acceptMethod(MethodIdentifier methodIdentifier, MethodNode method) {
 		if (BytecodeUtility.isConstructor(methodIdentifier.getOnlyMethodName())) {
-			return FilterResult.skip(ConstructorFilter.class);
+			return FilterResult.reject(ConstructorFilter.class);
 		} else {
 			return FilterResult.accepted();
 		}

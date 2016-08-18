@@ -14,7 +14,7 @@ public class NonEmptyMethodFilter implements IMethodFilter {
 		int countInstructions = BytecodeUtility.countMethodInstructions(methodNode);
 
 		if (countInstructions == 1) {
-			return FilterResult.skip(NonEmptyMethodFilter.class);
+			return FilterResult.reject(NonEmptyMethodFilter.class);
 		} else {
 			return FilterResult.accepted();
 		}

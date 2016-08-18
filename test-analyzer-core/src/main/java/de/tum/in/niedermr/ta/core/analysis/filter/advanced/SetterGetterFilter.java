@@ -39,7 +39,7 @@ public class SetterGetterFilter implements IMethodFilter {
 		ensureDataAvailability(identifier.getOnlyClassName());
 
 		if (m_setterGetterMethods.contains(identifier)) {
-			return FilterResult.skip(SetterGetterFilter.class, "Setter or getter");
+			return FilterResult.reject(SetterGetterFilter.class, "Setter or getter");
 		} else {
 			return FilterResult.accepted();
 		}

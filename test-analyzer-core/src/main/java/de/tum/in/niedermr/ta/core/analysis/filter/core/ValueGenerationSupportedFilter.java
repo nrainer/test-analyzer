@@ -20,7 +20,7 @@ public class ValueGenerationSupportedFilter implements IMethodFilter {
 		if (ReturnValueGeneratorUtil.canHandleType(m_returnValueGenerator, methodIdentifier, method.desc)) {
 			return FilterResult.accepted();
 		} else {
-			return FilterResult.skip(ValueGenerationSupportedFilter.class, "Return type not supported by " + m_returnValueGenerator.getClass().getName());
+			return FilterResult.reject(ValueGenerationSupportedFilter.class, "Return type not supported by " + m_returnValueGenerator.getClass().getName());
 		}
 	}
 }
