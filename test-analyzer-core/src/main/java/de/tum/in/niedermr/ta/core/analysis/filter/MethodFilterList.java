@@ -11,12 +11,13 @@ import org.objectweb.asm.tree.MethodNode;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.ConstructorFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.MethodNameFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.NonEmptyMethodFilter;
+import de.tum.in.niedermr.ta.core.analysis.filter.core.SyntheticMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.ValueGenerationSupportedFilter;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 /**
- * Combines multiple {@link IMethodFilter}s.
+ * Method filter that combines multiple {@link IMethodFilter}s.
  */
 public final class MethodFilterList implements IMethodFilter {
 	private static final Logger LOG = LogManager.getLogger(MethodFilterList.class);
@@ -40,6 +41,7 @@ public final class MethodFilterList implements IMethodFilter {
 	private void addDefaultFilters() {
 		addFilter(new ConstructorFilter());
 		addFilter(new NonEmptyMethodFilter());
+		addFilter(new SyntheticMethodFilter());
 	}
 
 	public void addNameFilter(MethodIdentifier... methodIdentifiers) {

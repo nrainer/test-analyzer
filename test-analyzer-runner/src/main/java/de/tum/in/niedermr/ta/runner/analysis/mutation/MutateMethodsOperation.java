@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -40,16 +39,12 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 		for (MethodNode method : (List<MethodNode>) cn.methods) {
 			final MethodIdentifier methodIdentifier = MethodIdentifier.create(className, method);
 
-			if (isToMutate(method, methodIdentifier)) {
+			if (m_methodFilters.apply(methodIdentifier, method).isAccepted()) {
 				mutate(method, methodIdentifier);
 			}
 		}
 
 		cn.accept(cw);
-	}
-
-	private boolean isToMutate(MethodNode method, MethodIdentifier identifier) {
-		return m_methodFilters.apply(identifier, method).isAccepted() && !isSynthetic(method);
 	}
 
 	private void mutate(MethodNode method, MethodIdentifier methodIdentifier) {
@@ -72,10 +67,6 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 		method.visitInsn(returnOpcode);
 
 		m_mutatedMethods.add(methodIdentifier);
-	}
-
-	private boolean isSynthetic(MethodNode method) {
-		return OpcodesUtility.hasFlag(method.access, Opcodes.ACC_SYNTHETIC);
 	}
 
 	public List<MethodIdentifier> getMutatedMethods() {
