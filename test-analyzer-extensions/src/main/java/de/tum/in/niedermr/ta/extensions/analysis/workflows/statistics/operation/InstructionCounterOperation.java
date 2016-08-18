@@ -41,16 +41,20 @@ public class InstructionCounterOperation extends AbstractTestAwareCodeAnalyzeOpe
 	@SuppressWarnings("unchecked")
 	private void analyzeMethods(ClassNode cn, ClassType testClassType) {
 		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
-			if (!(BytecodeUtility.isConstructor(methodNode) || BytecodeUtility.isAbstractMethod(methodNode))) {
-				if (m_mode == Mode.TESTCASE && (!getTestClassDetector().analyzeIsTestcase(methodNode, testClassType))) {
-					// skip non-test methods in test classes
-					continue;
-				}
-
-				m_result.put(MethodIdentifier.create(cn.name, methodNode),
-						BytecodeUtility.countMethodInstructions(methodNode));
-			}
+			analyzeMethod(cn, testClassType, methodNode);
 		}
+	}
+
+	private void analyzeMethod(ClassNode cn, ClassType testClassType, MethodNode methodNode) {
+		if (BytecodeUtility.isConstructor(methodNode) || BytecodeUtility.isAbstractMethod(methodNode)) {
+			return;
+		}
+
+		if (m_mode == Mode.TESTCASE && (!getTestClassDetector().analyzeIsTestcase(methodNode, testClassType))) {
+			return;
+		}
+
+		m_result.put(MethodIdentifier.create(cn.name, methodNode), BytecodeUtility.countMethodInstructions(methodNode));
 	}
 
 	public Map<MethodIdentifier, Integer> getResult() {

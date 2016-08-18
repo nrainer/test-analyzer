@@ -18,21 +18,22 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 
-/**
- * Note: This filter operation analyzes the code of a class and thus requires the class to be on the classpath.
- */
+/** Filters simple setter and getter methods out. */
 public class SetterGetterFilter implements IMethodFilter {
+
 	/** The class names in the set indicate that information about the methods in these classes is already available. */
 	private final Set<String> m_initializedClasses;
 
 	/** Contains setter and getter methods of initialized classes. */
 	private final Set<MethodIdentifier> m_setterGetterMethods;
 
+	/** Constructor. */
 	public SetterGetterFilter() {
 		this.m_initializedClasses = new HashSet<>();
 		this.m_setterGetterMethods = new HashSet<>();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public FilterResult acceptMethod(MethodIdentifier identifier, MethodNode method) throws IOException {
 		ensureDataAvailability(identifier.getOnlyClassName());
@@ -65,7 +66,8 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	protected boolean determineIsSetterOrGetter(MethodNode method) {
-		return isSimpleSetter(method.instructions) || isSimpleGetter(method.instructions) || isSimpleConstantGetter(method.instructions);
+		return isSimpleSetter(method.instructions) || isSimpleGetter(method.instructions)
+				|| isSimpleConstantGetter(method.instructions);
 	}
 
 	/**
