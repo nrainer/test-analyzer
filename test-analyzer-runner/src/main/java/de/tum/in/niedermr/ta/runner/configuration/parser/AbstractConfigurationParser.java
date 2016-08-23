@@ -216,7 +216,7 @@ abstract class AbstractConfigurationParser {
 		} catch (ConfigurationException ex) {
 			throw new ConfigurationException("Error in inherited configuration");
 		} catch (Throwable t) {
-			throw new ConfigurationException(new IllegalStateException("Incorrect inheritance: " + inheritLine));
+			throw new ConfigurationException(new IllegalStateException("Incorrect inheritance: " + inheritLine, t));
 		}
 	}
 
