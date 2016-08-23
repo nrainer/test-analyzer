@@ -114,7 +114,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * <b>Only for internal use.</b>
+	 * Allows for overriding the classpath of the TestAnalyzer. <b>Only for internal use.</b>
 	 */
 	public TestAnalyzerClasspathProperty getTestAnalyzerClasspath() {
 		return m_testAnalyzerClasspath;

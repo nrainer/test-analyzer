@@ -4,12 +4,13 @@ import java.util.List;
 
 public interface ITestRunResult {
 	/**
-	 * True, if no test failed.
+	 * True, if all test cases were successful / no test failed.
 	 */
 	public boolean successful();
 
 	/**
-	 * True, if an assertion caused the test to fail. False, if an exception thrown by the program caused the test to fail or all tests passed.
+	 * True, if an assertion caused the test to fail. False, if an exception thrown by the program caused the test to
+	 * fail or all tests passed.
 	 */
 	public boolean isAssertionError();
 
@@ -19,7 +20,7 @@ public interface ITestRunResult {
 	public int getRunCount();
 
 	/**
-	 * Number of failed tests.
+	 * Number of tests with failure.
 	 */
 	public int getFailureCount();
 

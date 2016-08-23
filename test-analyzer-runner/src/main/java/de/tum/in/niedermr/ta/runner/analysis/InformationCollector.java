@@ -48,6 +48,7 @@ public class InformationCollector {
 	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(InformationCollector.class, 6);
 	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(InformationCollector.class, 7);
 
+	/** Main method. */
 	public static void main(String[] args) {
 		if (args.length == 0) {
 			LoggingUtil.printDontStartThisClass(InformationCollector.class, AnalyzerRunnerStart.class);

@@ -38,7 +38,8 @@ public abstract class AbstractClasspathProperty extends AbstractMultiStringPrope
 			File file = new File(Environment.getPathWithoutWildcard(element));
 
 			if (!file.exists()) {
-				throw new ConfigurationException(this, "The file '" + element + "' does not exist. (Assumed absolute path: '" + file.getAbsolutePath() + "')");
+				throw new ConfigurationException(this, "The file '" + element
+						+ "' does not exist. (Assumed absolute path: '" + file.getAbsolutePath() + "')");
 			}
 		}
 	}
@@ -52,8 +53,11 @@ public abstract class AbstractClasspathProperty extends AbstractMultiStringPrope
 	}
 
 	/**
-	 * <b>Replaces the windows classpath separator (';')</b> with the separator of the current OS. However, it <b>does NOT replace the linux classpath separator
-	 * (':')</b> with the separator of the current OS because this would lead to problems under windows in absolute paths such as "E:/bin/"!
+	 * {@inheritDoc}
+	 * 
+	 * <b>Replaces the windows classpath separator (';')</b> with the separator of the current OS. However, it <b>does
+	 * NOT replace the linux classpath separator (':')</b> with the separator of the current OS because this would lead
+	 * to problems under windows in absolute paths such as "E:/bin/"!
 	 */
 	@Override
 	protected String parseValue(String value) {

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * Logger for method invocations.<br/>
  * <b>Do not move or rename this class. It will be invoked by generated code.</b>
  */
 public class InvocationLogger {
@@ -49,7 +50,8 @@ public class InvocationLogger {
 
 	public enum LoggingMode {
 		/**
-		 * For the preparation before and the wrap-up after tests. (e. g. invocations from @BeforeClass, @Before, @After, @AfterClass)
+		 * For the preparation before and the wrap-up after tests. (e. g. invocations
+		 * from @BeforeClass, @Before, @After, @AfterClass)
 		 */
 		FRAMING,
 		/**

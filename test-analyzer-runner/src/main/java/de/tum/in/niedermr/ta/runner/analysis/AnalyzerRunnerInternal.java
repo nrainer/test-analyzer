@@ -46,11 +46,7 @@ public class AnalyzerRunnerInternal {
 
 	private static final String RELATIVE_WORKING_FOLDER = FileSystemConstants.CURRENT_FOLDER;
 
-	/**
-	 * args[0]: arbitrary (an ID will be generated) or {@link EXECUTION_ID_FOR_TESTS} args[1]: absolute path to the
-	 * TestAnalyzer project (which is referenced by program libraries) args[2]: relative path to the configuration file
-	 * in the working area
-	 */
+	/** Main method. */
 	public static void main(String[] args) {
 		if (args.length == 0) {
 			LoggingUtil.printDontStartThisClass(AnalyzerRunnerInternal.class, AnalyzerRunnerStart.class);

@@ -295,6 +295,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		}
 
 		/**
+		 * Run the test cases and record the result.
+		 * 
 		 * Note that the full original classpath is used. However, the mutated jar is inserted at the beginning of the
 		 * classpath, thus the mutated class is considered first in that jar file.
 		 */

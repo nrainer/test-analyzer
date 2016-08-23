@@ -13,6 +13,6 @@ public interface IExecutionStep {
 	/** Initialize the step. */
 	void initialize(ExecutionContext information);
 
-	/** Execute the step. */
+	/** Run the step. */
 	void run() throws ExecutionException;
 }

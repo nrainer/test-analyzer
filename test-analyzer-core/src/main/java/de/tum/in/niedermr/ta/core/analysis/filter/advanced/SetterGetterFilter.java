@@ -71,7 +71,7 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	/**
-	 * <code>
+	 * Return true if the instructions are supposed to be a simple setter. <code>
 	 * 1 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 2 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 3 ALOAD
@@ -132,6 +132,8 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	/**
+	 * Return true if the instructions are supposed to be a simple getter.
+	 * 
 	 * <code>
 	 * 1 (IRRELEVANT INTERNAL INSTRUCTION)
 	 * 2 (IRRELEVANT INTERNAL INSTRUCTION)
@@ -181,7 +183,7 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	/**
-	 * <code>
+	 * Return true if the instructions are supposed to be a simple constant getter. <code>
 	 * 1 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 2 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 3 xCONST_x | xPUSH | LDC | LDC_W | LDC2_W 

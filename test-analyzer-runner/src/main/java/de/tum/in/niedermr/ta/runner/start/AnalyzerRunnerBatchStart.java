@@ -18,7 +18,7 @@ public class AnalyzerRunnerBatchStart {
 	public static final ProgramArgsKey ARGS_CONFIG_FILES = new ProgramArgsKey(AnalyzerRunnerBatchStart.class, 0);
 
 	/**
-	 * Only considered if main is invoked without arguments.
+	 * Get the configuration files. Only considered if {@link #main(String[])} is invoked without arguments.
 	 * 
 	 * @return path of the configuration files separated by {@link CommonConstants#SEPARATOR_DEFAULT} (relative to the
 	 *         TestAnalyzer program path)
@@ -27,10 +27,7 @@ public class AnalyzerRunnerBatchStart {
 		return "";
 	}
 
-	/**
-	 * args[0]: path of the configuration files separated by {@link CommonConstants#SEPARATOR_DEFAULT} (relative to
-	 * TestAnalyzer program path)
-	 */
+	/** Main method. */
 	public static void main(String[] args) throws ConfigurationException, IOException {
 		final String configurationFiles;
 
