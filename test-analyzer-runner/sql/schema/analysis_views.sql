@@ -1,5 +1,5 @@
 -- DROP VIEW IF EXISTS V_Test_Result_Info;
--- DROP VIEW IF EXISTS V_Tested_Methods_Info_2;
+-- DROP VIEW IF EXISTS V_Tested_Methods_Info_Agg;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info;
 -- DROP VIEW IF EXISTS V_Name_Mapping;
 
@@ -14,7 +14,14 @@ CREATE VIEW V_Name_Mapping
     methodHash,
     testcaseHash
 ) AS
-	SELECT ri.execution, ri.methodId, ri.testcaseId, mi.method, ti.testcase, mi.methodHash, ti.testcaseHash
+	SELECT 
+		ri.execution, 
+		ri.methodId, 
+		ri.testcaseId, 
+		mi.method, 
+		ti.testcase, 
+		mi.methodHash, 
+		ti.testcaseHash
 	FROM Relation_Info ri
 	INNER JOIN Method_Info mi
 	ON ri.execution = mi.execution
@@ -35,7 +42,15 @@ CREATE VIEW V_Tested_Methods_Info
 	method,
 	methodHash
 ) AS
-	SELECT ri.execution, ri.methodId, COALESCE(1 - MIN(tri.killed), 0) AS living, COALESCE(MAX(tri.killed), 0) AS killed, COUNT(mtai.execution) > 0 AS aborted, MIN(ri.minStackDistance), mi.method, mi.methodHash
+	SELECT 
+		ri.execution, 
+		ri.methodId, 
+		COALESCE(1 - MIN(tri.killed), 0) AS living, 
+		COALESCE(MAX(tri.killed), 0) AS killed, 
+		COUNT(mtai.execution) > 0 AS aborted, 
+		MIN(ri.minStackDistance), 
+		mi.method, 
+		mi.methodHash
     FROM Relation_Info ri
     INNER JOIN Method_Info mi
     ON ri.execution = mi.execution
@@ -52,14 +67,20 @@ CREATE VIEW V_Tested_Methods_Info
     OR COUNT(mtai.execution) > 0;
     
 /* Methods that were tested and their aggregated test result. */
-CREATE VIEW V_Tested_Methods_Info_2
+CREATE VIEW V_Tested_Methods_Info_Agg
 (
 	execution,
 	methodId,
+	method,
 	killedResult,
 	minStackDistance
 ) AS
-	SELECT vtmi.execution, vtmi.methodId, CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END, vtmi.minStackDistance
+	SELECT 
+		vtmi.execution, 
+		vtmi.methodId, 
+		vtmi.method, 
+		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END, 
+		vtmi.minStackDistance
     FROM V_Tested_Methods_Info vtmi;
     
 /** Test result, extended by test and method ids and names. */
@@ -75,7 +96,16 @@ CREATE VIEW V_Test_Result_Info
     methodHash,
     testcaseHash
 ) AS 
-	SELECT t.execution, t.methodId, t.testcaseId, mapping.method, mapping.testcase, t.retValGenId, t.killed, mapping.methodHash, mapping.testcaseHash
+	SELECT 
+		t.execution,
+		t.methodId, 
+		t.testcaseId, 
+		mapping.method, 
+		mapping.testcase, 
+		t.retValGenId, 
+		t.killed, 
+		mapping.methodHash, 
+		mapping.testcaseHash
 	FROM Test_Result_Info t
 	INNER JOIN V_Name_Mapping mapping
 	ON t.execution = mapping.execution
