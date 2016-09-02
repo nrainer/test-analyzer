@@ -4,7 +4,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 
-/** An extension of the database result presentation. */
+/** An extended version of the database result presentation. */
 public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentation
 		implements IResultPresentationExtended {
 
