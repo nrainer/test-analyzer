@@ -385,7 +385,7 @@ SELECT COUNT(*) INTO @actualCount
 FROM Method_Info;
 CALL AssertEquals(18, @actualCount);
 
-SELECT instructions INTO @actualCount
+SELECT bytecodeInstructionCount INTO @actualCount
 FROM Method_Info
 WHERE method = 'de.tum.in.ma.simpleproject.core.Calculation.isPositive()';
 CALL AssertEquals(4, @actualCount);

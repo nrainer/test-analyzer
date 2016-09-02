@@ -93,13 +93,13 @@ SET ri.minStackDistance = sii.minStackDistance,
 ri.maxStackDistance = sii.maxStackDistance
 WHERE sii.execution = @executionId;
 
-/* Enrich data with method information: instructions. */
+/* Enrich data with method information: bytecode instructions. */
 UPDATE Method_Info mi
 INNER JOIN Method_Info_Import mix
 ON mi.execution = mix.execution
 AND mi.methodHash = mix.methodHash
 AND mi.method = mix.method
-SET mi.instructions = mix.intValue
+SET mi.bytecodeInstructionCount = mix.intValue
 WHERE mix.execution = @executionId
 AND mix.valueName = 'instructions';
 
