@@ -40,6 +40,10 @@ public class DatabaseResultPresentation implements IResultPresentation {
 		this.m_executionId = execId;
 	}
 
+	protected IExecutionId getExecutionId() {
+		return m_executionId;
+	}
+
 	/** Get the name of the first test exception. */
 	private String getNameOfFirstException(ITestRunResult testResult) {
 		Throwable throwable = testResult.getFirstException();

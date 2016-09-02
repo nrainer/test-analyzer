@@ -37,9 +37,9 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	/**
 	 * The initialization was executed, {@link #m_initialized} will be set to true after this method.
 	 * 
-	 * @param information
+	 * @param context
 	 */
-	protected void execInitialized(ExecutionContext information) {
+	protected void execInitialized(ExecutionContext context) {
 		// NOP
 	}
 
