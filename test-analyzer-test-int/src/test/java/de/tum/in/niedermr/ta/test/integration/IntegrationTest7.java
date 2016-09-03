@@ -2,13 +2,15 @@ package de.tum.in.niedermr.ta.test.integration;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 /**
  * Integration test with extensions involved.<br/>
- * Code-statistics workflow. Stack-analysis workflow.
+ * Code-statistics workflow. Stack-analysis workflow. Coverage parser workflow.
  * 
  * @see "configuration file in test data"
  */
@@ -17,6 +19,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 			+ "analysis-information" + FILE_EXTENSION_SQL_TXT;
 	private static final String CODE_STATISTICS_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
 			+ "code-statistics" + FILE_EXTENSION_SQL_TXT;
+	private static final String COVERAGE_DATA_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
+			+ "coverage-information" + FILE_EXTENSION_SQL_TXT;
 
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
@@ -24,6 +28,16 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 		File outputStackAnalysisFile = getOutputFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
 		File expectedCodeStatisticsFile = getExpectedFile(getFileName(CODE_STATISTICS_OUTPUT));
 		File outputCodeStatisticsFile = getOutputFile(getFileName(CODE_STATISTICS_OUTPUT));
+
+		File inputCoverageXmlFile = getFileInSpecificTestDataFolder("other/coverage.xml");
+		File inputCoverageXmlFileInWorkingDirectory = getFileInWorkingDirectory("coverage.xml");
+		assertFileExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFile);
+		Files.copy(inputCoverageXmlFile.toPath(), inputCoverageXmlFileInWorkingDirectory.toPath(),
+				StandardCopyOption.REPLACE_EXISTING);
+		assertFileExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFileInWorkingDirectory);
+
+		File expectedParsedCoverageFile = getExpectedFile(getFileName(COVERAGE_DATA_OUTPUT));
+		File outputParsedCoverageFile = getOutputFile(getFileName(COVERAGE_DATA_OUTPUT));
 
 		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
 		assertFileExists(MSG_TEST_DATA_MISSING, expectedStackAnalysisFile);
@@ -36,5 +50,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 
 		assertFileExists(MSG_OUTPUT_MISSING, outputCodeStatisticsFile);
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedCodeStatisticsFile, outputCodeStatisticsFile);
+
+		assertFileExists(MSG_OUTPUT_MISSING, outputParsedCoverageFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedParsedCoverageFile, outputParsedCoverageFile);
 	}
 }
