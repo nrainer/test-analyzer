@@ -73,7 +73,7 @@ CREATE TABLE Method_Info_Import
 	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	intValue INT(8),
 	stringValue VARCHAR(20) COLLATE UTF8_BIN,
-	valueName VARCHAR(20) NOT NULL,
+	valueName VARCHAR(32) NOT NULL,
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL
 );
 
@@ -84,7 +84,7 @@ CREATE TABLE Testcase_Info_Import
 	testcase VARCHAR(1024) COLLATE UTF8_BIN,
 	intValue INT(8),
 	stringValue VARCHAR(20) COLLATE UTF8_BIN,
-	valueName VARCHAR(20) NOT NULL,
+	valueName VARCHAR(32) NOT NULL,
     testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL
 );
 
