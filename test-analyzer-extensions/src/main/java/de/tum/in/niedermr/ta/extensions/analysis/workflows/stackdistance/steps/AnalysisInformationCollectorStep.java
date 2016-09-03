@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s2;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
@@ -12,11 +12,13 @@ import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 
 public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "ANACOL";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		final String classPath = configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
@@ -52,6 +54,7 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 				configuration.getCodePathToMutate().countElements());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
 		return "Analyzing stack distance";

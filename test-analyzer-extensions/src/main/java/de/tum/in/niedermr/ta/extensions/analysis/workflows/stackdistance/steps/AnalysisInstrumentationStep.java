@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.s1;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
@@ -12,11 +12,13 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
  * methods.
  */
 public class AnalysisInstrumentationStep extends AbstractExecutionStep {
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "ANAINS";
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
 		/**
@@ -33,6 +35,7 @@ public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
 		return "Instrumenting jar file for analysis";
