@@ -1,12 +1,9 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
 
 /** Coverage info parser. */
 public interface ICoverageParser {
@@ -15,7 +12,7 @@ public interface ICoverageParser {
 	void initialize() throws ParserConfigurationException;
 
 	/** Parse a file. */
-	void parse(File inputFile) throws SAXException, IOException;
+	void parse(File inputFile) throws Exception;
 
 	/** Get the result. */
 	List<String> getResult();

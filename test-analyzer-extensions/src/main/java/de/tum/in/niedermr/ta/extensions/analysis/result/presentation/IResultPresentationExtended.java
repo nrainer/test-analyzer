@@ -31,4 +31,6 @@ public interface IResultPresentationExtended extends IResultPresentation {
 
 	public String formatCoveragePerMethod(MethodIdentifier methodIdentifier, ECoverageLevel coverageLevel,
 			int coverageValue, ECoverageValueType valueType);
+
+	ProjectCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel);
 }
