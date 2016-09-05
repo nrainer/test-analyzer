@@ -1,3 +1,5 @@
+/* ==========  BEGIN PREPARATION     ========== */
+
 DROP PROCEDURE IF EXISTS AssertEquals;
 
 DELIMITER //
@@ -9,14 +11,12 @@ BEGIN
 END //
 DELIMITER ;
 
-DROP PROCEDURE IF EXISTS TestDatabase;
-
-DELIMITER //
-CREATE PROCEDURE TestDatabase ()
-BEGIN
-
 CALL RevertTransfer('TEST');
 CALL RemoveRawImport('TEST');
+
+/* ==========  END PREPARATION       ========== */
+
+/* ==========  BEGIN TESTDATA        ========== */
 
 INSERT INTO Execution_Information (execution, date, project, configurationContent) VALUES ('TEST', CURRENT_DATE(), '?', '[...]');
 UPDATE Execution_Information SET notes = '54 methods. 15 processed successfully. 39 skipped. 0 with timeout. 0 failed.' WHERE execution = 'TEST';
@@ -383,10 +383,11 @@ INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueN
 INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '0', NULL, 'cov_branch_covered');
 INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '0', NULL, 'cov_branch_all');
 
+/* ==========  END TESTDATA          ========== */
 
 CALL Transfer('TEST');
 
-/* BEGIN TESTS */
+/* ==========  BEGIN TESTS           ========== */
 
 SELECT COUNT(*) INTO @actualCount
 FROM Method_Info;
@@ -462,13 +463,12 @@ WHERE method = 'de.tum.in.ma.simpleproject.core.Calculation.isPositive(int)'
 AND living = 1 AND killed = 1 AND aborted = 0 AND minStackDistance = 2;
 CALL AssertEquals(1, @actualCount);
 
-/* END TESTS */
+/* ==========  END TESTS             ========== */
 
-/* Cleanup */
+/* ==========  BEGIN CLEANUP         ========== */
+
 CALL RevertTransfer('TEST');
 CALL RemoveRawImport('TEST');
+DROP PROCEDURE AssertEquals;
 
-END //
-DELIMITER ;
-
-CALL TestDatabase();
+/* ==========  END CLEANUP           ========== */
