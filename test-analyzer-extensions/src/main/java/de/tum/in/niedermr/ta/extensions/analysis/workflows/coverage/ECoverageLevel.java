@@ -2,8 +2,10 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage;
 
 /** Coverage level. */
 public enum ECoverageLevel {
+	/** Method level. */
+	METHOD("cov_method"),
 	/** Statement level. */
-	STATEMENT("cov_statement"),
+	LINE("cov_line"),
 	/** Instruction level. */
 	INSTRUCTION("cov_instruction"),
 	/** Branch level. */

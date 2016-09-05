@@ -150,17 +150,17 @@ CALL UpdateMethodInfo(@executionId, 'intValue', 'bytecodeInstructionCount', 'ins
 /* Enrich data with method information: access modifier. */
 CALL UpdateMethodInfo(@executionId, 'stringValue', 'modifier', 'modifier');
 
-/* Enrich data with method information: covered statements. */
-CALL UpdateMethodInfo(@executionId, 'intValue', 'statementCount', 'cov_statement_covered');
-CALL UpdateMethodInfo(@executionId, 'intValue', 'statementCovered', 'cov_statement_all');
+/* Enrich data with method information: covered lines. */
+CALL UpdateMethodInfo(@executionId, 'intValue', 'lineCovered', 'cov_line_covered');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'lineCount', 'cov_line_all');
 
 /* Enrich data with method information: covered instructions. */
-CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCount', 'cov_instruction_covered');
-CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCovered', 'cov_instruction_all');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCovered', 'cov_instruction_covered');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCount', 'cov_instruction_all');
 
 /* Enrich data with method information: covered branches. */
-CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCount', 'cov_branch_covered');
-CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCovered', 'cov_branch_all');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCovered', 'cov_branch_covered');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCount', 'cov_branch_all');
 
 /* Enrich data with test information: instructions. */
 CALL UpdateTestcaseInfo(@executionId, 'intValue', 'instructions', 'instructions');
