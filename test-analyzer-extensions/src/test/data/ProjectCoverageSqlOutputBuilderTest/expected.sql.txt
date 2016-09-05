@@ -1,0 +1,9 @@
+UPDATE Execution_Information SET branchCoverage = 
+	 (SELECT CASE WHEN SUM(countCovered) = 0 THEN 0 ELSE SUM(countCovered) / (SUM(countCovered) + SUM(countNotCovered)) END FROM
+		 (
+		 SELECT 'none' AS sourceFolder, 0 AS countCovered, 0 AS countNotCovered
+		 UNION SELECT 'src/main/java', '204', '33'
+-- 		 UNION SELECT 'src/test/java', '14', '0'
+		 ) X
+	 )
+WHERE execution = 'TEST';

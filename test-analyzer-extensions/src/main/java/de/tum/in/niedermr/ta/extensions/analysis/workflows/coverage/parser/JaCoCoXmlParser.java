@@ -38,10 +38,13 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 	}
 
 	private void parseSourceFolderInformation(Document document) throws XPathExpressionException {
+		appendToResult(getResultPresentation().getBlockCommentStart());
+		appendToResult(getResultPresentation().formatLineComment("TODO: check test excludes"));
 		parseSourceFolderInformation(document, COUNTER_TYPE_METHOD);
 		parseSourceFolderInformation(document, COUNTER_TYPE_LINE);
 		parseSourceFolderInformation(document, COUNTER_TYPE_INSTRUCTION);
 		parseSourceFolderInformation(document, COUNTER_TYPE_BRANCH);
+		appendToResult(getResultPresentation().getBlockCommentEnd());
 	}
 
 	private void parseSourceFolderInformation(Document document, String counterTypeName)
