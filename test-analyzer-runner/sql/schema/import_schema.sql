@@ -10,13 +10,17 @@ CREATE TABLE Execution_Information
 (
 	id int(5) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
+	processed TINYINT(1) NOT NULL DEFAULT 0,
 	date date NOT NULL,
 	project VARCHAR(64) NOT NULL,
 	testType VARCHAR(64),
 	description VARCHAR(512),
 	notes VARCHAR(512),
-	configurationContent text,
-	processed TINYINT(1) NOT NULL DEFAULT 0
+	methodCoverage DECIMAL(5, 4),
+	lineCoverage DECIMAL(5, 4),
+	instructionCoverage DECIMAL(5, 4),
+	branchCoverage DECIMAL(5, 4),
+	configurationContent text
 );
 
 CREATE TABLE Collected_Information_Import
