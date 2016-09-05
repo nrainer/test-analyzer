@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.runner.execution.id;
 
+import java.util.Objects;
+
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
@@ -13,6 +15,9 @@ public class ExecutionIdFactory {
 	/** Execution id that has not been set yet. */
 	public static final IExecutionId NOT_SPECIFIED = parseShortExecutionId("****");
 
+	/** Execution id for test executions. */
+	public static final IExecutionId ID_FOR_TESTS = ExecutionIdFactory.parseShortExecutionId("TEST");
+
 	/** Constructor. */
 	private ExecutionIdFactory() {
 		// NOP
@@ -25,6 +30,7 @@ public class ExecutionIdFactory {
 
 	/** Parse a short execution id. */
 	public static IExecutionId parseShortExecutionId(String executionId) {
+		Objects.requireNonNull(executionId);
 		return ExecutionId.parseShortExecutionId(executionId);
 	}
 
@@ -35,11 +41,13 @@ public class ExecutionIdFactory {
 	 *            if true, a full execution id will be trimmed to a short id, otherwise an exception will be thrown
 	 */
 	public static IExecutionId parseShortExecutionId(String executionId, boolean allowTrimming) {
+		Objects.requireNonNull(executionId);
 		return ExecutionId.parseShortExecutionId(executionId, allowTrimming);
 	}
 
 	/** Parse a full execution id. */
-	public static IFullExecutionId parseFullExecutionId(String value) {
-		return ExecutionId.parseFullExecutionId(value);
+	public static IFullExecutionId parseFullExecutionId(String executionId) {
+		Objects.requireNonNull(executionId);
+		return ExecutionId.parseFullExecutionId(executionId);
 	}
 }

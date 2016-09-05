@@ -26,8 +26,6 @@ import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
  *
  */
 public class AnalyzerRunnerStart {
-	public static final IExecutionId EXECUTION_ID_FOR_TESTS = ExecutionIdFactory.parseShortExecutionId("TEST");
-
 	private static boolean s_inTestMode = false;
 
 	/**
@@ -65,7 +63,7 @@ public class AnalyzerRunnerStart {
 		IExecutionId executionId = ExecutionIdFactory.createNewShortExecutionId();
 
 		if (s_inTestMode) {
-			executionId = EXECUTION_ID_FOR_TESTS;
+			executionId = ExecutionIdFactory.ID_FOR_TESTS;
 		}
 
 		final String currentCanonicalPath = locationTestAnalyzer.getCanonicalPath();
