@@ -29,4 +29,13 @@ public interface IResultPresentation {
 
 	/** Format the execution information summary. */
 	String formatExecutionSummary(String summary);
+
+	/** Format a line comment. */
+	String formatLineComment(String comment);
+
+	/** Get the start of a block comment. */
+	String getBlockCommentStart();
+
+	/** Get the end of a block comment. */
+	String getBlockCommentEnd();
 }

@@ -98,4 +98,22 @@ public class TextResultPresentation implements IResultPresentation {
 	public String formatExecutionSummary(String summary) {
 		return summary;
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String formatLineComment(String comment) {
+		return "# " + comment;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getBlockCommentStart() {
+		return "# -------------";
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getBlockCommentEnd() {
+		return "# -------------";
+	}
 }
