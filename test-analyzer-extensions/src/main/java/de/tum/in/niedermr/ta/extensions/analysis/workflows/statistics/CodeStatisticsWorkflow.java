@@ -26,7 +26,7 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	@Override
 	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
-		prepareStep.run();
+		prepareStep.start();
 
 		PersistResultStep persistResultStep = createAndInitializeExecutionStep(PersistResultStep.class);
 
@@ -42,13 +42,13 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 			runCollectAccessModifiersStep(persistResultStep);
 		}
 
-		persistResultStep.run();
+		persistResultStep.start();
 	}
 
 	/** Run the step to count the instructions of methods and test cases. */
 	protected void runCountInstructionsStep(PersistResultStep persistResultStep) {
 		InstructionCounterStep countInstructionsStep = createAndInitializeExecutionStep(InstructionCounterStep.class);
-		countInstructionsStep.run();
+		countInstructionsStep.start();
 		persistResultStep.addResultInstructionsPerMethod(countInstructionsStep.getInstructionsPerMethod());
 		persistResultStep.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
 	}
@@ -56,7 +56,7 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	/** Run the step to count assertions. */
 	protected void runCountAssertionsStep(PersistResultStep persistResultStep) {
 		AssertionCounterStep countAssertionsStep = createAndInitializeExecutionStep(AssertionCounterStep.class);
-		countAssertionsStep.run();
+		countAssertionsStep.start();
 		persistResultStep.addResultAssertionsPerTestcase(countAssertionsStep.getAssertionsPerTestcase());
 	}
 
@@ -64,7 +64,7 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	protected void runCollectAccessModifiersStep(PersistResultStep persistResultStep) {
 		MethodModifierRetrievalStep modifierRetrievalStep = createAndInitializeExecutionStep(
 				MethodModifierRetrievalStep.class);
-		modifierRetrievalStep.run();
+		modifierRetrievalStep.start();
 		persistResultStep.addResultModifierPerMethod(modifierRetrievalStep.getModifierPerMethod());
 	}
 }

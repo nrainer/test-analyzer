@@ -75,17 +75,17 @@ public class TestWorkflow extends AbstractWorkflow {
 	}
 
 	protected void beforeExecution() throws ExecutionException {
-		m_prepareWorkingFolderStep.run();
+		m_prepareWorkingFolderStep.start();
 	}
 
 	protected void afterExecution() throws ExecutionException {
-		m_finalizeResultStep.run();
-		m_cleanupStep.run();
+		m_finalizeResultStep.start();
+		m_cleanupStep.start();
 	}
 
 	protected ConcurrentLinkedQueue<TestInformation> collectInformation() throws ExecutionException {
-		m_instrumentationStep.run();
-		m_informationCollectorStep.run();
+		m_instrumentationStep.start();
+		m_informationCollectorStep.start();
 
 		return m_informationCollectorStep.getMethodsToMutateAndTestsToRun();
 	}
@@ -122,6 +122,6 @@ public class TestWorkflow extends AbstractWorkflow {
 	protected void executeMutateAndTest(ConcurrentLinkedQueue<TestInformation> testInformation)
 			throws ExecutionException {
 		m_mutateAndTestStep.setInputData(testInformation);
-		m_mutateAndTestStep.run();
+		m_mutateAndTestStep.start();
 	}
 }

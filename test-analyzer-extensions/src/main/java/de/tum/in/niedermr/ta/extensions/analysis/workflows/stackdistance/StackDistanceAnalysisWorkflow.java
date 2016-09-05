@@ -24,9 +24,9 @@ public class StackDistanceAnalysisWorkflow extends AbstractWorkflow {
 				AnalysisInformationCollectorStep.class);
 		CleanupStep cleanupStep = createAndInitializeExecutionStep(CleanupStep.class);
 
-		prepareStep.run();
-		analysisInstrumentationStep.run();
-		analysisInformationCollectorStep.run();
-		cleanupStep.run();
+		prepareStep.start();
+		analysisInstrumentationStep.start();
+		analysisInformationCollectorStep.start();
+		cleanupStep.start();
 	}
 }

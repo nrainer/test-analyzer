@@ -29,17 +29,17 @@ public class CoverageParserWorkflow extends AbstractWorkflow {
 	@Override
 	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
-		prepareStep.run();
+		prepareStep.start();
 
 		CoverageParserStep parseCoverageStep = createAndInitializeExecutionStep(CoverageParserStep.class);
 		String coverageFileName = configuration.getExtension().getStringValue(COVERAGE_FILE,
 				DEFAULT_COVERAGE_FILE_NAME);
 		parseCoverageStep.setCoverageFileName(coverageFileName);
-		parseCoverageStep.run();
+		parseCoverageStep.start();
 
 		SimplePersistResultStep persistStep = createAndInitializeExecutionStep(SimplePersistResultStep.class);
 		persistStep.setResult(parseCoverageStep.getResult());
 		persistStep.setResultFileName(RESULT_FILE_NAME);
-		persistStep.run();
+		persistStep.start();
 	}
 }

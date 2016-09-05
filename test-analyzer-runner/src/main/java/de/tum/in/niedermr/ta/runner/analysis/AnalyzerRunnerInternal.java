@@ -94,7 +94,7 @@ public class AnalyzerRunnerInternal {
 		ExecutionContext executionContext = createExecutionContext(executionId, configuration, programPath);
 		PrepareWorkingFolderStep prepareWorkingFolderStep = new PrepareWorkingFolderStep();
 		prepareWorkingFolderStep.initialize(executionContext);
-		prepareWorkingFolderStep.run();
+		prepareWorkingFolderStep.start();
 	}
 
 	/** Write a file with execution information. */

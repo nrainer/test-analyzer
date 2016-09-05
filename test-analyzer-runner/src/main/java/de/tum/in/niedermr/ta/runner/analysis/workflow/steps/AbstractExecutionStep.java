@@ -45,7 +45,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 
 	/** {@inheritDoc} */
 	@Override
-	public final void run() throws ExecutionException {
+	public final void start() throws ExecutionException {
 		if (!m_initialized) {
 			throw new ExecutionException(ExecutionIdFactory.NOT_SPECIFIED, "Not initialized");
 		}

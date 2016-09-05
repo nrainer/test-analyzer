@@ -14,5 +14,5 @@ public interface IExecutionStep {
 	void initialize(ExecutionContext information);
 
 	/** Run the step. */
-	void run() throws ExecutionException;
+	void start() throws ExecutionException;
 }
