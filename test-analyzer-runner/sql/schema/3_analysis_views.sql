@@ -1,3 +1,4 @@
+-- DROP VIEW IF EXISTS V_Method_Classification;
 -- DROP VIEW IF EXISTS V_Test_Result_Info;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info_Agg;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info;
@@ -115,3 +116,24 @@ CREATE VIEW V_Test_Result_Info
 	ON t.execution = mapping.execution
 	AND t.methodId = mapping.methodId
 	AND t.testcaseId = mapping.testcaseId;
+	
+CREATE VIEW V_Method_Classification
+(
+	execution,
+	methodId,
+	method,
+	methodCategory,
+	methodSeverity
+) AS
+	SELECT
+		vtmia.execution,
+		vtmia.methodId,
+		vtmia.method,
+		mci.category,
+		mci.severity
+	FROM V_Tested_Methods_Info_Agg vtmia
+	INNER JOIN Method_Info mi
+	ON vtmia.execution = mi.execution
+	AND vtmia.methodId = mi.methodId
+	LEFT OUTER JOIN Method_Classification_Info mci
+	ON mi.classificationId = mci.classificationId;
