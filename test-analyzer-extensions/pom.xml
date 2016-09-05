@@ -47,6 +47,14 @@
 			<artifactId>test-analyzer-runner</artifactId>
 			<version>${currentVersion}</version>
 		</dependency>
+		
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-core</artifactId>
+			<version>${currentVersion}</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>org.testng</groupId>
