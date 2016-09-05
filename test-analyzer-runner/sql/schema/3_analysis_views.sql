@@ -39,6 +39,7 @@ CREATE VIEW V_Tested_Methods_Info
 	killed,
 	aborted,
 	minStackDistance,
+	testcaseCount,
 	method,
 	methodHash
 ) AS
@@ -47,7 +48,8 @@ CREATE VIEW V_Tested_Methods_Info
 		ri.methodId, 
 		COALESCE(1 - MIN(tri.killed), 0) AS living, 
 		COALESCE(MAX(tri.killed), 0) AS killed, 
-		COUNT(mtai.execution) > 0 AS aborted, 
+		COUNT(mtai.execution) > 0 AS aborted,
+		COUNT(DISTINCT ri.testcaseId) AS testcaseCount,
 		MIN(ri.minStackDistance), 
 		mi.method, 
 		mi.methodHash
@@ -73,13 +75,15 @@ CREATE VIEW V_Tested_Methods_Info_Agg
 	methodId,
 	method,
 	killedResult,
+	testcaseCount,
 	minStackDistance
 ) AS
 	SELECT 
 		vtmi.execution, 
 		vtmi.methodId, 
 		vtmi.method, 
-		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END, 
+		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END,
+		vtmi.testcaseCount,
 		vtmi.minStackDistance
     FROM V_Tested_Methods_Info vtmi;
     
