@@ -46,7 +46,7 @@ public class CollectedInformationTest implements CommonConstants {
 
 	@Test
 	public void testToSQLStatements() {
-		final IExecutionId executionId = ExecutionIdFactory.parseShortExecutionId("TEST");
+		final IExecutionId executionId = ExecutionIdFactory.ID_FOR_TESTS;
 
 		String expected = String.format(DatabaseResultPresentation.SQL_INSERT_METHOD_TEST_CASE_MAPPING,
 				executionId.getShortId(), "de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()",

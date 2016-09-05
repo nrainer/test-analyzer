@@ -1,6 +1,57 @@
 DROP PROCEDURE IF EXISTS Transfer;
+DROP PROCEDURE IF EXISTS UpdateMethodInfo;
+DROP PROCEDURE IF EXISTS UpdateTestcaseInfo;
 
 DELIMITER //
+
+/* Needed by procedure Transfer. */
+CREATE PROCEDURE UpdateMethodInfo (IN param_execution VARCHAR(5), IN param_sourceColumn VARCHAR(32), IN param_destColumn VARCHAR(32), IN param_valueName VARCHAR(32))
+BEGIN
+	SET @sql = 
+		"UPDATE Method_Info mi
+		INNER JOIN Method_Info_Import mix
+		ON mi.execution = mix.execution
+		AND mi.methodHash = mix.methodHash
+		AND mi.method = mix.method
+		SET mi.%destColumn% = mix.%sourceColumn%
+		WHERE mix.execution = '%execution%'
+		AND mix.valueName = '%valueName%';";
+
+	SET @sql = REPLACE(@sql, '%destColumn%', param_destColumn);
+	SET @sql = REPLACE(@sql, '%sourceColumn%', param_sourceColumn);
+	SET @sql = REPLACE(@sql, '%execution%', param_execution);
+	SET @sql = REPLACE(@sql, '%valueName%', param_valueName);
+		
+	PREPARE stmt FROM @sql;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
+END //
+
+/* Needed by procedure Transfer. */
+CREATE PROCEDURE UpdateTestcaseInfo (IN param_execution VARCHAR(5), IN param_sourceColumn VARCHAR(32), IN param_destColumn VARCHAR(32), IN param_valueName VARCHAR(32))
+BEGIN
+	
+	SET @sql = 
+		"UPDATE Testcase_Info ti
+		INNER JOIN Testcase_Info_Import tix
+		ON ti.execution = tix.execution
+		AND ti.testcaseHash = tix.testcaseHash
+		AND ti.testcase = tix.testcase
+		SET ti.%destColumn% = tix.%sourceColumn%
+		WHERE tix.execution = '%execution%'
+		AND tix.valueName = '%valueName%';";
+
+	SET @sql = REPLACE(@sql, '%destColumn%', param_destColumn);
+	SET @sql = REPLACE(@sql, '%sourceColumn%', param_sourceColumn);
+	SET @sql = REPLACE(@sql, '%execution%', param_execution);
+	SET @sql = REPLACE(@sql, '%valueName%', param_valueName);
+		
+	PREPARE stmt FROM @sql;
+	EXECUTE stmt;
+	DEALLOCATE PREPARE stmt;
+END //
+
+/* Actual procedure Transfer. */
 CREATE PROCEDURE Transfer (IN param_execution VARCHAR(5))
 BEGIN
 
@@ -93,45 +144,29 @@ SET ri.minStackDistance = sii.minStackDistance,
 ri.maxStackDistance = sii.maxStackDistance
 WHERE sii.execution = @executionId;
 
-/* Enrich data with method information: instructions. */
-UPDATE Method_Info mi
-INNER JOIN Method_Info_Import mix
-ON mi.execution = mix.execution
-AND mi.methodHash = mix.methodHash
-AND mi.method = mix.method
-SET mi.instructions = mix.intValue
-WHERE mix.execution = @executionId
-AND mix.valueName = 'instructions';
+/* Enrich data with method information: bytecode instructions. */
+CALL UpdateMethodInfo(@executionId, 'intValue', 'bytecodeInstructionCount', 'instructions');
 
-/* Enrich data with method information: modifier. */
-UPDATE Method_Info mi
-INNER JOIN Method_Info_Import mix
-ON mi.execution = mix.execution
-AND mi.methodHash = mix.methodHash
-AND mi.method = mix.method
-SET mi.modifier = mix.stringValue
-WHERE mix.execution = @executionId
-AND mix.valueName = 'modifier';
+/* Enrich data with method information: access modifier. */
+CALL UpdateMethodInfo(@executionId, 'stringValue', 'modifier', 'modifier');
+
+/* Enrich data with method information: covered lines. */
+CALL UpdateMethodInfo(@executionId, 'intValue', 'lineCovered', 'cov_line_covered');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'lineCount', 'cov_line_all');
+
+/* Enrich data with method information: covered instructions. */
+CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCovered', 'cov_instruction_covered');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCount', 'cov_instruction_all');
+
+/* Enrich data with method information: covered branches. */
+CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCovered', 'cov_branch_covered');
+CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCount', 'cov_branch_all');
 
 /* Enrich data with test information: instructions. */
-UPDATE Testcase_Info ti
-INNER JOIN Testcase_Info_Import tix
-ON ti.execution = tix.execution
-AND ti.testcaseHash = tix.testcaseHash
-AND ti.testcase = tix.testcase
-SET ti.instructions = tix.intValue
-WHERE tix.execution = @executionId
-AND tix.valueName = 'instructions';
+CALL UpdateTestcaseInfo(@executionId, 'intValue', 'instructions', 'instructions');
 
 /* Enrich data with test information: assertions. */
-UPDATE Testcase_Info ti
-INNER JOIN Testcase_Info_Import tix
-ON ti.execution = tix.execution
-AND ti.testcaseHash = tix.testcaseHash
-AND ti.testcase = tix.testcase
-SET ti.assertions = tix.intValue
-WHERE tix.execution = @executionId
-AND tix.valueName = 'assertions';
+CALL UpdateTestcaseInfo(@executionId, 'intValue', 'assertions', 'assertions');
 
 /* Mark the execution as processed. */
 UPDATE Execution_Information ei
@@ -160,4 +195,5 @@ GROUP BY r.retValGenHash
 HAVING COUNT(*) > 1;
 
 END //
+
 DELIMITER ;

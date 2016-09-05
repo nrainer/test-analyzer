@@ -2,9 +2,11 @@ package de.tum.in.niedermr.ta.extensions.analysis.result.presentation;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 
-/** An extension of the database result presentation. */
+/** An extended version of the database result presentation. */
 public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentation
 		implements IResultPresentationExtended {
 
@@ -27,28 +29,52 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 				maxInvocationDistance);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String formatInstructionsPerMethod(MethodIdentifier methodIdentifier, int instructionCount) {
 		return String.format(SQL_INSERT_METHOD_INFO_IMPORT, getExecutionId().getShortId(), methodIdentifier.get(),
 				inQuotes(instructionCount), NULL_VALUE, VALUE_NAME_INSTRUCTIONS);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String formatModifierPerMethod(MethodIdentifier methodIdentifier, String modifier) {
 		return String.format(SQL_INSERT_METHOD_INFO_IMPORT, getExecutionId().getShortId(), methodIdentifier.get(),
 				NULL_VALUE, inQuotes(modifier), VALUE_NAME_MODIFIER);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String formatInstructionsPerTestcase(MethodIdentifier testcaseIdentifier, int instructionCount) {
 		return String.format(SQL_INSERT_TESTCASE_INFO_IMPORT, getExecutionId().getShortId(), testcaseIdentifier.get(),
 				inQuotes(instructionCount), NULL_VALUE, VALUE_NAME_INSTRUCTIONS);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String formatAssertionsPerTestcase(MethodIdentifier testcaseIdentifier, int assertionCount) {
 		return String.format(SQL_INSERT_TESTCASE_INFO_IMPORT, getExecutionId().getShortId(), testcaseIdentifier.get(),
 				inQuotes(assertionCount), NULL_VALUE, VALUE_NAME_ASSERTIONS);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String formatCoveragePerMethod(MethodIdentifier methodIdentifier, ECoverageLevel coverageLevel,
+			int coverageValue, ECoverageValueType valueType) {
+		String valueName = getCoverageValueName(coverageLevel, valueType);
+
+		return String.format(SQL_INSERT_METHOD_INFO_IMPORT, getExecutionId().getShortId(), methodIdentifier.get(),
+				inQuotes(coverageValue), NULL_VALUE, valueName);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public ProjectCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel) {
+		return new ProjectCoverageSqlOutputBuilder(getExecutionId(), coverageLevel);
+	}
+
+	private String getCoverageValueName(ECoverageLevel coverageLevel, ECoverageValueType valueType) {
+		return coverageLevel.getValueName() + valueType.getPostFix();
 	}
 
 	private String inQuotes(Object value) {

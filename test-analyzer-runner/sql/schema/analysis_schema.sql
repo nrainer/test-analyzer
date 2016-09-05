@@ -11,9 +11,18 @@ CREATE TABLE Method_Info
 	methodId INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
-    instructions INT(8),
-    modifier VARCHAR(10),
     classificationId INT REFERENCES Method_Classification_Info(classificationId),
+    modifier VARCHAR(10),
+    bytecodeInstructionCount INT(8),
+    lineCount INT(6),
+    lineCovered INT(6),
+    instructionCount INT(6),
+    instructionCovered INT(6),
+    branchCount INT(6),
+    branchCovered INT(6),
+    lineCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN lineCovered IS NULL THEN NULL WHEN lineCount = 0 THEN 1.0 ELSE lineCount / lineCovered END) VIRTUAL,
+    instructionCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN instructionCovered IS NULL THEN NULL WHEN instructionCount = 0 THEN 1.0 ELSE instructionCount / instructionCovered END) VIRTUAL,
+    branchCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN branchCovered IS NULL THEN NULL WHEN branchCount = 0 THEN 1.0 ELSE branchCount / branchCovered END) VIRTUAL,
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL
 );
 

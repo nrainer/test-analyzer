@@ -192,6 +192,14 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		return new File(getSpecificFolderTestWorkingArea() + FOLDER_LOG + "TestAnalyzer.log");
 	}
 
+	protected File getFileInWorkingDirectory(String fileName) {
+		return new File(getSpecificFolderTestWorkingArea() + fileName);
+	}
+
+	protected File getFileInSpecificTestDataFolder(String fileName) {
+		return new File(getSpecificFolderTestData() + fileName);
+	}
+
 	protected List<String> getContent(File file) {
 		try {
 			return TextFileData.readFromFile(file.getPath());

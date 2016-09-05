@@ -376,6 +376,13 @@ INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueN
 INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.special.Java8Test.testMultiplyEight()', NULL, 'public', 'modifier');
 INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.special.Special.returnFiveForTestNotToExit()', NULL, 'public', 'modifier');
 INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.system.MathematicsTests.testFaculty2()', NULL, 'public', 'modifier');
+INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '6', NULL, 'cov_line_covered');
+INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '8', NULL, 'cov_line_all');
+INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '10', NULL, 'cov_instruction_covered');
+INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '14', NULL, 'cov_instruction_all');
+INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '0', NULL, 'cov_branch_covered');
+INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('TEST', 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)', '0', NULL, 'cov_branch_all');
+
 
 CALL Transfer('TEST');
 
@@ -385,10 +392,30 @@ SELECT COUNT(*) INTO @actualCount
 FROM Method_Info;
 CALL AssertEquals(18, @actualCount);
 
-SELECT instructions INTO @actualCount
+SELECT bytecodeInstructionCount INTO @actualCount
 FROM Method_Info
 WHERE method = 'de.tum.in.ma.simpleproject.core.Calculation.isPositive()';
 CALL AssertEquals(4, @actualCount);
+
+SELECT lineCoverage INTO @actualCount
+FROM Method_Info
+WHERE method = 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)';
+CALL AssertEquals(0.75, @actualCount);
+
+SELECT instructionCoverage INTO @actualCount
+FROM Method_Info
+WHERE method = 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)';
+CALL AssertEquals(0.7143, @actualCount);
+
+SELECT branchCoverage INTO @actualCount
+FROM Method_Info
+WHERE method = 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)';
+CALL AssertEquals(1.0, @actualCount);
+
+SELECT branchCount INTO @actualCount
+FROM Method_Info
+WHERE method = 'de.tum.in.ma.simpleproject.lite.CalculationLite.setResult(int)';
+CALL AssertEquals(0, @actualCount);
 
 SELECT COUNT(*) INTO @actualCount
 FROM RetValGen_Info;

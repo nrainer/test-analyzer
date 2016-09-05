@@ -4,6 +4,8 @@ import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentati
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
 
 /** Result presentation. */
 public interface IResultPresentationExtended extends IResultPresentation {
@@ -26,4 +28,9 @@ public interface IResultPresentationExtended extends IResultPresentation {
 	public String formatInstructionsPerTestcase(MethodIdentifier testcaseIdentifier, int instructionCount);
 
 	public String formatAssertionsPerTestcase(MethodIdentifier testcaseIdentifier, int assertionCount);
+
+	public String formatCoveragePerMethod(MethodIdentifier methodIdentifier, ECoverageLevel coverageLevel,
+			int coverageValue, ECoverageValueType valueType);
+
+	ProjectCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel);
 }

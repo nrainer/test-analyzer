@@ -77,8 +77,27 @@ public class DatabaseResultPresentation implements IResultPresentation {
 				StringUtility.join(configurationLines, CommonConstants.NEW_LINE));
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String formatExecutionSummary(String summary) {
 		return String.format(SQL_UPDATE_EXECUTION_INFORMATION_WITH_NOTES, summary, m_executionId.getShortId());
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String formatLineComment(String comment) {
+		return "-- " + comment;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getBlockCommentStart() {
+		return "/*";
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getBlockCommentEnd() {
+		return "*/";
 	}
 }
