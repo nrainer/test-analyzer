@@ -4,7 +4,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage;
 public enum ECoverageLevel {
 	/** Method level. */
 	METHOD("cov_method"),
-	/** Statement level. */
+	/** Line level. */
 	LINE("cov_line"),
 	/** Instruction level. */
 	INSTRUCTION("cov_instruction"),
