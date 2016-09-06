@@ -60,7 +60,7 @@ public class FileResultReceiverTest {
 		assertEquals(1, TextFileData.readFromFile(OUTPUT_FILE_NAME).size());
 	}
 
-	/** Remove the output file. */
+	/** Cleanup: remove the output file. */
 	private static void cleanup() {
 		File outputFile = new File(OUTPUT_FILE_NAME);
 
