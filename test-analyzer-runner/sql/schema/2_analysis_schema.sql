@@ -20,9 +20,9 @@ CREATE TABLE Method_Info
     instructionCovered INT(6),
     branchCount INT(6),
     branchCovered INT(6),
-    lineCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN lineCovered IS NULL THEN NULL WHEN lineCount = 0 THEN 1.0 ELSE lineCount / lineCovered END) VIRTUAL,
-    instructionCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN instructionCovered IS NULL THEN NULL WHEN instructionCount = 0 THEN 1.0 ELSE instructionCount / instructionCovered END) VIRTUAL,
-    branchCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN branchCovered IS NULL THEN NULL WHEN branchCount = 0 THEN 1.0 ELSE branchCount / branchCovered END) VIRTUAL,
+    lineCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN lineCovered IS NULL THEN NULL WHEN lineCount = 0 THEN 1.0 ELSE lineCovered / lineCount END) VIRTUAL,
+    instructionCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN instructionCovered IS NULL THEN NULL WHEN instructionCount = 0 THEN 1.0 ELSE instructionCovered / instructionCount END) VIRTUAL,
+    branchCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN branchCovered IS NULL THEN NULL WHEN branchCount = 0 THEN 1.0 ELSE branchCovered / branchCount END) VIRTUAL,
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL
 );
 
@@ -96,3 +96,8 @@ ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId
 ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, methodId, testcaseId, retValGenId);
 ALTER TABLE Method_Test_Abort_Info ADD CONSTRAINT uc_aly_mai_1 UNIQUE (execution, methodId, retValGenId);
 ALTER TABLE Method_Classification_Info ADD CONSTRAINT uc_aly_mci_1 UNIQUE (name);
+
+-- Note that CHECK clauses are ignored by MySQL.
+ALTER TABLE Method_Info ADD CONSTRAINT cstr_mi_1 CHECK (lineCoverage IS NULL OR (lineCoverage >= 0 AND lineCoverage <= 1));
+ALTER TABLE Method_Info ADD CONSTRAINT cstr_mi_2 CHECK (instructionCoverage IS NULL OR (instructionCoverage >= 0 AND instructionCoverage <= 1));
+ALTER TABLE Method_Info ADD CONSTRAINT cstr_mi_3 CHECK (branchCoverage IS NULL OR (branchCoverage >= 0 AND branchCoverage <= 1));
