@@ -21,7 +21,7 @@
           </entry>
           <entry>
             <string>Repository identifier</string>
-            <string>test-analyzer-git</string>
+            <string>test-analyzer-git2</string>
           </entry>
           <entry>
             <string>Included file names</string>
@@ -29,7 +29,7 @@
           </entry>
           <entry>
             <string>Excluded file names</string>
-            <string>**/package-info.java,**/test-analyzer-test-int-data/**,**/src/test/resources/**</string>
+            <string>**/package-info.java,**/test-analyzer-test-int-data/**,**/src/test/resources/**,**/test-analyzer-core/utilities/**</string>
           </entry>
           <entry>
             <string>Start revision</string>
