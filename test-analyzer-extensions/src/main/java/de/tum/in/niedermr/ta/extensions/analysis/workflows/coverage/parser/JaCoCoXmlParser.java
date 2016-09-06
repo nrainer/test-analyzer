@@ -4,6 +4,8 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -19,6 +21,9 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageVal
 /** Coverage parser for JaCoCo XML files. */
 public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 
+	/** Logger. */
+	private static final Logger LOG = LogManager.getLogger(JaCoCoXmlParser.class);
+
 	private static final String XML_SCHEMA_NAME = "report.dtd";
 
 	private static final String COUNTER_TYPE_METHOD = "METHOD";
@@ -33,8 +38,13 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 	/** {@inheritDoc} */
 	@Override
 	protected void parse(Document document) throws XPathExpressionException {
+		LOG.info("Begin parsing source folder information");
 		parseSourceFolderInformation(document);
+		LOG.info("Completed parsing source folder information");
+
+		LOG.info("Begin parsing method information");
 		parseMethodInformation(document);
+		LOG.info("Completed parsing method information");
 	}
 
 	private void parseSourceFolderInformation(Document document) throws XPathExpressionException {
@@ -86,10 +96,11 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 
 		String className = JavaUtility.toClassName(evaluateStringValue(classNode, classNameAttributeXPath));
 		NodeList methodNodes = evaluateNodeList(classNode, methodsOfClassXPath);
-
 		for (int i = 0; i < methodNodes.getLength(); i++) {
 			parseMethodNode(className, methodNodes.item(i));
 		}
+
+		LOG.info("Parsed coverage of methods of class: " + className);
 	}
 
 	private void parseMethodNode(String className, Node methodNode) throws XPathExpressionException {
