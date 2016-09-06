@@ -7,7 +7,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 
 public class TestcaseInheritanceHelper {
@@ -15,7 +14,7 @@ public class TestcaseInheritanceHelper {
 	private static final Logger LOGGER = LogManager.getLogger(TestcaseInheritanceHelper.class);
 
 	protected static void postProcessAllTestcases(Map<Class<?>, Set<String>> allTestcases,
-			Map<MethodIdentifier, Integer> collectedTestcaseStatistics) {
+			Map<TestcaseIdentifier, Integer> collectedTestcaseStatistics) {
 		for (Entry<Class<?>, Set<String>> entry : allTestcases.entrySet()) {
 			Class<?> originalClass = entry.getKey();
 			Set<String> testcaseSet = entry.getValue();
@@ -27,10 +26,10 @@ public class TestcaseInheritanceHelper {
 	}
 
 	private static void postProcessTestcase(Class<?> originalClass, String testcase,
-			Map<MethodIdentifier, Integer> collectedTestcaseStatistics) {
+			Map<TestcaseIdentifier, Integer> collectedTestcaseStatistics) {
 		TestcaseIdentifier testIdentifier = TestcaseIdentifier.create(originalClass, testcase);
 
-		if (!collectedTestcaseStatistics.containsKey(testIdentifier.toMethodIdentifier())) {
+		if (!collectedTestcaseStatistics.containsKey(testIdentifier)) {
 			try {
 				TestcaseInheritanceHelper.tryToFindTestcaseInSuperClass(collectedTestcaseStatistics, testIdentifier);
 			} catch (Exception ex) {
@@ -39,7 +38,7 @@ public class TestcaseInheritanceHelper {
 		}
 	}
 
-	private static void tryToFindTestcaseInSuperClass(Map<MethodIdentifier, Integer> testcaseStatistics,
+	private static void tryToFindTestcaseInSuperClass(Map<TestcaseIdentifier, Integer> testcaseStatistics,
 			TestcaseIdentifier testIdentifier) throws Exception {
 		Class<?> superClass = testIdentifier.resolveTestClass();
 
@@ -50,11 +49,10 @@ public class TestcaseInheritanceHelper {
 				break;
 			}
 
-			MethodIdentifier newIdentifier = TestcaseIdentifier.create(superClass, testIdentifier.getTestcaseName())
-					.toMethodIdentifier();
+			TestcaseIdentifier newIdentifier = TestcaseIdentifier.create(superClass, testIdentifier.getTestcaseName());
 
 			if (testcaseStatistics.containsKey(newIdentifier)) {
-				testcaseStatistics.put(testIdentifier.toMethodIdentifier(), testcaseStatistics.get(newIdentifier));
+				testcaseStatistics.put(testIdentifier, testcaseStatistics.get(newIdentifier));
 				break;
 			}
 		}

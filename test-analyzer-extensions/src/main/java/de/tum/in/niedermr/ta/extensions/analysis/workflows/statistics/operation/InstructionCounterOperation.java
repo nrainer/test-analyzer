@@ -7,15 +7,17 @@ import java.util.Map;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import de.tum.in.niedermr.ta.core.code.identifier.Identifier;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeAnalyzeOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.InstructionCounterStep.Mode;
 
-public class InstructionCounterOperation extends AbstractTestAwareCodeAnalyzeOperation {
-	private final Map<MethodIdentifier, Integer> m_result = new HashMap<>();
+public class InstructionCounterOperation<T extends Identifier> extends AbstractTestAwareCodeAnalyzeOperation {
+	private final Map<T, Integer> m_result = new HashMap<>();
 
 	private final Mode m_mode;
 
@@ -54,10 +56,24 @@ public class InstructionCounterOperation extends AbstractTestAwareCodeAnalyzeOpe
 			return;
 		}
 
-		m_result.put(MethodIdentifier.create(cn.name, methodNode), BytecodeUtility.countMethodInstructions(methodNode));
+		T identifier = createIdentifier(cn, methodNode);
+		m_result.put(identifier, BytecodeUtility.countMethodInstructions(methodNode));
 	}
 
-	public Map<MethodIdentifier, Integer> getResult() {
+	@SuppressWarnings("unchecked")
+	private T createIdentifier(ClassNode cn, MethodNode methodNode) {
+
+		switch (m_mode) {
+		case METHOD:
+			return (T) MethodIdentifier.create(cn.name, methodNode);
+		case TESTCASE:
+			return (T) TestcaseIdentifier.create(cn.name, methodNode.name);
+		default:
+			throw new IllegalArgumentException("Unexpected mode: " + m_mode);
+		}
+	}
+
+	public Map<T, Integer> getResult() {
 		return m_result;
 	}
 }

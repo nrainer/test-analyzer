@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps;
 import java.util.Map;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.SimplePersistResultStep;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
@@ -39,12 +40,12 @@ public class PersistResultStep extends SimplePersistResultStep {
 				m_resultPresentation.formatModifierPerMethod(entry.getKey(), entry.getValue())));
 	}
 
-	public void addResultInstructionsPerTestcase(Map<MethodIdentifier, Integer> codeInformation) {
+	public void addResultInstructionsPerTestcase(Map<TestcaseIdentifier, Integer> codeInformation) {
 		codeInformation.entrySet().forEach(entry -> appendToResult(
 				m_resultPresentation.formatInstructionsPerTestcase(entry.getKey(), entry.getValue())));
 	}
 
-	public void addResultAssertionsPerTestcase(Map<MethodIdentifier, Integer> codeInformation) {
+	public void addResultAssertionsPerTestcase(Map<TestcaseIdentifier, Integer> codeInformation) {
 		codeInformation.entrySet().forEach(entry -> appendToResult(
 				m_resultPresentation.formatAssertionsPerTestcase(entry.getKey(), entry.getValue())));
 	}

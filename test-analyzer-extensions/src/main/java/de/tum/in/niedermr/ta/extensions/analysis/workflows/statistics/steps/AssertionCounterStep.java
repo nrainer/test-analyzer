@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
@@ -32,7 +33,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 			"org.testng.asserts.Assertion", "org.apache.commons.math3.TestUtils", "ru.histone.utils.Assert",
 			"org.matheclipse.core.system.AbstractTestCase" };
 
-	private final Map<MethodIdentifier, Integer> m_assertionsPerTestcase;
+	private final Map<TestcaseIdentifier, Integer> m_assertionsPerTestcase;
 	private final Map<Class<?>, Set<String>> m_allTestcases;
 	private final AssertionInformation m_assertionInformation;
 
@@ -92,7 +93,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_assertionsPerTestcase);
 	}
 
-	private Map<MethodIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector,
+	private Map<TestcaseIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector,
 			boolean operateFaultTolerant) throws Throwable {
 		try {
 			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile, operateFaultTolerant);
@@ -117,7 +118,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		}
 	}
 
-	public Map<MethodIdentifier, Integer> getAssertionsPerTestcase() {
+	public Map<TestcaseIdentifier, Integer> getAssertionsPerTestcase() {
 		return m_assertionsPerTestcase;
 	}
 

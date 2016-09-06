@@ -20,10 +20,10 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 
 	/** {@inheritDoc} */
 	@Override
-	public String formatStackDistanceInfoEntry(TestcaseIdentifier testCaseIdentifier, MethodIdentifier methodUnderTest,
+	public String formatStackDistanceInfoEntry(TestcaseIdentifier testcaseIdentifier, MethodIdentifier methodUnderTest,
 			int minInvocationDistance, int maxInvocationDistance) {
 		return String.format(SQL_INSERT_STACK_INFO_IMPORT, getExecutionId().getShortId(),
-				testCaseIdentifier.toMethodIdentifier().get(), methodUnderTest.get(), minInvocationDistance,
+				testcaseIdentifier.toMethodIdentifier().get(), methodUnderTest.get(), minInvocationDistance,
 				maxInvocationDistance);
 	}
 
@@ -41,13 +41,13 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 
 	/** {@inheritDoc} */
 	@Override
-	public String formatInstructionsPerTestcase(MethodIdentifier testcaseIdentifier, int instructionCount) {
+	public String formatInstructionsPerTestcase(TestcaseIdentifier testcaseIdentifier, int instructionCount) {
 		return formatInsertIntoTestcaseInfo(testcaseIdentifier, VALUE_NAME_INSTRUCTIONS, instructionCount, null);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public String formatAssertionsPerTestcase(MethodIdentifier testcaseIdentifier, int assertionCount) {
+	public String formatAssertionsPerTestcase(TestcaseIdentifier testcaseIdentifier, int assertionCount) {
 		return formatInsertIntoTestcaseInfo(testcaseIdentifier, VALUE_NAME_ASSERTIONS, assertionCount, null);
 	}
 
@@ -59,13 +59,13 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 		return formatInsertIntoMethodInfo(methodIdentifier, valueName, coverageValue, null);
 	}
 
-	private String formatInsertIntoTestcaseInfo(MethodIdentifier testcaseIdentifier, String valueName, Integer intValue,
-			String stringValue) {
+	private String formatInsertIntoTestcaseInfo(TestcaseIdentifier testcaseIdentifier, String valueName,
+			Integer intValue, String stringValue) {
 		String valueColumnName = getValueColumnName(intValue, stringValue);
 		Object valueColumnContent = getValueColumnContent(intValue, stringValue);
 
 		return String.format(SQL_INSERT_TESTCASE_INFO_IMPORT, valueColumnName, getExecutionId().getShortId(),
-				testcaseIdentifier.get(), valueColumnContent, valueName);
+				testcaseIdentifier.toMethodIdentifier().get(), valueColumnContent, valueName);
 	}
 
 	private String formatInsertIntoMethodInfo(MethodIdentifier methodIdentifier, String valueName, Integer intValue,

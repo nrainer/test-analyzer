@@ -18,16 +18,16 @@ public interface IResultPresentationExtended extends IResultPresentation {
 	}
 
 	/** Format a stack distance information entry. */
-	public String formatStackDistanceInfoEntry(TestcaseIdentifier testCaseIdentifier, MethodIdentifier methodUnderTest,
+	public String formatStackDistanceInfoEntry(TestcaseIdentifier testcaseIdentifier, MethodIdentifier methodUnderTest,
 			int minInvocationDistance, int maxInvocationDistance);
 
 	public String formatInstructionsPerMethod(MethodIdentifier methodIdentifier, int instructionCount);
 
 	public String formatModifierPerMethod(MethodIdentifier methodIdentifier, String modifier);
 
-	public String formatInstructionsPerTestcase(MethodIdentifier testcaseIdentifier, int instructionCount);
+	public String formatInstructionsPerTestcase(TestcaseIdentifier testcaseIdentifier, int instructionCount);
 
-	public String formatAssertionsPerTestcase(MethodIdentifier testcaseIdentifier, int assertionCount);
+	public String formatAssertionsPerTestcase(TestcaseIdentifier testcaseIdentifier, int assertionCount);
 
 	public String formatCoveragePerMethod(MethodIdentifier methodIdentifier, ECoverageLevel coverageLevel,
 			int coverageValue, ECoverageValueType valueType);

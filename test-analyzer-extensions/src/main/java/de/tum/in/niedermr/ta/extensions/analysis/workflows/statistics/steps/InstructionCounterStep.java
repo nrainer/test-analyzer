@@ -9,7 +9,9 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.code.identifier.Identifier;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.InstructionCounterOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -22,7 +24,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 	private static final Logger LOGGER = LogManager.getLogger(InstructionCounterStep.class);
 
 	private final Map<MethodIdentifier, Integer> m_instructionsPerMethod;
-	private final Map<MethodIdentifier, Integer> m_instructionsPerTestcase;
+	private final Map<TestcaseIdentifier, Integer> m_instructionsPerTestcase;
 	private final Map<Class<?>, Set<String>> m_allTestcases;
 
 	public InstructionCounterStep() {
@@ -54,7 +56,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_instructionsPerTestcase);
 	}
 
-	private Map<MethodIdentifier, Integer> getCountInstructionsData(Configuration configuration, Mode mode,
+	private <T extends Identifier> Map<T, Integer> getCountInstructionsData(Configuration configuration, Mode mode,
 			ITestCollector testCollector, String inputJarFile) throws Throwable {
 		try {
 			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
@@ -65,7 +67,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 				this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
 			}
 
-			InstructionCounterOperation operation = new InstructionCounterOperation(
+			InstructionCounterOperation<T> operation = new InstructionCounterOperation<>(
 					testCollector.getTestClassDetector(), mode);
 
 			iterator.execute(operation);
@@ -91,7 +93,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 		return m_instructionsPerMethod;
 	}
 
-	public Map<MethodIdentifier, Integer> getInstructionsPerTestcase() {
+	public Map<TestcaseIdentifier, Integer> getInstructionsPerTestcase() {
 		return m_instructionsPerTestcase;
 	}
 
