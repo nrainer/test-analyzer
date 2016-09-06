@@ -10,15 +10,13 @@ import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultP
 public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentation
 		implements IResultPresentationExtended {
 
-	private static final String SQL_INSERT_STACK_INFO_IMPORT = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, maxStackDistance) VALUES ('%s', '%s', '%s', %s, %s);";
-	private static final String SQL_INSERT_METHOD_INFO_IMPORT = "INSERT INTO Method_Info_Import (execution, method, intValue, stringValue, valueName) VALUES ('%s', '%s', %s, %s, '%s');";
-	private static final String SQL_INSERT_TESTCASE_INFO_IMPORT = "INSERT INTO Testcase_Info_Import (execution, testcase, intValue, stringValue, valueName) VALUES ('%s', '%s', %s, %s, '%s');";
+	private static final String SQL_INSERT_STACK_INFO_IMPORT = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, maxStackDistance) VALUES ('%s', '%s', '%s', '%s', '%s');";
+	private static final String SQL_INSERT_METHOD_INFO_IMPORT = "INSERT INTO Method_Info_Import (execution, method, %s, valueName) VALUES ('%s', '%s', '%s', '%s');";
+	private static final String SQL_INSERT_TESTCASE_INFO_IMPORT = "INSERT INTO Testcase_Info_Import (execution, testcase, %s, valueName) VALUES ('%s', '%s', '%s', '%s');";
 
 	private static final String VALUE_NAME_INSTRUCTIONS = "instructions";
 	private static final String VALUE_NAME_MODIFIER = "modifier";
 	private static final String VALUE_NAME_ASSERTIONS = "assertions";
-
-	private static final String NULL_VALUE = "NULL";
 
 	/** {@inheritDoc} */
 	@Override
@@ -32,29 +30,25 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 	/** {@inheritDoc} */
 	@Override
 	public String formatInstructionsPerMethod(MethodIdentifier methodIdentifier, int instructionCount) {
-		return String.format(SQL_INSERT_METHOD_INFO_IMPORT, getExecutionId().getShortId(), methodIdentifier.get(),
-				inQuotes(instructionCount), NULL_VALUE, VALUE_NAME_INSTRUCTIONS);
+		return formatInsertIntoMethodInfo(methodIdentifier, VALUE_NAME_INSTRUCTIONS, instructionCount, null);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String formatModifierPerMethod(MethodIdentifier methodIdentifier, String modifier) {
-		return String.format(SQL_INSERT_METHOD_INFO_IMPORT, getExecutionId().getShortId(), methodIdentifier.get(),
-				NULL_VALUE, inQuotes(modifier), VALUE_NAME_MODIFIER);
+		return formatInsertIntoMethodInfo(methodIdentifier, VALUE_NAME_MODIFIER, null, modifier);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String formatInstructionsPerTestcase(MethodIdentifier testcaseIdentifier, int instructionCount) {
-		return String.format(SQL_INSERT_TESTCASE_INFO_IMPORT, getExecutionId().getShortId(), testcaseIdentifier.get(),
-				inQuotes(instructionCount), NULL_VALUE, VALUE_NAME_INSTRUCTIONS);
+		return formatInsertIntoTestcaseInfo(testcaseIdentifier, VALUE_NAME_INSTRUCTIONS, instructionCount, null);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String formatAssertionsPerTestcase(MethodIdentifier testcaseIdentifier, int assertionCount) {
-		return String.format(SQL_INSERT_TESTCASE_INFO_IMPORT, getExecutionId().getShortId(), testcaseIdentifier.get(),
-				inQuotes(assertionCount), NULL_VALUE, VALUE_NAME_ASSERTIONS);
+		return formatInsertIntoTestcaseInfo(testcaseIdentifier, VALUE_NAME_ASSERTIONS, assertionCount, null);
 	}
 
 	/** {@inheritDoc} */
@@ -62,9 +56,45 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 	public String formatCoveragePerMethod(MethodIdentifier methodIdentifier, ECoverageLevel coverageLevel,
 			int coverageValue, ECoverageValueType valueType) {
 		String valueName = getCoverageValueName(coverageLevel, valueType);
+		return formatInsertIntoMethodInfo(methodIdentifier, valueName, coverageValue, null);
+	}
 
-		return String.format(SQL_INSERT_METHOD_INFO_IMPORT, getExecutionId().getShortId(), methodIdentifier.get(),
-				inQuotes(coverageValue), NULL_VALUE, valueName);
+	private String formatInsertIntoTestcaseInfo(MethodIdentifier testcaseIdentifier, String valueName, Integer intValue,
+			String stringValue) {
+		String valueColumnName = getValueColumnName(intValue, stringValue);
+		Object valueColumnContent = getValueColumnContent(intValue, stringValue);
+
+		return String.format(SQL_INSERT_TESTCASE_INFO_IMPORT, valueColumnName, getExecutionId().getShortId(),
+				testcaseIdentifier.get(), valueColumnContent, valueName);
+	}
+
+	private String formatInsertIntoMethodInfo(MethodIdentifier methodIdentifier, String valueName, Integer intValue,
+			String stringValue) {
+		String valueColumnName = getValueColumnName(intValue, stringValue);
+		Object valueColumnContent = getValueColumnContent(intValue, stringValue);
+
+		return String.format(SQL_INSERT_METHOD_INFO_IMPORT, valueColumnName, getExecutionId().getShortId(),
+				methodIdentifier.get(), valueColumnContent, valueName);
+	}
+
+	private Object getValueColumnContent(Integer intValue, String stringValue) {
+		if (intValue != null) {
+			return intValue;
+		}
+
+		return stringValue;
+	}
+
+	private String getValueColumnName(Integer intValue, String stringValue) {
+		if (intValue != null && stringValue != null) {
+			throw new IllegalArgumentException("Only intValue or stringValue can be used.");
+		}
+
+		if (intValue != null) {
+			return "intValue";
+		} else {
+			return "stringValue";
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -75,9 +105,5 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 
 	private String getCoverageValueName(ECoverageLevel coverageLevel, ECoverageValueType valueType) {
 		return coverageLevel.getValueName() + valueType.getPostFix();
-	}
-
-	private String inQuotes(Object value) {
-		return "'" + value + "'";
 	}
 }
