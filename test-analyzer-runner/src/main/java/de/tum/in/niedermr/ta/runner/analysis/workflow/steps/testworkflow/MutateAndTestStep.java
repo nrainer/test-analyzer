@@ -32,7 +32,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class MutateAndTestStep extends AbstractExecutionStep {
-	static final Logger LOG = LogManager.getLogger(MutateAndTestStep.class);
+	static final Logger LOGGER = LogManager.getLogger(MutateAndTestStep.class);
 	private static final Logger LOG_TEST_SYS_ERR = LogManager.getLogger("TestSysErr");
 
 	protected static final int TIME_INTERVAL_ABORT_CHECK = 30;
@@ -54,9 +54,9 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
-		LOG.info("Using " + LoggingUtil.appendPluralS(configuration.getNumberOfThreads().getValue(), "thread", true)
+		LOGGER.info("Using " + LoggingUtil.appendPluralS(configuration.getNumberOfThreads().getValue(), "thread", true)
 				+ " for mutating and testing.");
-		LOG.info(LoggingUtil.appendPluralS(m_methodsToMutateAndTestsToRun, "method", true)
+		LOGGER.info(LoggingUtil.appendPluralS(m_methodsToMutateAndTestsToRun, "method", true)
 				+ " are candidates to be mutated (Filters have not been applied yet).");
 
 		loadReturnValueGenerators(configuration);
@@ -80,11 +80,11 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		}
 
 		if (m_aborted) {
-			LOG.warn("MANUALLY ABORTED.");
+			LOGGER.warn("MANUALLY ABORTED.");
 			throw new ExecutionException(createFullExecutionId(), "Aborted");
 		} else {
 			String summary = getSummary(countSuccessful, countSkipped, countTimeout, countError);
-			LOG.info("ALL THREADS FINISHED. " + summary);
+			LOGGER.info("ALL THREADS FINISHED. " + summary);
 			writeSummaryToFile(configuration, summary);
 		}
 	}
@@ -101,7 +101,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			TextFileData.appendToFile(getFileInWorkingArea(FILE_OUTPUT_EXECUTION_INFORMATION),
 					Arrays.asList(sqlStatement));
 		} catch (ReflectiveOperationException | IOException e) {
-			LOG.error("When writing the summary to the file", e);
+			LOGGER.error("When writing the summary to the file", e);
 		}
 	}
 
@@ -199,7 +199,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				m_countMethods++;
 			}
 
-			LOG.info("THREAD FINISHED: T_" + m_threadIndex + " ("
+			LOGGER.info("THREAD FINISHED: T_" + m_threadIndex + " ("
 					+ getSummary(m_countSuccessful, m_countSkipped, m_countTimeout, m_countError) + ")");
 		}
 
@@ -220,23 +220,23 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			try {
 				mutateAndTestInternal(fullExecutionId, returnValueGenerator);
 			} catch (TimeoutException ex) {
-				LOG.error("Mutate and test failed due to timeout (" + ex.getMessage() + "): "
+				LOGGER.error("Mutate and test failed due to timeout (" + ex.getMessage() + "): "
 						+ m_currentMethodUnderTest.get());
 				handleAbortedTestExecution(returnValueGenerator, TestAbortReason.TEST_TIMEOUT);
 				m_countTimeout++;
 			} catch (ProcessExecutionFailedException ex) {
-				LOG.error("Test execution did not complete: " + m_currentMethodUnderTest.get(), ex);
+				LOGGER.error("Test execution did not complete: " + m_currentMethodUnderTest.get(), ex);
 				handleAbortedTestExecution(returnValueGenerator, TestAbortReason.TEST_DIED);
 				m_countError++;
 			} catch (Exception ex) {
-				LOG.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
+				LOGGER.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
 				m_countError++;
 			}
 		}
 
 		private void mutateAndTestInternal(IFullExecutionId fullExecutionId, IReturnValueGenerator returnValueGenerator)
 				throws Exception {
-			LOG.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
+			LOGGER.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
 					+ returnValueGenerator.getClass().getName());
 
 			boolean wasSuccessfullyMutated = MethodMutation.createJarWithMutatedMethod(m_currentMethodUnderTest,
@@ -246,19 +246,19 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			if (wasSuccessfullyMutated) {
 				handleSuccessfullyMutatedMethod(fullExecutionId, returnValueGenerator);
 			} else {
-				LOG.info("Skipped: " + m_currentMethodUnderTest.get());
+				LOGGER.info("Skipped: " + m_currentMethodUnderTest.get());
 				m_countSkipped++;
 			}
 		}
 
 		protected void handleSuccessfullyMutatedMethod(IFullExecutionId fullExecutionId,
 				IReturnValueGenerator returnValueGenerator) throws IOException {
-			LOG.info("Mutated: " + m_currentMethodUnderTest.get());
+			LOGGER.info("Mutated: " + m_currentMethodUnderTest.get());
 
 			String fileWithTestsToRun = getWithIndex(EnvironmentConstants.FILE_TEMP_TESTS_TO_RUN_X, m_threadIndex);
 			TextFileData.writeToFile(getFileInWorkingArea(fileWithTestsToRun), testcasesToStringList());
 
-			LOG.info("Testing: " + m_currentMethodUnderTest.get() + " with "
+			LOGGER.info("Testing: " + m_currentMethodUnderTest.get() + " with "
 					+ LoggingUtil.appendPluralS(m_currentTestcases, "testcase", true) + ".");
 
 			runTestsAndRecordResult(fullExecutionId, fileWithTestsToRun,
@@ -280,7 +280,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				TextFileData.appendToFile(fileWithResults, Arrays.asList(testAbortInformation));
 
 			} catch (ReflectiveOperationException | IOException e) {
-				LOG.error("handleAbortedTestExecution", e);
+				LOGGER.error("handleAbortedTestExecution", e);
 			}
 		}
 

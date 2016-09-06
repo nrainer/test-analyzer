@@ -33,7 +33,8 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
  *
  */
 public class TestRun {
-	private static final Logger LOG = LogManager.getLogger(TestRun.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(TestRun.class);
 
 	/** Number of args. */
 	private static final int ARGS_COUNT = 7;
@@ -59,8 +60,8 @@ public class TestRun {
 
 		IFullExecutionId executionId = ExecutionIdFactory
 				.parseFullExecutionId(argsReader.getArgument(ARGS_EXECUTION_ID));
-		LOG.info(LoggingConstants.EXECUTION_ID_TEXT + executionId.get());
-		LOG.info(LoggingUtil.getInputArgumentsF1(argsReader));
+		LOGGER.info(LoggingConstants.EXECUTION_ID_TEXT + executionId.get());
+		LOGGER.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {
 			final String fileWithTestsToRun = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN);
@@ -81,7 +82,7 @@ public class TestRun {
 
 			System.exit(0);
 		} catch (Throwable t) {
-			LOG.error("Failed execution " + executionId.get(), t);
+			LOGGER.error("Failed execution " + executionId.get(), t);
 			throw new ExecutionException(executionId, t);
 		}
 	}
@@ -103,7 +104,7 @@ public class TestRun {
 					usedReturnValueGenerator));
 		}
 
-		LOG.info(executionId.get() + ": "
+		LOGGER.info(executionId.get() + ": "
 				+ LoggingUtil.singularOrPlural(allTestsToRun, "testcase was", "testcases were", true)
 				+ " run successfully.");
 

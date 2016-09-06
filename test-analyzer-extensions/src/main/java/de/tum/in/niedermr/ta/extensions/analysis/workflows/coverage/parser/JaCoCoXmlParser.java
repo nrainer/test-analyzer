@@ -23,7 +23,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageVal
 public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 
 	/** Logger. */
-	private static final Logger LOG = LogManager.getLogger(JaCoCoXmlParser.class);
+	private static final Logger LOGGER = LogManager.getLogger(JaCoCoXmlParser.class);
 
 	private static final String XML_SCHEMA_NAME = "report.dtd";
 
@@ -39,13 +39,13 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 	/** {@inheritDoc} */
 	@Override
 	protected void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException {
-		LOG.info("Begin parsing source folder information");
+		LOGGER.info("Begin parsing source folder information");
 		parseSourceFolderInformation(document, resultReceiver);
-		LOG.info("Completed parsing source folder information");
+		LOGGER.info("Completed parsing source folder information");
 
-		LOG.info("Begin parsing method information");
+		LOGGER.info("Begin parsing method information");
 		parseMethodInformation(document, resultReceiver);
-		LOG.info("Completed parsing method information");
+		LOGGER.info("Completed parsing method information");
 
 		resultReceiver.markResultAsComplete();
 	}
@@ -105,7 +105,7 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 			parseMethodNode(className, methodNodes.item(i), resultReceiver);
 		}
 
-		LOG.info("Parsed coverage of methods of class: " + className);
+		LOGGER.info("Parsed coverage of methods of class: " + className);
 	}
 
 	private void parseMethodNode(String className, Node methodNode, IResultReceiver resultReceiver)

@@ -13,7 +13,8 @@ import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class AbstractInstrumentation {
-	private static final Logger LOG = LogManager.getLogger(AbstractInstrumentation.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AbstractInstrumentation.class);
 
 	private final IExecutionId m_executionId;
 	private final boolean m_operateFaultTolerant;
@@ -40,11 +41,11 @@ public class AbstractInstrumentation {
 				jarWork.execute(operation);
 			}
 		} catch (NoClassDefFoundError ex) {
-			LOG.error("Incomplete classpath!");
-			LOG.error(ex);
+			LOGGER.error("Incomplete classpath!");
+			LOGGER.error(ex);
 			throw new ExecutionException(m_executionId, ex);
 		} catch (Throwable t) {
-			LOG.error(t);
+			LOGGER.error(t);
 			throw new ExecutionException(m_executionId, t);
 		}
 	}
@@ -70,7 +71,7 @@ public class AbstractInstrumentation {
 		protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
 			if (isOperateFaultTolerant()) {
 				getJarFileWriter().writeClassIntoJar(new JarFileElementRawData(m_originalClassPath, m_classBytes));
-				LOG.warn("Skipping bytecode instrumentation of " + JavaUtility.toClassName(className) + "! "
+				LOGGER.warn("Skipping bytecode instrumentation of " + JavaUtility.toClassName(className) + "! "
 						+ "Fault tolerant mode permits to continue after " + t.getClass().getName() + " with message '"
 						+ t.getMessage() + "'.");
 			} else {

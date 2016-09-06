@@ -6,7 +6,8 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class FaultTolerantJarModificationIterator extends JarModificationIterator {
-	private static final Logger LOG = LogManager.getLogger(FaultTolerantJarModificationIterator.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(FaultTolerantJarModificationIterator.class);
 
 	protected FaultTolerantJarModificationIterator(String inputJarPath, String outputJarPath) {
 		super(inputJarPath, outputJarPath);
@@ -14,13 +15,13 @@ public class FaultTolerantJarModificationIterator extends JarModificationIterato
 
 	@Override
 	protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
-		LOG.warn("Skipping " + JavaUtility.toClassName(className) + " in fault tolerant mode. " + t.getClass().getName()
-				+ " occurred with message '" + t.getMessage() + "'.");
+		LOGGER.warn("Skipping " + JavaUtility.toClassName(className) + " in fault tolerant mode. "
+				+ t.getClass().getName() + " occurred with message '" + t.getMessage() + "'.");
 	}
 
 	@Override
 	protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception {
-		LOG.warn("Skipping resource " + resourcePath + " in fault tolerant mode. " + t.getClass().getName()
+		LOGGER.warn("Skipping resource " + resourcePath + " in fault tolerant mode. " + t.getClass().getName()
 				+ " occurred with message '" + t.getMessage() + "'.");
 	}
 }

@@ -20,7 +20,8 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
  * Method filter that combines multiple {@link IMethodFilter}s.
  */
 public final class MethodFilterList implements IMethodFilter {
-	private static final Logger LOG = LogManager.getLogger(MethodFilterList.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(MethodFilterList.class);
 
 	private final List<IMethodFilter> m_filterList;
 
@@ -73,7 +74,7 @@ public final class MethodFilterList implements IMethodFilter {
 					return result;
 				}
 			} catch (Exception ex) {
-				LOG.error("Error when deciding whether to filter a method with filter: " + filter.getClass(), ex);
+				LOGGER.error("Error when deciding whether to filter a method with filter: " + filter.getClass(), ex);
 				return FilterResult.reject(filter.getClass(), "Exception occurred: " + ex.getMessage());
 			}
 		}

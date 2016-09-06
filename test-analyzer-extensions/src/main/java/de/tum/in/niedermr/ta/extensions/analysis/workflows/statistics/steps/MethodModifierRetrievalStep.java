@@ -18,7 +18,8 @@ import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 /** Collect the access modifier of methods. */
 public class MethodModifierRetrievalStep extends AbstractExecutionStep {
-	private static final Logger LOG = LogManager.getLogger(MethodModifierRetrievalStep.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(MethodModifierRetrievalStep.class);
 
 	/** The access modifier for each method. */
 	private final Map<MethodIdentifier, String> m_modifierPerMethod = new HashMap<>();
@@ -52,7 +53,7 @@ public class MethodModifierRetrievalStep extends AbstractExecutionStep {
 			return operation.getResult();
 		} catch (Throwable t) {
 			if (configuration.getOperateFaultTolerant().getValue()) {
-				LOG.error("Skipping whole jar file " + inputJarFile
+				LOGGER.error("Skipping whole jar file " + inputJarFile
 						+ " because of an error when operating in fault tolerant mode!", t);
 				return new HashMap<>();
 			}

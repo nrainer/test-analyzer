@@ -19,7 +19,8 @@ import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public abstract class AbstractInformationCollectionLogic {
-	private static final Logger LOG = LogManager.getLogger(AbstractInformationCollectionLogic.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AbstractInformationCollectionLogic.class);
 	private static final boolean LOG_FULL_STACKTRACE_OF_FAILED_UNMODIFIED_TESTS = false;
 
 	private final IFullExecutionId m_executionId;
@@ -66,7 +67,7 @@ public abstract class AbstractInformationCollectionLogic {
 
 		execTestClassesCollected(testClassesWithTestcases);
 
-		LOG.info("Starting to analyze "
+		LOGGER.info("Starting to analyze "
 				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
 				+ " with at least one testcase.");
 
@@ -75,7 +76,7 @@ public abstract class AbstractInformationCollectionLogic {
 		executeAllTestcases(testClassesWithTestcases);
 
 		if (testClassExcludes.length > 0) {
-			LOG.info("Skipped excluded test classes.");
+			LOGGER.info("Skipped excluded test classes.");
 		}
 
 		execAllTestsExecuted(testClassesWithTestcases);
@@ -123,7 +124,7 @@ public abstract class AbstractInformationCollectionLogic {
 			Class<?> testClass = entry.getKey();
 			Set<String> testcasesOfCurrentClass = entry.getValue();
 
-			LOG.info("Analyzing test class " + testClass.getName() + " with "
+			LOGGER.info("Analyzing test class " + testClass.getName() + " with "
 					+ LoggingUtil.appendPluralS(testcasesOfCurrentClass, "testcase", true) + ".");
 
 			for (String testcase : testcasesOfCurrentClass) {
@@ -136,9 +137,9 @@ public abstract class AbstractInformationCollectionLogic {
 		}
 
 		if (countUnmodifiedFailed > 0) {
-			LOG.info("Skipped " + countUnmodifiedFailed + " testcases which failed on the unmodified jar.");
+			LOGGER.info("Skipped " + countUnmodifiedFailed + " testcases which failed on the unmodified jar.");
 		} else {
-			LOG.info("No testcases failed on the unmodified jar.");
+			LOGGER.info("No testcases failed on the unmodified jar.");
 		}
 	}
 
@@ -173,11 +174,11 @@ public abstract class AbstractInformationCollectionLogic {
 	protected void execTestcaseExecutedWithFailure(TestcaseIdentifier testCaseIdentifier, ITestRunResult testResult) {
 		Throwable firstException = testResult.getFirstException();
 
-		LOG.warn("Testcase running on the unmodified jar failed! " + testCaseIdentifier.get() + " will be skipped! ("
+		LOGGER.warn("Testcase running on the unmodified jar failed! " + testCaseIdentifier.get() + " will be skipped! ("
 				+ firstException.getClass().getName() + ": " + firstException.getMessage() + ")");
 
 		if (LOG_FULL_STACKTRACE_OF_FAILED_UNMODIFIED_TESTS) {
-			LOG.warn("Stacktrace is", testResult.getFirstException());
+			LOGGER.warn("Stacktrace is", testResult.getFirstException());
 		}
 	}
 

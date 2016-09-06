@@ -15,7 +15,8 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 public abstract class AbstractExecutionStep implements IExecutionStep, EnvironmentConstants {
-	private static final Logger LOG = LogManager.getLogger(AbstractExecutionStep.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AbstractExecutionStep.class);
 
 	private boolean m_initialized;
 
@@ -51,14 +52,14 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		}
 
 		try {
-			LOG.info("START: " + getDescription());
+			LOGGER.info("START: " + getDescription());
 
 			long startTime = System.currentTimeMillis();
 			runInternal(m_configuration, m_processExecution);
 			long duration = CommonUtility.getDuration(startTime);
 
-			LOG.info("COMPLETED: " + getDescription());
-			LOG.info("DURATION: " + duration + " seconds.");
+			LOGGER.info("COMPLETED: " + getDescription());
+			LOGGER.info("DURATION: " + duration + " seconds.");
 		} catch (ExecutionException ex) {
 			throw ex;
 		} catch (Throwable t) {

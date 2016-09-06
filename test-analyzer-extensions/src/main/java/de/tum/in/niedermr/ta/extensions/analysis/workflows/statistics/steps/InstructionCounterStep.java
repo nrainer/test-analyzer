@@ -18,7 +18,8 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class InstructionCounterStep extends AbstractExecutionStep {
-	private static final Logger LOG = LogManager.getLogger(InstructionCounterStep.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(InstructionCounterStep.class);
 
 	private final Map<MethodIdentifier, Integer> m_instructionsPerMethod;
 	private final Map<MethodIdentifier, Integer> m_instructionsPerTestcase;
@@ -72,7 +73,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 			return operation.getResult();
 		} catch (Throwable t) {
 			if (configuration.getOperateFaultTolerant().getValue()) {
-				LOG.error("Skipping whole jar file " + inputJarFile
+				LOGGER.error("Skipping whole jar file " + inputJarFile
 						+ " because of an error when operating in fault tolerant mode!", t);
 				return new HashMap<>();
 			} else {

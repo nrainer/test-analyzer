@@ -21,7 +21,8 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class AssertionCounterStep extends AbstractExecutionStep {
-	private static final Logger LOG = LogManager.getLogger(AssertionCounterStep.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AssertionCounterStep.class);
 
 	private static final String PREFIX_UNREGISTERED_ASSERT_METHODS_1 = "assert";
 	private static final String PREFIX_UNREGISTERED_ASSERT_METHODS_2 = "check";
@@ -70,7 +71,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 
 				result.add(cls);
 
-				LOG.info("Further assertion class " + className + " is available and will be used.");
+				LOGGER.info("Further assertion class " + className + " is available and will be used.");
 			} catch (ClassNotFoundException ex) {
 				continue;
 			}
@@ -107,7 +108,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 			return operation.getAssertionsPerTestcase();
 		} catch (Throwable t) {
 			if (operateFaultTolerant) {
-				LOG.error("Skipping whole jar file " + inputJarFile
+				LOGGER.error("Skipping whole jar file " + inputJarFile
 						+ " because of an error when operating in fault tolerant mode!", t);
 				return new HashMap<>();
 			} else {

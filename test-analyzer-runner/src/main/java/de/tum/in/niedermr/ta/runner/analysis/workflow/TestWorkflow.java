@@ -24,7 +24,8 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
 public class TestWorkflow extends AbstractWorkflow {
-	private static final Logger LOG = LogManager.getLogger(TestWorkflow.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(TestWorkflow.class);
 
 	protected PrepareWorkingFolderStep m_prepareWorkingFolderStep;
 	protected InstrumentationStep m_instrumentationStep;
@@ -51,7 +52,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		if (configuration.getExecuteCollectInformation().isTrue()) {
 			testInformation = collectInformation();
 		} else {
-			LOG.info("Skipping steps to collect information");
+			LOGGER.info("Skipping steps to collect information");
 
 			testInformation = loadExistingTestInformation(context, configuration);
 		}
@@ -59,7 +60,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		if (configuration.getExecuteMutateAndTest().isTrue()) {
 			executeMutateAndTest(testInformation);
 		} else {
-			LOG.info("Skipping the steps to mutate and test methods");
+			LOGGER.info("Skipping the steps to mutate and test methods");
 		}
 
 		afterExecution();
@@ -113,7 +114,7 @@ public class TestWorkflow extends AbstractWorkflow {
 					.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, workingFolder));
 			testInformation.addAll(CollectedInformation.parseInformationCollectorData(data));
 		} catch (IOException ex) {
-			LOG.fatal("When loading existing collected-information", ex);
+			LOGGER.fatal("When loading existing collected-information", ex);
 		}
 
 		return testInformation;

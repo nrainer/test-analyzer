@@ -41,7 +41,8 @@ import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
  *
  */
 public class ConfigurationLoader implements FileSystemConstants {
-	private static final Logger LOG = LogManager.getLogger(ConfigurationLoader.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(ConfigurationLoader.class);
 
 	private static boolean s_fastFail = false;
 
@@ -106,7 +107,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 	}
 
 	private void loadFromArgs(String[] args) throws ConfigurationException {
-		LOG.info("Configuration from args");
+		LOGGER.info("Configuration from args");
 
 		ProgramArgsReader argsReader = new ProgramArgsReader(AnalyzerRunnerInternal.class, args);
 		int i = 0;
@@ -138,7 +139,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 	}
 
 	private void loadFromConsole(Scanner scanner) throws ConfigurationException {
-		LOG.info("Configuration from console");
+		LOGGER.info("Configuration from console");
 
 		for (IConfigurationProperty<?> property : m_configuration.getAllPropertiesOrdered()) {
 			writeToConsole(property.getDescription());
@@ -148,7 +149,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 	}
 
 	private void loadFromFile(String fileName) throws IOException, ConfigurationException {
-		LOG.info("Configuration from file ('" + fileName + "' in '" + this.m_rootPath + "')");
+		LOGGER.info("Configuration from file ('" + fileName + "' in '" + this.m_rootPath + "')");
 
 		String pathToConfiguration;
 
@@ -167,7 +168,8 @@ public class ConfigurationLoader implements FileSystemConstants {
 		try {
 			ConfigurationParser.parseFromFile(pathToConfiguration, m_configuration);
 		} catch (FileNotFoundException ex) {
-			LOG.info("Assumed absolute path to configuration file: " + new File(pathToConfiguration).getAbsolutePath());
+			LOGGER.info(
+					"Assumed absolute path to configuration file: " + new File(pathToConfiguration).getAbsolutePath());
 			throw ex;
 		}
 	}

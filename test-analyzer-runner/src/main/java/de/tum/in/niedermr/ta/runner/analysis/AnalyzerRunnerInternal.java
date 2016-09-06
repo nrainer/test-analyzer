@@ -36,7 +36,8 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
  * Further dependencies: jars to be processed and dependencies
  */
 public class AnalyzerRunnerInternal {
-	private static final Logger LOG = LogManager.getLogger(AnalyzerRunnerInternal.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AnalyzerRunnerInternal.class);
 
 	/** Number of args. */
 	private static final int ARGS_COUNT = 3;
@@ -62,13 +63,13 @@ public class AnalyzerRunnerInternal {
 				RELATIVE_WORKING_FOLDER);
 
 		try {
-			LOG.info("TEST ANALYZER START");
-			LOG.info("Classpath: " + ClasspathUtility.getCurrentClasspath());
+			LOGGER.info("TEST ANALYZER START");
+			LOGGER.info("Classpath: " + ClasspathUtility.getCurrentClasspath());
 
 			Configuration configuration = loadAndValidateTheConfiguration(configurationFileToUse);
 
-			LOG.info("Configuration is valid.");
-			LOG.info("Configuration is:" + CommonConstants.NEW_LINE + configuration.toMultiLineString());
+			LOGGER.info("Configuration is valid.");
+			LOGGER.info("Configuration is:" + CommonConstants.NEW_LINE + configuration.toMultiLineString());
 
 			prepareWorkingDirectory(executionId, configuration, programPath);
 			// must be done before starting the workflows because the steps may append information to the file
@@ -80,10 +81,10 @@ public class AnalyzerRunnerInternal {
 				executeWorkflow(executionId, programPath, configuration, workFlow);
 			}
 
-			LOG.info("TEST ANALYZER END");
+			LOGGER.info("TEST ANALYZER END");
 		} catch (Throwable t) {
 			t.printStackTrace();
-			LOG.fatal("Execution failed", t);
+			LOGGER.fatal("Execution failed", t);
 			throw new ExecutionException(executionId, AnalyzerRunnerInternal.class.getName() + " was not successful.");
 		}
 	}
@@ -113,15 +114,15 @@ public class AnalyzerRunnerInternal {
 	/** Execute the given workflow. */
 	private static void executeWorkflow(IExecutionId executionId, String programPath, Configuration configuration,
 			IWorkflow workFlow) {
-		LOG.info("WORKFLOW " + workFlow.getName() + " START (" + new Date() + ")");
+		LOGGER.info("WORKFLOW " + workFlow.getName() + " START (" + new Date() + ")");
 		long startTime = System.currentTimeMillis();
 
 		IWorkflow workflow = initializeWorkflow(executionId, workFlow, configuration, programPath);
 		workflow.start();
 
-		LOG.info("Workflow execution id was: '" + executionId.get() + "'");
-		LOG.info("Workflow duration was: " + CommonUtility.getDuration(startTime) + " seconds");
-		LOG.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
+		LOGGER.info("Workflow execution id was: '" + executionId.get() + "'");
+		LOGGER.info("Workflow duration was: " + CommonUtility.getDuration(startTime) + " seconds");
+		LOGGER.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
 	}
 
 	public static ProgramArgsWriter createProgramArgsWriter() {
@@ -137,7 +138,7 @@ public class AnalyzerRunnerInternal {
 		configuration.validateAndAdjust();
 
 		if (!configuration.getClasspath().getValue().equals(classpathBefore)) {
-			LOG.warn("Fixed the classpath of the configuration: removed elements of "
+			LOGGER.warn("Fixed the classpath of the configuration: removed elements of "
 					+ configuration.getCodePathToMutate().getName() + " from " + configuration.getClasspath().getName()
 					+ "!");
 		}

@@ -32,14 +32,14 @@ abstract class AbortCheckerThread extends Thread {
 				sleepUntilNextCheck();
 
 				if (isToBeAborted()) {
-					MutateAndTestStep.LOG.info("Abort signal received!");
+					MutateAndTestStep.LOGGER.info("Abort signal received!");
 					execAbort();
-					MutateAndTestStep.LOG.info("Abort signal forwarded.");
+					MutateAndTestStep.LOGGER.info("Abort signal forwarded.");
 					return;
 				}
 			}
 		} catch (Throwable t) {
-			MutateAndTestStep.LOG
+			MutateAndTestStep.LOGGER
 					.warn(AbortCheckerThread.class.getSimpleName() + " is inactive because of thrown exception!", t);
 		}
 	}

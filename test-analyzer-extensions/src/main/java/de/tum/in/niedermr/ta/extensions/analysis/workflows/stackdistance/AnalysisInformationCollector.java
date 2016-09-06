@@ -30,7 +30,8 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
  * 
  */
 public class AnalysisInformationCollector {
-	private static final Logger LOG = LogManager.getLogger(AnalysisInformationCollector.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AnalysisInformationCollector.class);
 
 	/** Number of args. */
 	private static final int ARGS_COUNT = 8;
@@ -69,8 +70,8 @@ public class AnalysisInformationCollector {
 	private static void main(ProgramArgsReader argsReader, IFullExecutionId executionId,
 			AnalysisInformationCollectionLogic analysisInformationCollectionLogic) {
 
-		LOG.info(LoggingConstants.EXECUTION_ID_TEXT + executionId.get());
-		LOG.info(LoggingUtil.getInputArgumentsF1(argsReader));
+		LOGGER.info(LoggingConstants.EXECUTION_ID_TEXT + executionId.get());
+		LOGGER.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {
 			final String[] jarsWithTests = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN)
@@ -96,7 +97,7 @@ public class AnalysisInformationCollector {
 
 			System.exit(0);
 		} catch (Throwable t) {
-			LOG.error(t);
+			LOGGER.error(t);
 			throw new ExecutionException(executionId, t);
 		}
 	}

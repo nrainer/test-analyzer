@@ -18,7 +18,8 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLo
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
 public class AnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
-	private static final Logger LOG = LogManager.getLogger(AnalysisInformationCollectionLogic.class);
+	/** Logger. */
+private static final Logger LOGGER = LogManager.getLogger(AnalysisInformationCollectionLogic.class);
 
 	private final List<String> m_result;
 	private final IResultPresentationExtended m_resultPresentation;
@@ -57,7 +58,7 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 		try {
 			writeResultsToFile();
 		} catch (IOException ex) {
-			LOG.error("when writing results to file", ex);
+			LOGGER.error("when writing results to file", ex);
 		}
 	}
 

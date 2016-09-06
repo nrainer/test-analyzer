@@ -21,7 +21,8 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
 
 public class ProcessExecution {
 
-	private static final Logger LOG = LogManager.getLogger(ProcessExecution.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(ProcessExecution.class);
 
 	private static final String WRAPPED_EMPTY_PATTERN = "!EMPTY!";
 	private static final boolean PRINT_SYS_ERR_TO_CONSOLE = true;
@@ -73,7 +74,7 @@ public class ProcessExecution {
 		ProcessBuilder processBuilder = new ProcessBuilder(command);
 		processBuilder.directory(new File(m_directory));
 
-		LOG.info("EXECUTING PROCESS: '" + executionId.get() + "' " + command.toString());
+		LOGGER.info("EXECUTING PROCESS: '" + executionId.get() + "' " + command.toString());
 
 		ExecutionResult result = ProcessUtils.execute(processBuilder, null, timeout);
 

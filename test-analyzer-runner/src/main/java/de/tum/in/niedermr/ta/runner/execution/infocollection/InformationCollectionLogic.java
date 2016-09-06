@@ -20,7 +20,8 @@ import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class InformationCollectionLogic extends AbstractInformationCollectionLogic {
-	private static final Logger LOG = LogManager.getLogger(InformationCollectionLogic.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(InformationCollectionLogic.class);
 
 	protected final Map<MethodIdentifier, TestInformation> m_methodInformation;
 
@@ -60,9 +61,9 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 	protected void execAllTestsExecuted(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		Collection<TestInformation> result = m_methodInformation.values();
 
-		LOG.info("Collected " + LoggingUtil.appendPluralS(result, "method", true)
+		LOGGER.info("Collected " + LoggingUtil.appendPluralS(result, "method", true)
 				+ " which are directly or indirectly invoked by testcases.");
-		LOG.info("Collected " + LoggingUtil.appendPluralS(countTestcases(result), "successful testcase", true)
+		LOGGER.info("Collected " + LoggingUtil.appendPluralS(countTestcases(result), "successful testcase", true)
 				+ " from "
 				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
 				+ ".");
@@ -70,7 +71,7 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 		try {
 			writeResultToFiles(result);
 		} catch (IOException ex) {
-			LOG.error("When writing data to file", ex);
+			LOGGER.error("When writing data to file", ex);
 		}
 	}
 

@@ -16,7 +16,8 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 
 public class ConfigurationParser extends AbstractConfigurationParser {
 
-	private static final Logger LOG = LogManager.getLogger(ConfigurationParser.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(ConfigurationParser.class);
 
 	private IConfigurationMigration m_configurationMigration = null;
 
@@ -61,7 +62,7 @@ public class ConfigurationParser extends AbstractConfigurationParser {
 	@Override
 	protected void execConfigurationVersionLoaded(Integer version) {
 		if (version == null) {
-			LOG.warn(ConfigurationVersionProperty.NAME + " specified with null value.");
+			LOGGER.warn(ConfigurationVersionProperty.NAME + " specified with null value.");
 			m_configurationMigration = null;
 		} else if (version == 1) {
 			m_configurationMigration = new ChainedConfigurationMigration(new ConfigurationMigrationFromV1(),

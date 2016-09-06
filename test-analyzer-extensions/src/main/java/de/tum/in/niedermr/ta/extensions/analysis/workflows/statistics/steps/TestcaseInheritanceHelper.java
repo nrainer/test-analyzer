@@ -11,7 +11,8 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 
 public class TestcaseInheritanceHelper {
-	private static final Logger LOG = LogManager.getLogger(TestcaseInheritanceHelper.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(TestcaseInheritanceHelper.class);
 
 	protected static void postProcessAllTestcases(Map<Class<?>, Set<String>> allTestcases,
 			Map<MethodIdentifier, Integer> collectedTestcaseStatistics) {
@@ -33,7 +34,7 @@ public class TestcaseInheritanceHelper {
 			try {
 				TestcaseInheritanceHelper.tryToFindTestcaseInSuperClass(collectedTestcaseStatistics, testIdentifier);
 			} catch (Exception ex) {
-				LOG.error("Error when trying to find testcase in super class: ", ex);
+				LOGGER.error("Error when trying to find testcase in super class: ", ex);
 			}
 		}
 	}

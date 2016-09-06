@@ -21,7 +21,8 @@ import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionP
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 abstract class AbstractConfigurationParser {
-	private static final Logger LOG = LogManager.getLogger(AbstractConfigurationParser.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AbstractConfigurationParser.class);
 
 	private AbstractConfiguration m_configuration;
 	private ConfigurationPropertyMap m_propertyMap;
@@ -73,7 +74,7 @@ abstract class AbstractConfigurationParser {
 		if (ConfigurationLoader.isFastFail()) {
 			throw new ConfigurationException("Invalid line: " + line);
 		} else {
-			LOG.warn("Skipping invalid log file line: " + line);
+			LOGGER.warn("Skipping invalid log file line: " + line);
 		}
 	}
 
@@ -193,7 +194,7 @@ abstract class AbstractConfigurationParser {
 			if (ConfigurationLoader.isFastFail()) {
 				throw new ConfigurationException(property, msg);
 			} else {
-				LOG.warn(msg);
+				LOGGER.warn(msg);
 			}
 		}
 	}
@@ -211,7 +212,7 @@ abstract class AbstractConfigurationParser {
 
 			parse(pathToInheritedConfiguration);
 
-			LOG.info("Configuration '" + currentConfigurationFile.getName() + "' inherits '"
+			LOGGER.info("Configuration '" + currentConfigurationFile.getName() + "' inherits '"
 					+ pathToInheritedConfiguration + "'");
 		} catch (ConfigurationException ex) {
 			throw new ConfigurationException("Error in inherited configuration");

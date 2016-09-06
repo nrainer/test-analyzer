@@ -20,7 +20,8 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class AssertionInformation {
-	private static final Logger LOG = LogManager.getLogger(AssertionInformation.class);
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AssertionInformation.class);
 
 	@SuppressWarnings("deprecation")
 	private static final Class<?>[] CORE_ASSERTION_CLASSES = new Class<?>[] { org.junit.Assert.class,
@@ -62,7 +63,7 @@ public class AssertionInformation {
 				}
 			}
 		} catch (IOException ex) {
-			LOG.error("IOException", ex);
+			LOGGER.error("IOException", ex);
 		}
 	}
 
