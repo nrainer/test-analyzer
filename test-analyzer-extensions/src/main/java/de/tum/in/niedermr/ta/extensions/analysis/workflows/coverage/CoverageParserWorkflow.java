@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage;
 
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps.CoverageParserStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
@@ -31,14 +32,17 @@ public class CoverageParserWorkflow extends AbstractWorkflow {
 		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
 		prepareStep.start();
 
+		InMemoryResultReceiver coverageResultReceiver = new InMemoryResultReceiver();
+
 		CoverageParserStep parseCoverageStep = createAndInitializeExecutionStep(CoverageParserStep.class);
 		String coverageFileName = configuration.getExtension().getStringValue(COVERAGE_FILE,
 				DEFAULT_COVERAGE_FILE_NAME);
 		parseCoverageStep.setCoverageFileName(coverageFileName);
+		parseCoverageStep.setCoverageResultReceiver(coverageResultReceiver);
 		parseCoverageStep.start();
 
 		SimplePersistResultStep persistStep = createAndInitializeExecutionStep(SimplePersistResultStep.class);
-		persistStep.setResult(parseCoverageStep.getResult());
+		persistStep.setResult(coverageResultReceiver.getResult());
 		persistStep.setResultFileName(RESULT_FILE_NAME);
 		persistStep.start();
 	}

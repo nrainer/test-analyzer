@@ -1,8 +1,9 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps;
 
 import java.io.File;
-import java.util.List;
+import java.util.Objects;
 
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.ICoverageParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoXmlParser;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -13,11 +14,10 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 /** Step to parse coverage files. */
 public class CoverageParserStep extends AbstractExecutionStep {
 
-	/** Result. */
-	private List<String> m_result;
-
 	/** File to be parsed. */
 	private String m_coverageFileName;
+
+	private IResultReceiver m_coverageResultReceiver;
 
 	/** {@inheritDoc} */
 	@Override
@@ -28,10 +28,13 @@ public class CoverageParserStep extends AbstractExecutionStep {
 	/** {@inheritDoc} */
 	@Override
 	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
+		Objects.requireNonNull(m_coverageFileName);
+		Objects.requireNonNull(m_coverageResultReceiver);
+
 		ICoverageParser coverageParser = new JaCoCoXmlParser(getExecutionId());
 		coverageParser.initialize();
-		coverageParser.parse(new File(m_coverageFileName));
-		m_result = coverageParser.getResult();
+		coverageParser.parse(new File(m_coverageFileName), m_coverageResultReceiver);
+		m_coverageResultReceiver.markResultAsComplete();
 	}
 
 	public void setCoverageFileName(String coverageFileName) {
@@ -42,8 +45,8 @@ public class CoverageParserStep extends AbstractExecutionStep {
 		}
 	}
 
-	public List<String> getResult() {
-		return m_result;
+	public void setCoverageResultReceiver(IResultReceiver coverageResultReceiver) {
+		m_coverageResultReceiver = coverageResultReceiver;
 	}
 
 	/** {@inheritDoc} */

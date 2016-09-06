@@ -1,9 +1,10 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
 
 import java.io.File;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
+
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 
 /** Coverage info parser. */
 public interface ICoverageParser {
@@ -12,11 +13,5 @@ public interface ICoverageParser {
 	void initialize() throws ParserConfigurationException;
 
 	/** Parse a file. */
-	void parse(File inputFile) throws Exception;
-
-	/** Get the result. */
-	List<String> getResult();
-
-	/** Reset the result. */
-	void resetResult();
+	void parse(File inputFile, IResultReceiver resultReceiver) throws Exception;
 }

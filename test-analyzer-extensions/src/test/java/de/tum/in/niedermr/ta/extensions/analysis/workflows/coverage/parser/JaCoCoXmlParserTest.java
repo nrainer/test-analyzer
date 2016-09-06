@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
@@ -20,10 +21,11 @@ public class JaCoCoXmlParserTest {
 		jaCoCoXmlParser.initialize();
 
 		File coverageXmlInputFile = new File(TestUtility.getTestFolder(getClass()) + "coverage.xml");
+		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 
-		jaCoCoXmlParser.parse(coverageXmlInputFile);
+		jaCoCoXmlParser.parse(coverageXmlInputFile, resultReceiver);
 		List<String> expectedOutput = TextFileData
 				.readFromFile(TestUtility.getTestFolder(getClass()) + "expected.sql.txt");
-		assertEquals(expectedOutput, jaCoCoXmlParser.getResult());
+		assertEquals(expectedOutput, resultReceiver.getResult());
 	}
 }

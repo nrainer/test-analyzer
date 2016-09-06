@@ -3,8 +3,6 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,23 +17,22 @@ import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
 
 /** Abstract XML coverage parser. */
 public abstract class AbstractXmlCoverageParser implements ICoverageParser {
 
-	private final IResultPresentationExtended m_resultPresentation;
 	private final String m_xmlSchemaName;
-	private final List<String> m_result;
+	private final IResultPresentationExtended m_resultPresentation;
 	private DocumentBuilder m_documentBuilder;
 	private XPath m_xPath;
 
 	/** Constructor. */
-	public AbstractXmlCoverageParser(IExecutionId executionId, String xmlSchemaName) {
-		m_resultPresentation = IResultPresentationExtended.create(executionId);
+	public AbstractXmlCoverageParser(String xmlSchemaName, IExecutionId executionId) {
 		m_xmlSchemaName = xmlSchemaName;
-		m_result = new ArrayList<>();
+		m_resultPresentation = IResultPresentationExtended.create(executionId);
 	}
 
 	/** {@inheritDoc} */
@@ -50,32 +47,12 @@ public abstract class AbstractXmlCoverageParser implements ICoverageParser {
 
 	/** {@inheritDoc} */
 	@Override
-	public void parse(File inputFile) throws Exception {
+	public void parse(File inputFile, IResultReceiver resultReceiver) throws Exception {
 		Document document = m_documentBuilder.parse(inputFile);
-		parse(document);
+		parse(document, resultReceiver);
 	}
 
-	protected abstract void parse(Document document) throws XPathExpressionException;
-
-	/** {@inheritDoc} */
-	@Override
-	public List<String> getResult() {
-		return m_result;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void resetResult() {
-		m_result.clear();
-	}
-
-	protected void appendToResult(String line) {
-		m_result.add(line);
-	}
-
-	protected void appendToResult(List<String> lines) {
-		m_result.addAll(lines);
-	}
+	protected abstract void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException;
 
 	protected XPathExpression compileXPath(String expression) throws XPathExpressionException {
 		return m_xPath.compile(expression);
