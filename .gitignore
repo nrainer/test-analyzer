@@ -4,6 +4,8 @@
 *.classpath
 /target/
 **/target/
+**/bin/
+**/.settings/
 **/lib/archive/
 **/info/archive/
 /RemoveTestAssertions/
