@@ -28,6 +28,8 @@ import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
+import de.tum.in.niedermr.ta.runner.factory.FactoryUtil;
+import de.tum.in.niedermr.ta.runner.factory.IFactory;
 import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
@@ -72,7 +74,8 @@ public class AnalyzerRunnerInternal {
 			LOGGER.info("Configuration is:" + CommonConstants.NEW_LINE + configuration.toMultiLineString());
 
 			prepareWorkingDirectory(executionId, configuration, programPath);
-			// must be done before starting the workflows because the steps may append information to the file
+			// must be done before starting the workflows because the steps may
+			// append information to the file
 			writeExecutionInformationFile(executionId, configuration);
 
 			IWorkflow[] testWorkflows = configuration.getTestWorkflows().createInstances();
@@ -163,6 +166,7 @@ public class AnalyzerRunnerInternal {
 	/** Create the execution context for a workflow. */
 	private static ExecutionContext createExecutionContext(IExecutionId executionId, Configuration configuration,
 			String programPath) {
-		return new ExecutionContext(executionId, configuration, programPath, RELATIVE_WORKING_FOLDER);
+		IFactory factory = FactoryUtil.createFactory(configuration);
+		return factory.createNewExecutionContext(executionId, configuration, programPath, RELATIVE_WORKING_FOLDER);
 	}
 }

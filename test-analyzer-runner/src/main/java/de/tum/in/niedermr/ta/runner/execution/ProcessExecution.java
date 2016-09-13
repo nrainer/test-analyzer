@@ -18,8 +18,10 @@ import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ProcessExecutionFailedException;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.TimeoutException;
+import de.tum.in.niedermr.ta.runner.factory.IFactory;
+import de.tum.in.niedermr.ta.runner.factory.IRequiresFactoryCreation;
 
-public class ProcessExecution {
+public class ProcessExecution implements IRequiresFactoryCreation {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(ProcessExecution.class);
@@ -36,14 +38,16 @@ public class ProcessExecution {
 	private final String m_workingFolderForClasspath;
 
 	/**
-	 * Constructor.
+	 * Constructor for {@link IFactory}.
 	 * 
 	 * @param executionDirectory
 	 *            directory to execute the process
 	 * @param programFolderForClasspath
-	 *            path to the folder TestAnalyzer (from the current execution directory)
+	 *            path to the folder TestAnalyzer (from the current execution
+	 *            directory)
 	 * @param workingFolderForClasspath
-	 *            path to the working folder (from the current execution directory)
+	 *            path to the working folder (from the current execution
+	 *            directory)
 	 */
 	public ProcessExecution(String executionDirectory, String programFolderForClasspath,
 			String workingFolderForClasspath) {
