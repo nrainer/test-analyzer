@@ -55,8 +55,8 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 		argsWriter.setValue(InformationCollector.ARGS_RESULT_PRESENTATION,
 				configuration.getResultPresentation().getValue());
 
-		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class.getName(),
-				classPath, argsWriter);
+		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class, classPath,
+				argsWriter);
 
 		loadCollectedData();
 	}

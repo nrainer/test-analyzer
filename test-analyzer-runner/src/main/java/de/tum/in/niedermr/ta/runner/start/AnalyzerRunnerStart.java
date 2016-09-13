@@ -92,8 +92,8 @@ public class AnalyzerRunnerStart {
 			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_PROGRAM_PATH, currentCanonicalPath);
 			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_CONFIG_FILE, EnvironmentConstants.FILE_INPUT_USED_CONFIG);
 
-			pExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class.getName(),
-					classpath, argsWriter);
+			pExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class, classpath,
+					argsWriter);
 
 			print("DONE.");
 		} catch (ExecutionException ex) {

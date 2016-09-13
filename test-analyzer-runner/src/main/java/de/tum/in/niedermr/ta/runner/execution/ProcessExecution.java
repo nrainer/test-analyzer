@@ -52,12 +52,20 @@ public class ProcessExecution {
 		this.m_workingFolderForClasspath = workingFolderForClasspath;
 	}
 
-	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClass, String classpath,
+	/** @see #execute(IExecutionId, int, String, String, String[]) */
+	public ExecutionResult execute(IExecutionId executionId, int timeout, Class<?> mainClass, String classpath,
 			ProgramArgsWriter argsWriter) throws ExecutionException, IOException {
-		return execute(executionId, timeout, mainClass, classpath, argsWriter.getArgs());
+		return execute(executionId, timeout, mainClass.getName(), classpath, argsWriter.getArgs());
 	}
 
-	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClass, String classpath,
+	/** @see #execute(IExecutionId, int, String, String, String[]) */
+	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClassName, String classpath,
+			ProgramArgsWriter argsWriter) throws ExecutionException, IOException {
+		return execute(executionId, timeout, mainClassName, classpath, argsWriter.getArgs());
+	}
+
+	/** Start a java process and wait until it terminates. */
+	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClassName, String classpath,
 			String[] arguments) throws ExecutionException, IOException {
 		List<String> command = new LinkedList<>();
 
@@ -65,7 +73,7 @@ public class ProcessExecution {
 		command.add(PARAM_CLASSPATH);
 		command.add(Environment.makeClasspathCanonical(Environment.replaceFolders(classpath,
 				this.m_programFolderForClasspath, this.m_workingFolderForClasspath)));
-		command.add(mainClass);
+		command.add(mainClassName);
 
 		for (String arg : arguments) {
 			command.add(CommonConstants.QUOTATION_MARK + arg + CommonConstants.QUOTATION_MARK);

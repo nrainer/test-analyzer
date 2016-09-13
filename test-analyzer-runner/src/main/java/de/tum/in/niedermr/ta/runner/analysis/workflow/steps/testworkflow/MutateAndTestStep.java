@@ -316,8 +316,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			argsWriter.setValue(TestRun.ARGS_RETURN_VALUE_GENERATOR_CLASS, usedReturnValueGenerator);
 			argsWriter.setValue(TestRun.ARGS_RESULT_PRESENTATION, m_configuration.getResultPresentation().getValue());
 
-			ExecutionResult executionResult = m_processExecution.execute(fullExecutionId, timeout,
-					TestRun.class.getName(), classPath, argsWriter);
+			ExecutionResult executionResult = m_processExecution.execute(fullExecutionId, timeout, TestRun.class,
+					classPath, argsWriter);
 
 			if (!executionResult.getStderr().isEmpty()) {
 				LOG_TEST_SYS_ERR.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get()

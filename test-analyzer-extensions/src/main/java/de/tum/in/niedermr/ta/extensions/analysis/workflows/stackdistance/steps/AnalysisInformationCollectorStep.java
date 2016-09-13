@@ -44,8 +44,8 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 		argsWriter.setValue(AnalysisInformationCollector.ARGS_RESULT_PRESENTATION,
 				configuration.getResultPresentation().getValue());
 
-		processExecution.execute(fullExecutionId, ProcessExecution.NO_TIMEOUT,
-				AnalysisInformationCollector.class.getName(), classPath, argsWriter);
+		processExecution.execute(fullExecutionId, ProcessExecution.NO_TIMEOUT, AnalysisInformationCollector.class,
+				classPath, argsWriter);
 	}
 
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {
