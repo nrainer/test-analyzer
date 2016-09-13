@@ -15,6 +15,7 @@ import de.tum.in.niedermr.ta.runner.configuration.property.CodePathToMutatePrope
 import de.tum.in.niedermr.ta.runner.configuration.property.CodePathToTestProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.ExecuteCollectInformationProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.ExecuteMutateAndTestProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.FactoryClassProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.MethodFiltersProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.NumberOfThreadsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.OperateFaultTolerantProperty;
@@ -32,9 +33,10 @@ import de.tum.in.niedermr.ta.runner.configuration.property.TestingTimeoutPerTest
 import de.tum.in.niedermr.ta.runner.configuration.property.WorkingFolderProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractClasspathProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
+import de.tum.in.niedermr.ta.runner.factory.IFactory;
 
 /**
- * Configuration.
+ * Configuration
  */
 public class Configuration extends AbstractConfiguration implements FileSystemConstants {
 	private static final int CURRENT_VERSION = 3;
@@ -45,6 +47,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	private final CodePathToTestProperty m_codePathToTest;
 	private final ClasspathProperty m_classpath;
 	private final TestWorkflowsProperty m_testWorkflows;
+	private final FactoryClassProperty m_factoryClass;
 	private final TestRunnerProperty m_testRunner;
 	private final MethodFiltersProperty m_methodFilters;
 	private final ReturnValueGeneratorsProperty m_returnValueGenerators;
@@ -68,6 +71,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		m_codePathToTest = new CodePathToTestProperty();
 		m_classpath = new ClasspathProperty();
 		m_testWorkflows = new TestWorkflowsProperty();
+		m_factoryClass = new FactoryClassProperty();
 		m_testRunner = new TestRunnerProperty();
 		m_methodFilters = new MethodFiltersProperty();
 		m_returnValueGenerators = new ReturnValueGeneratorsProperty();
@@ -95,6 +99,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		properties.add(m_codePathToTest);
 		properties.add(m_classpath);
 		properties.add(m_testWorkflows);
+		properties.add(m_factoryClass);
 		properties.add(m_testRunner);
 		properties.add(m_methodFilters);
 		properties.add(m_returnValueGenerators);
@@ -199,6 +204,16 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	 */
 	public TestWorkflowsProperty getTestWorkflows() {
 		return m_testWorkflows;
+	}
+
+	/**
+	 * Qualified class name of the factory class to be used.<br/>
+	 * The class must implement {@link IFactory} and be on the classpath.<br/>
+	 * <br/>
+	 * The default value can be used.
+	 */
+	public FactoryClassProperty getFactoryClass() {
+		return m_factoryClass;
 	}
 
 	/**
