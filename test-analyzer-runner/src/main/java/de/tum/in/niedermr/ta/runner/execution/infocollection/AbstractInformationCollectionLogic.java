@@ -15,7 +15,6 @@ import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
-import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public abstract class AbstractInformationCollectionLogic {
@@ -67,9 +66,8 @@ public abstract class AbstractInformationCollectionLogic {
 
 		execTestClassesCollected(testClassesWithTestcases);
 
-		LOGGER.info("Starting to analyze "
-				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
-				+ " with at least one testcase.");
+		LOGGER.info(
+				"Starting to analyze " + testClassesWithTestcases.size() + " test classes with at least one testcase.");
 
 		execBeforeExecutingAllTests(testClassesWithTestcases);
 
@@ -124,8 +122,8 @@ public abstract class AbstractInformationCollectionLogic {
 			Class<?> testClass = entry.getKey();
 			Set<String> testcasesOfCurrentClass = entry.getValue();
 
-			LOGGER.info("Analyzing test class " + testClass.getName() + " with "
-					+ LoggingUtil.appendPluralS(testcasesOfCurrentClass, "testcase", true) + ".");
+			LOGGER.info("Analyzing test class " + testClass.getName() + " with " + testcasesOfCurrentClass.size()
+					+ " testcases.");
 
 			for (String testcase : testcasesOfCurrentClass) {
 				boolean testSuccessful = processTestcase(testClass, testcase);

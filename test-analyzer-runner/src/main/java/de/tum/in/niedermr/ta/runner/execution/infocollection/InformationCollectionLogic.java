@@ -17,7 +17,6 @@ import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
-import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 
 public class InformationCollectionLogic extends AbstractInformationCollectionLogic {
 	/** Logger. */
@@ -61,12 +60,9 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 	protected void execAllTestsExecuted(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		Collection<TestInformation> result = m_methodInformation.values();
 
-		LOGGER.info("Collected " + LoggingUtil.appendPluralS(result, "method", true)
-				+ " which are directly or indirectly invoked by testcases.");
-		LOGGER.info("Collected " + LoggingUtil.appendPluralS(countTestcases(result), "successful testcase", true)
-				+ " from "
-				+ LoggingUtil.singularOrPlural(testClassesWithTestcases.size(), "test class", "test classes", true)
-				+ ".");
+		LOGGER.info("Collected " + result.size() + " methods that are directly or indirectly invoked by testcases.");
+		LOGGER.info("Collected " + countTestcases(result) + " successful testcases from "
+				+ testClassesWithTestcases.size() + " test classes.");
 
 		try {
 			writeResultToFiles(result);

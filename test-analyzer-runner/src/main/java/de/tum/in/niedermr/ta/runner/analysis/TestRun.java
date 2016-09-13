@@ -104,9 +104,7 @@ public class TestRun {
 					usedReturnValueGenerator));
 		}
 
-		LOGGER.info(executionId.get() + ": "
-				+ LoggingUtil.singularOrPlural(allTestsToRun, "testcase was", "testcases were", true)
-				+ " run successfully.");
+		LOGGER.info(executionId.get() + ": " + allTestsToRun.size() + " testcases ran successfully.");
 
 		return result;
 	}

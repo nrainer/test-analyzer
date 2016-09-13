@@ -54,10 +54,9 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 	/** {@inheritDoc} */
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
-		LOGGER.info("Using " + LoggingUtil.appendPluralS(configuration.getNumberOfThreads().getValue(), "thread", true)
-				+ " for mutating and testing.");
-		LOGGER.info(LoggingUtil.appendPluralS(m_methodsToMutateAndTestsToRun, "method", true)
-				+ " are candidates to be mutated (Filters have not been applied yet).");
+		LOGGER.info("Using " + configuration.getNumberOfThreads().getValue() + " threads for mutating and testing.");
+		LOGGER.info("Candidates to be mutated: " + m_methodsToMutateAndTestsToRun.size()
+				+ " methods (filters have not been applied yet)");
 
 		loadReturnValueGenerators(configuration);
 
@@ -258,8 +257,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			String fileWithTestsToRun = getWithIndex(EnvironmentConstants.FILE_TEMP_TESTS_TO_RUN_X, m_threadIndex);
 			TextFileData.writeToFile(getFileInWorkingArea(fileWithTestsToRun), testcasesToStringList());
 
-			LOGGER.info("Testing: " + m_currentMethodUnderTest.get() + " with "
-					+ LoggingUtil.appendPluralS(m_currentTestcases, "testcase", true) + ".");
+			LOGGER.info(
+					"Testing " + m_currentMethodUnderTest.get() + " with " + m_currentTestcases.size() + " testcases.");
 
 			runTestsAndRecordResult(fullExecutionId, fileWithTestsToRun,
 					getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex), returnValueGenerator);
