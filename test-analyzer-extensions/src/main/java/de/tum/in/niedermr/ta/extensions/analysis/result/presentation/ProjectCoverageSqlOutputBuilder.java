@@ -8,6 +8,9 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLev
 
 /** SQL output builder for the aggregated project coverage. */
 public class ProjectCoverageSqlOutputBuilder {
+	/** Parts of source folder names that are presumably irrelevant. */
+	private static final String[] IRRELEVANT_SOURCE_FOLDER_NAME_PARTS = { "test", "tst", "external", "jmh" };
+
 	private final List<String> m_result;
 	private final IExecutionId m_executionId;
 	private boolean m_completed = false;
@@ -38,15 +41,23 @@ public class ProjectCoverageSqlOutputBuilder {
 		String partialStatement = String.format("\t\t UNION SELECT '%s', '%s', '%s'", sourceFolderName, countCovered,
 				countNotCovered);
 
-		if (isTestFolder(sourceFolderName)) {
+		if (isPresumablyIrrelevantSourceFolder(sourceFolderName)) {
 			partialStatement = "-- " + partialStatement;
 		}
 
 		m_result.add(partialStatement);
 	}
 
-	private boolean isTestFolder(String sourceFolderName) {
-		return sourceFolderName.contains("test") || sourceFolderName.contains("tst");
+	private boolean isPresumablyIrrelevantSourceFolder(String sourceFolderName) {
+		String lowerCaseSourceFolderName = sourceFolderName.toLowerCase();
+
+		for (String irrelevantSourceFolderNamePart : IRRELEVANT_SOURCE_FOLDER_NAME_PARTS) {
+			if (lowerCaseSourceFolderName.contains(irrelevantSourceFolderNamePart)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	private String getCoverageColumnName(ECoverageLevel coverageLevel) {
