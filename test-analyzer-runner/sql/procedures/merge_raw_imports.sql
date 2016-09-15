@@ -1,12 +1,13 @@
 DROP PROCEDURE IF EXISTS MergeRawImports;
 
 DELIMITER //
-CREATE PROCEDURE MergeRawImports (IN param_execution_1 VARCHAR(5), IN param_execution_2 VARCHAR(5), IN param_execution_target VARCHAR(5))
+CREATE PROCEDURE MergeRawImports (IN param_execution_1 VARCHAR(5), IN param_execution_2 VARCHAR(5), IN param_execution_target VARCHAR(5), IN param_include_coverage_info TINYINT(1))
 BEGIN
 
 SET @executionIdOld1 = param_execution_1;
 SET @executionIdOld2 = param_execution_2;
 SET @executionIdTarget = param_execution_target;
+SET @includeCoverageInfo = param_execution_target;
 
 START TRANSACTION;
 
@@ -46,10 +47,12 @@ INSERT INTO Method_Info_Import
 SELECT @executionIdTarget, mii1.method, mii1.intValue, mii1.stringValue, mii1.valueName
 FROM Method_Info_Import mii1
 WHERE mii1.execution = @executionIdOld1
+AND (@includeCoverageInfo OR mii1.valueName NOT LIKE 'cov_%')
 UNION
 SELECT @executionIdTarget, mii2.method, mii2.intValue, mii2.stringValue, mii2.valueName
 FROM Method_Info_Import mii2
-WHERE mii2.execution = @executionIdOld2;
+WHERE mii2.execution = @executionIdOld2
+AND (@includeCoverageInfo OR mii2.valueName NOT LIKE 'cov_%');
 
 INSERT INTO Testcase_Info_Import
 (execution, testcase, intValue, stringValue, valueName)
