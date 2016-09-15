@@ -49,55 +49,64 @@
 		<rootFolder>${project.basedir}</rootFolder>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		
+        <!-- dependency versions -->
+		<junit.version>4.12</junit.version>
+		<testng.version>6.9.10</testng.version>
+		<commons.io.version>2.4</commons.io.version>
+		<asm.version>5.0.4</asm.version>
+        <log4j2.version>2.6.2</log4j2.version>
+		<conqat.commons.version>1.0</conqat.commons.version>
 	</properties>
+	
 
 	<dependencies>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
-			<version>2.4</version>
+			<version>${commons.io.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm</artifactId>
-			<version>5.0.4</version>
+			<version>${asm.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-analysis</artifactId>
-			<version>5.0.4</version>
+			<version>${asm.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-commons</artifactId>
-			<version>5.0.4</version>
+			<version>${asm.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.ow2.asm</groupId>
 			<artifactId>asm-tree</artifactId>
-			<version>5.0.4</version>
+			<version>${asm.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-core</artifactId>
-			<version>2.6.2</version>
+			<version>${log4j2.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.logging.log4j</groupId>
 			<artifactId>log4j-api</artifactId>
-			<version>2.6.2</version>
+			<version>${log4j2.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.conqat.lib</groupId>
 			<artifactId>commons</artifactId>
-			<version>1.0</version>
+			<version>${conqat.commons.version}</version>
 			<scope>system</scope>
 			<systemPath>${rootFolder}/test-analyzer-core/lib/ccsm-commons.jar</systemPath>
 		</dependency>
@@ -105,7 +114,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.12</version>
+			<version>${junit.version}</version>
 		</dependency>
 
 	</dependencies>
