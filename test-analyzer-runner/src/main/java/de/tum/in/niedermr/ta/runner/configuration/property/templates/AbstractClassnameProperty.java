@@ -3,7 +3,13 @@ package de.tum.in.niedermr.ta.runner.configuration.property.templates;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
+/**
+ * Abstract property for a single Java class name.
+ * 
+ * @see AbstractMultiClassnameProperty
+ */
 public abstract class AbstractClassnameProperty<T> extends AbstractStringProperty {
+
 	public final void setValue(Class<?> cls) {
 		if (cls == null) {
 			super.setValue(EMPTY_STRING);
@@ -53,8 +59,8 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 	 * Valid if one of the following applies:
 	 * <ul>
 	 * <li>the value is an allowed constant</li>
-	 * <li>a class with the value as name is on the classpath, the class can be instantiated and the class is an
-	 * instance of the desired type</li>
+	 * <li>a class with the value as name is on the classpath, the class can be
+	 * instantiated and the class is an instance of the desired type</li>
 	 * </ul>
 	 */
 	@Override
@@ -85,7 +91,10 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 		validateClassName(getValue(), getRequiredType(), this);
 	}
 
-	/** Validate that a class can be loaded, accessed and instantiated and be casted to a certain type. */
+	/**
+	 * Validate that a class can be loaded, accessed and instantiated and be
+	 * casted to a certain type.
+	 */
 	public static void validateClassName(String className, Class<?> requiredType,
 			IConfigurationProperty<?> propertyForExceptions) throws ConfigurationException {
 		Class<?> cls;

@@ -19,10 +19,14 @@ import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
+import de.tum.in.niedermr.ta.runner.factory.FactoryUtil;
+import de.tum.in.niedermr.ta.runner.factory.IFactory;
 
 /**
- * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed classpath.<br/>
- * The process will be started in the working area which is specified in the configuration.<br/>
+ * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed
+ * classpath.<br/>
+ * The process will be started in the working area which is specified in the
+ * configuration.<br/>
  *
  */
 public class AnalyzerRunnerStart {
@@ -35,8 +39,8 @@ public class AnalyzerRunnerStart {
 	 * @see #execute(Configuration, File)
 	 * 
 	 * @param args
-	 *            as specified in {@link Configuration} (If no arguments are specified, the values will be requested
-	 *            using System.in.)
+	 *            as specified in {@link Configuration} (If no arguments are
+	 *            specified, the values will be requested using System.in.)
 	 */
 	public static void main(String[] args) throws ConfigurationException, IOException {
 		Configuration configuration = null;
@@ -82,7 +86,12 @@ public class AnalyzerRunnerStart {
 				configuration);
 
 		try {
-			ProcessExecution pExecution = new ProcessExecution(workingFolder, currentCanonicalPath, workingFolder);
+			// use the default factory in this case because another factory may
+			// not be on the classpath yet (until AnalyzerRunnerInternal is
+			// started)
+			IFactory defaultFactory = FactoryUtil.createDefaultFactory();
+			ProcessExecution processExecution = defaultFactory.createNewProcessExecution(workingFolder,
+					currentCanonicalPath, workingFolder);
 
 			final String classpath = configuration.getTestAnalyzerClasspath().getValue() + FileSystemConstants.CP_SEP
 					+ Environment.prefixClasspathInWorkingFolder(configuration.getFullClasspath());
@@ -92,7 +101,7 @@ public class AnalyzerRunnerStart {
 			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_PROGRAM_PATH, currentCanonicalPath);
 			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_CONFIG_FILE, EnvironmentConstants.FILE_INPUT_USED_CONFIG);
 
-			pExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class, classpath,
+			processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class, classpath,
 					argsWriter);
 
 			print("DONE.");
@@ -112,8 +121,9 @@ public class AnalyzerRunnerStart {
 	}
 
 	/**
-	 * Sets the execution id to {@link AnalyzerRunnerInternal#EXECUTION_ID_FOR_TESTS} in order to allow a result
-	 * comparison.
+	 * Sets the execution id to
+	 * {@link AnalyzerRunnerInternal#EXECUTION_ID_FOR_TESTS} in order to allow a
+	 * result comparison.
 	 */
 	public static void setTestMode() {
 		s_inTestMode = true;

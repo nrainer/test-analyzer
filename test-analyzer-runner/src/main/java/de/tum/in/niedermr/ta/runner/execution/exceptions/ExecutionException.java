@@ -7,8 +7,8 @@ public class ExecutionException extends RuntimeException {
 
 	private final IExecutionId m_executionId;
 
-	public ExecutionException(IExecutionId executionId, String info) {
-		super(info);
+	public ExecutionException(IExecutionId executionId, String message) {
+		super(message);
 		this.m_executionId = executionId;
 	}
 
@@ -17,6 +17,12 @@ public class ExecutionException extends RuntimeException {
 		this.m_executionId = executionId;
 	}
 
+	public ExecutionException(String message, Throwable t) {
+		super(message, t);
+		m_executionId = null;
+	}
+
+	/** Get the execution id. May return null. */
 	public IExecutionId getExecutionId() {
 		return m_executionId;
 	}

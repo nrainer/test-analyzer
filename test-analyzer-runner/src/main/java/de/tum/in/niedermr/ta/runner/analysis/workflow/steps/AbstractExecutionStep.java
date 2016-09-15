@@ -13,6 +13,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
+import de.tum.in.niedermr.ta.runner.factory.FactoryUtil;
 
 public abstract class AbstractExecutionStep implements IExecutionStep, EnvironmentConstants {
 	/** Logger. */
@@ -26,17 +27,18 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 
 	/** {@inheritDoc} */
 	@Override
-	public final void initialize(ExecutionContext context) {
+	public final void initialize(ExecutionContext context) throws ExecutionException {
 		this.m_context = context;
 		this.m_configuration = context.getConfiguration();
-		this.m_processExecution = new ProcessExecution(context.getWorkingFolder(), context.getProgramPath(),
-				context.getWorkingFolder());
+		this.m_processExecution = FactoryUtil.createFactory(context.getConfiguration()).createNewProcessExecution(
+				context.getWorkingFolder(), context.getProgramPath(), context.getWorkingFolder());
 		execInitialized(context);
 		m_initialized = true;
 	}
 
 	/**
-	 * The initialization was executed, {@link #m_initialized} will be set to true after this method.
+	 * The initialization was executed, {@link #m_initialized} will be set to
+	 * <code>true</code> after this method.
 	 * 
 	 * @param context
 	 */
