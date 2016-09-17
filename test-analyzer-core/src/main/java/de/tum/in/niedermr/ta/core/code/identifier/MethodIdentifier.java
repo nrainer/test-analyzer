@@ -1,11 +1,13 @@
 package de.tum.in.niedermr.ta.core.code.identifier;
 
 import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
 
+/** Identifier for Java methods. */
 public final class MethodIdentifier implements Identifier, JavaConstants {
 	private static final String UNKNOWN_RETURN_TYPE = "?";
 	public static final MethodIdentifier EMPTY = new MethodIdentifier("*", UNKNOWN_RETURN_TYPE);
@@ -13,25 +15,60 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	private final String m_identifier;
 	private final String m_returnType;
 
+	/** Constructor. */
 	private MethodIdentifier(String identifier, String returnType) {
 		this.m_identifier = identifier;
 		this.m_returnType = returnType;
 	}
 
-	public static MethodIdentifier create(Class<?> cls, MethodNode method) {
-		return create(cls.getName(), method);
+	/**
+	 * Create an identifier.
+	 * 
+	 * @param cls
+	 *            class instance
+	 * @param methodNode
+	 *            ASM method node
+	 */
+	public static MethodIdentifier create(Class<?> cls, MethodNode methodNode) {
+		return create(cls.getName(), methodNode);
 	}
 
 	/**
-	 * @param className
-	 *            either with dots or slashes
+	 * Create an identifier.
+	 * 
+	 * @param classNode
+	 *            ASM class node
+	 * @param methodNode
+	 *            ASM method node
 	 */
-	public static MethodIdentifier create(String className, MethodNode method) {
-		return create(className, method.name, method.desc);
+	public static MethodIdentifier create(ClassNode classNode, MethodNode methodNode) {
+		return create(classNode.name, methodNode);
 	}
 
+	/**
+	 * Create an identifier.
+	 * 
+	 * @param className
+	 *            class name (dot separator) or class path (slash separator)
+	 * @param methodNode
+	 *            ASM method node
+	 */
+	public static MethodIdentifier create(String className, MethodNode methodNode) {
+		return create(className, methodNode.name, methodNode.desc);
+	}
+
+	/**
+	 * Create an identifier.
+	 * 
+	 * @param cls
+	 *            class instance
+	 * @param methodName
+	 *            name of the method
+	 * @param methodDesc
+	 *            descriptor of the method
+	 */
 	public static MethodIdentifier create(Class<?> cls, String methodName, String methodDesc) {
-		return MethodIdentifier.create(cls.getName(), methodName, methodDesc);
+		return create(cls.getName(), methodName, methodDesc);
 	}
 
 	/**
@@ -39,7 +76,8 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	 *            either with dots or slashes
 	 */
 	public static MethodIdentifier create(String className, String methodName, String methodDesc) {
-		String identifier = Identification.asClassName(className) + CLASS_METHOD_SEPARATOR + methodName + convertDescriptor(methodDesc);
+		String identifier = Identification.asClassName(className) + CLASS_METHOD_SEPARATOR + methodName
+				+ convertDescriptor(methodDesc);
 		String returnType = Identification.getMethodReturnType(methodDesc);
 
 		return new MethodIdentifier(identifier, returnType);
@@ -64,8 +102,10 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	}
 
 	/**
-	 * The return type would be available if the instance was created using the 'create' method or if the string to be parsed by the 'parse' method contained
-	 * the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be returned.
+	 * The return type would be available if the instance was created using the
+	 * 'create' method or if the string to be parsed by the 'parse' method
+	 * contained the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be
+	 * returned.
 	 */
 	public final String getOnlyReturnType() {
 		return m_returnType;
@@ -109,11 +149,13 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	}
 
 	/**
-	 * Two method identifiers are supposed to be equal if the identifiers are equal. The return type is not considered.
+	 * Two method identifiers are supposed to be equal if the identifiers are
+	 * equal. The return type is not considered.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return obj != null && obj instanceof MethodIdentifier && this.m_identifier.equals(((MethodIdentifier) obj).m_identifier);
+		return obj != null && obj instanceof MethodIdentifier
+				&& this.m_identifier.equals(((MethodIdentifier) obj).m_identifier);
 	}
 
 	private static String convertDescriptor(String descriptor) {

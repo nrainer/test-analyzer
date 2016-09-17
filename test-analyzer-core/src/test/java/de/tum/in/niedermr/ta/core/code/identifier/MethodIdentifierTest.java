@@ -5,10 +5,14 @@ import static org.junit.Assert.assertEquals;
 import java.util.Map;
 
 import org.junit.Test;
+import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 
+/** Test {@link MethodIdentifier}. */
 public class MethodIdentifierTest {
+
 	private static final String CLASS_NAME_BIG_INTEGER = "java.lang.BigInteger";
 	private static final String DESCRIPTOR_BIG_INTEGER = "Ljava/lang/BigInteger;";
 
@@ -27,7 +31,8 @@ public class MethodIdentifierTest {
 
 	@Test
 	public void testCreate1() {
-		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME, SAMPLE_DESCRIPTOR_1);
+		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME,
+				SAMPLE_DESCRIPTOR_1);
 
 		assertEquals(EXPECTED_IDENTIFIER_STRING, identifier.get());
 		assertEquals(EXPECTED_IDENTIFIER_WITH_RETURN_TYPE, identifier.getWithReturnType());
@@ -45,6 +50,24 @@ public class MethodIdentifierTest {
 		assertEquals(identifier1, identifier2);
 	}
 
+	/** Test. */
+	@Test
+	public void testCreate3() {
+		ClassNode classNode = new ClassNode();
+		classNode.name = SAMPLE_CLASS_NAME;
+
+		MethodNode methodNode = new MethodNode();
+		methodNode.name = SAMPLE_METHOD_NAME;
+		methodNode.desc = SAMPLE_DESCRIPTOR_1;
+
+		MethodIdentifier identifier1 = MethodIdentifier.create(classNode, methodNode);
+		MethodIdentifier identifier2 = MethodIdentifier.create(SAMPLE_CLASS_NAME, methodNode);
+
+		assertEquals(EXPECTED_IDENTIFIER_STRING, identifier1.get());
+		assertEquals(EXPECTED_IDENTIFIER_STRING, identifier2.get());
+		assertEquals(identifier1, identifier2);
+	}
+
 	@Test(expected = Exception.class)
 	public void testCreateWithWrongDescriptor() {
 		MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME, "(text.String)V");
@@ -52,7 +75,8 @@ public class MethodIdentifierTest {
 
 	@Test
 	public void testParse1() {
-		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME, SAMPLE_DESCRIPTOR_1);
+		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME,
+				SAMPLE_DESCRIPTOR_1);
 
 		assertEquals(identifier, MethodIdentifier.parse(identifier.get()));
 		assertEquals(identifier, MethodIdentifier.parse(identifier.getWithReturnType()));
@@ -115,10 +139,11 @@ public class MethodIdentifierTest {
 				SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + SAMPLE_METHOD_NAME + SAMPLE_ARGUMENTS_2);
 		assertEquals(SAMPLE_METHOD_NAME, identifier.getOnlyMethodName());
 	}
-	
+
 	@Test
 	public void testCreateLambdaMethodName() {
 		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, "lambda$0", SAMPLE_DESCRIPTOR_2);
-		assertEquals(SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + "lambda$0" + SAMPLE_ARGUMENTS_3, identifier.get());
+		assertEquals(SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + "lambda$0" + SAMPLE_ARGUMENTS_3,
+				identifier.get());
 	}
 }
