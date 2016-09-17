@@ -43,11 +43,20 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
 		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 
+		countInstructionsInMethods(configuration, testCollector);
+		countInstructionsInTestcases(configuration, testCollector);
+	}
+
+	protected void countInstructionsInMethods(Configuration configuration, ITestCollector testCollector)
+			throws Throwable {
 		for (String sourceJar : configuration.getCodePathToMutate().getElements()) {
 			this.m_instructionsPerMethod
 					.putAll(getCountInstructionsData(configuration, Mode.METHOD, testCollector, sourceJar));
 		}
+	}
 
+	protected void countInstructionsInTestcases(Configuration configuration, ITestCollector testCollector)
+			throws Throwable {
 		for (String testJar : configuration.getCodePathToTest().getElements()) {
 			this.m_instructionsPerTestcase
 					.putAll(getCountInstructionsData(configuration, Mode.TESTCASE, testCollector, testJar));
