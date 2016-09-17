@@ -3,13 +3,14 @@ package de.tum.in.niedermr.ta.runner.analysis.workflow.common;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 
 /** Execution step to write the result to a file. */
-public class SimplePersistResultStep extends AbstractExecutionStep {
+public class SimplePersistResultStep extends AbstractExecutionStep implements IResultReceiver {
 
 	private List<String> m_result = new LinkedList<>();
 	private String m_resultFileName;
@@ -24,11 +25,15 @@ public class SimplePersistResultStep extends AbstractExecutionStep {
 		m_result = result;
 	}
 
-	public void appendToResult(String line) {
+	/** {@inheritDoc} */
+	@Override
+	public void append(String line) {
 		m_result.add(line);
 	}
 
-	public void appendToResult(List<String> lines) {
+	/** {@inheritDoc} */
+	@Override
+	public void append(List<String> lines) {
 		m_result.addAll(lines);
 	}
 
@@ -46,5 +51,11 @@ public class SimplePersistResultStep extends AbstractExecutionStep {
 	@Override
 	protected String getDescription() {
 		return "Persisting the result in a single file";
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void markResultAsComplete() {
+		// NOP
 	}
 }

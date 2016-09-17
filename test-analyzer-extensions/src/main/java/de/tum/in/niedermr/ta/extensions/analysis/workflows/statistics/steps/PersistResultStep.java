@@ -31,22 +31,22 @@ public class PersistResultStep extends SimplePersistResultStep {
 	}
 
 	public void addResultInstructionsPerMethod(Map<MethodIdentifier, Integer> codeInformation) {
-		codeInformation.entrySet().forEach(entry -> appendToResult(
-				m_resultPresentation.formatInstructionsPerMethod(entry.getKey(), entry.getValue())));
+		codeInformation.entrySet().forEach(
+				entry -> append(m_resultPresentation.formatInstructionsPerMethod(entry.getKey(), entry.getValue())));
 	}
 
 	public void addResultModifierPerMethod(Map<MethodIdentifier, String> codeInformation) {
-		codeInformation.entrySet().forEach(entry -> appendToResult(
-				m_resultPresentation.formatModifierPerMethod(entry.getKey(), entry.getValue())));
+		codeInformation.entrySet().forEach(
+				entry -> append(m_resultPresentation.formatModifierPerMethod(entry.getKey(), entry.getValue())));
 	}
 
 	public void addResultInstructionsPerTestcase(Map<TestcaseIdentifier, Integer> codeInformation) {
-		codeInformation.entrySet().forEach(entry -> appendToResult(
-				m_resultPresentation.formatInstructionsPerTestcase(entry.getKey(), entry.getValue())));
+		codeInformation.entrySet().forEach(
+				entry -> append(m_resultPresentation.formatInstructionsPerTestcase(entry.getKey(), entry.getValue())));
 	}
 
 	public void addResultAssertionsPerTestcase(Map<TestcaseIdentifier, Integer> codeInformation) {
-		codeInformation.entrySet().forEach(entry -> appendToResult(
-				m_resultPresentation.formatAssertionsPerTestcase(entry.getKey(), entry.getValue())));
+		codeInformation.entrySet().forEach(
+				entry -> append(m_resultPresentation.formatAssertionsPerTestcase(entry.getKey(), entry.getValue())));
 	}
 }
