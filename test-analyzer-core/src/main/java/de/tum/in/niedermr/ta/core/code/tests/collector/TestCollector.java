@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -18,6 +20,10 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class TestCollector implements ITestCollector {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(TestCollector.class);
+
 	protected final Map<Class<?>, Set<String>> m_result;
 	protected final ITestClassDetector m_testClassDetector;
 
@@ -96,8 +102,8 @@ public class TestCollector implements ITestCollector {
 			if (JavaUtility.hasSuperClassOtherThanObject(cnSuper)) {
 				testcases.addAll(collectTestcasesInSuperClasses(cnSuper.superName, testClassType));
 			}
-		} catch (IOException ex) {
-			ex.printStackTrace();
+		} catch (IOException e) {
+			LOGGER.error("Exception in collectTestcasesInSuperClasses", e);
 		}
 
 		return testcases;

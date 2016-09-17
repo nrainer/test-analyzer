@@ -74,7 +74,7 @@ public class JarIteratorTest {
 					list.add(new JarFileElementRawData(JavaUtility.toClassPathWithEnding(classToAdd.getName()),
 							new ClassReader(classToAdd.getName()).b));
 				} catch (IOException ex) {
-					ex.printStackTrace();
+					// NOP
 				}
 
 				return list;

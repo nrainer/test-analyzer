@@ -1,11 +1,17 @@
 package de.tum.in.niedermr.ta.core.code.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
 public class JavaUtility implements JavaConstants {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(JavaUtility.class);
+
 	/**
 	 * Returns the class file path with the file extension '.class'.
 	 */
@@ -66,17 +72,26 @@ public class JavaUtility implements JavaConstants {
 	public static boolean hasSuperClassOtherThanObject(ClassNode cn) {
 		if (cn.superName == null) {
 			return false;
-		} else {
-			return !toClassName(cn.superName).equals(Object.class.getName());
 		}
+		return !toClassName(cn.superName).equals(Object.class.getName());
 	}
 
-	public static boolean inheritsClass(ClassNode cn, String nameOfSuperClassToBeDetected) throws ClassNotFoundException {
+	public static boolean inheritsClass(ClassNode cn, String nameOfSuperClassToBeDetected)
+			throws ClassNotFoundException {
 		return inheritsClass(cn, Class.forName(nameOfSuperClassToBeDetected));
 	}
 
 	public static boolean inheritsClass(ClassNode cn, Class<?> superClassToBeDetected) throws ClassNotFoundException {
 		return inheritsClass(Class.forName(toClassName(cn.name)), superClassToBeDetected);
+	}
+
+	public static boolean inheritsClassNoEx(ClassNode cn, Class<?> superClassToBeDetected) {
+		try {
+			return inheritsClass(cn, superClassToBeDetected);
+		} catch (ClassNotFoundException e) {
+			LOGGER.error("ClassNotFoundException in inheritsClassNoEx", e);
+			return false;
+		}
 	}
 
 	public static boolean inheritsClass(Class<?> cls, Class<?> superClassToBeDetected) {
@@ -90,23 +105,11 @@ public class JavaUtility implements JavaConstants {
 
 				superClass = superClass.getSuperclass();
 			}
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		} catch (NoClassDefFoundError | ExceptionInInitializerError e) {
+			LOGGER.error("Exception in inheritance check", e);
 		}
 
 		return false;
-	}
-
-	public static boolean inheritsClassNoEx(ClassNode cn, Class<?> superClassToBeDetected, boolean printStackTrace) {
-		try {
-			return inheritsClass(cn, superClassToBeDetected);
-		} catch (ClassNotFoundException ex) {
-			if (printStackTrace) {
-				ex.printStackTrace();
-			}
-
-			return false;
-		}
 	}
 
 	@SuppressWarnings("unchecked")

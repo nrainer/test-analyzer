@@ -2,6 +2,9 @@ package de.tum.in.niedermr.ta.runner.start;
 
 import java.io.IOException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
@@ -14,6 +17,9 @@ import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
  * 
  */
 public class AnalyzerRunnerBatchStart {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AnalyzerRunnerBatchStart.class);
 
 	public static final ProgramArgsKey ARGS_CONFIG_FILES = new ProgramArgsKey(AnalyzerRunnerBatchStart.class, 0);
 
@@ -54,9 +60,9 @@ public class AnalyzerRunnerBatchStart {
 		try {
 			Configuration configuration = ConfigurationLoader.getConfigurationFromFile(configFile);
 			AnalyzerRunnerStart.execute(configuration);
-		} catch (Exception ex) {
+		} catch (Exception e) {
 			System.err.println("Skipped: " + configFile);
-			ex.printStackTrace();
+			LOGGER.error("Execution of configuration '" + configFile + "' failed", e);
 		}
 	}
 }

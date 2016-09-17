@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -14,6 +16,10 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitClassTypeResult
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class JUnitSuiteDetector extends AbstractTestClassDetector {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(JUnitSuiteDetector.class);
+
 	private static final String SUITE_METHOD_NAME = "suite";
 	private static final String JUNIT_4_RUN_WITH_ANNOTATION = "Lorg/junit/runner/RunWith;";
 	private static final String JUNIT_4_SUITE_CLASSES_ANNOTATION = "Lorg/junit/runners/Suite$SuiteClasses;";
@@ -39,9 +45,9 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 		try {
 			Class<?> cls = Class.forName(JavaUtility.toClassName(cn.name));
 			return getJUnit3SuiteMethod(cls) != null;
-		} catch (ClassNotFoundException ex) {
+		} catch (ClassNotFoundException e) {
 			// should not occur
-			ex.printStackTrace();
+			LOGGER.error("ClassNotFoundException", e);
 			return false;
 		}
 	}

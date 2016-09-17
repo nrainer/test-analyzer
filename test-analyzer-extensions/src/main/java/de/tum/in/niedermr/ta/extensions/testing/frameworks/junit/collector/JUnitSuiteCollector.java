@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollector;
@@ -16,6 +18,10 @@ import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.detector.JUnitSuiteDetector;
 
 public class JUnitSuiteCollector extends TestCollector {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(JUnitSuiteCollector.class);
+
 	public JUnitSuiteCollector(JUnitSuiteDetector suiteDetector) {
 		super(suiteDetector);
 	}
@@ -55,8 +61,8 @@ public class JUnitSuiteCollector extends TestCollector {
 				testcases.add("T_" + index + "_" + test.toString());
 				index++;
 			}
-		} catch (ClassNotFoundException ex) {
-			ex.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			LOGGER.error("ClassNotFoundException", e);
 		}
 
 		return testcases;
@@ -68,8 +74,8 @@ public class JUnitSuiteCollector extends TestCollector {
 			junit.framework.Test suiteTestcase = (junit.framework.Test) suiteMethod.invoke(null);
 
 			return getTestsOfSuiteTestcase(suiteTestcase);
-		} catch (ReflectiveOperationException ex) {
-			ex.printStackTrace();
+		} catch (ReflectiveOperationException e) {
+			LOGGER.error("Exception in getTestsOfSuite", e);
 		}
 
 		return new LinkedList<>();

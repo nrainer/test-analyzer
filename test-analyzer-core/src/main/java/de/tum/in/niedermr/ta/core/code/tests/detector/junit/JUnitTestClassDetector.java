@@ -34,7 +34,7 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 	}
 
 	private boolean isJUnit3TestClass(ClassNode cn) {
-		return JavaUtility.inheritsClassNoEx(cn, junit.framework.TestCase.class, true);
+		return JavaUtility.inheritsClassNoEx(cn, junit.framework.TestCase.class);
 	}
 
 	@SuppressWarnings("unchecked")
