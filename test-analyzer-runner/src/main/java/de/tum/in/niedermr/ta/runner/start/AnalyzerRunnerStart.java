@@ -86,28 +86,32 @@ public class AnalyzerRunnerStart {
 				configuration);
 
 		try {
-			// use the default factory in this case because another factory may
-			// not be on the classpath yet (until AnalyzerRunnerInternal is
-			// started)
-			IFactory defaultFactory = FactoryUtil.createDefaultFactory();
-			ProcessExecution processExecution = defaultFactory.createNewProcessExecution(workingFolder,
-					currentCanonicalPath, workingFolder);
-
-			final String classpath = configuration.getTestAnalyzerClasspath().getValue() + FileSystemConstants.CP_SEP
-					+ Environment.prefixClasspathInWorkingFolder(configuration.getFullClasspath());
-
-			ProgramArgsWriter argsWriter = AnalyzerRunnerInternal.createProgramArgsWriter();
-			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_EXECUTION_ID, executionId.get());
-			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_PROGRAM_PATH, currentCanonicalPath);
-			argsWriter.setValue(AnalyzerRunnerInternal.ARGS_CONFIG_FILE, EnvironmentConstants.FILE_INPUT_USED_CONFIG);
-
-			processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class, classpath,
-					argsWriter);
-
+			startExecutionInNewProcess(configuration, executionId, currentCanonicalPath, workingFolder);
 			print("DONE.");
 		} catch (ExecutionException ex) {
 			print("ERROR. (" + ex.getMessage() + ")");
 		}
+	}
+
+	/** Start the execution in a new process. */
+	private static void startExecutionInNewProcess(Configuration configuration, IExecutionId executionId,
+			final String currentCanonicalPath, final String workingFolder) throws IOException {
+		// use the default factory in this case because another factory may not
+		// be on the classpath yet (until AnalyzerRunnerInternal is started)
+		IFactory defaultFactory = FactoryUtil.createDefaultFactory();
+		ProcessExecution processExecution = defaultFactory.createNewProcessExecution(workingFolder,
+				currentCanonicalPath, workingFolder);
+
+		final String classpath = configuration.getTestAnalyzerClasspath().getValue() + FileSystemConstants.CP_SEP
+				+ Environment.prefixClasspathInWorkingFolder(configuration.getFullClasspath());
+
+		ProgramArgsWriter argsWriter = AnalyzerRunnerInternal.createProgramArgsWriter();
+		argsWriter.setValue(AnalyzerRunnerInternal.ARGS_EXECUTION_ID, executionId.get());
+		argsWriter.setValue(AnalyzerRunnerInternal.ARGS_PROGRAM_PATH, currentCanonicalPath);
+		argsWriter.setValue(AnalyzerRunnerInternal.ARGS_CONFIG_FILE, EnvironmentConstants.FILE_INPUT_USED_CONFIG);
+
+		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, AnalyzerRunnerInternal.class, classpath,
+				argsWriter);
 	}
 
 	private static void copyConfigurationIntoWorkingFolder(String file, Configuration configuration)
