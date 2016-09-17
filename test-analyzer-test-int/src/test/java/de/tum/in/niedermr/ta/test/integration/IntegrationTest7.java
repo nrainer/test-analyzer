@@ -10,7 +10,10 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 /**
  * Integration test with extensions involved.<br/>
- * Code-statistics workflow. Stack-analysis workflow. Coverage parser workflow.
+ * <li>Code-statistics workflow</li>
+ * <li>Stack-analysis workflow</li>
+ * <li>Coverage-parser workflow</li>
+ * <li>Return-type collector workflow</li>
  * 
  * @see "configuration file in test data"
  */
@@ -21,6 +24,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 			+ "code-statistics" + FILE_EXTENSION_SQL_TXT;
 	private static final String COVERAGE_DATA_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
 			+ "coverage-information" + FILE_EXTENSION_SQL_TXT;
+	private static final String RETURN_TYPE_LIST_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
+			+ "return-type-list" + FILE_EXTENSION_TXT;
 
 	@Override
 	public void testSystemInternal() throws ConfigurationException, IOException {
@@ -28,6 +33,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 		File outputStackAnalysisFile = getOutputFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
 		File expectedCodeStatisticsFile = getExpectedFile(getFileName(CODE_STATISTICS_OUTPUT));
 		File outputCodeStatisticsFile = getOutputFile(getFileName(CODE_STATISTICS_OUTPUT));
+		File expectedReturnTypeListFile = getExpectedFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
+		File outputReturnTypeListFile = getOutputFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
 
 		File inputCoverageXmlFile = getFileInSpecificTestDataFolder("other/coverage.xml");
 		File inputCoverageXmlFileInWorkingDirectory = getFileInWorkingDirectory("coverage.xml");
@@ -42,6 +49,7 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
 		assertFileExists(MSG_TEST_DATA_MISSING, expectedStackAnalysisFile);
 		assertFileExists(MSG_TEST_DATA_MISSING, expectedCodeStatisticsFile);
+		assertFileExists(MSG_TEST_DATA_MISSING, expectedReturnTypeListFile);
 
 		executeTestAnalyzerWithConfiguration();
 
@@ -53,5 +61,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 
 		assertFileExists(MSG_OUTPUT_MISSING, outputParsedCoverageFile);
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedParsedCoverageFile, outputParsedCoverageFile);
+
+		assertFileExists(MSG_OUTPUT_MISSING, outputReturnTypeListFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedReturnTypeListFile, outputReturnTypeListFile);
 	}
 }

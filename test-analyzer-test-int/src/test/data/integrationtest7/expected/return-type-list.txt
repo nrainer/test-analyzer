@@ -1,0 +1,7 @@
+de.tum.in.ma.simpleproject.core.Calculation
+de.tum.in.ma.simpleproject.special.SpecialTest2Object
+int[]
+java.lang.Comparable
+java.lang.Integer
+java.util.List
+org.junit.runners.model.Statement
