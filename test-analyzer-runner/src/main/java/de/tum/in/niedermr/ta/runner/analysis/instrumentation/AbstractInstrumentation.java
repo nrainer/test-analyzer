@@ -2,19 +2,16 @@ package de.tum.in.niedermr.ta.runner.analysis.instrumentation;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.objectweb.asm.ClassReader;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterator;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
-import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
-public class AbstractInstrumentation {
+public abstract class AbstractInstrumentation {
 	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(AbstractInstrumentation.class);
+	static final Logger LOGGER = LogManager.getLogger(AbstractInstrumentation.class);
 
 	private final IExecutionId m_executionId;
 	private final boolean m_operateFaultTolerant;
@@ -37,7 +34,7 @@ public class AbstractInstrumentation {
 		try {
 			for (int i = 0; i < jarsToBeInstrumented.length; i++) {
 				JarModificationIterator jarWork = new JarInstrumentationIterator(jarsToBeInstrumented[i],
-						Environment.getWithIndex(genericJarOutputPath, i));
+						Environment.getWithIndex(genericJarOutputPath, i), m_operateFaultTolerant);
 				jarWork.execute(operation);
 			}
 		} catch (NoClassDefFoundError ex) {
@@ -47,36 +44,6 @@ public class AbstractInstrumentation {
 		} catch (Throwable t) {
 			LOGGER.error(t);
 			throw new ExecutionException(m_executionId, t);
-		}
-	}
-
-	class JarInstrumentationIterator extends JarModificationIterator {
-		private String m_originalClassPath;
-		private byte[] m_classBytes;
-
-		public JarInstrumentationIterator(String inputJarPath, String outputJarPath) {
-			super(inputJarPath, outputJarPath);
-		}
-
-		@Override
-		protected void handleEntry(ICodeModificationOperation jarOperation, ClassReader cr, String originalClassPath)
-				throws Exception {
-			this.m_originalClassPath = originalClassPath;
-			this.m_classBytes = cr.b;
-
-			super.handleEntry(jarOperation, cr, originalClassPath);
-		}
-
-		@Override
-		protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
-			if (isOperateFaultTolerant()) {
-				getJarFileWriter().writeClassIntoJar(new JarFileElementRawData(m_originalClassPath, m_classBytes));
-				LOGGER.warn("Skipping bytecode instrumentation of " + JavaUtility.toClassName(className) + "! "
-						+ "Fault tolerant mode permits to continue after " + t.getClass().getName() + " with message '"
-						+ t.getMessage() + "'.");
-			} else {
-				throw new Exception(t);
-			}
 		}
 	}
 }
