@@ -24,6 +24,7 @@ public class MethodModifierRetrievalStep extends AbstractExecutionStep {
 	/** The access modifier for each method. */
 	private final Map<MethodIdentifier, String> m_modifierPerMethod = new HashMap<>();
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "MODRET";
@@ -35,11 +36,12 @@ public class MethodModifierRetrievalStep extends AbstractExecutionStep {
 		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 
 		for (String sourceJar : configuration.getCodePathToMutate().getElements()) {
-			m_modifierPerMethod.putAll(getCountInstructionsData(configuration, testCollector, sourceJar));
+			m_modifierPerMethod.putAll(getMethodModifierData(configuration, testCollector, sourceJar));
 		}
 	}
 
-	private Map<MethodIdentifier, String> getCountInstructionsData(Configuration configuration,
+	/** Get data about the method access modifier. */
+	protected Map<MethodIdentifier, String> getMethodModifierData(Configuration configuration,
 			ITestCollector testCollector, String inputJarFile) throws Throwable {
 		try {
 			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
