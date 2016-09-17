@@ -95,27 +95,17 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 
 	private Map<TestcaseIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector,
 			boolean operateFaultTolerant) throws Throwable {
-		try {
-			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile, operateFaultTolerant);
+		JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile, operateFaultTolerant);
 
-			iterator.execute(testCollector);
-			this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
+		iterator.execute(testCollector);
+		this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
 
-			AssertionCounterOperation operation = new AssertionCounterOperation(testCollector.getTestClassDetector(),
-					m_assertionInformation);
+		AssertionCounterOperation operation = new AssertionCounterOperation(testCollector.getTestClassDetector(),
+				m_assertionInformation);
 
-			iterator.execute(operation);
+		iterator.execute(operation);
 
-			return operation.getAssertionsPerTestcase();
-		} catch (Throwable t) {
-			if (operateFaultTolerant) {
-				LOGGER.error("Skipping whole jar file " + inputJarFile
-						+ " because of an error when operating in fault tolerant mode!", t);
-				return new HashMap<>();
-			} else {
-				throw t;
-			}
-		}
+		return operation.getAssertionsPerTestcase();
 	}
 
 	public Map<TestcaseIdentifier, Integer> getAssertionsPerTestcase() {

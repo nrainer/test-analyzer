@@ -77,4 +77,10 @@ public class ReturnTypeRetrieverOperation extends AbstractTestAwareCodeAnalyzeOp
 	public Map<MethodIdentifier, String> getMethodReturnTypes() {
 		return m_methodReturnTypes;
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void clearResult() {
+		m_methodReturnTypes.clear();
+	}
 }

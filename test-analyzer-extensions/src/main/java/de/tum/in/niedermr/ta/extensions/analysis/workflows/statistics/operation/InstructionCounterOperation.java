@@ -76,4 +76,10 @@ public class InstructionCounterOperation<T extends Identifier> extends AbstractT
 	public Map<T, Integer> getResult() {
 		return m_result;
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void clearResult() {
+		m_result.clear();
+	}
 }

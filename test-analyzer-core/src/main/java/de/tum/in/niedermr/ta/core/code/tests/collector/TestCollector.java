@@ -123,4 +123,10 @@ public class TestCollector implements ITestCollector {
 	public ITestClassDetector getTestClassDetector() {
 		return m_testClassDetector;
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void clearResult() {
+		m_result.clear();
+	}
 }

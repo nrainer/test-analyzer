@@ -26,11 +26,13 @@ public class MethodModifierRetrievalOperation extends AbstractTestAwareCodeAnaly
 		return m_result;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void analyzeSourceClass(ClassNode cn, String originalClassPath) {
 		analyzeMethods(cn);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType) {
 		// NOP
@@ -55,5 +57,11 @@ public class MethodModifierRetrievalOperation extends AbstractTestAwareCodeAnaly
 		} else {
 			return "default";
 		}
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void clearResult() {
+		m_result.clear();
 	}
 }

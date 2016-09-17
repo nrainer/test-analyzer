@@ -4,9 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.Identifier;
@@ -20,8 +17,6 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class InstructionCounterStep extends AbstractExecutionStep {
-	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(InstructionCounterStep.class);
 
 	private final Map<MethodIdentifier, Integer> m_instructionsPerMethod;
 	private final Map<TestcaseIdentifier, Integer> m_instructionsPerTestcase;
@@ -67,30 +62,20 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 
 	private <T extends Identifier> Map<T, Integer> getCountInstructionsData(Configuration configuration, Mode mode,
 			ITestCollector testCollector, String inputJarFile) throws Throwable {
-		try {
-			JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
-					configuration.getOperateFaultTolerant().getValue());
+		JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
+				configuration.getOperateFaultTolerant().getValue());
 
-			if (mode == Mode.TESTCASE) {
-				iterator.execute(testCollector);
-				this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
-			}
-
-			InstructionCounterOperation<T> operation = new InstructionCounterOperation<>(
-					testCollector.getTestClassDetector(), mode);
-
-			iterator.execute(operation);
-
-			return operation.getResult();
-		} catch (Throwable t) {
-			if (configuration.getOperateFaultTolerant().getValue()) {
-				LOGGER.error("Skipping whole jar file " + inputJarFile
-						+ " because of an error when operating in fault tolerant mode!", t);
-				return new HashMap<>();
-			} else {
-				throw t;
-			}
+		if (mode == Mode.TESTCASE) {
+			iterator.execute(testCollector);
+			this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());
 		}
+
+		InstructionCounterOperation<T> operation = new InstructionCounterOperation<>(
+				testCollector.getTestClassDetector(), mode);
+
+		iterator.execute(operation);
+
+		return operation.getResult();
 	}
 
 	@Override

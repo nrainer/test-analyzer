@@ -51,4 +51,10 @@ public class AssertionCounterOperation extends AbstractTestAwareCodeAnalyzeOpera
 	public Map<TestcaseIdentifier, Integer> getAssertionsPerTestcase() {
 		return m_assertionsPerTestcase;
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void clearResult() {
+		m_assertionsPerTestcase.clear();
+	}
 }

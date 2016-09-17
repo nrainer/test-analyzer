@@ -17,6 +17,11 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 		this.m_inputJarPath = inputJarPath;
 	}
 
+	/** @see #m_inputJarPath */
+	public String getInputJarPath() {
+		return m_inputJarPath;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public final void execute(OP jarOperation) throws Exception {

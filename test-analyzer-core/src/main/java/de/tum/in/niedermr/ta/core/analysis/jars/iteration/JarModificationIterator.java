@@ -84,6 +84,5 @@ public class JarModificationIterator extends AbstractJarIterator<ICodeModificati
 	protected void onExceptionInJarProcessing(Throwable throwable, ICodeModificationOperation jarOperation)
 			throws Exception {
 		throw new Exception(throwable);
-
 	}
 }

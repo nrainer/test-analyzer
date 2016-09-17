@@ -183,20 +183,35 @@ public class JarIteratorTest {
 			this.m_iteratedClasses = new HashSet<>();
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		public void analyze(ClassReader cr, String originalClassPath) throws Exception {
 			m_iteratedClasses.add(originalClassPath);
 		}
+
+		/** {@inheritDoc} */
+		@Override
+		public void clearResult() {
+			// NOP
+		}
 	}
 
 	class EmptyAnalyzeOperation implements ICodeAnalyzeOperation {
+		/** {@inheritDoc} */
 		@Override
 		public void analyze(ClassReader cr, String originalClassPath) throws Exception {
+			// NOP
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		public void clearResult() {
 			// NOP
 		}
 	}
 
 	class EmptyModificationOperation implements ICodeModificationOperation {
+		/** {@inheritDoc} */
 		@Override
 		public void modify(ClassReader cr, ClassWriter cw) throws Exception {
 			// NOP
