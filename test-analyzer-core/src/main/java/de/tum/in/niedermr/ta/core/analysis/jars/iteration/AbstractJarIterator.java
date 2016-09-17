@@ -9,6 +9,7 @@ import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileContent;
 import de.tum.in.niedermr.ta.core.code.iteration.IArtifactIterator;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
 
+/** Abstract iterator for jar files. */
 public abstract class AbstractJarIterator<OP extends ICodeOperation> implements IArtifactIterator<OP> {
 	private final String m_inputJarPath;
 
@@ -16,16 +17,21 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 		this.m_inputJarPath = inputJarPath;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void execute(OP jarOperation) throws Exception {
-		beforeAll();
+		try {
+			beforeAll();
 
-		JarFileContent classContainer = JarFileContent.fromJarFile(m_inputJarPath);
+			JarFileContent classContainer = JarFileContent.fromJarFile(m_inputJarPath);
 
-		processClassEntryList(jarOperation, classContainer);
-		processResourceEntryList(jarOperation, classContainer);
+			processClassEntryList(jarOperation, classContainer);
+			processResourceEntryList(jarOperation, classContainer);
 
-		afterAll();
+			afterAll();
+		} catch (Throwable t) {
+			onExceptionInJarProcessing(t, jarOperation);
+		}
 	}
 
 	private void processClassEntryList(OP jarOperation, JarFileContent classContainer) throws Exception {
@@ -69,4 +75,16 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 	protected abstract void onExceptionInHandleEntry(Throwable t, String className) throws Exception;
 
 	protected abstract void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception;
+
+	/**
+	 * An exception occurred during the preparation or tear down (outside of
+	 * entry or resource handling). <br/>
+	 * {@link #beforeAll()} and {@link #afterAll()} may not have been invoked.
+	 * 
+	 * @param throwable
+	 *            thrown exception
+	 * @param jarOperation
+	 *            operation to be executed
+	 */
+	protected abstract void onExceptionInJarProcessing(Throwable throwable, OP jarOperation) throws Exception;
 }

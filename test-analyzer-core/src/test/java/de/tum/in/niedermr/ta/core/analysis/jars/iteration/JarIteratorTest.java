@@ -129,21 +129,25 @@ public class JarIteratorTest {
 			super(inputJarPath);
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		protected void beforeAll() {
 			m_logger.append(BEFORE_ALL);
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		protected void handleEntry(ICodeOperation jarOperation, ClassReader cr, String originalClassPath) {
 			m_logger.append(HANDLE_ENTRY);
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		protected void handleResource(ICodeOperation jarOperation, JarEntry resourceEntryList, InputStream inStream) {
 			m_logger.append(HANDLE_RESOURCE);
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		protected void afterAll() {
 			m_logger.append(AFTER_ALL);
@@ -153,13 +157,21 @@ public class JarIteratorTest {
 			return m_logger.toString();
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
 			// NOP
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception {
+			// NOP
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		protected void onExceptionInJarProcessing(Throwable throwable, ICodeOperation jarOperation) throws Exception {
 			// NOP
 		}
 	}
