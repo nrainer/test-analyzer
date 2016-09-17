@@ -39,8 +39,8 @@ CREATE VIEW V_Tested_Methods_Info
 	living,
 	killed,
 	aborted,
-	minStackDistance,
 	testcaseCount,
+	minStackDistance,
 	method,
 	methodHash
 ) AS
