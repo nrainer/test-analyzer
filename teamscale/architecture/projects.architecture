@@ -35,6 +35,7 @@
     <dependency source="test-analyzer-extensions/src/test/java/de/tum/in/niedermr/ta/extensions/analysis/workflows/coverage/parser/JaCoCoXmlParserTest.java" target="test-analyzer-runner/src/main/java/de/tum/in/niedermr/ta/runner/execution/id/ExecutionIdFactory.java" />
     <dependency source="test-analyzer-extensions/src/test/java/de/tum/in/niedermr/ta/extensions/analysis/result/presentation/ProjectCoverageSqlOutputBuilderTest.java" target="test-analyzer-runner/src/main/java/de/tum/in/niedermr/ta/runner/execution/id/ExecutionIdFactory.java" />
   </tolerate>
+  <allow source="test.analyzer.extensions test" target="test.analyzer.runner test" />
   <allow source="test.analyzer.runner app" target="test.analyzer.core app" />
   <allow source="test.analyzer.runner test" target="test.analyzer.core app" />
   <allow source="test.analyzer.runner test" target="test.analyzer.core test" />
