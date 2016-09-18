@@ -13,6 +13,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
+/** Abstract return value generator that uses a factory. */
 public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturnValueGenerator {
 	private static final String INSTANCE_FIELD_NAME = "INSTANCE";
 
@@ -20,7 +21,9 @@ public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturn
 	private final String m_factoryPathName;
 
 	/**
-	 * Important: The factory (of type factoryClass) MUST have a static field named {@value #INSTANCE_FIELD_NAME} of the type factoryClass.
+	 * Constructor. <br/>
+	 * Important: The factory (of type factoryClass) MUST have a static field
+	 * named {@value #INSTANCE_FIELD_NAME} of the type factoryClass.
 	 * 
 	 * @throws IllegalFormatException
 	 *             if the INSTANCE field is not specified as expected
@@ -32,21 +35,28 @@ public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturn
 		checkFactoryValidity(factoryClass);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {
-		return Identification.isArrayOrObject(returnType) && m_factoryInstance.supports(methodIdentifier, returnType.getClassName());
+		return Identification.isArrayOrObject(returnType)
+				&& m_factoryInstance.supports(methodIdentifier, returnType.getClassName());
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier, Type returnType) {
-		mv.visitFieldInsn(Opcodes.GETSTATIC, m_factoryPathName, INSTANCE_FIELD_NAME, String.format("L%s;", m_factoryPathName));
+	public void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier,
+			Type returnType) {
+		mv.visitFieldInsn(Opcodes.GETSTATIC, m_factoryPathName, INSTANCE_FIELD_NAME,
+				String.format("L%s;", m_factoryPathName));
 		mv.visitLdcInsn(methodIdentifier.get());
 		mv.visitLdcInsn(returnType.getClassName());
-		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, m_factoryPathName, "get", "(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;", false);
+		mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, m_factoryPathName, "get",
+				"(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/Object;", false);
 		mv.visitTypeInsn(Opcodes.CHECKCAST, returnType.getInternalName());
 	}
 
-	protected void checkFactoryValidity(Class<? extends AbstractReturnFactory> factoryClass) throws InvalidClassException {
+	protected void checkFactoryValidity(Class<? extends AbstractReturnFactory> factoryClass)
+			throws InvalidClassException {
 		try {
 			Field instanceField = factoryClass.getField(INSTANCE_FIELD_NAME);
 
@@ -55,11 +65,12 @@ public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturn
 			}
 
 			if (!instanceField.getGenericType().equals(factoryClass)) {
-				throw new InvalidClassException("The field " + INSTANCE_FIELD_NAME + " is not of the type " + factoryClass.getName() + ".");
+				throw new InvalidClassException(
+						"The field " + INSTANCE_FIELD_NAME + " is not of the type " + factoryClass.getName() + ".");
 			}
 		} catch (NoSuchFieldException ex) {
-			throw new InvalidClassException(factoryClass.getName() + " does not have a public static field of name " + INSTANCE_FIELD_NAME
-					+ " of the type of the factory.");
+			throw new InvalidClassException(factoryClass.getName() + " does not have a public static field of name "
+					+ INSTANCE_FIELD_NAME + " of the type of the factory.");
 		}
 	}
 }

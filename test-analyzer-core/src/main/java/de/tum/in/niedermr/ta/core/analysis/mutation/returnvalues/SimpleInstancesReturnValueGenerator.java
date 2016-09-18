@@ -8,10 +8,12 @@ import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 /**
- * Supports the creation of instances of classes which provide a constructor without parameters.
+ * Supports the creation of instances of classes which provide a constructor
+ * without parameters.
  */
 public class SimpleInstancesReturnValueGenerator extends AbstractReturnValueGenerator {
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {
 		try {
@@ -22,8 +24,10 @@ public class SimpleInstancesReturnValueGenerator extends AbstractReturnValueGene
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier, Type returnType) {
+	public void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier,
+			Type returnType) {
 		mv.visitTypeInsn(Opcodes.NEW, returnType.getInternalName());
 		mv.visitInsn(Opcodes.DUP);
 		mv.visitMethodInsn(Opcodes.INVOKESPECIAL, returnType.getInternalName(), BytecodeConstants.NAME_CONSTRUCTOR,

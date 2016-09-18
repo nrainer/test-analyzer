@@ -7,7 +7,8 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
 
 /**
- * Note that wrapper classes of primitive types are not supported. Void is also not supported.
+ * Note that wrapper classes of primitive types are not supported. Void is also
+ * not supported.
  *
  */
 abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnValueGenerator {
@@ -31,8 +32,10 @@ abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnValueGen
 
 	public abstract void handleStringReturn(MethodVisitor mv);
 
+	/** {@inheritDoc} */
 	@Override
-	public final void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier, Type type) {
+	public final void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier,
+			Type type) {
 		switch (type.getSort()) {
 		case Type.BOOLEAN:
 			handleBooleanReturn(mv);
@@ -57,8 +60,8 @@ abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnValueGen
 		case Type.OBJECT:
 			handleObjectReturn(mv, type);
 			break;
-			default:
-				throw new IllegalStateException("Unexpected");
+		default:
+			throw new IllegalStateException("Unexpected");
 		}
 	}
 
@@ -68,8 +71,10 @@ abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnValueGen
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {
-		return m_supportStringType ? Identification.isPrimitiveOrString(returnType) : Identification.isPrimitive(returnType);
+		return m_supportStringType ? Identification.isPrimitiveOrString(returnType)
+				: Identification.isPrimitive(returnType);
 	}
 }

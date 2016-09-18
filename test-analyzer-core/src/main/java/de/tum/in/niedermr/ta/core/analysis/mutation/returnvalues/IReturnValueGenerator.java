@@ -6,13 +6,17 @@ import org.objectweb.asm.Type;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 /**
- * The implementing class needs a constructor without parameters because this class will be instantiated using reflection.
+ * Interface for return value generators.<br/>
+ * Implementing classes are instantiated using reflection.
  */
 public interface IReturnValueGenerator {
 
+	/** Get the name of the return value generator. */
 	String getName();
 
+	/** Put the byte code instructions to generate the return value. */
 	void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier, Type returnType);
 
+	/** Check if the return type is supported. */
 	boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType);
 }

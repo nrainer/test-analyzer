@@ -1,15 +1,22 @@
 package de.tum.in.niedermr.ta.core.code.visitor;
 
+import java.io.IOException;
+
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
+import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 
 public class BytecodeModificationTestUtility {
 
-	/** Execute a bytecode modification on a class and return the newly created class. */
+	/**
+	 * Execute a bytecode modification on a class and return the newly created
+	 * class.
+	 */
 	public static Class<?> createAndLoadModifiedClass(Class<?> classToBeModified,
-			ICodeModificationOperation modificationOperation) throws Exception {
+			ICodeModificationOperation modificationOperation)
+			throws ClassNotFoundException, CodeOperationException, IOException {
 		ClassReader cr = new ClassReader(classToBeModified.getName());
 		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
 
