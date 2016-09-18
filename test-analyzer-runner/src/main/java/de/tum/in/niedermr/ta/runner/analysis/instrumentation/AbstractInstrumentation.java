@@ -11,7 +11,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public abstract class AbstractInstrumentation {
 	/** Logger. */
-	static final Logger LOGGER = LogManager.getLogger(AbstractInstrumentation.class);
+	private static final Logger LOGGER = LogManager.getLogger(AbstractInstrumentation.class);
 
 	private final IExecutionId m_executionId;
 	private final boolean m_operateFaultTolerant;

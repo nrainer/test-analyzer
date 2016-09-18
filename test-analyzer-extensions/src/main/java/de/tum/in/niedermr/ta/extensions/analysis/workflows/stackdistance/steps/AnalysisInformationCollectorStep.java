@@ -9,6 +9,7 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 
@@ -20,7 +21,7 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws ExecutionException {
 		final String classPath = configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
 				+ getSourceInstrumentedJarFilesClasspath(configuration) + CP_SEP
 				+ configuration.getCodePathToTest().getValue() + CP_SEP + configuration.getClasspath().getValue();

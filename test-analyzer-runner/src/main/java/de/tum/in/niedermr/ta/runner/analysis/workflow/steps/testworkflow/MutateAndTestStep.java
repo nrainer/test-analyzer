@@ -53,7 +53,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws ExecutionException {
 		LOGGER.info("Using " + configuration.getNumberOfThreads().getValue() + " threads for mutating and testing.");
 		LOGGER.info("Candidates to be mutated: " + m_methodsToMutateAndTestsToRun.size()
 				+ " methods (filters have not been applied yet)");
@@ -70,7 +70,11 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		int countError = 0;
 
 		for (MutateAndTestThread workerThread : threadList) {
-			workerThread.join();
+			try {
+				workerThread.join();
+			} catch (InterruptedException e) {
+				throw new ExecutionException(getExecutionId(), e);
+			}
 
 			countSuccessful += workerThread.m_countSuccessful;
 			countSkipped += workerThread.m_countSkipped;
@@ -155,7 +159,10 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				+ countError + " failed.";
 	}
 
-	/** Worker thread that polls methods to mutate and triggers the test executions. */
+	/**
+	 * Worker thread that polls methods to mutate and triggers the test
+	 * executions.
+	 */
 	protected class MutateAndTestThread extends Thread {
 		private final int m_threadIndex;
 		private final Configuration m_configuration;
@@ -296,8 +303,9 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		/**
 		 * Run the test cases and record the result.
 		 * 
-		 * Note that the full original classpath is used. However, the mutated jar is inserted at the beginning of the
-		 * classpath, thus the mutated class is considered first in that jar file.
+		 * Note that the full original classpath is used. However, the mutated
+		 * jar is inserted at the beginning of the classpath, thus the mutated
+		 * class is considered first in that jar file.
 		 */
 		protected void runTestsAndRecordResult(IFullExecutionId fullExecutionId, String fileWithTestsToRun,
 				String fileWithResults, IReturnValueGenerator retValGen) throws IOException {

@@ -12,6 +12,8 @@ import org.objectweb.asm.ClassWriter;
 
 import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
 import de.tum.in.niedermr.ta.core.analysis.jars.writer.JarFileWriter;
+import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 
 /** Iterator for modifications in Jar files. */
@@ -29,14 +31,14 @@ public class JarModificationIterator extends AbstractJarIterator<ICodeModificati
 
 	/** {@inheritDoc} */
 	@Override
-	protected void beforeAll() throws Exception {
+	protected void beforeAll() throws IteratorException, IOException {
 		// NOP
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void handleEntry(ICodeModificationOperation jarOperation, ClassReader cr, String originalClassPath)
-			throws Exception {
+			throws IteratorException, CodeOperationException, IOException {
 		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
 
 		jarOperation.modify(cr, cw);
@@ -48,14 +50,14 @@ public class JarModificationIterator extends AbstractJarIterator<ICodeModificati
 	/** {@inheritDoc} */
 	@Override
 	protected void handleResource(ICodeModificationOperation jarOperation, JarEntry resourceEntry, InputStream inStream)
-			throws Exception {
+			throws IteratorException, CodeOperationException, IOException {
 		m_jarFileWriter.writeResourceIntoJar(
 				new JarFileElementRawData(resourceEntry.getName(), IOUtils.toByteArray(inStream)));
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void afterAll() throws IOException {
+	protected void afterAll() throws IteratorException, IOException {
 		if (getFurtherClassesToBeAdded() != null) {
 			m_jarFileWriter.writeClassesIntoJar(getFurtherClassesToBeAdded());
 		}
@@ -69,20 +71,20 @@ public class JarModificationIterator extends AbstractJarIterator<ICodeModificati
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onExceptionInHandleEntry(Throwable throwable, String className) throws Exception {
-		throw new Exception(throwable);
+	protected void onExceptionInHandleEntry(Throwable throwable, String className) throws IteratorException {
+		throw new IteratorException("Exception in handle entry", throwable);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onExceptionInHandleResource(Throwable throwable, String resourcePath) throws Exception {
-		throw new Exception(throwable);
+	protected void onExceptionInHandleResource(Throwable throwable, String resourcePath) throws IteratorException {
+		throw new IteratorException("Exception in handle resource", throwable);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void onExceptionInJarProcessing(Throwable throwable, ICodeModificationOperation jarOperation)
-			throws Exception {
-		throw new Exception(throwable);
+			throws IteratorException {
+		throw new IteratorException("Exception in jar processing", throwable);
 	}
 }

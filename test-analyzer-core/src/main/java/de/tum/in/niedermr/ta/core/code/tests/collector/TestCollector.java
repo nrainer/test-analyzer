@@ -14,6 +14,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
+import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
@@ -41,19 +42,27 @@ public class TestCollector implements ITestCollector {
 	}
 
 	@Override
-	public void analyze(ClassReader cr, String originalClassPath) throws IOException, ClassNotFoundException {
+	public void analyze(ClassReader cr, String originalClassPath) throws CodeOperationException {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
 		ClassType testClassType = m_testClassDetector.analyzeIsTestClass(cn);
 
-		if (testClassType.isTestClass()) {
-			Set<String> testcases = collectTestcases(cn, testClassType);
+		if (!testClassType.isTestClass()) {
+			return;
+		}
 
-			if (!testcases.isEmpty()) {
-				Class<?> cls = Class.forName(JavaUtility.toClassName(originalClassPath));
-				m_result.put(cls, testcases);
-			}
+		Set<String> testcases = collectTestcases(cn, testClassType);
+
+		if (testcases.isEmpty()) {
+			return;
+		}
+
+		try {
+			Class<?> cls = Class.forName(JavaUtility.toClassName(originalClassPath));
+			m_result.put(cls, testcases);
+		} catch (ClassNotFoundException e) {
+			throw new CodeOperationException("ClassNotFoundException", e);
 		}
 	}
 

@@ -17,7 +17,7 @@ public abstract class AbstractTestAwareCodeAnalyzeOperation extends AbstractTest
 
 	/** {@inheritDoc} */
 	@Override
-	public final void analyze(ClassReader cr, String originalClassPath) throws Exception {
+	public final void analyze(ClassReader cr, String originalClassPath) throws CodeOperationException {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 

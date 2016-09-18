@@ -4,12 +4,14 @@ import java.io.File;
 import java.util.Objects;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.CoverageParserException;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.ICoverageParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoXmlParser;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /** Step to parse coverage files. */
 public class CoverageParserStep extends AbstractExecutionStep {
@@ -27,14 +29,19 @@ public class CoverageParserStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
+	protected void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws ExecutionException {
 		Objects.requireNonNull(m_coverageFileName);
 		Objects.requireNonNull(m_coverageResultReceiver);
 
-		ICoverageParser coverageParser = new JaCoCoXmlParser(getExecutionId());
-		coverageParser.initialize();
-		coverageParser.parse(new File(m_coverageFileName), m_coverageResultReceiver);
-		m_coverageResultReceiver.markResultAsComplete();
+		try {
+			ICoverageParser coverageParser = new JaCoCoXmlParser(getExecutionId());
+			coverageParser.initialize();
+			coverageParser.parse(new File(m_coverageFileName), m_coverageResultReceiver);
+			m_coverageResultReceiver.markResultAsComplete();
+		} catch (CoverageParserException e) {
+			throw new ExecutionException(getExecutionId(), e);
+		}
 	}
 
 	public void setCoverageFileName(String coverageFileName) {

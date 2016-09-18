@@ -3,6 +3,8 @@ package de.tum.in.niedermr.ta.runner.execution.exceptions;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 
 public class ExecutionException extends RuntimeException {
+
+	/** Serial version UID. */
 	private static final long serialVersionUID = 1L;
 
 	private final IExecutionId m_executionId;

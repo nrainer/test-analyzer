@@ -10,11 +10,13 @@ import java.util.Set;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
+import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.ReturnTypeRetrieverOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 /** Step to collect return types. */
@@ -30,7 +32,8 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
+	protected void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws ExecutionException, ReflectiveOperationException {
 		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 
 		Set<String> returnTypeClassNameSet = new HashSet<>();
@@ -49,14 +52,17 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 
 	/** Get data about the method access modifier. */
 	protected Collection<String> getNonPrimitiveReturnTypes(Configuration configuration, ITestCollector testCollector,
-			String sourceJarFileName) throws Throwable {
+			String sourceJarFileName) throws ExecutionException {
 		JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(sourceJarFileName,
 				configuration.getOperateFaultTolerant().getValue());
-
 		ReturnTypeRetrieverOperation operation = new ReturnTypeRetrieverOperation(testCollector.getTestClassDetector());
-		iterator.execute(operation);
 
-		return operation.getMethodReturnTypes().values();
+		try {
+			iterator.execute(operation);
+			return operation.getMethodReturnTypes().values();
+		} catch (IteratorException e) {
+			throw new ExecutionException(getExecutionId(), e);
+		}
 	}
 
 	/** {@inheritDoc} */

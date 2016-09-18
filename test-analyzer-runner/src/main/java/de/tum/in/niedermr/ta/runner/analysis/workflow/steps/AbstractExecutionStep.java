@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps;
 
+import java.io.IOException;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -70,7 +72,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	}
 
 	protected abstract void runInternal(Configuration configuration, ProcessExecution processExecution)
-			throws Throwable;
+			throws ExecutionException, ReflectiveOperationException, IOException;
 
 	/** Get the description of this step. */
 	protected abstract String getDescription();

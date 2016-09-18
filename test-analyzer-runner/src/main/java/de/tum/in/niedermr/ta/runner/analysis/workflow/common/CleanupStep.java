@@ -8,6 +8,7 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionSte
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /** Step to perform the cleanup. Removes temporary files. */
 public class CleanupStep extends AbstractExecutionStep {
@@ -20,7 +21,7 @@ public class CleanupStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws ExecutionException {
 		if (configuration.getRemoveTempData().getValue()) {
 			FileSystemUtils
 					.deleteRecursively(new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP)));

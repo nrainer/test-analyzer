@@ -14,6 +14,7 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
 
 public class InformationCollectorStep extends AbstractExecutionStep {
@@ -31,7 +32,8 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws ExecutionException, IOException {
 		final String classPath = configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
 				+ getSourceInstrumentedJarFilesClasspath(configuration) + CP_SEP
 				+ getTestInstrumentedJarFilesClasspath(configuration) + CP_SEP
@@ -61,9 +63,8 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 		loadCollectedData();
 	}
 
-	protected void loadCollectedData() throws IOException {
+	protected void loadCollectedData() throws ExecutionException, IOException {
 		List<String> data = TextFileData.readFromFile(getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
-
 		m_methodsToMutateAndTestsToRun.addAll(CollectedInformation.parseInformationCollectorData(data));
 	}
 

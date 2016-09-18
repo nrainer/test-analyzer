@@ -19,22 +19,21 @@ public class FaultTolerantJarAnalyzeIterator extends JarAnalyzeIterator {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
+	protected void onExceptionInHandleEntry(Throwable t, String className) {
 		LOGGER.warn("Skipping " + JavaUtility.toClassName(className) + " in fault tolerant mode. "
 				+ t.getClass().getName() + " occurred with message '" + t.getMessage() + "'.");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception {
+	protected void onExceptionInHandleResource(Throwable t, String resourcePath) {
 		LOGGER.warn("Skipping resource " + resourcePath + " in fault tolerant mode. " + t.getClass().getName()
 				+ " occurred with message '" + t.getMessage() + "'.");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void onExceptionInJarProcessing(Throwable throwable, ICodeAnalyzeOperation jarOperation)
-			throws Exception {
+	protected void onExceptionInJarProcessing(Throwable throwable, ICodeAnalyzeOperation jarOperation) {
 		LOGGER.error("Skipping whole jar file in fault tolerant mode because of a failure: " + getInputJarPath(),
 				throwable);
 		jarOperation.clearResult();

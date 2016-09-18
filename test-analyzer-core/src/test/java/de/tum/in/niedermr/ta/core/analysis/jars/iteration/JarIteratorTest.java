@@ -17,6 +17,8 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
+import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeAnalyzeOperation;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
@@ -159,19 +161,20 @@ public class JarIteratorTest {
 
 		/** {@inheritDoc} */
 		@Override
-		protected void onExceptionInHandleEntry(Throwable t, String className) throws Exception {
+		protected void onExceptionInHandleEntry(Throwable t, String className) throws IteratorException {
 			// NOP
 		}
 
 		/** {@inheritDoc} */
 		@Override
-		protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception {
+		protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws IteratorException {
 			// NOP
 		}
 
 		/** {@inheritDoc} */
 		@Override
-		protected void onExceptionInJarProcessing(Throwable throwable, ICodeOperation jarOperation) throws Exception {
+		protected void onExceptionInJarProcessing(Throwable throwable, ICodeOperation jarOperation)
+				throws IteratorException {
 			// NOP
 		}
 	}
@@ -185,7 +188,7 @@ public class JarIteratorTest {
 
 		/** {@inheritDoc} */
 		@Override
-		public void analyze(ClassReader cr, String originalClassPath) throws Exception {
+		public void analyze(ClassReader cr, String originalClassPath) throws CodeOperationException {
 			m_iteratedClasses.add(originalClassPath);
 		}
 
@@ -199,7 +202,7 @@ public class JarIteratorTest {
 	class EmptyAnalyzeOperation implements ICodeAnalyzeOperation {
 		/** {@inheritDoc} */
 		@Override
-		public void analyze(ClassReader cr, String originalClassPath) throws Exception {
+		public void analyze(ClassReader cr, String originalClassPath) throws CodeOperationException {
 			// NOP
 		}
 
@@ -213,7 +216,7 @@ public class JarIteratorTest {
 	class EmptyModificationOperation implements ICodeModificationOperation {
 		/** {@inheritDoc} */
 		@Override
-		public void modify(ClassReader cr, ClassWriter cw) throws Exception {
+		public void modify(ClassReader cr, ClassWriter cw) throws CodeOperationException {
 			// NOP
 		}
 	}

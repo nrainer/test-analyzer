@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.core.analysis.jars.iteration;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.JarEntry;
 
@@ -7,6 +8,8 @@ import org.objectweb.asm.ClassReader;
 
 import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileContent;
 import de.tum.in.niedermr.ta.core.code.iteration.IArtifactIterator;
+import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
 
 /** Abstract iterator for jar files. */
@@ -24,7 +27,7 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 
 	/** {@inheritDoc} */
 	@Override
-	public final void execute(OP jarOperation) throws Exception {
+	public final void execute(OP jarOperation) throws IteratorException {
 		try {
 			beforeAll();
 
@@ -39,7 +42,8 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 		}
 	}
 
-	private void processClassEntryList(OP jarOperation, JarFileContent classContainer) throws Exception {
+	private void processClassEntryList(OP jarOperation, JarFileContent classContainer)
+			throws IteratorException, IOException {
 		for (JarEntry entry : classContainer.getClassEntryList()) {
 			InputStream inStream = classContainer.getInputStream(entry);
 			ClassReader cr = new ClassReader(inStream);
@@ -54,7 +58,8 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 		}
 	}
 
-	private void processResourceEntryList(OP jarOperation, JarFileContent classContainer) throws Exception {
+	private void processResourceEntryList(OP jarOperation, JarFileContent classContainer)
+			throws IteratorException, IOException {
 		for (JarEntry entry : classContainer.getResourceEntryList()) {
 			InputStream inStream = classContainer.getInputStream(entry);
 
@@ -68,18 +73,19 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 		}
 	}
 
-	protected abstract void beforeAll() throws Exception;
+	protected abstract void beforeAll() throws IteratorException, IOException;
 
-	protected abstract void handleEntry(OP jarOperation, ClassReader cr, String originalClassPath) throws Exception;
+	protected abstract void handleEntry(OP jarOperation, ClassReader cr, String originalClassPath)
+			throws IteratorException, CodeOperationException, IOException;
 
 	protected abstract void handleResource(OP jarOperation, JarEntry resourceEntry, InputStream inStream)
-			throws Exception;
+			throws IteratorException, CodeOperationException, IOException;
 
-	protected abstract void afterAll() throws Exception;
+	protected abstract void afterAll() throws IteratorException, IOException;
 
-	protected abstract void onExceptionInHandleEntry(Throwable t, String className) throws Exception;
+	protected abstract void onExceptionInHandleEntry(Throwable t, String className) throws IteratorException;
 
-	protected abstract void onExceptionInHandleResource(Throwable t, String resourcePath) throws Exception;
+	protected abstract void onExceptionInHandleResource(Throwable t, String resourcePath) throws IteratorException;
 
 	/**
 	 * An exception occurred during the preparation or tear down (outside of
@@ -91,5 +97,5 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 	 * @param jarOperation
 	 *            operation to be executed
 	 */
-	protected abstract void onExceptionInJarProcessing(Throwable throwable, OP jarOperation) throws Exception;
+	protected abstract void onExceptionInJarProcessing(Throwable throwable, OP jarOperation) throws IteratorException;
 }

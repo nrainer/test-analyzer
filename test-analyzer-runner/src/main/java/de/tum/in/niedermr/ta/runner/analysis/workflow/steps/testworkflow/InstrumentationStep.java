@@ -7,7 +7,12 @@ import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.TestInstrument
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
+/**
+ * Step to instrument the methods of the jars to be mutated in order to find the
+ * methods under test to be mutated.
+ */
 public class InstrumentationStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
@@ -18,12 +23,8 @@ public class InstrumentationStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
-		/**
-		 * Instrument the methods of the jars to be mutated in order to find the methods under test to be mutated out of
-		 * these.
-		 */
-
+	public void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws ExecutionException, ReflectiveOperationException {
 		IFullExecutionId executionId = createFullExecutionId();
 		final boolean operateFaultTolerant = configuration.getOperateFaultTolerant().getValue();
 		ITestRunner testRunner = configuration.getTestRunner().createInstance();

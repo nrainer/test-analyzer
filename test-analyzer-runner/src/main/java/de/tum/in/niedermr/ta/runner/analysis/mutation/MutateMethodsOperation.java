@@ -13,6 +13,7 @@ import de.tum.in.niedermr.ta.core.analysis.filter.MethodFilterList;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.ReturnValueGeneratorUtil;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 
@@ -30,7 +31,7 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void modify(ClassReader cr, ClassWriter cw) throws Exception {
+	public void modify(ClassReader cr, ClassWriter cw) throws CodeOperationException {
 		ClassNode cn = new ClassNode();
 		cr.accept(cn, 0);
 
@@ -49,7 +50,8 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 
 	private void mutate(MethodNode method, MethodIdentifier methodIdentifier) {
 		if (!ReturnValueGeneratorUtil.canHandleType(m_returnValueGenerator, methodIdentifier, method.desc)) {
-			// Note that capability to handle the return type is - if used correctly - already checked by the method
+			// Note that capability to handle the return type is - if used
+			// correctly - already checked by the method
 			// filter.
 			throw new IllegalStateException(
 					"The selected return value generator does not support a value generation for the method "

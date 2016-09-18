@@ -58,54 +58,65 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 
 	/** @see #execute(IExecutionId, int, String, String, String[]) */
 	public ExecutionResult execute(IExecutionId executionId, int timeout, Class<?> mainClass, String classpath,
-			ProgramArgsWriter argsWriter) throws ExecutionException, IOException {
+			ProgramArgsWriter argsWriter) throws ExecutionException {
 		return execute(executionId, timeout, mainClass.getName(), classpath, argsWriter.getArgs());
 	}
 
 	/** @see #execute(IExecutionId, int, String, String, String[]) */
 	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClassName, String classpath,
-			ProgramArgsWriter argsWriter) throws ExecutionException, IOException {
+			ProgramArgsWriter argsWriter) throws ExecutionException {
 		return execute(executionId, timeout, mainClassName, classpath, argsWriter.getArgs());
 	}
 
 	/** Start a java process and wait until it terminates. */
 	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClassName, String classpath,
-			String[] arguments) throws ExecutionException, IOException {
+			String[] arguments) throws ExecutionException {
+		try {
+			List<String> command = createProcessCommand(mainClassName, classpath, arguments);
+
+			ProcessBuilder processBuilder = new ProcessBuilder(command);
+			processBuilder.directory(new File(m_directory));
+
+			LOGGER.info("EXECUTING PROCESS: '" + executionId.get() + "' " + command.toString());
+
+			ExecutionResult result = ProcessUtils.execute(processBuilder, null, timeout);
+
+			if (PRINT_SYS_ERR_TO_CONSOLE && !StringUtility.isNullOrEmpty(result.getStderr())) {
+				writeToConsole("===== BEGIN SYSERR OF EXECUTED PROCESS =====");
+				writeToConsole(result.getStderr());
+				writeToConsole("=====  END SYSERR OF EXECUTED PROCESS  =====");
+			}
+
+			if (!result.isNormalTermination()) {
+				throw new TimeoutException(executionId, timeout);
+			}
+
+			if (result.getReturnCode() != 0) {
+				throw new ProcessExecutionFailedException(executionId,
+						"Execution id '" + executionId.get() + "' returned with other code than 0");
+			}
+
+			return result;
+		} catch (IOException e) {
+			throw new ExecutionException(executionId, e);
+		}
+	}
+
+	/** Create the command for the process execution. */
+	private List<String> createProcessCommand(String mainClassName, String classpath, String[] arguments)
+			throws IOException {
 		List<String> command = new LinkedList<>();
 
 		command.add(COMMAND_JAVA);
 		command.add(PARAM_CLASSPATH);
-		command.add(Environment.makeClasspathCanonical(Environment.replaceFolders(classpath,
-				this.m_programFolderForClasspath, this.m_workingFolderForClasspath)));
+		command.add(Environment.makeClasspathCanonical(
+				Environment.replaceFolders(classpath, m_programFolderForClasspath, m_workingFolderForClasspath)));
 		command.add(mainClassName);
 
 		for (String arg : arguments) {
 			command.add(CommonConstants.QUOTATION_MARK + arg + CommonConstants.QUOTATION_MARK);
 		}
-
-		ProcessBuilder processBuilder = new ProcessBuilder(command);
-		processBuilder.directory(new File(m_directory));
-
-		LOGGER.info("EXECUTING PROCESS: '" + executionId.get() + "' " + command.toString());
-
-		ExecutionResult result = ProcessUtils.execute(processBuilder, null, timeout);
-
-		if (PRINT_SYS_ERR_TO_CONSOLE && !StringUtility.isNullOrEmpty(result.getStderr())) {
-			writeToConsole("===== BEGIN SYSERR OF EXECUTED PROCESS =====");
-			writeToConsole(result.getStderr());
-			writeToConsole("=====  END SYSERR OF EXECUTED PROCESS  =====");
-		}
-
-		if (!result.isNormalTermination()) {
-			throw new TimeoutException(executionId, timeout);
-		}
-
-		if (result.getReturnCode() != 0) {
-			throw new ProcessExecutionFailedException(executionId,
-					"Execution id '" + executionId.get() + "' returned with other code than 0");
-		}
-
-		return result;
+		return command;
 	}
 
 	private static void writeToConsole(String output) {

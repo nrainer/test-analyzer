@@ -4,6 +4,8 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 
 /** Configuration exception. */
 public class ConfigurationException extends Exception {
+
+	/** Serial version UID. */
 	private static final long serialVersionUID = 1L;
 
 	/** Constructor. */

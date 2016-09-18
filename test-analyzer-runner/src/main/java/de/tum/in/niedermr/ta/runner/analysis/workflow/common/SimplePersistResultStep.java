@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.common;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /** Execution step to write the result to a file. */
 public class SimplePersistResultStep extends AbstractExecutionStep implements IResultReceiver {
@@ -43,7 +45,8 @@ public class SimplePersistResultStep extends AbstractExecutionStep implements IR
 
 	/** {@inheritDoc} */
 	@Override
-	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
+	protected void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws ExecutionException, IOException {
 		TextFileData.writeToFile(getFileInWorkingArea(m_resultFileName), m_result);
 	}
 

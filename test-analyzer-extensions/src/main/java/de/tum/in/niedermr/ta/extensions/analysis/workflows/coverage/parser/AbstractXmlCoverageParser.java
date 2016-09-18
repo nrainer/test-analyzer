@@ -37,19 +37,27 @@ public abstract class AbstractXmlCoverageParser implements ICoverageParser {
 
 	/** {@inheritDoc} */
 	@Override
-	public void initialize() throws ParserConfigurationException {
-		m_documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-		m_documentBuilder.setEntityResolver(new CoverageReportEntityResolver());
+	public void initialize() throws CoverageParserException {
+		try {
+			m_documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			m_documentBuilder.setEntityResolver(new CoverageReportEntityResolver());
 
-		XPathFactory xPathFactory = XPathFactory.newInstance();
-		m_xPath = xPathFactory.newXPath();
+			XPathFactory xPathFactory = XPathFactory.newInstance();
+			m_xPath = xPathFactory.newXPath();
+		} catch (ParserConfigurationException e) {
+			throw new CoverageParserException("Parser initialization failed", e);
+		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void parse(File inputFile, IResultReceiver resultReceiver) throws Exception {
-		Document document = m_documentBuilder.parse(inputFile);
-		parse(document, resultReceiver);
+	public void parse(File inputFile, IResultReceiver resultReceiver) throws CoverageParserException {
+		try {
+			Document document = m_documentBuilder.parse(inputFile);
+			parse(document, resultReceiver);
+		} catch (SAXException | IOException | XPathExpressionException e) {
+			throw new CoverageParserException("Parser exception", e);
+		}
 	}
 
 	protected abstract void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException;

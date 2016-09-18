@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.common;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
@@ -8,10 +9,11 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionSte
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
- * This step prepares the working folder. It should be executed before each workflow to ensure that the temp folder is
- * empty.
+ * This step prepares the working folder. It should be executed before each
+ * workflow to ensure that the temp folder is empty.
  */
 public class PrepareWorkingFolderStep extends AbstractExecutionStep {
 
@@ -23,7 +25,8 @@ public class PrepareWorkingFolderStep extends AbstractExecutionStep {
 
 	/** {@inheritDoc} */
 	@Override
-	public void runInternal(Configuration configuration, ProcessExecution processExecution) throws Exception {
+	public void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws ExecutionException, IOException {
 		final File workingAreaTemp = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP));
 		final File workingAreaResult = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_RESULT));
 

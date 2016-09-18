@@ -2,7 +2,14 @@ package de.tum.in.niedermr.ta.core.code.iteration;
 
 import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
 
+/** Iterator over elements in an artifact. */
 public interface IArtifactIterator<OP extends ICodeOperation> {
 
-	void execute(OP jarOperation) throws Exception;
+	/**
+	 * Execute an operation on all elements in the artifact.
+	 * 
+	 * @param operation
+	 *            to be executed for all elements
+	 */
+	void execute(OP operation) throws IteratorException;
 }

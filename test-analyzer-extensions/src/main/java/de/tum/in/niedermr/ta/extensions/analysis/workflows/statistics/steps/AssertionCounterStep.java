@@ -13,12 +13,14 @@ import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
+import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public class AssertionCounterStep extends AbstractExecutionStep {
@@ -43,6 +45,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		this.m_assertionInformation = getAssertionInformation();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "ASSCOUNT";
@@ -81,20 +84,31 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		return result;
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	protected void runInternal(Configuration configuration, ProcessExecution processExecution) throws Throwable {
+	protected void runInternal(Configuration configuration, ProcessExecution processExecution)
+			throws ExecutionException, ReflectiveOperationException {
 		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 		boolean operateFaultTolerant = configuration.getOperateFaultTolerant().getValue();
 
-		for (String testJar : configuration.getCodePathToTest().getElements()) {
-			this.m_assertionsPerTestcase.putAll(getCountAssertionsData(testJar, testCollector, operateFaultTolerant));
+		try {
+			countAssertionsInTestcases(configuration, testCollector, operateFaultTolerant);
+		} catch (IteratorException e) {
+			throw new ExecutionException(getExecutionId(), e);
 		}
 
 		TestcaseInheritanceHelper.postProcessAllTestcases(m_allTestcases, m_assertionsPerTestcase);
 	}
 
+	private void countAssertionsInTestcases(Configuration configuration, ITestCollector testCollector,
+			boolean operateFaultTolerant) throws IteratorException {
+		for (String testJar : configuration.getCodePathToTest().getElements()) {
+			m_assertionsPerTestcase.putAll(getCountAssertionsData(testJar, testCollector, operateFaultTolerant));
+		}
+	}
+
 	private Map<TestcaseIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector,
-			boolean operateFaultTolerant) throws Throwable {
+			boolean operateFaultTolerant) throws IteratorException {
 		JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile, operateFaultTolerant);
 
 		iterator.execute(testCollector);
@@ -112,6 +126,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		return m_assertionsPerTestcase;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected String getDescription() {
 		return "Counting the assertions per testcase";
