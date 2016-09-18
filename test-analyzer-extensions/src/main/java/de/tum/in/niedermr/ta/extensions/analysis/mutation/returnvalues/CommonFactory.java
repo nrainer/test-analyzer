@@ -18,13 +18,13 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.AbstractReturnFactory;
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnFactory;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 /**
- * Can be used as fallback factory. Note that the type string is supposed to be handled by a simple return value
- * generator on request.
+ * Can be used as fallback factory. Note that the type string is supposed to be
+ * handled by a simple return value generator on request.
  */
 public class CommonFactory extends AbstractReturnFactory {
 	public static final CommonFactory INSTANCE = new CommonFactory();
@@ -153,7 +153,8 @@ public class CommonFactory extends AbstractReturnFactory {
 	}
 
 	private Object tryCreateJavaLangNonWrapper(String returnType) throws NoSuchElementException {
-		// Note that java.lang.String is handled by the simple return value generators.
+		// Note that java.lang.String is handled by the simple return value
+		// generators.
 
 		switch (returnType) {
 		case "java.lang.Object":
