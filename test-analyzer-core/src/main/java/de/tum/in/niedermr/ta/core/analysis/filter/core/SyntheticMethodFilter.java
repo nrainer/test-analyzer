@@ -13,7 +13,7 @@ public class SyntheticMethodFilter implements IMethodFilter {
 
 	/** {@inheritDoc} */
 	@Override
-	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode methodNode) throws Exception {
+	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode methodNode) {
 		if (OpcodesUtility.hasFlag(methodNode.access, Opcodes.ACC_SYNTHETIC)) {
 			return FilterResult.reject(getClass());
 		}

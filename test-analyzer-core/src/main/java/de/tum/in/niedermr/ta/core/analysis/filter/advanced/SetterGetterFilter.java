@@ -15,13 +15,17 @@ import org.objectweb.asm.tree.MethodNode;
 import de.tum.in.niedermr.ta.core.analysis.filter.FilterResult;
 import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 
 /** Filters simple setter and getter methods out. */
 public class SetterGetterFilter implements IMethodFilter {
 
-	/** The class names in the set indicate that information about the methods in these classes is already available. */
+	/**
+	 * The class names in the set indicate that information about the methods in
+	 * these classes is already available.
+	 */
 	private final Set<String> m_initializedClasses;
 
 	/** Contains setter and getter methods of initialized classes. */
@@ -35,8 +39,12 @@ public class SetterGetterFilter implements IMethodFilter {
 
 	/** {@inheritDoc} */
 	@Override
-	public FilterResult apply(MethodIdentifier identifier, MethodNode method) throws IOException {
-		ensureDataAvailability(identifier.getOnlyClassName());
+	public FilterResult apply(MethodIdentifier identifier, MethodNode method) throws CodeOperationException {
+		try {
+			ensureDataAvailability(identifier.getOnlyClassName());
+		} catch (IOException e) {
+			throw new CodeOperationException("ensureDataAvailability failed", e);
+		}
 
 		if (m_setterGetterMethods.contains(identifier)) {
 			return FilterResult.reject(SetterGetterFilter.class, "Setter or getter");
@@ -71,7 +79,8 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	/**
-	 * Return true if the instructions are supposed to be a simple setter. <code>
+	 * Return true if the instructions are supposed to be a simple setter.
+	 * <code>
 	 * 1 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 2 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 3 ALOAD
@@ -183,7 +192,8 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	/**
-	 * Return true if the instructions are supposed to be a simple constant getter. <code>
+	 * Return true if the instructions are supposed to be a simple constant
+	 * getter. <code>
 	 * 1 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 2 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 3 xCONST_x | xPUSH | LDC | LDC_W | LDC2_W 

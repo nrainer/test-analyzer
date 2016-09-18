@@ -10,7 +10,7 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 public class NonEmptyMethodFilter implements IMethodFilter {
 
 	@Override
-	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode methodNode) throws Exception {
+	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode methodNode) {
 		int countInstructions = BytecodeUtility.countMethodInstructions(methodNode);
 
 		if (countInstructions == 1) {
