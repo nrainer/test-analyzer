@@ -36,8 +36,40 @@ public class ClassWithMethodsForMutation {
 		return '%';
 	}
 
-	public Integer getInteger() {
+	public Boolean getTrueBooleanWrapper() {
+		return Boolean.TRUE;
+	}
+
+	public Boolean getFalseBooleanWrapper() {
+		return Boolean.FALSE;
+	}
+
+	public Byte getByteWrapper() {
 		return -100;
+	}
+
+	public Short getShortWrapper() {
+		return -100;
+	}
+
+	public Integer getIntegerWrapper() {
+		return -100;
+	}
+
+	public Character getCharacterWrapper() {
+		return '%';
+	}
+
+	public Long getLongWrapper() {
+		return -100L;
+	}
+
+	public Float getFloatWrapper() {
+		return -100.0F;
+	}
+
+	public Double getDoubleWrapper() {
+		return -100.0;
 	}
 
 	public int[] getIntArray() {
@@ -58,7 +90,7 @@ public class ClassWithMethodsForMutation {
 
 	public void voidMethod() {
 		for (int i = 0; i < 3; i++) {
-			getInteger();
+			getStringValue();
 		}
 	}
 }

@@ -32,6 +32,11 @@ public abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnV
 
 	public abstract void handleStringReturn(MethodVisitor mv);
 
+	/** @see #m_supportStringType */
+	public boolean isSupportStringType() {
+		return m_supportStringType;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public final void putReturnValueBytecodeInstructions(MethodVisitor mv, MethodIdentifier methodIdentifier,
@@ -65,7 +70,7 @@ public abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnV
 		}
 	}
 
-	private void handleObjectReturn(MethodVisitor mv, Type type) {
+	protected void handleObjectReturn(MethodVisitor mv, Type type) {
 		if (m_supportStringType && Identification.isString(type)) {
 			handleStringReturn(mv);
 		}
@@ -73,7 +78,7 @@ public abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnV
 
 	/** {@inheritDoc} */
 	@Override
-	public final boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {
+	public boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {
 		return m_supportStringType ? Identification.isPrimitiveOrString(returnType)
 				: Identification.isPrimitive(returnType);
 	}

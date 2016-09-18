@@ -23,7 +23,7 @@ public class NullReturnValueGeneratorTest extends AbstractReturnValueGeneratorTe
 	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		assertNull(mutatedClass.getMethod("getStringValue").invoke(instanceOfMutatedClass));
-		assertNull(mutatedClass.getMethod("getInteger").invoke(instanceOfMutatedClass));
+		assertNull(mutatedClass.getMethod("getIntegerWrapper").invoke(instanceOfMutatedClass));
 		assertNull(mutatedClass.getMethod("getIntArray").invoke(instanceOfMutatedClass));
 		assertNull(mutatedClass.getMethod("getFile").invoke(instanceOfMutatedClass));
 
