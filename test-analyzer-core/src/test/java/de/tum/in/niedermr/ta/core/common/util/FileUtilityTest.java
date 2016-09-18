@@ -4,6 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+
+/** Test {@link FileUtility}. */
 public class FileUtilityTest {
 	@Test
 	public void testPrefixFileNameIfNotAbsolute() {
@@ -24,5 +27,17 @@ public class FileUtilityTest {
 
 		fileName = "E:\\a.jar";
 		assertEquals(fileName, FileUtility.prefixFileNameIfNotAbsolute(fileName, prefix));
+	}
+
+	/** Test. */
+	@Test
+	public void testEnsurePathEndsWithPathSeparator() {
+		String pathSeparator = FileSystemConstants.PATH_SEPARATOR;
+
+		assertEquals("", FileUtility.ensurePathEndsWithPathSeparator(null, pathSeparator));
+		assertEquals("", FileUtility.ensurePathEndsWithPathSeparator("", pathSeparator));
+		assertEquals("./src" + pathSeparator, FileUtility.ensurePathEndsWithPathSeparator("./src", pathSeparator));
+		assertEquals("./src" + pathSeparator,
+				FileUtility.ensurePathEndsWithPathSeparator("./src" + pathSeparator, pathSeparator));
 	}
 }
