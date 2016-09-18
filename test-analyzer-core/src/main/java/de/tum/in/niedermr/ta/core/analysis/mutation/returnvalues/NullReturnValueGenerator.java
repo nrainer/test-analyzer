@@ -4,6 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 /** Return value generator that returns null for objects and arrays. */

@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
 
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
 

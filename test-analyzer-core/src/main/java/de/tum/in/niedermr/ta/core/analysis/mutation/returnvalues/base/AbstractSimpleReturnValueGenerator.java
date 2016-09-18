@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues;
+package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Type;
@@ -11,7 +11,7 @@ import de.tum.in.niedermr.ta.core.code.util.Identification;
  * not supported.
  *
  */
-abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnValueGenerator {
+public abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnValueGenerator {
 	private final boolean m_supportStringType;
 
 	public AbstractSimpleReturnValueGenerator(boolean supportStringType) {

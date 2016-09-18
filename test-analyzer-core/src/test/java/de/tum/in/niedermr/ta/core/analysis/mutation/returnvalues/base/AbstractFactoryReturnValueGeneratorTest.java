@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues;
+package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base;
 
 import static org.junit.Assert.fail;
 

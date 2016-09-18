@@ -1,4 +1,6 @@
-package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues;
+package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base;
+
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
 
 /** Abstract return value generator. */
 public abstract class AbstractReturnValueGenerator implements IReturnValueGenerator {

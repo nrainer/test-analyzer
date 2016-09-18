@@ -3,6 +3,8 @@ package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractSimpleReturnValueGenerator;
+
 /**
  * Return value generator which can handle methods with primitive and String
  * return types. Void is not supported. Note that wrappers of primitive types
