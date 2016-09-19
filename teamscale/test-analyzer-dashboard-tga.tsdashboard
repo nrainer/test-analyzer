@@ -1,0 +1,163 @@
+<com.teamscale.core.migration.TeamscaleVersionContainer>
+  <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_8</version>
+  <payload class="com.teamscale.index.dashboard.DashboardDescriptor">
+    <name>TestAnalyzer TGA</name>
+    <owner>admin</owner>
+    <descriptorJSON><![CDATA[{
+  "widgets": [
+    {
+      "widget-id": "tga-treemap",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "width": 12,
+        "height": 5
+      },
+      "Title": "Test Gaps",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
+        "hiddenInWidgetTitle": true
+      },
+      "Baseline": {
+        "type": "date",
+        "value": 1459461600000
+      },
+      "End date": {
+        "type": "timespan",
+        "value": 0
+      },
+      "Execution only": false,
+      "Environments": {
+        "selectedEnvironments": [],
+        "useAll": true
+      },
+      "Outline depth": 0,
+      "Outline color": [
+        "rgb(0, 0, 0)"
+      ],
+      "Cross-annotate execution": []
+    },
+    {
+      "widget-id": "treemap",
+      "position": {
+        "x": 0,
+        "y": 5,
+        "width": 4,
+        "height": 4
+      },
+      "Title": "Unit Test Coverage: Core",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-/test-analyzer-core/src/main/java/de/tum/in/niedermr/ta/core",
+        "hiddenInWidgetTitle": true
+      },
+      "Area Metric": "Source Lines of Code",
+      "Color Metric": "Line Coverage",
+      "Color": [
+        "rgb(51, 255, 51)"
+      ],
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ],
+      "Enable cushion": false
+    },
+    {
+      "widget-id": "treemap",
+      "position": {
+        "x": 4,
+        "y": 5,
+        "width": 4,
+        "height": 4
+      },
+      "Title": "Unit Test Coverage: Runner",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
+        "hiddenInWidgetTitle": true
+      },
+      "Area Metric": "Source Lines of Code",
+      "Color Metric": "Line Coverage",
+      "Color": [
+        "rgb(51, 255, 51)"
+      ],
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ],
+      "Enable cushion": false
+    },
+    {
+      "widget-id": "treemap",
+      "position": {
+        "x": 8,
+        "y": 5,
+        "width": 4,
+        "height": 4
+      },
+      "Title": "Unit Test Coverage: Extensions",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-/test-analyzer-extensions/src/main/java/de/tum/in/niedermr/ta/extensions",
+        "hiddenInWidgetTitle": true
+      },
+      "Area Metric": "Source Lines of Code",
+      "Color Metric": "Line Coverage",
+      "Color": [
+        "rgb(51, 255, 51)"
+      ],
+      "Included files": [
+        ".*"
+      ],
+      "Excluded files": [
+        ""
+      ],
+      "Enable cushion": false
+    },
+    {
+      "widget-id": "metrics-trend-chart",
+      "position": {
+        "x": 0,
+        "y": 9,
+        "width": 12,
+        "height": 3
+      },
+      "Title": "Unit Test Line Coverage",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
+        "hiddenInWidgetTitle": true
+      },
+      "Trend": {
+        "type": "timespan",
+        "value": 30
+      },
+      "Zooming": true,
+      "Hide Y-Axes": false,
+      "Baselines": false,
+      "Action menu": false,
+      "Metrics": [
+        "Line Coverage"
+      ],
+      "Colors": [
+        "rgb(99, 156, 206)",
+        "rgb(255, 102, 51)",
+        "rgb(255, 255, 51)",
+        "rgb(102, 204, 102)",
+        "rgb(102, 102, 102)"
+      ],
+      "Stacked": false,
+      "Include 0": false,
+      "One scale": false
+    }
+  ]
+}]]></descriptorJSON>
+    <author>admin</author>
+    <comment></comment>
+  </payload>
+</com.teamscale.core.migration.TeamscaleVersionContainer>

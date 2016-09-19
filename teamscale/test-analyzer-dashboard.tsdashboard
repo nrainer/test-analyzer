@@ -1,8 +1,8 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
   <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_8</version>
   <payload class="com.teamscale.index.dashboard.DashboardDescriptor">
-    <name>Test Analyzer Overview</name>
-    <owner>niedermayr</owner>
+    <name>Testanalyzer Overview</name>
+    <owner>admin</owner>
     <descriptorJSON><![CDATA[{
   "widgets": [
     {
@@ -13,7 +13,7 @@
         "width": 12,
         "height": 5
       },
-      "Title": "LOC vs. Findings Trend",
+      "Title": "SLOC vs. Findings Trend",
       "Path": {
         "project": "test-analyzer",
         "path": "",
@@ -23,17 +23,19 @@
         "type": "timespan",
         "value": "90"
       },
-      "Zooming": false,
+      "Zooming": true,
       "Metrics": [
-        "Lines of Code",
-        "Number of Findings"
+        "Source Lines of Code",
+        "Number of Findings",
+        "Findings Density"
       ],
       "Colors": [
         "rgb(51, 102, 255)",
         "rgb(255, 0, 0)",
-        "rgb(0, 153, 0)",
+        "rgb(255, 153, 102)",
         "rgb(102, 204, 102)",
-        "rgb(102, 102, 102)"
+        "rgb(102, 102, 102)",
+        "rgb(255, 102, 51)"
       ],
       "Stacked": false,
       "Include 0": true,
@@ -54,7 +56,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Clone Coverage",
       "Boundaries": "0.05,0.1",
@@ -106,7 +108,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Number of Findings",
       "Boundaries": "100,250",
@@ -202,10 +204,10 @@
         "width": 2,
         "height": 2
       },
-      "Title": "SLOC",
+      "Title": "SLOC App",
       "Path": {
         "project": "test-analyzer",
-        "path": "",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
         "hiddenInWidgetTitle": true
       },
       "Metric": "Source Lines of Code",
@@ -228,11 +230,11 @@
         "width": 2,
         "height": 2
       },
-      "Title": "SLOC without test",
+      "Title": "SLOC Test",
       "Path": {
         "project": "test-analyzer",
-        "path": "-architectures-/simple-app-and-test.architecture/application/-src-",
-        "hiddenInWidgetTitle": false
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/test/-src-",
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Source Lines of Code",
       "Boundaries": "",
@@ -385,7 +387,7 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": false
+        "hiddenInWidgetTitle": true
       },
       "Metric": "Findings Density",
       "Boundaries": "5,10",
@@ -421,14 +423,14 @@
         "value": "30",
         "type": "timespan"
       },
-      "Metric Threshold Configuration": "Test Analyzer"
+      "Metric Threshold Configuration": "Project Default"
     },
     {
-      "widget-id": "assessment-pie-chart",
+      "widget-id": "assessment-trend-chart",
       "position": {
-        "x": 7,
+        "x": 0,
         "y": 23,
-        "width": 5,
+        "width": 12,
         "height": 3
       },
       "Title": "Comments",
@@ -437,59 +439,20 @@
         "path": "",
         "hiddenInWidgetTitle": true
       },
-      "Metric": "Comment Completeness Assessment",
       "Trend": {
-        "value": "30",
-        "type": "timespan"
+        "type": "timespan",
+        "value": 30
       },
-      "Legend": true,
-      "Show absolute values": false,
-      "Assessment thresholds": ""
-    },
-    {
-      "widget-id": "codecity",
-      "position": {
-        "x": 0,
-        "y": 23,
-        "width": 7,
-        "height": 3
-      },
-      "Title": "Code City",
-      "Path": {
-        "project": "test-analyzer",
-        "path": "",
-        "hiddenInWidgetTitle": true
-      },
-      "Area Metric": "Lines of Code",
-      "Color Metric": "File Size Assessment",
-      "Color": [
-        "rgb(0, 0, 255)"
-      ],
-      "Included files": [
-        ".*"
-      ],
-      "Excluded files": [
-        ""
-      ],
-      "Height Metric": "Lines of Code"
+      "Zooming": false,
+      "Hide Y-Axes": false,
+      "Baselines": false,
+      "Action menu": false,
+      "Assessment": "Comment Completeness Assessment",
+      "Show ratios": true
     }
   ]
 }]]></descriptorJSON>
-    <author>niedermayr</author>
+    <author>admin</author>
     <comment>Created from template &apos;admin/Overview Dashboard&apos;</comment>
-    <groupAccessEntries>
-      <com.teamscale.index.dashboard.DashboardAccessEntry>
-        <userOrGroup>Administrators</userOrGroup>
-        <accessRight>READ</accessRight>
-      </com.teamscale.index.dashboard.DashboardAccessEntry>
-      <com.teamscale.index.dashboard.DashboardAccessEntry>
-        <userOrGroup>Project Admins</userOrGroup>
-        <accessRight>READ</accessRight>
-      </com.teamscale.index.dashboard.DashboardAccessEntry>
-      <com.teamscale.index.dashboard.DashboardAccessEntry>
-        <userOrGroup>demousers</userOrGroup>
-        <accessRight>READ</accessRight>
-      </com.teamscale.index.dashboard.DashboardAccessEntry>
-    </groupAccessEntries>
   </payload>
 </com.teamscale.core.migration.TeamscaleVersionContainer>
