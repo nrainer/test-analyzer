@@ -34,6 +34,9 @@
   <component name="runner.execution" dim="190,40" pos="661,401">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.execution.*" />
   </component>
+  <component name="runner.factory" dim="160,40" pos="1201,171">
+    <code-mapping type="include" regex="de\.tum\.in\.niedermr\.ta\.runner\.factory\..*" />
+  </component>
   <component name="runner.logging" dim="160,40" pos="951,301" stereotype="public">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.logging.*" />
   </component>
@@ -63,6 +66,7 @@
   <allow source="runner.analysis" target="core.execution" />
   <allow source="runner.analysis" target="runner.configuration" />
   <allow source="runner.analysis" target="runner.execution" />
+  <allow source="runner.analysis" target="runner.factory" />
   <tolerate source="runner.analysis" target="runner.start">
     <dependency source="de.tum.in.niedermr.ta.runner.analysis.TestRun" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
     <dependency source="de.tum.in.niedermr.ta.runner.analysis.InformationCollector" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
@@ -77,21 +81,23 @@
     <dependency source="de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractClasspathProperty" target="de.tum.in.niedermr.ta.runner.execution.environment.Environment" />
     <dependency source="de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader" target="de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader" />
   </tolerate>
+  <allow source="runner.configuration" target="runner.factory" />
   <allow source="runner.execution" target="core.analysis" />
   <allow source="runner.execution" target="core.execution" />
   <allow source="runner.execution" target="runner.analysis" />
   <allow source="runner.execution" target="runner.configuration" />
+  <allow source="runner.execution" target="runner.factory" />
   <allow source="runner.execution" target="runner.start" />
   <allow source="runner.execution" target="runner.test" />
+  <allow source="runner.factory" target="core.execution" />
+  <allow source="runner.factory" target="runner.configuration" />
+  <allow source="runner.factory" target="runner.execution" />
   <allow source="runner.logging" target="runner.execution" />
   <allow source="runner.start" target="core.execution" />
   <allow source="runner.start" target="runner.analysis" />
   <allow source="runner.start" target="runner.configuration" />
-  <tolerate source="runner.start" target="runner.constants">
-    <dependency source="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" target="de.tum.in.niedermr.ta.runner.constants.TestAnalyzerConstants" />
-    <dependency source="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerBatchStart" target="de.tum.in.niedermr.ta.runner.constants.TestAnalyzerConstants" />
-  </tolerate>
   <allow source="runner.start" target="runner.execution" />
+  <allow source="runner.start" target="runner.factory" />
   <allow source="runner.test" target="runner.configuration" />
   <allow source="test.integration" target="runner.configuration" />
   <allow source="test.integration" target="runner.execution" />
