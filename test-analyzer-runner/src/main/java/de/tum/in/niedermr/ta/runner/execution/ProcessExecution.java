@@ -27,7 +27,7 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 	private static final Logger LOGGER = LogManager.getLogger(ProcessExecution.class);
 
 	private static final String WRAPPED_EMPTY_PATTERN = "!EMPTY!";
-	private static final boolean PRINT_SYS_ERR_TO_CONSOLE = true;
+	private static final boolean LOG_SYS_ERR_OF_PROCESS = true;
 	private static final String COMMAND_JAVA = "java";
 	private static final String PARAM_CLASSPATH = "-classpath";
 
@@ -43,11 +43,9 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 	 * @param executionDirectory
 	 *            directory to execute the process
 	 * @param programFolderForClasspath
-	 *            path to the folder TestAnalyzer (from the current execution
-	 *            directory)
+	 *            path to the folder TestAnalyzer (from the current execution directory)
 	 * @param workingFolderForClasspath
-	 *            path to the working folder (from the current execution
-	 *            directory)
+	 *            path to the working folder (from the current execution directory)
 	 */
 	public ProcessExecution(String executionDirectory, String programFolderForClasspath,
 			String workingFolderForClasspath) {
@@ -68,7 +66,7 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 		return execute(executionId, timeout, mainClassName, classpath, argsWriter.getArgs());
 	}
 
-	/** Start a java process and wait until it terminates. */
+	/** Execute: start the execution of a new java process and wait until it terminates. */
 	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClassName, String classpath,
 			String[] arguments) throws ExecutionException {
 		try {
@@ -81,10 +79,10 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 
 			ExecutionResult result = ProcessUtils.execute(processBuilder, null, timeout);
 
-			if (PRINT_SYS_ERR_TO_CONSOLE && !StringUtility.isNullOrEmpty(result.getStderr())) {
-				writeToConsole("===== BEGIN SYSERR OF EXECUTED PROCESS =====");
-				writeToConsole(result.getStderr());
-				writeToConsole("=====  END SYSERR OF EXECUTED PROCESS  =====");
+			if (LOG_SYS_ERR_OF_PROCESS && !StringUtility.isNullOrEmpty(result.getStderr())) {
+				LOGGER.info(
+						"===== BEGIN SYSERR OF EXECUTED PROCESS =====" + CommonConstants.NEW_LINE + result.getStderr()
+								+ CommonConstants.NEW_LINE + "===== END   SYSERR OF EXECUTED PROCESS =====");
 			}
 
 			if (!result.isNormalTermination()) {
@@ -117,10 +115,6 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 			command.add(CommonConstants.QUOTATION_MARK + arg + CommonConstants.QUOTATION_MARK);
 		}
 		return command;
-	}
-
-	private static void writeToConsole(String output) {
-		System.out.println(output);
 	}
 
 	public static String wrapPattern(String pattern) {

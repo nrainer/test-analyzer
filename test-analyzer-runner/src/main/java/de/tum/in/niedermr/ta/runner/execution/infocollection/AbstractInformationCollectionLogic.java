@@ -11,6 +11,7 @@ import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
+import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
@@ -60,7 +61,7 @@ public abstract class AbstractInformationCollectionLogic {
 	}
 
 	public void execute(String[] jarsWithTests, String[] testClassIncludes, String[] testClassExcludes,
-			boolean operateFaultTolerant) throws Throwable {
+			boolean operateFaultTolerant) throws IteratorException, ReflectiveOperationException {
 		Map<Class<?>, Set<String>> testClassesWithTestcases = collectTestClassesWithTestcases(jarsWithTests,
 				testClassIncludes, testClassExcludes, operateFaultTolerant);
 
@@ -102,7 +103,8 @@ public abstract class AbstractInformationCollectionLogic {
 	}
 
 	protected Map<Class<?>, Set<String>> collectTestClassesWithTestcases(String[] jarsWithTests,
-			String[] testClassIncludes, String[] testClassExcludes, boolean operateFaultTolerant) throws Throwable {
+			String[] testClassIncludes, String[] testClassExcludes, boolean operateFaultTolerant)
+			throws IteratorException {
 		final ITestCollector collectOperation = TestRunnerUtil.getAppropriateTestCollector(m_testRunner, false,
 				testClassIncludes, testClassExcludes);
 

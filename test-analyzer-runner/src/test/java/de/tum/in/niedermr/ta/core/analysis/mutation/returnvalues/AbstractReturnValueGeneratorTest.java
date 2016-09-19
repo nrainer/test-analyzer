@@ -30,7 +30,7 @@ public abstract class AbstractReturnValueGeneratorTest<T> {
 
 		Class<?> mutatedClass = mutateClass(m_classToBeMutated, filterList);
 		Object instanceOfMutatedClass = mutatedClass.newInstance();
-		T instanceOfOriginalClass = (T) m_classToBeMutated.newInstance();
+		T instanceOfOriginalClass = m_classToBeMutated.newInstance();
 		verifyMutation(mutatedClass, instanceOfMutatedClass, instanceOfOriginalClass);
 	}
 

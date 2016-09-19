@@ -25,7 +25,9 @@ import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
 
+/** Test {@link JarAnalyzeIterator} and {@link JarModificationIterator}. */
 public class JarIteratorTest {
+
 	private static final String TEST_FOLDER = TestUtility.getTestFolder(JarIteratorTest.class);
 	private static final String TEST_INPUT_JAR = TEST_FOLDER + "simple-project-lite.jar";
 	private static final String TEST_RESOURCE_JAR = TEST_FOLDER + "jar-with-resource.jar";
@@ -34,8 +36,9 @@ public class JarIteratorTest {
 	private static final String CLASSPATH_SIMPLE_CALCULATION = "de/tum/in/ma/simpleproject/lite/CalculationLite.class";
 	private static final String CLASSPATH_UNIT_TEST = "de/tum/in/ma/simpleproject/lite/CalculationLiteTests.class";
 
+	/** Test. */
 	@Test
-	public void testInvocationSequence() throws Throwable {
+	public void testInvocationSequence() throws IteratorException {
 		SequenceRecorderIterator it = new SequenceRecorderIterator(TEST_INPUT_JAR);
 		it.execute(new ICodeOperation() {
 			// NOP
@@ -46,8 +49,9 @@ public class JarIteratorTest {
 		assertTrue(it.getLog().endsWith(SequenceRecorderIterator.AFTER_ALL));
 	}
 
+	/** Test. */
 	@Test
-	public void testAnalyzeIterator() throws Throwable {
+	public void testAnalyzeIterator() throws IteratorException {
 		JarAnalyzeIterator it = new JarAnalyzeIterator(TEST_INPUT_JAR);
 		ContentRecorderOperation operation = new ContentRecorderOperation();
 		it.execute(operation);
@@ -57,8 +61,9 @@ public class JarIteratorTest {
 		assertTrue(operation.m_iteratedClasses.contains(CLASSPATH_UNIT_TEST));
 	}
 
+	/** Test. */
 	@Test
-	public void testModificationIterator() throws Throwable {
+	public void testModificationIterator() throws IteratorException {
 		File file = new File(TEST_TEMP_JAR_1);
 
 		if (file.exists()) {
@@ -97,8 +102,9 @@ public class JarIteratorTest {
 		file.delete();
 	}
 
+	/** Test. */
 	@Test
-	public void testResourcesAreCopied() throws Throwable {
+	public void testResourcesAreCopied() throws IteratorException {
 		File file = new File(TEST_TEMP_JAR_2);
 
 		if (file.exists()) {

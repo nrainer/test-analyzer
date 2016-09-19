@@ -50,12 +50,12 @@ public class InvocationLogger {
 
 	public enum LoggingMode {
 		/**
-		 * For the preparation before and the wrap-up after tests. (e. g. invocations
-		 * from @BeforeClass, @Before, @After, @AfterClass)
+		 * Framing: For the preparation before and the wrap-up after tests. (e. g. invocations from
+		 * <code>@BeforeClass</code>, <code>@Before</code>, <code>@After</code>, <code>@AfterClass</code>)
 		 */
 		FRAMING,
 		/**
-		 * For the actual test.
+		 * Testing: For the actual test.
 		 */
 		TESTING;
 	}
