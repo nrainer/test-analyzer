@@ -8,18 +8,16 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class JUnitTestRunnerTest {
-	private static final String BEFORE_CLASS = "[beforeClass]";
-	private static final String BEFORE = "[before]";
-	private static final String A = "[a]";
-	private static final String B = "[b]";
-	private static final String AFTER = "[after]";
-	private static final String AFTER_CLASS = "[afterClass]";
+	static final String BEFORE_CLASS = "[beforeClass]";
+	static final String BEFORE = "[before]";
+	static final String A = "[a]";
+	static final String B = "[b]";
+	static final String AFTER = "[after]";
+	static final String AFTER_CLASS = "[afterClass]";
 
 	private final JUnitTestRunner m_testRunner = new JUnitTestRunner();
 	private PrintStream m_originalSysErr;
@@ -44,14 +42,14 @@ public class JUnitTestRunnerTest {
 
 	@Test
 	public void testRunTest() throws IOException {
-		m_testRunner.runTest(ClassUnderTest.class, "a");
+		m_testRunner.runTest(ClassUnderJUnitTest.class, "a");
 
 		assertEquals(BEFORE_CLASS + BEFORE + A + AFTER + AFTER_CLASS, getSysErr());
 	}
 
 	@Test
 	public void testRunTestsWithoutResult() throws IOException {
-		m_testRunner.runTestsWithoutResult(ClassUnderTest.class);
+		m_testRunner.runTestsWithoutResult(ClassUnderJUnitTest.class);
 
 		String sysErr = getSysErr();
 
@@ -59,41 +57,5 @@ public class JUnitTestRunnerTest {
 		final String ending = AFTER + AFTER_CLASS;
 
 		assertTrue(sysErr.equals(beginning + A + AFTER + BEFORE + B + ending) || sysErr.equals(beginning + B + AFTER + BEFORE + A + ending));
-	}
-
-	public static class ClassUnderTest {
-		@BeforeClass
-		public static void beforeClass() {
-			printSyserr(BEFORE_CLASS);
-		}
-
-		@Before
-		public void before() {
-			printSyserr(BEFORE);
-		}
-
-		@Test
-		public void a() {
-			printSyserr(A);
-		}
-
-		@Test
-		public void b() {
-			printSyserr(B);
-		}
-
-		@After
-		public void after() {
-			printSyserr(AFTER);
-		}
-
-		@AfterClass
-		public static void afterClass() {
-			printSyserr(AFTER_CLASS);
-		}
-
-		private static void printSyserr(String s) {
-			System.err.print(s);
-		}
 	}
 }

@@ -12,6 +12,10 @@ import java.util.Set;
 import org.junit.Test;
 import org.objectweb.asm.ClassReader;
 
+import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollectorTestData.EmptyClass;
+import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollectorTestData.InheritingTestClass;
+import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollectorTestData.TestClass1;
+import de.tum.in.niedermr.ta.core.code.tests.collector.TestCollectorTestData.TestClass2;
 import de.tum.in.niedermr.ta.core.code.tests.runner.junit.JUnitTestRunner;
 
 public class TestCollectorTest {
@@ -86,58 +90,5 @@ public class TestCollectorTest {
 		assertTrue(collector.collectTestcasesInNonAbstractSuperClasses() == classesWithTestCases
 				.get(InheritingTestClass.class).contains("b"));
 		assertTrue(classesWithTestCases.get(InheritingTestClass.class).contains("c"));
-	}
-
-	class EmptyClass {
-		// NOP
-	}
-
-	class TestClass1 {
-		@Test
-		public void a() {
-			// NOP
-		}
-
-		@Test
-		public void b() {
-			// NOP
-		}
-	}
-
-	class TestClass2 {
-		@Test
-		public void a() {
-			// NOP
-		}
-
-		@Test
-		public void c() {
-			// NOP
-		}
-	}
-
-	abstract class AbstractTestClassA {
-		@Test
-		public void a() {
-			// NOP
-		}
-	}
-
-	abstract class AbstractTestClassB extends AbstractTestClassA {
-		// NOP
-	}
-
-	class NonAbstractTestClassC extends AbstractTestClassB {
-		@Test
-		public void b() {
-			// NOP
-		}
-	}
-
-	class InheritingTestClass extends NonAbstractTestClassC {
-		@Test
-		public void c() {
-			// NOP
-		}
 	}
 }

@@ -5,14 +5,18 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
+import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.AbstractJUnit4TestClass;
+import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.JUnit3TestClass;
+import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.JUnit4TestClass;
+import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.NoTestClass1;
+import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.NoTestClass2;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
-import junit.framework.TestCase;
 
+/** Test {@link JUnitTestClassDetector}. */
 public class JUnitTestClassDetectorTest {
 	private static final String[] EMPTY_PATTERN_STRINGS = new String[0];
 	private static JUnitTestClassDetector s_detector;
@@ -56,49 +60,5 @@ public class JUnitTestClassDetectorTest {
 
 		ClassNode cn = BytecodeUtility.getAcceptedClassNode(JUnit4TestClass.class);
 		assertEquals(ClassType.IGNORED_CLASS, detectorWithIgnore.analyzeIsTestClass(cn));
-	}
-
-	static class JUnit4TestClass {
-		@Test
-		public void a() {
-			// NOP
-		}
-
-		@Test
-		@Ignore
-		public void ignored() {
-			// NOP
-		}
-	}
-
-	static class JUnit3TestClass extends TestCase {
-		public void testA() {
-			// NOP
-		}
-	}
-
-	static abstract class AbstractJUnit4TestClass {
-		@Test
-		public void a() {
-			// NOP
-		}
-	}
-
-	/**
-	 * No annotation, no inheritance.
-	 *
-	 */
-	static class NoTestClass1 {
-		public void testA() {
-			// NOP
-		}
-	}
-
-	static class NoTestClass2 {
-		@Ignore
-		@Test
-		public void ignored() {
-			// NOP
-		}
 	}
 }
