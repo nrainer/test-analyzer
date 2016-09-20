@@ -80,9 +80,10 @@ WHERE sii2.execution = @executionIdOld2
 GROUP BY x.testcase, x.method;
 
 INSERT INTO Execution_Information
-(execution, date, project, description)
+(execution, valid, date, project, description)
 SELECT 
   @executionIdTarget,
+  (SELECT MIN(ei.valid) FROM Execution_Information ei WHERE ei.execution IN (@executionIdOld1, @executionIdOld2)),
   CURRENT_DATE(),
   (SELECT ei1.project FROM Execution_Information ei1 WHERE ei1.execution = @executionIdOld1),
   CONCAT('Merge of ', CONCAT(@executionIdOld1, CONCAT(' and ', @executionIdOld2)));
