@@ -17,24 +17,29 @@ import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPres
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogger;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
+/** Logic to collect information about the test cases and methods under test. */
 public class AnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
+
 	/** Logger. */
-private static final Logger LOGGER = LogManager.getLogger(AnalysisInformationCollectionLogic.class);
+	private static final Logger LOGGER = LogManager.getLogger(AnalysisInformationCollectionLogic.class);
 
 	private final List<String> m_result;
 	private final IResultPresentationExtended m_resultPresentation;
 
+	/** Constructor. */
 	public AnalysisInformationCollectionLogic(IFullExecutionId executionId) {
 		super(executionId);
 		m_result = new LinkedList<>();
 		m_resultPresentation = IResultPresentationExtended.create(executionId);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execBeforeExecutingTestcase(TestcaseIdentifier testCaseIdentifier) {
 		StackLogger.startLog(testCaseIdentifier);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
 		addToResult(testCaseIdentifier, StackLogger.getInvocationsMinDistance(),
@@ -53,16 +58,13 @@ private static final Logger LOGGER = LogManager.getLogger(AnalysisInformationCol
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execAllTestsExecuted(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		try {
-			writeResultsToFile();
+			TextFileData.writeToFile(getOutputFile(), m_result);
 		} catch (IOException ex) {
 			LOGGER.error("when writing results to file", ex);
 		}
-	}
-
-	protected void writeResultsToFile() throws IOException {
-		TextFileData.writeToFile(getOutputFile(), m_result);
 	}
 }
