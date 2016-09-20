@@ -30,6 +30,7 @@
 	<loggers>
 		<root level="debug">
 			<appender-ref ref="MainFile"/>
+			<appender-ref ref="TestSysErr"/>
 			<appender-ref ref="Console"/>
 		</root>
 	</loggers>
