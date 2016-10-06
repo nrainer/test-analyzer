@@ -91,4 +91,23 @@ public class JUnitTestClassDetectorTest {
 		assertFalse(s_detector.analyzeIsTestcase(methodNodeTestButNoTestcase.get(),
 				JUnitClassTypeResult.TEST_CLASS_JUNIT_3));
 	}
+
+	/** Test. */
+	@Test
+	public void testAnalyzeIsTestcaseForJUnit4() throws IOException {
+		ClassNode classNode = BytecodeUtility.getAcceptedClassNode(JUnit4TestClass.class);
+
+		@SuppressWarnings("unchecked")
+		List<MethodNode> methods = classNode.methods;
+
+		Optional<MethodNode> methodNodeA = methods.stream().filter(methodNode -> methodNode.name.equals("a")).findAny();
+		Optional<MethodNode> methodNodeIgnored = methods.stream()
+				.filter(methodNode -> methodNode.name.equals("ignored")).findAny();
+
+		assertTrue("test data corrupt", methodNodeA.isPresent());
+		assertTrue("test data corrupt", methodNodeIgnored.isPresent());
+
+		assertTrue(s_detector.analyzeIsTestcase(methodNodeA.get(), JUnitClassTypeResult.TEST_CLASS_JUNIT_4));
+		assertFalse(s_detector.analyzeIsTestcase(methodNodeIgnored.get(), JUnitClassTypeResult.TEST_CLASS_JUNIT_4));
+	}
 }

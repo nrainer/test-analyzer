@@ -73,7 +73,11 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 		}
 
 		if (isTestCase) {
-			return IGNORE_IGNORED_TEST_CASES ? !isIgnored : true;
+			if (IGNORE_IGNORED_TEST_CASES && isIgnored) {
+				return false;
+			}
+
+			return true;
 		}
 
 		return false;
