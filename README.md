@@ -5,7 +5,7 @@ A mutation testing tool to detect pseudo-tested methods.
 
 ```
 mvn clean install
-mvn eclipse:eclipse
+mvn eclipse:eclipse -DdownloadSources=true
 ```
 
 # Main class
