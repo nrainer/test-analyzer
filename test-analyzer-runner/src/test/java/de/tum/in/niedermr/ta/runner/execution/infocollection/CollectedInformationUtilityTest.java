@@ -11,6 +11,7 @@ import java.util.Set;
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
@@ -19,31 +20,39 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
-public class CollectedInformationTest implements CommonConstants {
+/** Test {@link CollectedInformationUtility}. */
+public class CollectedInformationUtilityTest implements CommonConstants {
+
+	/** Test. */
 	@Test
-	public void testParseAndToPlain() {
+	public void testConvertAndParse() {
 		final List<TestInformation> data = getLongTestData();
 
 		Set<TestInformation> expectedResult = new HashSet<>(data);
 
-		List<String> plainData = CollectedInformation.toPlainText(data);
-		Set<TestInformation> parsedData = new HashSet<>(CollectedInformation.parseInformationCollectorData(plainData));
+		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
+		CollectedInformationUtility.convertToParseableMethodTestcaseText(data, resultReceiver);
+		Set<TestInformation> parsedData = new HashSet<>(
+				CollectedInformationUtility.parseMethodTestcaseText(resultReceiver.getResult()));
 
 		assertEquals(expectedResult, parsedData);
 	}
 
+	/** Test. */
 	@Test
-	public void testToPlainText() {
+	public void testConvertToParseableMethodTestcaseText() {
 		List<String> expected = new LinkedList<>();
 		expected.add("de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()");
 		expected.add("de.tum.in.ma.project.example.UnitTest;stringCorrect");
 		expected.add(".");
 
-		List<String> result = CollectedInformation.toPlainText(getShortTestData());
+		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
+		CollectedInformationUtility.convertToParseableMethodTestcaseText(getShortTestData(), resultReceiver);
 
-		assertEquals(expected, result);
+		assertEquals(expected, resultReceiver.getResult());
 	}
 
+	/** Test. */
 	@Test
 	public void testToSQLStatements() {
 		final IExecutionId executionId = ExecutionIdFactory.ID_FOR_TESTS;
@@ -55,7 +64,10 @@ public class CollectedInformationTest implements CommonConstants {
 		IResultPresentation resultPresentation = new DatabaseResultPresentation();
 		resultPresentation.setExecutionId(executionId);
 
-		List<String> result = CollectedInformation.toResult(getShortTestData(), resultPresentation);
+		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
+		CollectedInformationUtility.convertToMethodTestcaseMappingResult(getShortTestData(), resultPresentation,
+				resultReceiver);
+		List<String> result = resultReceiver.getResult();
 
 		assertNotNull(result);
 		assertEquals(1, result.size());

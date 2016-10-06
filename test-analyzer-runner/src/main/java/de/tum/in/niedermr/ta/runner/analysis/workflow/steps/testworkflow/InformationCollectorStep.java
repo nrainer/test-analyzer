@@ -15,7 +15,7 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
-import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformationUtility;
 
 public class InformationCollectorStep extends AbstractExecutionStep {
 	private final ConcurrentLinkedQueue<TestInformation> m_methodsToMutateAndTestsToRun;
@@ -65,7 +65,7 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 
 	protected void loadCollectedData() throws ExecutionException, IOException {
 		List<String> data = TextFileData.readFromFile(getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
-		m_methodsToMutateAndTestsToRun.addAll(CollectedInformation.parseInformationCollectorData(data));
+		m_methodsToMutateAndTestsToRun.addAll(CollectedInformationUtility.parseMethodTestcaseText(data));
 	}
 
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {

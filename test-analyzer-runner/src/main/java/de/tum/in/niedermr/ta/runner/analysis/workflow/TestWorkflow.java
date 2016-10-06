@@ -21,7 +21,7 @@ import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
-import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformationUtility;
 
 public class TestWorkflow extends AbstractWorkflow {
 	/** Logger. */
@@ -112,7 +112,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		try {
 			List<String> data = TextFileData.readFromFile(Environment
 					.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, workingFolder));
-			testInformation.addAll(CollectedInformation.parseInformationCollectorData(data));
+			testInformation.addAll(CollectedInformationUtility.parseMethodTestcaseText(data));
 		} catch (IOException ex) {
 			LOGGER.fatal("When loading existing collected-information", ex);
 		}

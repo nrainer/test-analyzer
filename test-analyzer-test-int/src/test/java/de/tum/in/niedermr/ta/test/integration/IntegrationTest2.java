@@ -10,7 +10,7 @@ import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformation;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformationUtility;
 
 /**
  * Integration test.<br/>
@@ -33,10 +33,10 @@ public class IntegrationTest2 extends AbstractIntegrationTest {
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformationAsSql());
 		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResultAsText());
 
-		List<TestInformation> expectedTestInformationList = CollectedInformation
-				.parseInformationCollectorData(getContent(getFileExpectedCollectedInformationAsText()));
-		List<TestInformation> outputTestInformationList = CollectedInformation
-				.parseInformationCollectorData(getContent(getFileOutputCollectedInformation()));
+		List<TestInformation> expectedTestInformationList = CollectedInformationUtility
+				.parseMethodTestcaseText(getContent(getFileExpectedCollectedInformationAsText()));
+		List<TestInformation> outputTestInformationList = CollectedInformationUtility
+				.parseMethodTestcaseText(getContent(getFileOutputCollectedInformation()));
 		Set<TestInformation> expectedTestInformationSet = new HashSet<>(expectedTestInformationList);
 		Set<TestInformation> outputTestInformationSet = new HashSet<>(outputTestInformationList);
 		assertEquals(MSG_NOT_EQUAL_COLLECTED_INFORMATION, expectedTestInformationSet, outputTestInformationSet);

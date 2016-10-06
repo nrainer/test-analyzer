@@ -1,48 +1,62 @@
 package de.tum.in.niedermr.ta.runner.execution.infocollection;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 
-public class CollectedInformation {
-	public static List<String> toPlainText(Collection<TestInformation> data) {
-		List<String> output = new LinkedList<>();
+/** Utility for collected information data. */
+public class CollectedInformationUtility {
 
+	/**
+	 * Format the method-test relationship as parseable text.
+	 * 
+	 * @see #parseMethodTestcaseText(List)
+	 */
+	public static void convertToParseableMethodTestcaseText(Collection<TestInformation> data,
+			IResultReceiver resultReceiver) {
 		for (TestInformation info : data) {
-			output.add(info.getMethodUnderTest().get());
+			resultReceiver.append(info.getMethodUnderTest().get());
 
 			for (TestcaseIdentifier testcase : info.getTestcases()) {
-				output.add(testcase.get());
+				resultReceiver.append(testcase.get());
 			}
 
-			output.add(CommonConstants.SEPARATOR_END_OF_BLOCK);
+			resultReceiver.append(CommonConstants.SEPARATOR_END_OF_BLOCK);
 		}
 
-		return output;
+		resultReceiver.markResultAsComplete();
 	}
 
-	public static List<String> toResult(Collection<TestInformation> testInformationCollection, IResultPresentation resultPresentation) {
-		List<String> output = new LinkedList<>();
+	/** Format the method-test relationship as result output. */
+	public static void convertToMethodTestcaseMappingResult(Collection<TestInformation> testInformationCollection,
+			IResultPresentation resultPresentation, IResultReceiver resultReceiver) {
 
 		for (TestInformation info : testInformationCollection) {
 			for (TestcaseIdentifier testcase : info.getTestcases()) {
-				output.add(resultPresentation.formatMethodAndTestcaseMapping(info.getMethodUnderTest(), testcase));
+				resultReceiver
+						.append(resultPresentation.formatMethodAndTestcaseMapping(info.getMethodUnderTest(), testcase));
 			}
 		}
 
-		return output;
+		resultReceiver.markResultAsComplete();
 	}
 
-	public static List<TestInformation> parseInformationCollectorData(List<String> data) {
-		List<TestInformation> result = new LinkedList<>();
+	/**
+	 * Parse the method-testcase mapping.
+	 * 
+	 * @see #convertToParseableMethodTestcaseText(Collection, IResultReceiver)
+	 */
+	public static List<TestInformation> parseMethodTestcaseText(List<String> data) {
+		List<TestInformation> result = new ArrayList<>();
 
 		if (data.isEmpty()) {
 			return result;
