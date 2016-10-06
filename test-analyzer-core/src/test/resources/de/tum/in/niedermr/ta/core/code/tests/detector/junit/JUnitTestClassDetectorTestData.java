@@ -21,7 +21,12 @@ public class JUnitTestClassDetectorTestData {
 	}
 
 	static class JUnit3TestClass extends TestCase {
+
 		public void testA() {
+			// NOP
+		}
+
+		public void testButNoTestcase(String param) {
 			// NOP
 		}
 	}

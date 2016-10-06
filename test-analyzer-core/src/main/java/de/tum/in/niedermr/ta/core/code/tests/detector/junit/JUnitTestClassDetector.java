@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.core.code.tests.detector.junit;
 
 import java.util.List;
 
+import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -49,7 +50,8 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 	}
 
 	private boolean isJUnit3Testcase(MethodNode method) {
-		return method.name.startsWith(JUNIT_3_TEST_METHOD_NAME_PREFIX);
+		return method.name.startsWith(JUNIT_3_TEST_METHOD_NAME_PREFIX)
+				&& Type.getArgumentTypes(method.desc).length == 0;
 	}
 
 	/** Check if the method is a JUnit 4 test case. */
