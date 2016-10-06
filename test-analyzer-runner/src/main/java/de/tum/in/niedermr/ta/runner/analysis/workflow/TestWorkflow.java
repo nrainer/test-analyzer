@@ -23,6 +23,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformationUtility;
 
+/** Main workflow for the mutation test analysis. */
 public class TestWorkflow extends AbstractWorkflow {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(TestWorkflow.class);
@@ -34,9 +35,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	protected FinalizeResultStep m_finalizeResultStep;
 	protected CleanupStep m_cleanupStep;
 
-	/**
-	 * Default constructor for reflective instantiation.
-	 */
+	/** Default constructor for reflective instantiation. */
 	public TestWorkflow() {
 	}
 
@@ -47,8 +46,25 @@ public class TestWorkflow extends AbstractWorkflow {
 
 		beforeExecution();
 
-		ConcurrentLinkedQueue<TestInformation> testInformation;
+		executeCoreWorkflow(context, configuration);
 
+		afterExecution();
+	}
+
+	/** Execute the main workflow logic. */
+	protected void executeCoreWorkflow(ExecutionContext context, Configuration configuration) {
+		ConcurrentLinkedQueue<TestInformation> testInformation = collectInformationOrLoadFromFile(context,
+				configuration);
+		executeMutationTestsIfEnabled(configuration, testInformation);
+	}
+
+	/**
+	 * Collect the information needed to execute teh mutation tests (if enabled
+	 * in the configuration) or load the data from a file.
+	 */
+	protected ConcurrentLinkedQueue<TestInformation> collectInformationOrLoadFromFile(ExecutionContext context,
+			Configuration configuration) {
+		ConcurrentLinkedQueue<TestInformation> testInformation;
 		if (configuration.getExecuteCollectInformation().isTrue()) {
 			testInformation = collectInformation();
 		} else {
@@ -56,14 +72,17 @@ public class TestWorkflow extends AbstractWorkflow {
 
 			testInformation = loadExistingTestInformation(context, configuration);
 		}
+		return testInformation;
+	}
 
+	/** Execute the mutation tests (if enabled in the configuration). */
+	protected void executeMutationTestsIfEnabled(Configuration configuration,
+			ConcurrentLinkedQueue<TestInformation> testInformation) {
 		if (configuration.getExecuteMutateAndTest().isTrue()) {
 			executeMutateAndTest(testInformation);
 		} else {
 			LOGGER.info("Skipping the steps to mutate and test methods");
 		}
-
-		afterExecution();
 	}
 
 	protected void setUpExecutionSteps() throws ExecutionException {
@@ -106,7 +125,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		return loadExistingTestInformationInternal(workingFolder);
 	}
 
-	private ConcurrentLinkedQueue<TestInformation> loadExistingTestInformationInternal(String workingFolder) {
+	protected ConcurrentLinkedQueue<TestInformation> loadExistingTestInformationInternal(String workingFolder) {
 		ConcurrentLinkedQueue<TestInformation> testInformation = new ConcurrentLinkedQueue<>();
 
 		try {
