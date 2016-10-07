@@ -39,7 +39,7 @@ import de.tum.in.niedermr.ta.runner.factory.IFactory;
  * Configuration
  */
 public class Configuration extends AbstractConfiguration implements FileSystemConstants {
-	private static final int CURRENT_VERSION = 3;
+	public static final int CURRENT_VERSION = 3;
 
 	private final TestAnalyzerClasspathProperty m_testAnalyzerClasspath;
 	private final WorkingFolderProperty m_workingFolder;
