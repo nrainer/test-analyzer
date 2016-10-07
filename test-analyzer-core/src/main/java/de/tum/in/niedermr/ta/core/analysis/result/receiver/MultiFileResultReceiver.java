@@ -11,13 +11,6 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	/** Maximum number of lines per file. */
 	private final int m_desiredLinesPerFile;
 
-	/**
-	 * Allow switching to a new file at every line. If false, the switch will
-	 * only be performed on invocations of
-	 * {@link #markResultAsPartiallyComplete()}.
-	 */
-	private final boolean m_allowSplittingAtEveryLine;
-
 	/** Buffer size in lines. */
 	private final int m_bufferSize;
 
@@ -32,20 +25,13 @@ public class MultiFileResultReceiver implements IResultReceiver {
 
 	/** Constructor. */
 	public MultiFileResultReceiver(String baseFileName, int desiredLinesPerFile) {
-		this(baseFileName, desiredLinesPerFile, false);
+		this(baseFileName, desiredLinesPerFile, FileResultReceiver.DEFAULT_BUFFER_SIZE);
 	}
 
 	/** Constructor. */
-	public MultiFileResultReceiver(String baseFileName, int desiredLinesPerFile, boolean allowSplittingAtEveryLine) {
-		this(baseFileName, desiredLinesPerFile, allowSplittingAtEveryLine, FileResultReceiver.DEFAULT_BUFFER_SIZE);
-	}
-
-	/** Constructor. */
-	public MultiFileResultReceiver(String baseFileName, int desiredLinesPerFile, boolean allowSplittingAtEveryLine,
-			int bufferSize) {
+	public MultiFileResultReceiver(String baseFileName, int desiredLinesPerFile, int bufferSize) {
 		m_baseFileName = baseFileName;
 		m_desiredLinesPerFile = desiredLinesPerFile;
-		m_allowSplittingAtEveryLine = allowSplittingAtEveryLine;
 		m_bufferSize = bufferSize;
 		m_fileCount = 1;
 
@@ -67,7 +53,6 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	public synchronized void append(String line) {
 		m_currentFileResultReceiver.append(line);
 		m_linesInCurrentFile++;
-		createNewFileResultReceiverIfNeeded(false);
 	}
 
 	/** {@inheritDoc} */
@@ -75,7 +60,6 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	public synchronized void append(List<String> lines) {
 		m_currentFileResultReceiver.append(lines);
 		m_linesInCurrentFile += lines.size();
-		createNewFileResultReceiverIfNeeded(false);
 	}
 
 	/** {@inheritDoc} */
@@ -87,14 +71,10 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	/** {@inheritDoc} */
 	@Override
 	public void markResultAsPartiallyComplete() {
-		createNewFileResultReceiverIfNeeded(true);
+		createNewFileResultReceiverIfNeeded();
 	}
 
-	protected synchronized void createNewFileResultReceiverIfNeeded(boolean explicitlyAllowedAtCurrentPosition) {
-		if (!m_allowSplittingAtEveryLine && !explicitlyAllowedAtCurrentPosition) {
-			return;
-		}
-
+	protected synchronized void createNewFileResultReceiverIfNeeded() {
 		if (m_linesInCurrentFile > m_desiredLinesPerFile) {
 			createNewFileResultReceiver();
 		}
