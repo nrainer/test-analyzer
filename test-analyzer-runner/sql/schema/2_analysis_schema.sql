@@ -33,6 +33,7 @@ CREATE TABLE Testcase_Info
 	testcase VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
     instructions INT(8),
     assertions INT(8),
+    countCoveredMethods INT(8),
     testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL
 );
 

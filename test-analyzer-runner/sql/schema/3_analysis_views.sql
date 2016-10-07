@@ -33,7 +33,13 @@ CREATE VIEW V_Tested_Methods_Info AS
 		COALESCE(MAX(tri.killed), 0) AS killed, 
 		COUNT(mtai.execution) > 0 AS aborted,
 		COUNT(DISTINCT ri.testcaseId) AS testcaseCount,
-		MIN(ri.minStackDistance) AS minStackDistance, 
+		MIN(ri.minStackDistance) AS minStackDistance,
+		-- minimum of: number of methods that a test case (that test-executes this method) covers (out of all methods, also of not investigated ones)
+		(SELECT MIN(ti.countCoveredMethods) FROM Testcase_Info ti WHERE ti.execution = ri.execution AND ti.testcaseId IN (
+				-- test cases that cover the given method
+				SELECT ri2.testcaseId FROM Relation_Info ri2 WHERE ri.execution = ri2.execution AND ri.methodId = ri2.methodId
+				)
+			) AS minNumberOfCoveredMethodsOfAnyTestcase,
 		mi.method, 
 		mi.methodHash
     FROM Relation_Info ri
@@ -59,7 +65,8 @@ CREATE VIEW V_Tested_Methods_Info_Agg AS
 		vtmi.method, 
 		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END AS killedResult,
 		vtmi.testcaseCount,
-		vtmi.minStackDistance
+		vtmi.minStackDistance,
+		vtmi.minNumberOfCoveredMethodsOfAnyTestcase
     FROM V_Tested_Methods_Info vtmi;
     
 /** Test result, extended by test and method ids and names. */

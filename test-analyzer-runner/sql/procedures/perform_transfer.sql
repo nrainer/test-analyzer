@@ -144,6 +144,11 @@ SET ri.minStackDistance = sii.minStackDistance,
 ri.maxStackDistance = sii.maxStackDistance
 WHERE sii.execution = @executionId;
 
+/** Update the number of covered methods per testcase (must be done after filling Relation_Info). */
+UPDATE Testcase_Info ti
+SET ti.countCoveredMethods = (SELECT COUNT(ri.methodId) FROM Relation_Info ri WHERE ri.execution = ti.execution AND ri.testcaseId = ti.testcaseId) 
+WHERE ti.execution = @executionId;
+
 /* Enrich data with method information: bytecode instructions. */
 CALL UpdateMethodInfo(@executionId, 'intValue', 'bytecodeInstructionCount', 'instructions');
 

@@ -40,7 +40,9 @@ CREATE TABLE MV_Project_Results AS
 		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.method NOT LIKE '%hashCode()' AND vtmia.minStackDistance >= 6) AS mutationScoreFilteredD6,
 		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.method NOT LIKE '%hashCode()' AND vtmia.minStackDistance >= 7) AS mutationScoreFilteredD7,
 		(SELECT AVG(vtmia.minStackDistance) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgMinStackDistKilled,
-		(SELECT AVG(vtmia.minStackDistance) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgMinStackDistLiving
+		(SELECT AVG(vtmia.minStackDistance) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgMinStackDistLiving,
+		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseKilled,
+		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseLiving
 	FROM Execution_Information e
 	ORDER BY e.testType, e.project;
 
