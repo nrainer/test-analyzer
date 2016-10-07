@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.runner.configuration.parser.migration;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 /** Migration for the configuration from version 2 to 3. */
-public class ConfigurationMigrationFromV2 implements IConfigurationMigration {
+class ConfigurationMigrationFromV2ToV3 implements IConfigurationMigration {
 
 	/** {@inheritDoc} */
 	@Override
