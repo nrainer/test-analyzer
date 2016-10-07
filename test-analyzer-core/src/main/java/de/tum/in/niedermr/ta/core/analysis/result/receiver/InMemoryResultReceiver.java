@@ -28,6 +28,12 @@ public class InMemoryResultReceiver implements IResultReceiver {
 
 	/** {@inheritDoc} */
 	@Override
+	public void markResultAsPartiallyComplete() {
+		// NOP
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public void markResultAsComplete() {
 		// NOP
 	}

@@ -10,13 +10,13 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 public class FileResultReceiver implements IResultReceiver {
 
 	/** Buffer size in number of lines. */
-	private static final int DEFAULT_BUFFER_SIZE = 100;
+	protected static final int DEFAULT_BUFFER_SIZE = 100;
 
 	/** File name. */
-	private String m_fileName;
+	private final String m_fileName;
 
 	/** Buffer size in lines. */
-	private int m_bufferSize;
+	private final int m_bufferSize;
 
 	private final List<String> m_resultBuffer;
 
@@ -24,7 +24,8 @@ public class FileResultReceiver implements IResultReceiver {
 	 * Constructor.
 	 * 
 	 * @param overwriteExisting
-	 *            if true, the file will be reset, otherwise the new content will be appended
+	 *            if true, the file will be reset, otherwise the new content
+	 *            will be appended
 	 */
 	public FileResultReceiver(String fileName, boolean overwriteExisting) {
 		this(fileName, overwriteExisting, DEFAULT_BUFFER_SIZE);
@@ -61,6 +62,12 @@ public class FileResultReceiver implements IResultReceiver {
 
 	/** {@inheritDoc} */
 	@Override
+	public void markResultAsPartiallyComplete() {
+		// NOP
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public void markResultAsComplete() {
 		flush();
 	}
@@ -86,7 +93,7 @@ public class FileResultReceiver implements IResultReceiver {
 		try {
 			TextFileData.appendToFile(m_fileName, m_resultBuffer);
 		} catch (IOException e) {
-			throw new IllegalStateException("Result flushing failed");
+			throw new IllegalStateException("Result flushing failed", e);
 		}
 
 		m_resultBuffer.clear();

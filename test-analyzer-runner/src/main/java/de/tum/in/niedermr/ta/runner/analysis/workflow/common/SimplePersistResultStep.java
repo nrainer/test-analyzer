@@ -58,6 +58,12 @@ public class SimplePersistResultStep extends AbstractExecutionStep implements IR
 
 	/** {@inheritDoc} */
 	@Override
+	public void markResultAsPartiallyComplete() {
+		// NOP
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public void markResultAsComplete() {
 		// NOP
 	}

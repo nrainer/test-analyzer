@@ -31,6 +31,7 @@ public class CollectedInformationUtility {
 			}
 
 			resultReceiver.append(CommonConstants.SEPARATOR_END_OF_BLOCK);
+			resultReceiver.markResultAsPartiallyComplete();
 		}
 
 		resultReceiver.markResultAsComplete();
@@ -45,6 +46,7 @@ public class CollectedInformationUtility {
 				resultReceiver
 						.append(resultPresentation.formatMethodAndTestcaseMapping(info.getMethodUnderTest(), testcase));
 			}
+			resultReceiver.markResultAsPartiallyComplete();
 		}
 
 		resultReceiver.markResultAsComplete();

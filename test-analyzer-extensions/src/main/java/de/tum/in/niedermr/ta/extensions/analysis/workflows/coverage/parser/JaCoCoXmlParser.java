@@ -43,6 +43,8 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		parseSourceFolderInformation(document, resultReceiver);
 		LOGGER.info("Completed parsing source folder information");
 
+		resultReceiver.markResultAsPartiallyComplete();
+
 		LOGGER.info("Begin parsing method information");
 		parseMethodInformation(document, resultReceiver);
 		LOGGER.info("Completed parsing method information");
@@ -106,6 +108,7 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		}
 
 		LOGGER.info("Parsed coverage of methods of class: " + className);
+		resultReceiver.markResultAsPartiallyComplete();
 	}
 
 	private void parseMethodNode(String className, Node methodNode, IResultReceiver resultReceiver)

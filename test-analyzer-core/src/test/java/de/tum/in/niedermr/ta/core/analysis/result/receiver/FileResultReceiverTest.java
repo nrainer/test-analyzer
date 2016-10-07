@@ -4,34 +4,17 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import org.conqat.lib.commons.filesystem.FileSystemUtils;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.tum.in.niedermr.ta.core.common.TestUtility;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 
 /** Test {@link FileResultReceiver}. */
-public class FileResultReceiverTest {
+public class FileResultReceiverTest extends AbstractFileResultReceiverTest {
 
-	private static final String OUTPUT_FILE_NAME = TestUtility.getTestFolder(FileResultReceiverTest.class)
-			+ "result.txt";
-
-	@BeforeClass
-	public static void beforeAll() throws IOException {
-		FileSystemUtils.ensureDirectoryExists(new File(OUTPUT_FILE_NAME).getParentFile());
-		cleanup();
-	}
-
-	@AfterClass
-	public static void afterAll() {
-		cleanup();
-	}
+	protected static final String OUTPUT_FILE_NAME = OUTPUT_FOLDER + "result.txt";
 
 	/** Test. */
 	@Test
@@ -58,14 +41,5 @@ public class FileResultReceiverTest {
 		receiver2.append("X");
 		receiver2.flush();
 		assertEquals(1, TextFileData.readFromFile(OUTPUT_FILE_NAME).size());
-	}
-
-	/** Cleanup: remove the output file. */
-	private static void cleanup() {
-		File outputFile = new File(OUTPUT_FILE_NAME);
-
-		if (outputFile.exists()) {
-			outputFile.delete();
-		}
 	}
 }
