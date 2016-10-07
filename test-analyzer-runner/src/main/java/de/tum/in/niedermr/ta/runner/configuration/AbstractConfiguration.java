@@ -22,11 +22,11 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 public abstract class AbstractConfiguration {
 
 	private final ConfigurationVersionProperty m_configurationVersion;
-	private final DynamicConfigurationValuesManager my_dynamicValuesManager;
+	private final DynamicConfigurationValuesManager m_dynamicValuesManager;
 
 	public AbstractConfiguration(int currentConfigurationVersion) {
 		m_configurationVersion = new ConfigurationVersionProperty(currentConfigurationVersion);
-		my_dynamicValuesManager = new DynamicConfigurationValuesManager();
+		m_dynamicValuesManager = new DynamicConfigurationValuesManager();
 	}
 
 	/**
@@ -38,7 +38,7 @@ public abstract class AbstractConfiguration {
 
 	/** Access the dynamic property values. */
 	public DynamicConfigurationValuesManager getDynamicValues() {
-		return my_dynamicValuesManager;
+		return m_dynamicValuesManager;
 	}
 
 	public abstract List<IConfigurationProperty<?>> getAllPropertiesOrdered();
@@ -58,7 +58,7 @@ public abstract class AbstractConfiguration {
 
 	@Override
 	public final String toString() {
-		return "[" + Arrays.asList(getAllPropertiesOrdered()).toString() + ", " + my_dynamicValuesManager.toString()
+		return "[" + Arrays.asList(getAllPropertiesOrdered()).toString() + ", " + m_dynamicValuesManager.toString()
 				+ "]";
 	}
 
@@ -67,7 +67,7 @@ public abstract class AbstractConfiguration {
 
 		List<String> configurationLines = new ArrayList<>();
 		configurationLines.addAll(builtInPropertiesToStringLines());
-		configurationLines.addAll(my_dynamicValuesManager.toStringLines());
+		configurationLines.addAll(m_dynamicValuesManager.toStringLines());
 
 		for (String line : configurationLines) {
 			if (result.length() > 0) {
