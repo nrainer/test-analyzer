@@ -27,8 +27,9 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 	private static final String RETURN_TYPE_LIST_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
 			+ "return-type-list" + FILE_EXTENSION_TXT;
 
+	/** {@inheritDoc} */
 	@Override
-	public void testSystemInternal() throws ConfigurationException, IOException {
+	public void executeTestLogic() throws ConfigurationException, IOException {
 		File expectedStackAnalysisFile = getExpectedFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
 		File outputStackAnalysisFile = getOutputFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
 		File expectedCodeStatisticsFile = getExpectedFile(getFileName(CODE_STATISTICS_OUTPUT));

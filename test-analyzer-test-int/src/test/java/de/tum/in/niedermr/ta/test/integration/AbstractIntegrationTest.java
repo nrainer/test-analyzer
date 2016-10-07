@@ -66,7 +66,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	@Test(timeout = 60000)
 	public void testSystem() throws Exception {
 		try {
-			testSystemInternal();
+			executeTestLogic();
 			m_wasSuccessful = true;
 		} catch (AssertionError ex) {
 			m_wasSuccessful = false;
@@ -74,7 +74,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		}
 	}
 
-	protected abstract void testSystemInternal() throws Exception;
+	protected abstract void executeTestLogic() throws Exception;
 
 	@After
 	public void afterTest() {
