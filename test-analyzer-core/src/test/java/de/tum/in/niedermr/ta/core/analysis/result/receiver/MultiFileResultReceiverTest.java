@@ -12,13 +12,14 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 /** Test {@link FileResultReceiver}. */
 public class MultiFileResultReceiverTest extends AbstractFileResultReceiverTest {
 
-	protected static final String OUTPUT_FILE_NAME_PATTERN = OUTPUT_FOLDER + "result.txt-";
+	protected static final String OUTPUT_FILE_NAME_PATTERN = OUTPUT_FOLDER + "result-.txt";
 
 	/** Test. */
 	@Test
 	public void testReceiver() throws IOException {
 		MultiFileResultReceiver receiver = new MultiFileResultReceiver(OUTPUT_FILE_NAME_PATTERN, 5);
 		assertEquals(1, receiver.getFileCount());
+		assertEquals(OUTPUT_FOLDER + "result-1.txt", receiver.getFileName(1));
 
 		receiver.append("1");
 		assertEquals(1, receiver.getFileCount());

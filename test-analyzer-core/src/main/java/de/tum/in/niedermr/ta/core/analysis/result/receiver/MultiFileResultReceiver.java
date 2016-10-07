@@ -93,7 +93,14 @@ public class MultiFileResultReceiver implements IResultReceiver {
 			throw new IllegalArgumentException("Invalid index: " + index + " (File count is: " + m_fileCount + ")");
 		}
 
-		return m_baseFileName + index;
+		int lastIndexOfFileExtensionSeparator = m_baseFileName.lastIndexOf(".");
+
+		if (lastIndexOfFileExtensionSeparator < 0) {
+			return m_baseFileName + index;
+		}
+
+		return m_baseFileName.substring(0, lastIndexOfFileExtensionSeparator) + index
+				+ m_baseFileName.substring(lastIndexOfFileExtensionSeparator);
 	}
 
 	/** {@link #m_fileCount} */
