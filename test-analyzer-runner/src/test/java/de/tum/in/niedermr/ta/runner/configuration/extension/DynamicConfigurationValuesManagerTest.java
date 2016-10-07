@@ -17,29 +17,30 @@ public class DynamicConfigurationValuesManagerTest {
 	public void testDynamicValues() {
 		DynamicConfigurationValuesManager configurationExtension = new DynamicConfigurationValuesManager();
 
-		String propertyName = "analysis.nesting.enabled";
-		DynamicConfigurationKey extensionKey1 = DynamicConfigurationKey
-				.create(DynamicConfigurationKeyNamespace.EXTENSION, propertyName);
-		assertEquals(extensionKey1, DynamicConfigurationKey.parse(extensionKey1.getName()));
+		DynamicConfigurationKey extensionKeyForStringValue = DynamicConfigurationKey
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.algorithm", null);
+		DynamicConfigurationKey extensionKeyForBooleanValue = DynamicConfigurationKey
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.enabled", true);
+		assertEquals(extensionKeyForStringValue, DynamicConfigurationKey.parse(extensionKeyForStringValue.getName()));
 
-		assertFalse(configurationExtension.isSet(extensionKey1));
-		assertFalse(configurationExtension.getBooleanValue(extensionKey1));
-		assertTrue(configurationExtension.getBooleanValue(extensionKey1, true));
-		assertNull(configurationExtension.getStringValue(extensionKey1, null));
+		assertFalse(configurationExtension.isSet(extensionKeyForStringValue));
+		assertFalse(configurationExtension.getBooleanValue(extensionKeyForStringValue));
+		assertTrue(configurationExtension.getBooleanValue(extensionKeyForBooleanValue));
+		assertNull(configurationExtension.getStringValue(extensionKeyForStringValue));
 		assertTrue(configurationExtension.toStringLines().isEmpty());
 
-		configurationExtension.setRawValue(extensionKey1, Boolean.TRUE.toString());
-		assertTrue(configurationExtension.isSet(extensionKey1));
-		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKey1));
-		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKey1, null));
-		assertTrue(configurationExtension.getBooleanValue(extensionKey1));
+		configurationExtension.setRawValue(extensionKeyForStringValue, Boolean.TRUE.toString());
+		assertTrue(configurationExtension.isSet(extensionKeyForStringValue));
+		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKeyForStringValue));
+		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKeyForStringValue));
+		assertTrue(configurationExtension.getBooleanValue(extensionKeyForStringValue));
 
 		List<String> configurationExtensionLines = configurationExtension.toStringLines();
-		assertEquals(1, configurationExtensionLines.size());
-		assertEquals(DynamicConfigurationKeyNamespace.EXTENSION.getKeyPrefix() + propertyName + " = true",
-				configurationExtensionLines.get(0));
+		assertEquals(2, configurationExtensionLines.size());
+		assertTrue(configurationExtensionLines.contains(
+				DynamicConfigurationKeyNamespace.EXTENSION.getKeyPrefix() + "analysis.nesting.enabled" + " = true"));
 
-		configurationExtension.removeEntry(extensionKey1);
-		assertFalse(configurationExtension.isSet(extensionKey1));
+		configurationExtension.removeEntry(extensionKeyForStringValue);
+		assertFalse(configurationExtension.isSet(extensionKeyForStringValue));
 	}
 }

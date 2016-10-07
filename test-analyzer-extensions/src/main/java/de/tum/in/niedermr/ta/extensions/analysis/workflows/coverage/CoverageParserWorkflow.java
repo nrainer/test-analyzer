@@ -16,12 +16,12 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 /** Parser for coverage information. Currently, only coverage in form of XML from JaCoCo is supported. */
 public class CoverageParserWorkflow extends AbstractWorkflow {
 
-	/** <code>extension.code.coverage.file</code> */
-	public static final DynamicConfigurationKey COVERAGE_FILE = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.coverage.file");
-
 	/** Default name of the coverage file. */
 	private static final String DEFAULT_COVERAGE_FILE_NAME = "coverage.xml";
+
+	/** <code>extension.code.coverage.file</code> */
+	public static final DynamicConfigurationKey COVERAGE_FILE = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.coverage.file", DEFAULT_COVERAGE_FILE_NAME);
 
 	/** Result file name. */
 	private static final String RESULT_FILE_NAME = EnvironmentConstants.PATH_WORKING_AREA_RESULT
@@ -36,8 +36,7 @@ public class CoverageParserWorkflow extends AbstractWorkflow {
 		InMemoryResultReceiver coverageResultReceiver = new InMemoryResultReceiver();
 
 		CoverageParserStep parseCoverageStep = createAndInitializeExecutionStep(CoverageParserStep.class);
-		String coverageFileName = configuration.getDynamicValues().getStringValue(COVERAGE_FILE,
-				DEFAULT_COVERAGE_FILE_NAME);
+		String coverageFileName = configuration.getDynamicValues().getStringValue(COVERAGE_FILE);
 		parseCoverageStep.setCoverageFileName(coverageFileName);
 		parseCoverageStep.setCoverageResultReceiver(coverageResultReceiver);
 		parseCoverageStep.start();

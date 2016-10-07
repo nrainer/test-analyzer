@@ -15,13 +15,13 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	/** <code>extension.code.statistics.method.instructions</code> */
 	public static final DynamicConfigurationKey COUNT_INSTRUCTIONS = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.instructions");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.instructions", true);
 	/** <code>extension.code.statistics.method.assertions</code> */
 	public static final DynamicConfigurationKey COUNT_ASSERTIONS = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.assertions");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.assertions", true);
 	/** <code>extension.code.statistics.method.modifier</code> */
 	public static final DynamicConfigurationKey COLLECT_ACCESS_MODIFIER = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.modifier");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.modifier", true);
 
 	/** {@inheritDoc} */
 	@Override
@@ -31,15 +31,15 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 
 		PersistResultStep persistResultStep = createAndInitializeExecutionStep(PersistResultStep.class);
 
-		if (configuration.getDynamicValues().getBooleanValue(COUNT_INSTRUCTIONS, true)) {
+		if (configuration.getDynamicValues().getBooleanValue(COUNT_INSTRUCTIONS)) {
 			runCountInstructionsStep(persistResultStep);
 		}
 
-		if (configuration.getDynamicValues().getBooleanValue(COUNT_ASSERTIONS, true)) {
+		if (configuration.getDynamicValues().getBooleanValue(COUNT_ASSERTIONS)) {
 			runCountAssertionsStep(persistResultStep);
 		}
 
-		if (configuration.getDynamicValues().getBooleanValue(COLLECT_ACCESS_MODIFIER, true)) {
+		if (configuration.getDynamicValues().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
 			runCollectAccessModifiersStep(persistResultStep);
 		}
 

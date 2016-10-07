@@ -37,10 +37,10 @@ public class ConfigurationLoaderTest {
 		expected.getCodePathToTest().setValue("a.jar");
 
 		DynamicConfigurationKey extensionKeyForTuningAlgorithm = DynamicConfigurationKey
-				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.algorithm");
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.algorithm", null);
 		expected.getDynamicValues().setRawValue(extensionKeyForTuningAlgorithm, "ER3z");
 		DynamicConfigurationKey extensionKeyForTuningFactor = DynamicConfigurationKey
-				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.factor");
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.factor", null);
 		expected.getDynamicValues().setRawValue(extensionKeyForTuningFactor, "4");
 
 		Configuration result = ConfigurationLoader.getConfigurationFromFile("testConfigurationFromFile.config",

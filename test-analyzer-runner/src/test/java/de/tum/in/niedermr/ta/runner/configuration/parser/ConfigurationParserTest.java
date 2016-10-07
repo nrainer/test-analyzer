@@ -20,7 +20,7 @@ import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationPro
 public class ConfigurationParserTest {
 
 	private static final DynamicConfigurationKey DYNAMIC_PROPERTY_1 = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "data.compress");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "data.compress", false);
 
 	@After
 	public void after() {

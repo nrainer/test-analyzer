@@ -32,36 +32,28 @@ public class DynamicConfigurationValuesManager {
 	}
 
 	public String getStringValue(DynamicConfigurationKey key) {
-		return getStringValue(key, null);
+		return getStringValue(key, key.getDefaultValue());
 	}
 
-	public String getStringValue(DynamicConfigurationKey key, String valueIfNotSet) {
-		return m_dataMap.getOrDefault(key, valueIfNotSet);
+	private String getStringValue(DynamicConfigurationKey key, String defaultValue) {
+		return m_dataMap.getOrDefault(key, defaultValue);
 	}
 
 	public Integer getIntegerValue(DynamicConfigurationKey key) {
-		return getIntegerValue(key, null);
-	}
-
-	public Integer getIntegerValue(DynamicConfigurationKey key, Integer valueIfNotSet) {
 		String stringValue = getStringValue(key, null);
 
 		if (stringValue == null) {
-			return valueIfNotSet;
+			return key.getDefaultValue();
 		}
 
 		return Integer.parseInt(stringValue);
 	}
 
 	public boolean getBooleanValue(DynamicConfigurationKey key) {
-		return getBooleanValue(key, false);
-	}
-
-	public boolean getBooleanValue(DynamicConfigurationKey key, boolean valueIfNotSet) {
 		String stringValue = getStringValue(key, null);
 
 		if (stringValue == null) {
-			return valueIfNotSet;
+			return key.getDefaultValue();
 		}
 
 		return Boolean.parseBoolean(stringValue);
