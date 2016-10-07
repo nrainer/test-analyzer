@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -20,13 +19,13 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
-import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformationUtility;
 
 /** Main workflow for the mutation test analysis. */
 public class TestWorkflow extends AbstractWorkflow {
+
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(TestWorkflow.class);
 
@@ -47,7 +46,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	 * mutation testing steps. <br/>
 	 * If false, {@link MutateAndTestStep} will be skipped.
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEYEXECUTE_MUTATE_AND_TEST = DynamicConfigurationKey
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXECUTE_MUTATE_AND_TEST = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.mutateAndTest", true);
 
 	/**
@@ -66,45 +65,35 @@ public class TestWorkflow extends AbstractWorkflow {
 
 	/** Default constructor for reflective instantiation. */
 	public TestWorkflow() {
+		// NOP
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		setUpExecutionSteps();
-
 		beforeExecution(context);
 
-		executeCoreWorkflow(context, configuration);
+		try {
+			executeCoreWorkflow(context, configuration);
+		} catch (IOException e) {
+			throw new ExecutionException(context.getExecutionId(), e);
+		}
 
 		afterExecution(context);
 	}
 
 	/** Execute the main workflow logic. */
-	protected void executeCoreWorkflow(ExecutionContext context, Configuration configuration) {
-		ConcurrentLinkedQueue<TestInformation> testInformation = collectInformationOrLoadFromFile(context,
-				configuration);
-		executeMutationTestsIfEnabled(configuration, testInformation);
-	}
-
-	/**
-	 * Collect the information needed to execute teh mutation tests (if enabled
-	 * in the configuration) or load the data from a file.
-	 */
-	protected ConcurrentLinkedQueue<TestInformation> collectInformationOrLoadFromFile(ExecutionContext context,
-			Configuration configuration) {
+	protected void executeCoreWorkflow(ExecutionContext context, Configuration configuration)
+			throws ExecutionException, IOException {
 		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXECUTE_COLLECT_INFORMATION)) {
-			return collectInformation();
+			executeCollectInformation();
 		} else {
 			LOGGER.info("Skipping steps to collect information");
-			return loadExistingTestInformation(context);
 		}
-	}
 
-	/** Execute the mutation tests (if enabled in the configuration). */
-	protected void executeMutationTestsIfEnabled(Configuration configuration,
-			ConcurrentLinkedQueue<TestInformation> testInformation) {
-		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEYEXECUTE_MUTATE_AND_TEST)) {
+		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXECUTE_MUTATE_AND_TEST)) {
+			ConcurrentLinkedQueue<TestInformation> testInformation = loadCollectedInformation(context);
 			executeMutateAndTest(testInformation);
 		} else {
 			LOGGER.info("Skipping the steps to mutate and test methods");
@@ -137,46 +126,25 @@ public class TestWorkflow extends AbstractWorkflow {
 	 *            of the workflow
 	 */
 	protected void afterExecution(ExecutionContext context) throws ExecutionException {
-		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEYEXECUTE_MUTATE_AND_TEST)) {
+		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXECUTE_MUTATE_AND_TEST)) {
 			m_finalizeResultStep.start();
 		}
 
 		m_cleanupStep.start();
 	}
 
-	protected ConcurrentLinkedQueue<TestInformation> collectInformation() throws ExecutionException {
+	protected void executeCollectInformation() throws ExecutionException {
 		m_instrumentationStep.start();
 		m_informationCollectorStep.start();
-
-		return m_informationCollectorStep.getMethodsToMutateAndTestsToRun();
 	}
 
-	protected ConcurrentLinkedQueue<TestInformation> loadExistingTestInformation(ExecutionContext context)
-			throws ExecutionException {
-		String workingFolder = context.getWorkingFolder();
-		String fileCollectedInformation = Environment
-				.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, workingFolder);
+	protected ConcurrentLinkedQueue<TestInformation> loadCollectedInformation(ExecutionContext context)
+			throws ExecutionException, IOException {
+		List<String> rawData = TextFileData.readFromFile(
+				AbstractWorkflow.getFileInWorkingArea(context, EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION));
 
-		if (!new File(fileCollectedInformation).exists()) {
-			throw new ExecutionException(context.getExecutionId(),
-					fileCollectedInformation + " must exist in the working directory if '"
-							+ CONFIGURATION_KEY_EXECUTE_COLLECT_INFORMATION.getName() + "' is set to 'false'.");
-		}
-
-		return loadExistingTestInformationInternal(workingFolder);
-	}
-
-	protected ConcurrentLinkedQueue<TestInformation> loadExistingTestInformationInternal(String workingFolder) {
 		ConcurrentLinkedQueue<TestInformation> testInformation = new ConcurrentLinkedQueue<>();
-
-		try {
-			List<String> data = TextFileData.readFromFile(Environment
-					.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, workingFolder));
-			testInformation.addAll(CollectedInformationUtility.parseMethodTestcaseText(data));
-		} catch (IOException ex) {
-			LOGGER.fatal("When loading existing collected-information", ex);
-		}
-
+		testInformation.addAll(CollectedInformationUtility.parseMethodTestcaseText(rawData));
 		return testInformation;
 	}
 

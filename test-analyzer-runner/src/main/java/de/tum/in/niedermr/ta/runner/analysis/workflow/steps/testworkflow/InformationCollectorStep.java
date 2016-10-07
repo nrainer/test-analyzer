@@ -1,12 +1,8 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
-import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.InformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -15,14 +11,8 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
-import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformationUtility;
 
 public class InformationCollectorStep extends AbstractExecutionStep {
-	private final ConcurrentLinkedQueue<TestInformation> m_methodsToMutateAndTestsToRun;
-
-	public InformationCollectorStep() {
-		this.m_methodsToMutateAndTestsToRun = new ConcurrentLinkedQueue<>();
-	}
 
 	/** {@inheritDoc} */
 	@Override
@@ -59,13 +49,6 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 
 		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class, classPath,
 				argsWriter);
-
-		loadCollectedData();
-	}
-
-	protected void loadCollectedData() throws ExecutionException, IOException {
-		List<String> data = TextFileData.readFromFile(getFileInWorkingArea(FILE_OUTPUT_COLLECTED_INFORMATION));
-		m_methodsToMutateAndTestsToRun.addAll(CollectedInformationUtility.parseMethodTestcaseText(data));
 	}
 
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {
@@ -76,10 +59,6 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 	protected String getTestInstrumentedJarFilesClasspath(Configuration configuration) {
 		return Environment.getClasspathOfIndexedFiles(getFileInWorkingArea(FILE_TEMP_JAR_INSTRUMENTED_TEST_X), 0,
 				configuration.getCodePathToTest().countElements());
-	}
-
-	public ConcurrentLinkedQueue<TestInformation> getMethodsToMutateAndTestsToRun() {
-		return m_methodsToMutateAndTestsToRun;
 	}
 
 	/** {@inheritDoc} */
