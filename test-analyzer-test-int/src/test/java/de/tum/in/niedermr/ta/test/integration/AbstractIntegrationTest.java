@@ -88,7 +88,6 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	}
 
 	protected void executeTestAnalyzerWithConfiguration() throws ConfigurationException, IOException {
-		AnalyzerRunnerStart.setTestMode();
 		AnalyzerRunnerStart.execute(getConfiguration());
 	}
 

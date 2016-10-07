@@ -15,6 +15,7 @@ import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationValuesManager;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
@@ -29,8 +30,6 @@ import de.tum.in.niedermr.ta.runner.factory.IFactory;
  * The process will be started in the working area which is specified in the configuration.
  */
 public class AnalyzerRunnerStart {
-	private static boolean s_inTestMode = false;
-
 	/** <code>advanced.executionId</code>: Force the use of a certain executionId. */
 	private static final DynamicConfigurationKey CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "executionId", null);
@@ -94,15 +93,12 @@ public class AnalyzerRunnerStart {
 
 	/** Create an execution id. The id is either random, or specified in the configuration, or the test id. */
 	private static IExecutionId createExecutionId(Configuration configuration) {
-		if (s_inTestMode) {
-			return ExecutionIdFactory.ID_FOR_TESTS;
-		}
-
-		if (configuration.getDynamicValues().isSet(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID)) {
-			String executionId = configuration.getDynamicValues()
+		DynamicConfigurationValuesManager dynamicConfigurationValues = configuration.getDynamicValues();
+		if (dynamicConfigurationValues.isSet(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID)) {
+			String executionId = dynamicConfigurationValues
 					.getStringValue(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID);
-			configuration.getDynamicValues().removeEntry(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID);
-			return ExecutionIdFactory.parseShortExecutionId(executionId);
+			dynamicConfigurationValues.removeEntry(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID);
+			return ExecutionIdFactory.parseShortExecutionId(executionId.trim());
 		}
 
 		return ExecutionIdFactory.createNewShortExecutionId();
@@ -137,13 +133,5 @@ public class AnalyzerRunnerStart {
 
 	private static void print(String value) {
 		System.out.println(value);
-	}
-
-	/**
-	 * Sets the execution id to {@link AnalyzerRunnerInternal#EXECUTION_ID_FOR_TESTS} in order to allow a result
-	 * comparison.
-	 */
-	public static void setTestMode() {
-		s_inTestMode = true;
 	}
 }
