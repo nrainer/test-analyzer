@@ -31,20 +31,31 @@ public class TestWorkflow extends AbstractWorkflow {
 	private static final Logger LOGGER = LogManager.getLogger(TestWorkflow.class);
 
 	/**
-	 * <code>advanced.testworkflow.collectInformation</code>: Allows skipping the information collections steps
-	 * (default: collect information = true). <br/>
-	 * If false, {@link InstrumentationStep} and {@link InformationCollectorStep} will be skipped and
+	 * <code>advanced.testworkflow.collectInformation</code>: Allows skipping
+	 * the information collections steps (default: collect information = true).
+	 * <br/>
+	 * If false, {@link InstrumentationStep} and
+	 * {@link InformationCollectorStep} will be skipped and
 	 * {@link de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants#FILE_OUTPUT_COLLECTED_INFORMATION}
 	 * will be loaded instead from the working folder.<br/>
 	 */
-	private static final DynamicConfigurationKey EXECUTE_COLLECT_INFORMATION_KEY = DynamicConfigurationKey
+	public static final DynamicConfigurationKey EXECUTE_COLLECT_INFORMATION_KEY = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.collectInformation", true);
+
 	/**
-	 * <code>advanced.testworkflow.mutateAndTest</code>: Allows skipping the mutation testing steps. <br/>
+	 * <code>advanced.testworkflow.mutateAndTest</code>: Allows skipping the
+	 * mutation testing steps. <br/>
 	 * If false, {@link MutateAndTestStep} will be skipped.
 	 */
-	private static final DynamicConfigurationKey EXECUTE_MUTATE_AND_TEST_KEY = DynamicConfigurationKey
+	public static final DynamicConfigurationKey EXECUTE_MUTATE_AND_TEST_KEY = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.mutateAndTest", true);
+
+	/**
+	 * <code>advanced.testworkflow.abortchecker.disabled</code>: Disables the
+	 * abort checker.
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_DISABLE_ABORT_CHECKER = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.abortchecker.disabled", false);
 
 	protected PrepareWorkingFolderStep m_prepareWorkingFolderStep;
 	protected InstrumentationStep m_instrumentationStep;
@@ -77,8 +88,8 @@ public class TestWorkflow extends AbstractWorkflow {
 	}
 
 	/**
-	 * Collect the information needed to execute teh mutation tests (if enabled in the configuration) or load the data
-	 * from a file.
+	 * Collect the information needed to execute teh mutation tests (if enabled
+	 * in the configuration) or load the data from a file.
 	 */
 	protected ConcurrentLinkedQueue<TestInformation> collectInformationOrLoadFromFile(ExecutionContext context,
 			Configuration configuration) {

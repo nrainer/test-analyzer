@@ -21,6 +21,7 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.TestWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -60,7 +61,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 
 		loadReturnValueGenerators(configuration);
 
-		startAbortChecker();
+		startAbortChecker(configuration);
 
 		List<MutateAndTestThread> threadList = createAndStartThreads(configuration, processExecution);
 
@@ -108,8 +109,18 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		}
 	}
 
-	private void startAbortChecker() {
-		this.m_aborted = false;
+	/**
+	 * Start the abort checker thread (unless it is disabled).
+	 * 
+	 * @see TestWorkflow#CONFIGURATION_KEY_DISABLE_ABORT_CHECKER
+	 */
+	private void startAbortChecker(Configuration configuration) {
+		m_aborted = false;
+
+		if (configuration.getDynamicValues().getBooleanValue(TestWorkflow.CONFIGURATION_KEY_DISABLE_ABORT_CHECKER)) {
+			LOGGER.info("Abort checker is disabled");
+			return;
+		}
 
 		String fileName = getFileInWorkingArea(EnvironmentConstants.FILE_TEMP_IS_RUNNING_TESTS);
 
