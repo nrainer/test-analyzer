@@ -16,7 +16,7 @@ import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
@@ -101,8 +101,8 @@ abstract class AbstractConfigurationParser {
 		String key = getKeyOfLine(lineParts);
 		String rawValue = getValueOfLine(lineParts);
 
-		if (isExtensionProperty(key)) {
-			handleExtensionProperty(lineType, key, rawValue);
+		if (DynamicConfigurationKey.isDynamicConfigurationKey(key)) {
+			handleDynamicProperty(lineType, key, rawValue);
 		} else {
 			handleBuiltInProperty(line, lineType, key, rawValue);
 		}
@@ -132,18 +132,12 @@ abstract class AbstractConfigurationParser {
 		}
 	}
 
-	private void handleExtensionProperty(LineType lineType, String key, String rawValue) {
+	private void handleDynamicProperty(LineType lineType, String key, String rawValue) {
 		if (lineType != LineType.SET) {
-			throw new IllegalStateException(
-					"Extension properties only support assignments with " + lineType.m_separator);
+			throw new IllegalStateException("Dynamic properties only support assignments with " + lineType.m_separator);
 		}
 
-		m_configuration.getExtension().setRawValue(ConfigurationExtensionKey.parse(key), rawValue);
-	}
-
-	/** Check if the key is an extension or a built-in property. */
-	private boolean isExtensionProperty(String key) {
-		return key.startsWith(ConfigurationExtensionKey.EXTENSION_PROPERTY_PREFIX);
+		m_configuration.getDynamicValues().setRawValue(DynamicConfigurationKey.parse(key), rawValue);
 	}
 
 	/**

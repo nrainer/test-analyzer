@@ -2,8 +2,10 @@ package de.tum.in.niedermr.ta.runner.configuration.parser.migration;
 
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
-public class ConfigurationMigrationFromV2 implements IConfigurationMigration {
+/** Migration for the configuration from version 2 to 3. */
+class ConfigurationMigrationFromV2ToV3 implements IConfigurationMigration {
 
+	/** {@inheritDoc} */
 	@Override
 	public String migrateKey(String key) {
 		switch (key) {
@@ -14,6 +16,7 @@ public class ConfigurationMigrationFromV2 implements IConfigurationMigration {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String migrateRawValue(IConfigurationProperty<?> property, String value0) {
 		return value0;

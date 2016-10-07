@@ -9,7 +9,8 @@ import org.junit.After;
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
@@ -35,12 +36,12 @@ public class ConfigurationLoaderTest {
 		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getCodePathToTest().setValue("a.jar");
 
-		ConfigurationExtensionKey extensionKeyForTuningAlgorithm = ConfigurationExtensionKey
-				.create("tuning.speedup.algorithm");
-		expected.getExtension().setRawValue(extensionKeyForTuningAlgorithm, "ER3z");
-		ConfigurationExtensionKey extensionKeyForTuningFactor = ConfigurationExtensionKey
-				.create("tuning.speedup.factor");
-		expected.getExtension().setRawValue(extensionKeyForTuningFactor, "4");
+		DynamicConfigurationKey extensionKeyForTuningAlgorithm = DynamicConfigurationKey
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.algorithm", null);
+		expected.getDynamicValues().setRawValue(extensionKeyForTuningAlgorithm, "ER3z");
+		DynamicConfigurationKey extensionKeyForTuningFactor = DynamicConfigurationKey
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.factor", null);
+		expected.getDynamicValues().setRawValue(extensionKeyForTuningFactor, "4");
 
 		Configuration result = ConfigurationLoader.getConfigurationFromFile("testConfigurationFromFile.config",
 				"./src/test/data/ConfigurationLoaderTest/");
@@ -74,7 +75,7 @@ public class ConfigurationLoaderTest {
 			assertEquals(cProperties1.get(i).getValue(), cProperties2.get(i).getValue());
 		}
 
-		assertEquals(configuration1.getExtension().toStringLines(),
-				configuration2.getExtension().toStringLines());
+		assertEquals(configuration1.getDynamicValues().toStringLines(),
+				configuration2.getDynamicValues().toStringLines());
 	}
 }

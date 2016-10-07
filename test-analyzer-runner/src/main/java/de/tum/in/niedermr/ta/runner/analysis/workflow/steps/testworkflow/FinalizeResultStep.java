@@ -22,15 +22,13 @@ public class FinalizeResultStep extends AbstractExecutionStep {
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution)
 			throws ExecutionException, IOException {
-		if (configuration.getExecuteMutateAndTest().isTrue()) {
-			final String destinationFilePath = getFileInWorkingArea(
-					Environment.getGenericFilePathOfOutputResult(configuration));
+		final String destinationFilePath = getFileInWorkingArea(
+				Environment.getGenericFilePathOfOutputResult(configuration));
 
-			if (configuration.isMultiThreaded()) {
-				mergeResultFiles(configuration, destinationFilePath);
-			} else {
-				moveResultFile(destinationFilePath);
-			}
+		if (configuration.isMultiThreaded()) {
+			mergeResultFiles(configuration, destinationFilePath);
+		} else {
+			moveResultFile(destinationFilePath);
 		}
 	}
 

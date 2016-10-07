@@ -13,8 +13,6 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.configuration.property.ClasspathProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.CodePathToMutateProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.CodePathToTestProperty;
-import de.tum.in.niedermr.ta.runner.configuration.property.ExecuteCollectInformationProperty;
-import de.tum.in.niedermr.ta.runner.configuration.property.ExecuteMutateAndTestProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.FactoryClassProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.MethodFiltersProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.NumberOfThreadsProperty;
@@ -26,10 +24,10 @@ import de.tum.in.niedermr.ta.runner.configuration.property.TestAnalyzerClasspath
 import de.tum.in.niedermr.ta.runner.configuration.property.TestClassExcludesProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestClassIncludesProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestRunnerProperty;
-import de.tum.in.niedermr.ta.runner.configuration.property.TestWorkflowsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestingTimeoutAbsoluteMaxProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestingTimeoutConstantProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestingTimeoutPerTestcaseProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.WorkflowsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.WorkingFolderProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractClasspathProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
@@ -39,14 +37,14 @@ import de.tum.in.niedermr.ta.runner.factory.IFactory;
  * Configuration
  */
 public class Configuration extends AbstractConfiguration implements FileSystemConstants {
-	private static final int CURRENT_VERSION = 3;
+	public static final int CURRENT_VERSION = 4;
 
 	private final TestAnalyzerClasspathProperty m_testAnalyzerClasspath;
 	private final WorkingFolderProperty m_workingFolder;
 	private final CodePathToMutateProperty m_codePathToMutate;
 	private final CodePathToTestProperty m_codePathToTest;
 	private final ClasspathProperty m_classpath;
-	private final TestWorkflowsProperty m_testWorkflows;
+	private final WorkflowsProperty m_workflows;
 	private final FactoryClassProperty m_factoryClass;
 	private final TestRunnerProperty m_testRunner;
 	private final MethodFiltersProperty m_methodFilters;
@@ -59,8 +57,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	private final TestingTimeoutPerTestcaseProperty m_testingTimeoutPerTestcase;
 	private final OperateFaultTolerantProperty m_operateFaultTolerant;
 	private final NumberOfThreadsProperty m_numberOfThreads;
-	private final ExecuteCollectInformationProperty m_executeCollectInformation;
-	private final ExecuteMutateAndTestProperty m_executeMutateAndTest;
 	private final RemoveTempDataProperty m_removeTempData;
 
 	public Configuration() {
@@ -70,7 +66,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		m_codePathToMutate = new CodePathToMutateProperty();
 		m_codePathToTest = new CodePathToTestProperty();
 		m_classpath = new ClasspathProperty();
-		m_testWorkflows = new TestWorkflowsProperty();
+		m_workflows = new WorkflowsProperty();
 		m_factoryClass = new FactoryClassProperty();
 		m_testRunner = new TestRunnerProperty();
 		m_methodFilters = new MethodFiltersProperty();
@@ -83,8 +79,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		m_testingTimeoutPerTestcase = new TestingTimeoutPerTestcaseProperty();
 		m_operateFaultTolerant = new OperateFaultTolerantProperty();
 		m_numberOfThreads = new NumberOfThreadsProperty();
-		m_executeCollectInformation = new ExecuteCollectInformationProperty();
-		m_executeMutateAndTest = new ExecuteMutateAndTestProperty();
 		m_removeTempData = new RemoveTempDataProperty();
 	}
 
@@ -98,7 +92,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		properties.add(m_codePathToMutate);
 		properties.add(m_codePathToTest);
 		properties.add(m_classpath);
-		properties.add(m_testWorkflows);
+		properties.add(m_workflows);
 		properties.add(m_factoryClass);
 		properties.add(m_testRunner);
 		properties.add(m_methodFilters);
@@ -111,8 +105,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		properties.add(m_testingTimeoutAbsoluteMax);
 		properties.add(m_operateFaultTolerant);
 		properties.add(m_numberOfThreads);
-		properties.add(m_executeCollectInformation);
-		properties.add(m_executeMutateAndTest);
 		properties.add(m_removeTempData);
 
 		return properties;
@@ -189,13 +181,13 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	}
 
 	/**
-	 * Qualified class name of the test workflow to be used.<br/>
-	 * The class must implement {@link IWorkflow} and be on the classpath.<br/>
+	 * Qualified class name of the workflows to be used.<br/>
+	 * The classes must implement {@link IWorkflow} and be on the classpath.<br/>
 	 * <br/>
 	 * The default value can be used.
 	 */
-	public TestWorkflowsProperty getTestWorkflows() {
-		return m_testWorkflows;
+	public WorkflowsProperty getWorkflows() {
+		return m_workflows;
 	}
 
 	/**
@@ -352,27 +344,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	 */
 	public NumberOfThreadsProperty getNumberOfThreads() {
 		return m_numberOfThreads;
-	}
-
-	/**
-	 * If false, the steps of instrumentation (INSTRU) and information collection (INFCOL) will be skipped.<br/>
-	 * In this case the file
-	 * {@link de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants#FILE_OUTPUT_COLLECTED_INFORMATION}
-	 * must exist in the working folder!<br/>
-	 * <br/>
-	 * The default value can be used.
-	 */
-	public ExecuteCollectInformationProperty getExecuteCollectInformation() {
-		return m_executeCollectInformation;
-	}
-
-	/**
-	 * If false, the steps of mutating methods (METKIL) and running tests (TSTRUN) will be skipped.<br/>
-	 * <br/>
-	 * The default value can be used.
-	 */
-	public ExecuteMutateAndTestProperty getExecuteMutateAndTest() {
-		return m_executeMutateAndTest;
 	}
 
 	/**

@@ -13,6 +13,9 @@ import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationValuesManager;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
@@ -25,10 +28,11 @@ import de.tum.in.niedermr.ta.runner.factory.IFactory;
 /**
  * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed classpath.<br/>
  * The process will be started in the working area which is specified in the configuration.<br/>
- *
  */
 public class AnalyzerRunnerStart {
-	private static boolean s_inTestMode = false;
+	/** <code>advanced.executionId</code>: Force the use of a certain executionId. */
+	private static final DynamicConfigurationKey CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.ADVANCED, "executionId", null);
 
 	/**
 	 * Main method.
@@ -58,11 +62,7 @@ public class AnalyzerRunnerStart {
 	}
 
 	public static void execute(Configuration configuration, File locationTestAnalyzer) throws IOException {
-		IExecutionId executionId = ExecutionIdFactory.createNewShortExecutionId();
-
-		if (s_inTestMode) {
-			executionId = ExecutionIdFactory.ID_FOR_TESTS;
-		}
+		IExecutionId executionId = createExecutionId(configuration);
 
 		final String currentCanonicalPath = locationTestAnalyzer.getCanonicalPath();
 		final String workingFolder = configuration.getWorkingFolder().getValue();
@@ -85,6 +85,19 @@ public class AnalyzerRunnerStart {
 		} catch (ExecutionException ex) {
 			print("ERROR. (" + ex.getMessage() + ")");
 		}
+	}
+
+	/** Create an execution id. The id is either random, or specified in the configuration, or the test id. */
+	private static IExecutionId createExecutionId(Configuration configuration) {
+		DynamicConfigurationValuesManager dynamicConfigurationValues = configuration.getDynamicValues();
+		if (dynamicConfigurationValues.isSet(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID)) {
+			String executionId = dynamicConfigurationValues
+					.getStringValue(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID);
+			dynamicConfigurationValues.removeEntry(CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID);
+			return ExecutionIdFactory.parseShortExecutionId(executionId.trim());
+		}
+
+		return ExecutionIdFactory.createNewShortExecutionId();
 	}
 
 	/** Start the execution in a new process. */
@@ -116,13 +129,5 @@ public class AnalyzerRunnerStart {
 
 	private static void print(String value) {
 		System.out.println(value);
-	}
-
-	/**
-	 * Sets the execution id to {@link AnalyzerRunnerInternal#EXECUTION_ID_FOR_TESTS} in order to allow a result
-	 * comparison.
-	 */
-	public static void setTestMode() {
-		s_inTestMode = true;
 	}
 }

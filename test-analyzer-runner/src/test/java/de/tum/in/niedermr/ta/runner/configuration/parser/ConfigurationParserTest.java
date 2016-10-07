@@ -12,13 +12,15 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoaderTest;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
 
+/** Test {@link ConfigurationParser}. */
 public class ConfigurationParserTest {
 
-	private static final ConfigurationExtensionKey EXTENSION_PROPERTY_1 = ConfigurationExtensionKey
-			.create("data.compress");
+	private static final DynamicConfigurationKey DYNAMIC_PROPERTY_1 = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "data.compress", false);
 
 	@After
 	public void after() {
@@ -30,10 +32,10 @@ public class ConfigurationParserTest {
 		final Configuration expected = new Configuration();
 		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getClasspath().setValue("a.jar;b.jar;");
-		expected.getExecuteCollectInformation().setValue(true);
-		expected.getExecuteMutateAndTest().setValue(false);
+		expected.getOperateFaultTolerant().setValue(true);
+		expected.getRemoveTempData().setValue(false);
 		expected.getWorkingFolder().setValue("E:/");
-		expected.getExtension().setRawValue(EXTENSION_PROPERTY_1, Boolean.TRUE.toString());
+		expected.getDynamicValues().setRawValue(DYNAMIC_PROPERTY_1, Boolean.TRUE.toString());
 
 		Configuration result = new Configuration();
 
