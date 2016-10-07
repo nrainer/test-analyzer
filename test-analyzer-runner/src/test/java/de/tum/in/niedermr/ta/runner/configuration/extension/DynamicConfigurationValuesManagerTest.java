@@ -2,7 +2,6 @@ package de.tum.in.niedermr.ta.runner.configuration.extension;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -18,22 +17,24 @@ public class DynamicConfigurationValuesManagerTest {
 		DynamicConfigurationValuesManager configurationExtension = new DynamicConfigurationValuesManager();
 
 		DynamicConfigurationKey extensionKeyForStringValue = DynamicConfigurationKey
-				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.algorithm", null);
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.algorithm", "default");
 		DynamicConfigurationKey extensionKeyForBooleanValue = DynamicConfigurationKey
-				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.enabled", true);
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.enabled", false);
 		assertEquals(extensionKeyForStringValue, DynamicConfigurationKey.parse(extensionKeyForStringValue.getName()));
 
-		assertFalse(configurationExtension.isSet(extensionKeyForStringValue));
-		assertFalse(configurationExtension.getBooleanValue(extensionKeyForStringValue));
-		assertTrue(configurationExtension.getBooleanValue(extensionKeyForBooleanValue));
-		assertNull(configurationExtension.getStringValue(extensionKeyForStringValue));
 		assertTrue(configurationExtension.toStringLines().isEmpty());
 
-		configurationExtension.setRawValue(extensionKeyForStringValue, Boolean.TRUE.toString());
+		assertFalse(configurationExtension.isSet(extensionKeyForBooleanValue));
+		assertFalse(configurationExtension.getBooleanValue(extensionKeyForBooleanValue));
+		configurationExtension.setRawValue(extensionKeyForBooleanValue, Boolean.TRUE.toString());
+		assertTrue(configurationExtension.isSet(extensionKeyForBooleanValue));
+		assertTrue(configurationExtension.getBooleanValue(extensionKeyForBooleanValue));
+
+		assertFalse(configurationExtension.isSet(extensionKeyForStringValue));
+		assertEquals("default", configurationExtension.getStringValue(extensionKeyForStringValue));
+		configurationExtension.setRawValue(extensionKeyForStringValue, "X4");
 		assertTrue(configurationExtension.isSet(extensionKeyForStringValue));
-		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKeyForStringValue));
-		assertEquals(Boolean.TRUE.toString(), configurationExtension.getStringValue(extensionKeyForStringValue));
-		assertTrue(configurationExtension.getBooleanValue(extensionKeyForStringValue));
+		assertEquals("X4", configurationExtension.getStringValue(extensionKeyForStringValue));
 
 		List<String> configurationExtensionLines = configurationExtension.toStringLines();
 		assertEquals(2, configurationExtensionLines.size());
