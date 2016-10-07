@@ -2,6 +2,8 @@ package de.tum.in.niedermr.ta.runner.analysis.workflow.common;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
@@ -12,10 +14,12 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
- * This step prepares the working folder. It should be executed before each
- * workflow to ensure that the temp folder is empty.
+ * This step prepares the working folder. It should be executed before each workflow to ensure that the temp folder is
+ * empty.
  */
 public class PrepareWorkingFolderStep extends AbstractExecutionStep {
+
+	private final List<File> m_foldersToBeCreated = new ArrayList<>();
 
 	/** {@inheritDoc} */
 	@Override
@@ -27,15 +31,31 @@ public class PrepareWorkingFolderStep extends AbstractExecutionStep {
 	@Override
 	public void runInternal(Configuration configuration, ProcessExecution processExecution)
 			throws ExecutionException, IOException {
-		final File workingAreaTemp = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP));
-		final File workingAreaResult = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_RESULT));
+		File workingAreaTemp = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_TEMP));
+		File workingAreaResult = new File(getFileInWorkingArea(EnvironmentConstants.PATH_WORKING_AREA_RESULT));
 
+		addFolderToBeCreated(workingAreaTemp);
+		addFolderToBeCreated(workingAreaResult);
+
+		deleteTemporaryFolder(workingAreaTemp);
+		createFolders();
+	}
+
+	private void deleteTemporaryFolder(File workingAreaTemp) {
 		if (workingAreaTemp.exists()) {
 			FileSystemUtils.deleteRecursively(workingAreaTemp);
 		}
+	}
 
-		FileSystemUtils.ensureDirectoryExists(workingAreaTemp);
-		FileSystemUtils.ensureDirectoryExists(workingAreaResult);
+	private void createFolders() throws IOException {
+		for (File folder : m_foldersToBeCreated) {
+			FileSystemUtils.ensureDirectoryExists(folder);
+		}
+	}
+
+	/** Add a folder that should be created if it does not exist yet. */
+	public void addFolderToBeCreated(File folder) {
+		m_foldersToBeCreated.add(folder);
 	}
 
 	/** {@inheritDoc} */
