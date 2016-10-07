@@ -309,11 +309,11 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 		 */
 		protected void runTestsAndRecordResult(IFullExecutionId fullExecutionId, String fileWithTestsToRun,
 				String fileWithResults, IReturnValueGenerator retValGen) throws IOException {
-			final String usedReturnValueGenerator = retValGen.getClass().getName();
-			final String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
+			String usedReturnValueGenerator = retValGen.getClass().getName();
+			String classPath = m_configuration.getTestAnalyzerClasspath().getValue() + CP_SEP
 					+ getFileInWorkingArea(getWithIndex(FILE_TEMP_JAR_X, m_threadIndex)) + CP_SEP
 					+ m_configuration.getFullClasspath();
-			final int timeout = m_configuration.computeTestingTimeout(m_currentTestcases.size());
+			int timeout = m_configuration.computeTestingTimeout(m_currentTestcases.size());
 
 			ProgramArgsWriter argsWriter = TestRun.createProgramArgsWriter();
 			argsWriter.setValue(TestRun.ARGS_EXECUTION_ID, fullExecutionId.getFullId());
@@ -324,14 +324,19 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			argsWriter.setValue(TestRun.ARGS_RETURN_VALUE_GENERATOR_CLASS, usedReturnValueGenerator);
 			argsWriter.setValue(TestRun.ARGS_RESULT_PRESENTATION, m_configuration.getResultPresentation().getValue());
 
-			ExecutionResult executionResult = m_processExecution.execute(fullExecutionId, timeout, TestRun.class,
-					classPath, argsWriter);
+			ExecutionResult executionResult = runTestsInNewProcess(fullExecutionId, classPath, timeout, argsWriter);
 
 			if (!executionResult.getStderr().isEmpty()) {
 				LOG_TEST_SYS_ERR.debug("SYSERR when running test on mutated method " + m_currentMethodUnderTest.get()
 						+ " with " + usedReturnValueGenerator + ": "
 						+ LoggingUtil.shorten(300, executionResult.getStderr()));
 			}
+		}
+
+		/** Run the tests in a new process. */
+		protected ExecutionResult runTestsInNewProcess(IFullExecutionId fullExecutionId, final String classPath,
+				final int timeout, ProgramArgsWriter argsWriter) {
+			return m_processExecution.execute(fullExecutionId, timeout, TestRun.class, classPath, argsWriter);
 		}
 
 		@Override
