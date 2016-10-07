@@ -31,6 +31,16 @@ public class DynamicConfigurationValuesManager {
 		return m_dataMap.containsKey(key);
 	}
 
+	/**
+	 * Throws an exception if the value of the specified key is not specified.<br/>
+	 * Note that default values are not considered.
+	 */
+	public void requireValueIsSet(DynamicConfigurationKey key) {
+		if (!isSet(key)) {
+			throw new IllegalStateException("Configuration key '" + key.getName() + "' is required but not specified.");
+		}
+	}
+
 	public String getStringValue(DynamicConfigurationKey key) {
 		return getStringValue(key, key.getDefaultValue());
 	}

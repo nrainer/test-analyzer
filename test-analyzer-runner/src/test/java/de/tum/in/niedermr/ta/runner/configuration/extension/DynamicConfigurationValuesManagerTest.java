@@ -11,37 +11,46 @@ import org.junit.Test;
 /** Test {@link DynamicConfigurationValuesManager} */
 public class DynamicConfigurationValuesManagerTest {
 
+	private static final DynamicConfigurationKey CONFIGURATION_KEY_FOR_STRING_VALUE = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.algorithm", "default");
+	private static final DynamicConfigurationKey CONFIGURATION_KEY_FOR_BOOLEAN_VALUE = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.enabled", false);
+
 	/** Test. */
 	@Test
 	public void testDynamicValues() {
 		DynamicConfigurationValuesManager configurationExtension = new DynamicConfigurationValuesManager();
 
-		DynamicConfigurationKey extensionKeyForStringValue = DynamicConfigurationKey
-				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.algorithm", "default");
-		DynamicConfigurationKey extensionKeyForBooleanValue = DynamicConfigurationKey
-				.create(DynamicConfigurationKeyNamespace.EXTENSION, "analysis.nesting.enabled", false);
-		assertEquals(extensionKeyForStringValue, DynamicConfigurationKey.parse(extensionKeyForStringValue.getName()));
+		assertEquals(CONFIGURATION_KEY_FOR_STRING_VALUE,
+				DynamicConfigurationKey.parse(CONFIGURATION_KEY_FOR_STRING_VALUE.getName()));
 
 		assertTrue(configurationExtension.toStringLines().isEmpty());
 
-		assertFalse(configurationExtension.isSet(extensionKeyForBooleanValue));
-		assertFalse(configurationExtension.getBooleanValue(extensionKeyForBooleanValue));
-		configurationExtension.setRawValue(extensionKeyForBooleanValue, Boolean.TRUE.toString());
-		assertTrue(configurationExtension.isSet(extensionKeyForBooleanValue));
-		assertTrue(configurationExtension.getBooleanValue(extensionKeyForBooleanValue));
+		assertFalse(configurationExtension.isSet(CONFIGURATION_KEY_FOR_BOOLEAN_VALUE));
+		assertFalse(configurationExtension.getBooleanValue(CONFIGURATION_KEY_FOR_BOOLEAN_VALUE));
+		configurationExtension.setRawValue(CONFIGURATION_KEY_FOR_BOOLEAN_VALUE, Boolean.TRUE.toString());
+		assertTrue(configurationExtension.isSet(CONFIGURATION_KEY_FOR_BOOLEAN_VALUE));
+		assertTrue(configurationExtension.getBooleanValue(CONFIGURATION_KEY_FOR_BOOLEAN_VALUE));
 
-		assertFalse(configurationExtension.isSet(extensionKeyForStringValue));
-		assertEquals("default", configurationExtension.getStringValue(extensionKeyForStringValue));
-		configurationExtension.setRawValue(extensionKeyForStringValue, "X4");
-		assertTrue(configurationExtension.isSet(extensionKeyForStringValue));
-		assertEquals("X4", configurationExtension.getStringValue(extensionKeyForStringValue));
+		assertFalse(configurationExtension.isSet(CONFIGURATION_KEY_FOR_STRING_VALUE));
+		assertEquals("default", configurationExtension.getStringValue(CONFIGURATION_KEY_FOR_STRING_VALUE));
+		configurationExtension.setRawValue(CONFIGURATION_KEY_FOR_STRING_VALUE, "X4");
+		assertTrue(configurationExtension.isSet(CONFIGURATION_KEY_FOR_STRING_VALUE));
+		assertEquals("X4", configurationExtension.getStringValue(CONFIGURATION_KEY_FOR_STRING_VALUE));
 
 		List<String> configurationExtensionLines = configurationExtension.toStringLines();
 		assertEquals(2, configurationExtensionLines.size());
 		assertTrue(configurationExtensionLines.contains(
 				DynamicConfigurationKeyNamespace.EXTENSION.getKeyPrefix() + "analysis.nesting.enabled" + " = true"));
 
-		configurationExtension.removeEntry(extensionKeyForStringValue);
-		assertFalse(configurationExtension.isSet(extensionKeyForStringValue));
+		configurationExtension.removeEntry(CONFIGURATION_KEY_FOR_STRING_VALUE);
+		assertFalse(configurationExtension.isSet(CONFIGURATION_KEY_FOR_STRING_VALUE));
+	}
+
+	/** Test. */
+	@Test(expected = IllegalStateException.class)
+	public void testRequireValue() {
+		DynamicConfigurationValuesManager configurationExtension = new DynamicConfigurationValuesManager();
+		configurationExtension.requireValueIsSet(CONFIGURATION_KEY_FOR_BOOLEAN_VALUE);
 	}
 }
