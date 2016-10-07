@@ -5,6 +5,9 @@ import java.util.List;
 /** Rolling file receiver. */
 public class MultiFileResultReceiver implements IResultReceiver {
 
+	/** First index. */
+	public static final int FIRST_INDEX = 1;
+
 	/** File name. */
 	private final String m_baseFileName;
 
@@ -33,7 +36,7 @@ public class MultiFileResultReceiver implements IResultReceiver {
 		m_baseFileName = baseFileName;
 		m_desiredLinesPerFile = desiredLinesPerFile;
 		m_bufferSize = bufferSize;
-		m_fileCount = 1;
+		m_fileCount = FIRST_INDEX;
 
 		createNewFileResultReceiver();
 	}
@@ -86,10 +89,11 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	}
 
 	/**
-	 * Get the file with the given index. The index is <b>not zero-based</b>.
+	 * Get the file with the given index. The first index is
+	 * {@value #FIRST_INDEX}.
 	 */
 	public String getFileName(int index) {
-		if (index <= 0 || index > m_fileCount) {
+		if (index < FIRST_INDEX || index > m_fileCount) {
 			throw new IllegalArgumentException("Invalid index: " + index + " (File count is: " + m_fileCount + ")");
 		}
 
