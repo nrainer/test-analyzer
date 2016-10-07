@@ -39,7 +39,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	 * {@link de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants#FILE_OUTPUT_COLLECTED_INFORMATION}
 	 * will be loaded instead from the working folder.<br/>
 	 */
-	public static final DynamicConfigurationKey EXECUTE_COLLECT_INFORMATION_KEY = DynamicConfigurationKey
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXECUTE_COLLECT_INFORMATION = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.collectInformation", true);
 
 	/**
@@ -47,7 +47,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	 * mutation testing steps. <br/>
 	 * If false, {@link MutateAndTestStep} will be skipped.
 	 */
-	public static final DynamicConfigurationKey EXECUTE_MUTATE_AND_TEST_KEY = DynamicConfigurationKey
+	public static final DynamicConfigurationKey CONFIGURATION_KEYEXECUTE_MUTATE_AND_TEST = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.mutateAndTest", true);
 
 	/**
@@ -93,7 +93,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	 */
 	protected ConcurrentLinkedQueue<TestInformation> collectInformationOrLoadFromFile(ExecutionContext context,
 			Configuration configuration) {
-		if (configuration.getDynamicValues().getBooleanValue(EXECUTE_COLLECT_INFORMATION_KEY)) {
+		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXECUTE_COLLECT_INFORMATION)) {
 			return collectInformation();
 		} else {
 			LOGGER.info("Skipping steps to collect information");
@@ -104,7 +104,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	/** Execute the mutation tests (if enabled in the configuration). */
 	protected void executeMutationTestsIfEnabled(Configuration configuration,
 			ConcurrentLinkedQueue<TestInformation> testInformation) {
-		if (configuration.getDynamicValues().getBooleanValue(EXECUTE_MUTATE_AND_TEST_KEY)) {
+		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEYEXECUTE_MUTATE_AND_TEST)) {
 			executeMutateAndTest(testInformation);
 		} else {
 			LOGGER.info("Skipping the steps to mutate and test methods");
@@ -137,7 +137,7 @@ public class TestWorkflow extends AbstractWorkflow {
 	 *            of the workflow
 	 */
 	protected void afterExecution(ExecutionContext context) throws ExecutionException {
-		if (context.getConfiguration().getDynamicValues().getBooleanValue(EXECUTE_MUTATE_AND_TEST_KEY)) {
+		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEYEXECUTE_MUTATE_AND_TEST)) {
 			m_finalizeResultStep.start();
 		}
 
@@ -160,7 +160,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		if (!new File(fileCollectedInformation).exists()) {
 			throw new ExecutionException(context.getExecutionId(),
 					fileCollectedInformation + " must exist in the working directory if '"
-							+ EXECUTE_COLLECT_INFORMATION_KEY.getName() + "' is set to 'false'.");
+							+ CONFIGURATION_KEY_EXECUTE_COLLECT_INFORMATION.getName() + "' is set to 'false'.");
 		}
 
 		return loadExistingTestInformationInternal(workingFolder);
