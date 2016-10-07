@@ -7,16 +7,7 @@
 -- DROP VIEW IF EXISTS V_Name_Mapping;
 
 /* Mapping between methodId, testcaseId and method (name) and testcase (name). */
-CREATE VIEW V_Name_Mapping
-(
-	execution, 
-	methodId, 
-	testcaseId, 
-	method, 
-	testcase,
-    methodHash,
-    testcaseHash
-) AS
+CREATE VIEW V_Name_Mapping AS
 	SELECT 
 		ri.execution, 
 		ri.methodId, 
@@ -34,18 +25,7 @@ CREATE VIEW V_Name_Mapping
 	AND ri.testcaseId = ti.testcaseId;
 	
 /* Methods that were tested (they have a test result or all tests aborted). */
-CREATE VIEW V_Tested_Methods_Info
-(
-	execution,
-	methodId,
-	living,
-	killed,
-	aborted,
-	testcaseCount,
-	minStackDistance,
-	method,
-	methodHash
-) AS
+CREATE VIEW V_Tested_Methods_Info AS
 	SELECT 
 		ri.execution, 
 		ri.methodId, 
@@ -53,7 +33,7 @@ CREATE VIEW V_Tested_Methods_Info
 		COALESCE(MAX(tri.killed), 0) AS killed, 
 		COUNT(mtai.execution) > 0 AS aborted,
 		COUNT(DISTINCT ri.testcaseId) AS testcaseCount,
-		MIN(ri.minStackDistance), 
+		MIN(ri.minStackDistance) AS minStackDistance, 
 		mi.method, 
 		mi.methodHash
     FROM Relation_Info ri
@@ -72,44 +52,25 @@ CREATE VIEW V_Tested_Methods_Info
     OR COUNT(mtai.execution) > 0;
     
 /* Methods that were tested and their aggregated test result. */
-CREATE VIEW V_Tested_Methods_Info_Agg
-(
-	execution,
-	methodId,
-	method,
-	killedResult,
-	testcaseCount,
-	minStackDistance
-) AS
+CREATE VIEW V_Tested_Methods_Info_Agg AS
 	SELECT 
 		vtmi.execution, 
 		vtmi.methodId, 
 		vtmi.method, 
-		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END,
+		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END AS killedResult,
 		vtmi.testcaseCount,
 		vtmi.minStackDistance
     FROM V_Tested_Methods_Info vtmi;
     
 /** Test result, extended by test and method ids and names. */
-CREATE VIEW V_Test_Result_Info
-(
-	execution,
-	methodId,
-	testcaseId,
-	retValGenId,
-	method,
-	testcase,
-	killed,
-    methodHash,
-    testcaseHash
-) AS 
+CREATE VIEW V_Test_Result_Info AS 
 	SELECT 
 		t.execution,
 		t.methodId, 
 		t.testcaseId, 
+		t.retValGenId, 
 		mapping.method, 
 		mapping.testcase, 
-		t.retValGenId, 
 		t.killed, 
 		mapping.methodHash, 
 		mapping.testcaseHash
@@ -119,20 +80,13 @@ CREATE VIEW V_Test_Result_Info
 	AND t.methodId = mapping.methodId
 	AND t.testcaseId = mapping.testcaseId;
 	
-CREATE VIEW V_Method_Classification
-(
-	execution,
-	methodId,
-	method,
-	methodCategory,
-	methodSeverity
-) AS
+CREATE VIEW V_Method_Classification AS
 	SELECT
 		vtmia.execution,
 		vtmia.methodId,
 		vtmia.method,
-		mci.category,
-		mci.severity
+		mci.category AS methodCategory,
+		mci.severity AS methodSeverity
 	FROM V_Tested_Methods_Info_Agg vtmia
 	INNER JOIN Method_Info mi
 	ON vtmia.execution = mi.execution
@@ -140,19 +94,7 @@ CREATE VIEW V_Method_Classification
 	LEFT OUTER JOIN Method_Classification_Info mci
 	ON mi.classificationId = mci.classificationId;
 	
-CREATE VIEW V_Project_Overview_Sub
-(
-	execution,
-	countCollectedMethods,
-	countCollectedTestcases,
-	countRelations,
-	countReturnValueGenerators,
-	countExecutedTestcases,
-	countTestExecutedMethods,
-	countExecutedRelations,
-	countExecutedRelationRuns,
-	countAbortedRelationRuns
-) AS
+CREATE VIEW V_Project_Overview_Sub AS
 	SELECT
 		e.execution,
 		-- number of methods executed by at least one successful test case
