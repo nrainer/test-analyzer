@@ -23,10 +23,8 @@ import de.tum.in.niedermr.ta.runner.factory.FactoryUtil;
 import de.tum.in.niedermr.ta.runner.factory.IFactory;
 
 /**
- * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed
- * classpath.<br/>
- * The process will be started in the working area which is specified in the
- * configuration.<br/>
+ * <b>Executes AnalyzerRunnerInternal</b> in a new process with the needed classpath.<br/>
+ * The process will be started in the working area which is specified in the configuration.<br/>
  *
  */
 public class AnalyzerRunnerStart {
@@ -39,21 +37,17 @@ public class AnalyzerRunnerStart {
 	 * @see #execute(Configuration, File)
 	 * 
 	 * @param args
-	 *            as specified in {@link Configuration} (If no arguments are
-	 *            specified, the values will be requested using System.in.)
+	 *            as specified in {@link Configuration} (If no arguments are specified, the values will be requested
+	 *            using System.in.)
 	 */
 	public static void main(String[] args) throws ConfigurationException, IOException {
-		Configuration configuration = null;
+		Configuration configuration;
 
 		try {
 			configuration = ConfigurationLoader.getConfiguration(args);
-		} catch (ConfigurationException ex) {
-			if (ex.getCause() instanceof FileNotFoundException) {
-				print("Configuration file not found.");
-				return;
-			}
-
-			throw ex;
+		} catch (FileNotFoundException e) {
+			print("Configuration file not found.");
+			return;
 		}
 
 		execute(configuration);
@@ -125,9 +119,8 @@ public class AnalyzerRunnerStart {
 	}
 
 	/**
-	 * Sets the execution id to
-	 * {@link AnalyzerRunnerInternal#EXECUTION_ID_FOR_TESTS} in order to allow a
-	 * result comparison.
+	 * Sets the execution id to {@link AnalyzerRunnerInternal#EXECUTION_ID_FOR_TESTS} in order to allow a result
+	 * comparison.
 	 */
 	public static void setTestMode() {
 		s_inTestMode = true;

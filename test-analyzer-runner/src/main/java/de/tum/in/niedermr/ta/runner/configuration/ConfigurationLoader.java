@@ -70,7 +70,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 		return s_fastFail;
 	}
 
-	public static Configuration getConfiguration(String[] args) throws ConfigurationException {
+	public static Configuration getConfiguration(String[] args) throws ConfigurationException, FileNotFoundException {
 		try {
 			ConfigurationLoader loader = new ConfigurationLoader(".");
 
@@ -81,8 +81,10 @@ public class ConfigurationLoader implements FileSystemConstants {
 			}
 
 			return loader.m_configuration;
-		} catch (Exception ex) {
-			throw new ConfigurationException(ex);
+		} catch (FileNotFoundException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new ConfigurationException(e);
 		}
 	}
 
@@ -124,7 +126,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 		}
 	}
 
-	private void loadFromOtherSource() throws Exception {
+	private void loadFromOtherSource() throws ConfigurationException, IOException {
 		// don't close sc, because it will close System.in (and that can't be reopened)
 		Scanner sc = new Scanner(System.in);
 
