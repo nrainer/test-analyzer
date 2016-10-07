@@ -8,19 +8,20 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	/** <code>extension.code.statistics.method.instructions</code> */
 	public static final DynamicConfigurationKey COUNT_INSTRUCTIONS = DynamicConfigurationKey
-			.create("code.statistics.method.instructions");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.instructions");
 	/** <code>extension.code.statistics.method.assertions</code> */
 	public static final DynamicConfigurationKey COUNT_ASSERTIONS = DynamicConfigurationKey
-			.create("code.statistics.method.assertions");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.assertions");
 	/** <code>extension.code.statistics.method.modifier</code> */
 	public static final DynamicConfigurationKey COLLECT_ACCESS_MODIFIER = DynamicConfigurationKey
-			.create("code.statistics.method.modifier");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.modifier");
 
 	/** {@inheritDoc} */
 	@Override

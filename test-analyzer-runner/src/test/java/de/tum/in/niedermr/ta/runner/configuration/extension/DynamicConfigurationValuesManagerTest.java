@@ -18,7 +18,8 @@ public class DynamicConfigurationValuesManagerTest {
 		DynamicConfigurationValuesManager configurationExtension = new DynamicConfigurationValuesManager();
 
 		String propertyName = "analysis.nesting.enabled";
-		DynamicConfigurationKey extensionKey1 = DynamicConfigurationKey.create(propertyName);
+		DynamicConfigurationKey extensionKey1 = DynamicConfigurationKey
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, propertyName);
 		assertEquals(extensionKey1, DynamicConfigurationKey.parse(extensionKey1.getName()));
 
 		assertFalse(configurationExtension.isSet(extensionKey1));
@@ -35,7 +36,7 @@ public class DynamicConfigurationValuesManagerTest {
 
 		List<String> configurationExtensionLines = configurationExtension.toStringLines();
 		assertEquals(1, configurationExtensionLines.size());
-		assertEquals(DynamicConfigurationKey.EXTENSION_PROPERTY_PREFIX + propertyName + " = true",
+		assertEquals(DynamicConfigurationKeyNamespace.EXTENSION.getKeyPrefix() + propertyName + " = true",
 				configurationExtensionLines.get(0));
 
 		configurationExtension.removeEntry(extensionKey1);

@@ -8,6 +8,7 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolde
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.SimplePersistResultStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
@@ -17,7 +18,7 @@ public class CoverageParserWorkflow extends AbstractWorkflow {
 
 	/** <code>extension.code.coverage.file</code> */
 	public static final DynamicConfigurationKey COVERAGE_FILE = DynamicConfigurationKey
-			.create("code.coverage.file");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.coverage.file");
 
 	/** Default name of the coverage file. */
 	private static final String DEFAULT_COVERAGE_FILE_NAME = "coverage.xml";

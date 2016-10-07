@@ -8,8 +8,7 @@ public class DynamicConfigurationKey implements Serializable, Comparable<Dynamic
 	/** Version. */
 	private static final long serialVersionUID = 1L;
 
-	protected static final String EXTENSION_PROPERTY_PREFIX = "extension.";
-
+	/** Name of the key including the prefix. */
 	private final String m_name;
 
 	/** Constructor. */
@@ -17,8 +16,8 @@ public class DynamicConfigurationKey implements Serializable, Comparable<Dynamic
 		m_name = qualifiedName;
 	}
 
-	public static DynamicConfigurationKey create(String shortKey) {
-		return new DynamicConfigurationKey(EXTENSION_PROPERTY_PREFIX + shortKey);
+	public static DynamicConfigurationKey create(DynamicConfigurationKeyNamespace namespace, String shortKey) {
+		return new DynamicConfigurationKey(namespace.getKeyPrefix() + shortKey);
 	}
 
 	public static DynamicConfigurationKey parse(String qualifiedName) {
@@ -27,7 +26,13 @@ public class DynamicConfigurationKey implements Serializable, Comparable<Dynamic
 
 	/** Return true if the key is a dynamic configuration key. */
 	public static boolean isDynamicConfigurationKey(String key) {
-		return key.startsWith(DynamicConfigurationKey.EXTENSION_PROPERTY_PREFIX);
+		for (DynamicConfigurationKeyNamespace namespace : DynamicConfigurationKeyNamespace.values()) {
+			if (key.startsWith(namespace.getKeyPrefix())) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public String getName() {

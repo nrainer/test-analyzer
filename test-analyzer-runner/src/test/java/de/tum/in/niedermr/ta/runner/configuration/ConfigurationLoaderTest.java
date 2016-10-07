@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
@@ -36,10 +37,10 @@ public class ConfigurationLoaderTest {
 		expected.getCodePathToTest().setValue("a.jar");
 
 		DynamicConfigurationKey extensionKeyForTuningAlgorithm = DynamicConfigurationKey
-				.create("tuning.speedup.algorithm");
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.algorithm");
 		expected.getDynamicValues().setRawValue(extensionKeyForTuningAlgorithm, "ER3z");
 		DynamicConfigurationKey extensionKeyForTuningFactor = DynamicConfigurationKey
-				.create("tuning.speedup.factor");
+				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.factor");
 		expected.getDynamicValues().setRawValue(extensionKeyForTuningFactor, "4");
 
 		Configuration result = ConfigurationLoader.getConfigurationFromFile("testConfigurationFromFile.config",

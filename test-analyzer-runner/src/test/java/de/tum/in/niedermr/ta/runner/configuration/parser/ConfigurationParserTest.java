@@ -13,12 +13,14 @@ import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoaderTest;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationProperty;
 
+/** Test {@link ConfigurationParser}. */
 public class ConfigurationParserTest {
 
 	private static final DynamicConfigurationKey DYNAMIC_PROPERTY_1 = DynamicConfigurationKey
-			.create("data.compress");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "data.compress");
 
 	@After
 	public void after() {
