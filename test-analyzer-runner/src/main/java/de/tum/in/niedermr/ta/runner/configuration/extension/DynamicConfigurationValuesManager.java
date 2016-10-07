@@ -27,12 +27,14 @@ public class DynamicConfigurationValuesManager {
 		m_dataMap.remove(key);
 	}
 
+	/** Return true if the key is specified in the configuration. */
 	public boolean isSet(DynamicConfigurationKey key) {
 		return m_dataMap.containsKey(key);
 	}
 
 	/**
-	 * Throws an exception if the value of the specified key is not specified.<br/>
+	 * Throws an exception if the value of the specified key is not
+	 * specified.<br/>
 	 * Note that default values are not considered.
 	 */
 	public void requireValueIsSet(DynamicConfigurationKey key) {
@@ -41,14 +43,26 @@ public class DynamicConfigurationValuesManager {
 		}
 	}
 
+	/**
+	 * Get the value of the specified key as String. Return the default value if
+	 * no value is specified.
+	 */
 	public String getStringValue(DynamicConfigurationKey key) {
 		return getStringValue(key, key.getDefaultValue());
 	}
 
+	/**
+	 * Get the raw value of the specified key or the specified default value if
+	 * no value is specified.
+	 */
 	private String getStringValue(DynamicConfigurationKey key, String defaultValue) {
 		return m_dataMap.getOrDefault(key, defaultValue);
 	}
 
+	/**
+	 * Get the value of the specified key as Integer. Return the default value
+	 * if no value is specified.
+	 */
 	public Integer getIntegerValue(DynamicConfigurationKey key) {
 		String stringValue = getStringValue(key, null);
 
@@ -56,9 +70,13 @@ public class DynamicConfigurationValuesManager {
 			return key.getDefaultValue();
 		}
 
-		return Integer.parseInt(stringValue);
+		return Integer.parseInt(stringValue.trim());
 	}
 
+	/**
+	 * Get the value of the specified key as Boolean. Return the default value
+	 * if no value is specified.
+	 */
 	public boolean getBooleanValue(DynamicConfigurationKey key) {
 		String stringValue = getStringValue(key, null);
 
@@ -66,7 +84,7 @@ public class DynamicConfigurationValuesManager {
 			return key.getDefaultValue();
 		}
 
-		return Boolean.parseBoolean(stringValue);
+		return Boolean.parseBoolean(stringValue.trim());
 	}
 
 	/** {@inheritDoc} */
