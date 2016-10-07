@@ -7,7 +7,7 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.SimplePersistResultStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
-import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
@@ -16,7 +16,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 public class CoverageParserWorkflow extends AbstractWorkflow {
 
 	/** <code>extension.code.coverage.file</code> */
-	public static final ConfigurationExtensionKey COVERAGE_FILE = ConfigurationExtensionKey
+	public static final DynamicConfigurationKey COVERAGE_FILE = DynamicConfigurationKey
 			.create("code.coverage.file");
 
 	/** Default name of the coverage file. */
@@ -35,7 +35,7 @@ public class CoverageParserWorkflow extends AbstractWorkflow {
 		InMemoryResultReceiver coverageResultReceiver = new InMemoryResultReceiver();
 
 		CoverageParserStep parseCoverageStep = createAndInitializeExecutionStep(CoverageParserStep.class);
-		String coverageFileName = configuration.getExtension().getStringValue(COVERAGE_FILE,
+		String coverageFileName = configuration.getDynamicValues().getStringValue(COVERAGE_FILE,
 				DEFAULT_COVERAGE_FILE_NAME);
 		parseCoverageStep.setCoverageFileName(coverageFileName);
 		parseCoverageStep.setCoverageResultReceiver(coverageResultReceiver);

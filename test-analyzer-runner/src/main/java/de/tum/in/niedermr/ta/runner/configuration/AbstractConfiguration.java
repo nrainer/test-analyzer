@@ -8,18 +8,25 @@ import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtension;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationValuesManager;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
+/**
+ * Configuration base. <br/>
+ * A configuration consists of built-in {@link IConfigurationProperty}s and of (untyped) dynamic configuration
+ * properties managed by {@link DynamicConfigurationValuesManager}. The dynamic properties are accessed by their
+ * {@link DynamicConfigurationKey} and are used for advanced settings or settings of extensions.
+ */
 public abstract class AbstractConfiguration {
 
 	private final ConfigurationVersionProperty m_configurationVersion;
-	private final ConfigurationExtension m_configurationExtension;
+	private final DynamicConfigurationValuesManager my_dynamicValuesManager;
 
 	public AbstractConfiguration(int currentConfigurationVersion) {
 		m_configurationVersion = new ConfigurationVersionProperty(currentConfigurationVersion);
-		m_configurationExtension = new ConfigurationExtension();
+		my_dynamicValuesManager = new DynamicConfigurationValuesManager();
 	}
 
 	/**
@@ -29,8 +36,9 @@ public abstract class AbstractConfiguration {
 		return m_configurationVersion;
 	}
 
-	public ConfigurationExtension getExtension() {
-		return m_configurationExtension;
+	/** Access the dynamic property values. */
+	public DynamicConfigurationValuesManager getDynamicValues() {
+		return my_dynamicValuesManager;
 	}
 
 	public abstract List<IConfigurationProperty<?>> getAllPropertiesOrdered();
@@ -50,7 +58,7 @@ public abstract class AbstractConfiguration {
 
 	@Override
 	public final String toString() {
-		return "[" + Arrays.asList(getAllPropertiesOrdered()).toString() + ", " + m_configurationExtension.toString()
+		return "[" + Arrays.asList(getAllPropertiesOrdered()).toString() + ", " + my_dynamicValuesManager.toString()
 				+ "]";
 	}
 
@@ -59,7 +67,7 @@ public abstract class AbstractConfiguration {
 
 		List<String> configurationLines = new ArrayList<>();
 		configurationLines.addAll(builtInPropertiesToStringLines());
-		configurationLines.addAll(m_configurationExtension.toStringLines());
+		configurationLines.addAll(my_dynamicValuesManager.toStringLines());
 
 		for (String line : configurationLines) {
 			if (result.length() > 0) {

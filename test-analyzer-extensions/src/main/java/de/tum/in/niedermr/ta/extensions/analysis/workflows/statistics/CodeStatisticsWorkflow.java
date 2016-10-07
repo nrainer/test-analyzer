@@ -7,19 +7,19 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.Pers
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
-import de.tum.in.niedermr.ta.runner.configuration.extension.ConfigurationExtensionKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	/** <code>extension.code.statistics.method.instructions</code> */
-	public static final ConfigurationExtensionKey COUNT_INSTRUCTIONS = ConfigurationExtensionKey
+	public static final DynamicConfigurationKey COUNT_INSTRUCTIONS = DynamicConfigurationKey
 			.create("code.statistics.method.instructions");
 	/** <code>extension.code.statistics.method.assertions</code> */
-	public static final ConfigurationExtensionKey COUNT_ASSERTIONS = ConfigurationExtensionKey
+	public static final DynamicConfigurationKey COUNT_ASSERTIONS = DynamicConfigurationKey
 			.create("code.statistics.method.assertions");
 	/** <code>extension.code.statistics.method.modifier</code> */
-	public static final ConfigurationExtensionKey COLLECT_ACCESS_MODIFIER = ConfigurationExtensionKey
+	public static final DynamicConfigurationKey COLLECT_ACCESS_MODIFIER = DynamicConfigurationKey
 			.create("code.statistics.method.modifier");
 
 	/** {@inheritDoc} */
@@ -30,15 +30,15 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 
 		PersistResultStep persistResultStep = createAndInitializeExecutionStep(PersistResultStep.class);
 
-		if (configuration.getExtension().getBooleanValue(COUNT_INSTRUCTIONS, true)) {
+		if (configuration.getDynamicValues().getBooleanValue(COUNT_INSTRUCTIONS, true)) {
 			runCountInstructionsStep(persistResultStep);
 		}
 
-		if (configuration.getExtension().getBooleanValue(COUNT_ASSERTIONS, true)) {
+		if (configuration.getDynamicValues().getBooleanValue(COUNT_ASSERTIONS, true)) {
 			runCountAssertionsStep(persistResultStep);
 		}
 
-		if (configuration.getExtension().getBooleanValue(COLLECT_ACCESS_MODIFIER, true)) {
+		if (configuration.getDynamicValues().getBooleanValue(COLLECT_ACCESS_MODIFIER, true)) {
 			runCollectAccessModifiersStep(persistResultStep);
 		}
 

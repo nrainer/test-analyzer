@@ -10,39 +10,40 @@ import java.util.TreeMap;
 
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractConfigurationProperty;
 
-public class ConfigurationExtension {
+/** Value manager for dynamic configuration properties. */
+public class DynamicConfigurationValuesManager {
 
-	private final Map<ConfigurationExtensionKey, String> m_dataMap;
+	private final Map<DynamicConfigurationKey, String> m_dataMap;
 
-	public ConfigurationExtension() {
+	public DynamicConfigurationValuesManager() {
 		m_dataMap = new HashMap<>();
 	}
 
-	public void setRawValue(ConfigurationExtensionKey key, String value) {
+	public void setRawValue(DynamicConfigurationKey key, String value) {
 		m_dataMap.put(key, value);
 	}
 
-	public void removeEntry(ConfigurationExtensionKey key) {
+	public void removeEntry(DynamicConfigurationKey key) {
 		m_dataMap.remove(key);
 	}
 
-	public boolean isSet(ConfigurationExtensionKey key) {
+	public boolean isSet(DynamicConfigurationKey key) {
 		return m_dataMap.containsKey(key);
 	}
 
-	public String getStringValue(ConfigurationExtensionKey key) {
+	public String getStringValue(DynamicConfigurationKey key) {
 		return getStringValue(key, null);
 	}
 
-	public String getStringValue(ConfigurationExtensionKey key, String valueIfNotSet) {
+	public String getStringValue(DynamicConfigurationKey key, String valueIfNotSet) {
 		return m_dataMap.getOrDefault(key, valueIfNotSet);
 	}
 
-	public Integer getIntegerValue(ConfigurationExtensionKey key) {
+	public Integer getIntegerValue(DynamicConfigurationKey key) {
 		return getIntegerValue(key, null);
 	}
 
-	public Integer getIntegerValue(ConfigurationExtensionKey key, Integer valueIfNotSet) {
+	public Integer getIntegerValue(DynamicConfigurationKey key, Integer valueIfNotSet) {
 		String stringValue = getStringValue(key, null);
 
 		if (stringValue == null) {
@@ -52,11 +53,11 @@ public class ConfigurationExtension {
 		return Integer.parseInt(stringValue);
 	}
 
-	public boolean getBooleanValue(ConfigurationExtensionKey key) {
+	public boolean getBooleanValue(DynamicConfigurationKey key) {
 		return getBooleanValue(key, false);
 	}
 
-	public boolean getBooleanValue(ConfigurationExtensionKey key, boolean valueIfNotSet) {
+	public boolean getBooleanValue(DynamicConfigurationKey key, boolean valueIfNotSet) {
 		String stringValue = getStringValue(key, null);
 
 		if (stringValue == null) {
@@ -66,12 +67,13 @@ public class ConfigurationExtension {
 		return Boolean.parseBoolean(stringValue);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final String toString() {
 		return toStringLines().toString();
 	}
 
-	private String toString(Entry<ConfigurationExtensionKey, String> entry) {
+	private String toString(Entry<DynamicConfigurationKey, String> entry) {
 		String propertyName = entry.getKey().getName();
 		return AbstractConfigurationProperty.toString(propertyName, entry.getValue());
 	}
@@ -79,9 +81,9 @@ public class ConfigurationExtension {
 	public List<String> toStringLines() {
 		List<String> list = new ArrayList<>();
 
-		SortedMap<ConfigurationExtensionKey, String> sortedMap = new TreeMap<>(m_dataMap);
+		SortedMap<DynamicConfigurationKey, String> sortedMap = new TreeMap<>(m_dataMap);
 
-		for (Entry<ConfigurationExtensionKey, String> entry : sortedMap.entrySet()) {
+		for (Entry<DynamicConfigurationKey, String> entry : sortedMap.entrySet()) {
 			list.add(toString(entry));
 		}
 

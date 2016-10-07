@@ -9,15 +9,17 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class ConfigurationExtensionTest {
+/** Test {@link DynamicConfigurationValuesManager} */
+public class DynamicConfigurationValuesManagerTest {
 
+	/** Test. */
 	@Test
-	public void testExtension() {
-		ConfigurationExtension configurationExtension = new ConfigurationExtension();
+	public void testDynamicValues() {
+		DynamicConfigurationValuesManager configurationExtension = new DynamicConfigurationValuesManager();
 
 		String propertyName = "analysis.nesting.enabled";
-		ConfigurationExtensionKey extensionKey1 = ConfigurationExtensionKey.create(propertyName);
-		assertEquals(extensionKey1, ConfigurationExtensionKey.parse(extensionKey1.getName()));
+		DynamicConfigurationKey extensionKey1 = DynamicConfigurationKey.create(propertyName);
+		assertEquals(extensionKey1, DynamicConfigurationKey.parse(extensionKey1.getName()));
 
 		assertFalse(configurationExtension.isSet(extensionKey1));
 		assertFalse(configurationExtension.getBooleanValue(extensionKey1));
@@ -33,7 +35,7 @@ public class ConfigurationExtensionTest {
 
 		List<String> configurationExtensionLines = configurationExtension.toStringLines();
 		assertEquals(1, configurationExtensionLines.size());
-		assertEquals(ConfigurationExtensionKey.EXTENSION_PROPERTY_PREFIX + propertyName + " = true",
+		assertEquals(DynamicConfigurationKey.EXTENSION_PROPERTY_PREFIX + propertyName + " = true",
 				configurationExtensionLines.get(0));
 
 		configurationExtension.removeEntry(extensionKey1);
