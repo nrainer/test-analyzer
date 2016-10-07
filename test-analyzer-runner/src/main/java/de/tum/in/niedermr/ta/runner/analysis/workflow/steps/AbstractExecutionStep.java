@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
+import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -39,8 +40,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	}
 
 	/**
-	 * The initialization was executed, {@link #m_initialized} will be set to
-	 * <code>true</code> after this method.
+	 * The initialization was executed, {@link #m_initialized} will be set to <code>true</code> after this method.
 	 * 
 	 * @param context
 	 */
@@ -95,7 +95,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	}
 
 	protected final String getFileInWorkingArea(String fileName) {
-		return Environment.replaceWorkingFolder(fileName, m_context.getWorkingFolder());
+		return AbstractWorkflow.getFileInWorkingArea(m_context, fileName);
 	}
 
 	@Override
