@@ -11,6 +11,10 @@ class ConfigurationMigrationFromV3ToV4 implements IConfigurationMigration {
 		switch (key) {
 		case "testWorkflows":
 			return "workflows";
+		case "executeCollectInformation":
+			return "advanced.testworkflow.collectInformation";
+		case "executeMutateAndTest":
+			return "advanced.testworkflow.mutateAndTest";
 		default:
 			return key;
 		}

@@ -32,8 +32,8 @@ public class ConfigurationParserTest {
 		final Configuration expected = new Configuration();
 		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getClasspath().setValue("a.jar;b.jar;");
-		expected.getExecuteCollectInformation().setValue(true);
-		expected.getExecuteMutateAndTest().setValue(false);
+		expected.getOperateFaultTolerant().setValue(true);
+		expected.getRemoveTempData().setValue(false);
 		expected.getWorkingFolder().setValue("E:/");
 		expected.getDynamicValues().setRawValue(DYNAMIC_PROPERTY_1, Boolean.TRUE.toString());
 

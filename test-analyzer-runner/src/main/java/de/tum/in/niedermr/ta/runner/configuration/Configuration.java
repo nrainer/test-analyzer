@@ -13,8 +13,6 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.configuration.property.ClasspathProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.CodePathToMutateProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.CodePathToTestProperty;
-import de.tum.in.niedermr.ta.runner.configuration.property.ExecuteCollectInformationProperty;
-import de.tum.in.niedermr.ta.runner.configuration.property.ExecuteMutateAndTestProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.FactoryClassProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.MethodFiltersProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.NumberOfThreadsProperty;
@@ -59,8 +57,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	private final TestingTimeoutPerTestcaseProperty m_testingTimeoutPerTestcase;
 	private final OperateFaultTolerantProperty m_operateFaultTolerant;
 	private final NumberOfThreadsProperty m_numberOfThreads;
-	private final ExecuteCollectInformationProperty m_executeCollectInformation;
-	private final ExecuteMutateAndTestProperty m_executeMutateAndTest;
 	private final RemoveTempDataProperty m_removeTempData;
 
 	public Configuration() {
@@ -83,8 +79,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		m_testingTimeoutPerTestcase = new TestingTimeoutPerTestcaseProperty();
 		m_operateFaultTolerant = new OperateFaultTolerantProperty();
 		m_numberOfThreads = new NumberOfThreadsProperty();
-		m_executeCollectInformation = new ExecuteCollectInformationProperty();
-		m_executeMutateAndTest = new ExecuteMutateAndTestProperty();
 		m_removeTempData = new RemoveTempDataProperty();
 	}
 
@@ -111,8 +105,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 		properties.add(m_testingTimeoutAbsoluteMax);
 		properties.add(m_operateFaultTolerant);
 		properties.add(m_numberOfThreads);
-		properties.add(m_executeCollectInformation);
-		properties.add(m_executeMutateAndTest);
 		properties.add(m_removeTempData);
 
 		return properties;
@@ -352,27 +344,6 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	 */
 	public NumberOfThreadsProperty getNumberOfThreads() {
 		return m_numberOfThreads;
-	}
-
-	/**
-	 * If false, the steps of instrumentation (INSTRU) and information collection (INFCOL) will be skipped.<br/>
-	 * In this case the file
-	 * {@link de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants#FILE_OUTPUT_COLLECTED_INFORMATION}
-	 * must exist in the working folder!<br/>
-	 * <br/>
-	 * The default value can be used.
-	 */
-	public ExecuteCollectInformationProperty getExecuteCollectInformation() {
-		return m_executeCollectInformation;
-	}
-
-	/**
-	 * If false, the steps of mutating methods (METKIL) and running tests (TSTRUN) will be skipped.<br/>
-	 * <br/>
-	 * The default value can be used.
-	 */
-	public ExecuteMutateAndTestProperty getExecuteMutateAndTest() {
-		return m_executeMutateAndTest;
 	}
 
 	/**

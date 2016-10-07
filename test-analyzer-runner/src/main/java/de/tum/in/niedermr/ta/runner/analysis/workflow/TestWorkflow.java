@@ -17,6 +17,8 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow.Informa
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow.InstrumentationStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow.MutateAndTestStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
@@ -27,6 +29,22 @@ import de.tum.in.niedermr.ta.runner.execution.infocollection.CollectedInformatio
 public class TestWorkflow extends AbstractWorkflow {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(TestWorkflow.class);
+
+	/**
+	 * <code>advanced.testworkflow.collectInformation</code>: Allows skipping the information collections steps
+	 * (default: collect information = true). <br/>
+	 * If false, {@link InstrumentationStep} and {@link InformationCollectorStep} will be skipped and
+	 * {@link de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants#FILE_OUTPUT_COLLECTED_INFORMATION}
+	 * will be loaded instead from the working folder.<br/>
+	 */
+	private static final DynamicConfigurationKey EXECUTE_COLLECT_INFORMATION_KEY = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.collectInformation", true);
+	/**
+	 * <code>advanced.testworkflow.mutateAndTest</code>: Allows skipping the mutation testing steps. <br/>
+	 * If false, {@link MutateAndTestStep} will be skipped.
+	 */
+	private static final DynamicConfigurationKey EXECUTE_MUTATE_AND_TEST_KEY = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.mutateAndTest", true);
 
 	protected PrepareWorkingFolderStep m_prepareWorkingFolderStep;
 	protected InstrumentationStep m_instrumentationStep;
@@ -44,11 +62,11 @@ public class TestWorkflow extends AbstractWorkflow {
 	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		setUpExecutionSteps();
 
-		beforeExecution();
+		beforeExecution(context);
 
 		executeCoreWorkflow(context, configuration);
 
-		afterExecution();
+		afterExecution(context);
 	}
 
 	/** Execute the main workflow logic. */
@@ -59,26 +77,23 @@ public class TestWorkflow extends AbstractWorkflow {
 	}
 
 	/**
-	 * Collect the information needed to execute teh mutation tests (if enabled
-	 * in the configuration) or load the data from a file.
+	 * Collect the information needed to execute teh mutation tests (if enabled in the configuration) or load the data
+	 * from a file.
 	 */
 	protected ConcurrentLinkedQueue<TestInformation> collectInformationOrLoadFromFile(ExecutionContext context,
 			Configuration configuration) {
-		ConcurrentLinkedQueue<TestInformation> testInformation;
-		if (configuration.getExecuteCollectInformation().isTrue()) {
-			testInformation = collectInformation();
+		if (configuration.getDynamicValues().getBooleanValue(EXECUTE_COLLECT_INFORMATION_KEY)) {
+			return collectInformation();
 		} else {
 			LOGGER.info("Skipping steps to collect information");
-
-			testInformation = loadExistingTestInformation(context, configuration);
+			return loadExistingTestInformation(context);
 		}
-		return testInformation;
 	}
 
 	/** Execute the mutation tests (if enabled in the configuration). */
 	protected void executeMutationTestsIfEnabled(Configuration configuration,
 			ConcurrentLinkedQueue<TestInformation> testInformation) {
-		if (configuration.getExecuteMutateAndTest().isTrue()) {
+		if (configuration.getDynamicValues().getBooleanValue(EXECUTE_MUTATE_AND_TEST_KEY)) {
 			executeMutateAndTest(testInformation);
 		} else {
 			LOGGER.info("Skipping the steps to mutate and test methods");
@@ -94,12 +109,27 @@ public class TestWorkflow extends AbstractWorkflow {
 		m_cleanupStep = createAndInitializeExecutionStep(CleanupStep.class);
 	}
 
-	protected void beforeExecution() throws ExecutionException {
+	/**
+	 * Executed before the execution of the main logic.
+	 * 
+	 * @param context
+	 *            of the workflow
+	 */
+	protected void beforeExecution(ExecutionContext context) throws ExecutionException {
 		m_prepareWorkingFolderStep.start();
 	}
 
-	protected void afterExecution() throws ExecutionException {
-		m_finalizeResultStep.start();
+	/**
+	 * Executed after the execution of the main logic.
+	 * 
+	 * @param context
+	 *            of the workflow
+	 */
+	protected void afterExecution(ExecutionContext context) throws ExecutionException {
+		if (context.getConfiguration().getDynamicValues().getBooleanValue(EXECUTE_MUTATE_AND_TEST_KEY)) {
+			m_finalizeResultStep.start();
+		}
+
 		m_cleanupStep.start();
 	}
 
@@ -110,8 +140,8 @@ public class TestWorkflow extends AbstractWorkflow {
 		return m_informationCollectorStep.getMethodsToMutateAndTestsToRun();
 	}
 
-	protected ConcurrentLinkedQueue<TestInformation> loadExistingTestInformation(ExecutionContext context,
-			Configuration configuration) throws ExecutionException {
+	protected ConcurrentLinkedQueue<TestInformation> loadExistingTestInformation(ExecutionContext context)
+			throws ExecutionException {
 		String workingFolder = context.getWorkingFolder();
 		String fileCollectedInformation = Environment
 				.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION, workingFolder);
@@ -119,7 +149,7 @@ public class TestWorkflow extends AbstractWorkflow {
 		if (!new File(fileCollectedInformation).exists()) {
 			throw new ExecutionException(context.getExecutionId(),
 					fileCollectedInformation + " must exist in the working directory if '"
-							+ configuration.getExecuteCollectInformation().getName() + "' is set to 'false'.");
+							+ EXECUTE_COLLECT_INFORMATION_KEY.getName() + "' is set to 'false'.");
 		}
 
 		return loadExistingTestInformationInternal(workingFolder);
