@@ -4,11 +4,11 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.TestWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMultiClassnameProperty;
 
-public class TestWorkflowsProperty extends AbstractMultiClassnameProperty<IWorkflow> {
+public class WorkflowsProperty extends AbstractMultiClassnameProperty<IWorkflow> {
 
 	@Override
 	public String getName() {
-		return "testWorkflows";
+		return "workflows";
 	}
 
 	@Override
@@ -18,7 +18,7 @@ public class TestWorkflowsProperty extends AbstractMultiClassnameProperty<IWorkf
 
 	@Override
 	public String getDescription() {
-		return "Test workflow to use";
+		return "Workflow to use";
 	}
 
 	@Override

@@ -9,11 +9,13 @@ import de.tum.in.niedermr.ta.runner.analysis.workflow.TestWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.property.MethodFiltersProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.ReturnValueGeneratorsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.TestRunnerProperty;
-import de.tum.in.niedermr.ta.runner.configuration.property.TestWorkflowsProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.WorkflowsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
+/** Migration for the configuration from version 1 to 2. */
 public class ConfigurationMigrationFromV1 implements IConfigurationMigration {
 
+	/** {@inheritDoc} */
 	@Override
 	public String migrateKey(String key) {
 		switch (key) {
@@ -30,11 +32,12 @@ public class ConfigurationMigrationFromV1 implements IConfigurationMigration {
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String migrateRawValue(IConfigurationProperty<?> property, String value0) {
 		String value;
 
-		if (property instanceof TestWorkflowsProperty) {
+		if (property instanceof WorkflowsProperty) {
 			value = value0.replace("de.tum.in.ma.logic.execution.TestWorkflow", TestWorkflow.class.getName());
 		} else if (property instanceof TestRunnerProperty) {
 			value = value0.replace("de.tum.in.ma.logic.runner.junit.JUnitTestRunner", JUnitTestRunner.class.getName());

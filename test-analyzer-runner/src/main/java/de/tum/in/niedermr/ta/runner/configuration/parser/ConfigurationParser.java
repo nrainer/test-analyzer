@@ -12,6 +12,7 @@ import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationExcept
 import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ChainedConfigurationMigration;
 import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ConfigurationMigrationFromV1;
 import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ConfigurationMigrationFromV2;
+import de.tum.in.niedermr.ta.runner.configuration.parser.migration.ConfigurationMigrationFromV3;
 import de.tum.in.niedermr.ta.runner.configuration.parser.migration.IConfigurationMigration;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
@@ -88,6 +89,10 @@ public class ConfigurationParser extends AbstractConfigurationParser {
 
 		if (version <= 2) {
 			migrations.add(new ConfigurationMigrationFromV2());
+		}
+
+		if (version <= 3) {
+			migrations.add(new ConfigurationMigrationFromV3());
 		}
 
 		return new ChainedConfigurationMigration(migrations);

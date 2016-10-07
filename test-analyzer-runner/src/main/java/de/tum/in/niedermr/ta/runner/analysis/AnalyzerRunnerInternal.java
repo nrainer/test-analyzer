@@ -78,9 +78,9 @@ public class AnalyzerRunnerInternal {
 			// append information to the file
 			writeExecutionInformationFile(executionId, configuration);
 
-			IWorkflow[] testWorkflows = configuration.getTestWorkflows().createInstances();
+			IWorkflow[] workflows = configuration.getWorkflows().createInstances();
 
-			for (IWorkflow workFlow : testWorkflows) {
+			for (IWorkflow workFlow : workflows) {
 				executeWorkflow(executionId, programPath, configuration, workFlow);
 			}
 
