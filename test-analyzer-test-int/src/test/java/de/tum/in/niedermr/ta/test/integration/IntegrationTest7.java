@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.MultiFileResultReceiver;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
@@ -14,6 +15,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
  * <li>Stack-analysis workflow</li>
  * <li>Coverage-parser workflow</li>
  * <li>Return-type collector workflow</li>
+ * <li>Test workflow for huge data</li>
  * 
  * @see "configuration file in test data"
  */
@@ -36,6 +38,14 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 		File outputCodeStatisticsFile = getOutputFile(getFileName(CODE_STATISTICS_OUTPUT));
 		File expectedReturnTypeListFile = getExpectedFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
 		File outputReturnTypeListFile = getOutputFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
+		File expectedCollectedInformationFile = new File(MultiFileResultReceiver.getFileName(
+				getFileExpectedCollectedInformationAsSql().getPath(), MultiFileResultReceiver.FIRST_INDEX));
+		File outputCollectedInformationFile = new File(MultiFileResultReceiver
+				.getFileName(getFileOutputCollectedInformationAsSql().getPath(), MultiFileResultReceiver.FIRST_INDEX));
+		File expectedResultFile = new File(MultiFileResultReceiver.getFileName(getFileExpectedResultAsSql().getPath(),
+				MultiFileResultReceiver.FIRST_INDEX));
+		File outputResultFile = new File(MultiFileResultReceiver.getFileName(getFileOutputResultAsSql().getPath(),
+				MultiFileResultReceiver.FIRST_INDEX));
 
 		File inputCoverageXmlFile = getFileInSpecificTestDataFolder("other/coverage.xml");
 		File inputCoverageXmlFileInWorkingDirectory = getFileInWorkingDirectory("coverage.xml");
@@ -49,7 +59,7 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 
 		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
 		assertFilesExists(MSG_TEST_DATA_MISSING, expectedStackAnalysisFile, expectedCodeStatisticsFile,
-				expectedReturnTypeListFile);
+				expectedReturnTypeListFile, expectedCollectedInformationFile, expectedResultFile);
 
 		executeTestAnalyzerWithConfiguration();
 
@@ -64,5 +74,12 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 
 		assertFilesExists(MSG_OUTPUT_MISSING, outputReturnTypeListFile);
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedReturnTypeListFile, outputReturnTypeListFile);
+
+		assertFilesExists(MSG_OUTPUT_MISSING, outputCollectedInformationFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedCollectedInformationFile,
+				outputCollectedInformationFile);
+
+		assertFilesExists(MSG_OUTPUT_MISSING, outputResultFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedResultFile, outputResultFile);
 	}
 }

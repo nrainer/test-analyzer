@@ -21,8 +21,8 @@ import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
 /**
- * <b>ANACOL:</b> Collects <b>information about the minimal and maximal stack distance between test case and method
- * under test.</b><br/>
+ * <b>ANACOL:</b> Collects <b>information about the minimal and maximal stack
+ * distance between test case and method under test.</b><br/>
  * The instrumentation step (ANAINS) must have been executed before.<br/>
  * <br/>
  * Dependencies: same as InformationCollector (INFCOL)<br/>
@@ -34,7 +34,7 @@ public class AnalysisInformationCollector {
 	private static final Logger LOGGER = LogManager.getLogger(AnalysisInformationCollector.class);
 
 	/** Number of args. */
-	private static final int ARGS_COUNT = 8;
+	private static final int ARGS_COUNT = 9;
 	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(AnalysisInformationCollector.class, 0);
 	public static final ProgramArgsKey ARGS_FILE_WITH_TESTS_TO_RUN = new ProgramArgsKey(
 			AnalysisInformationCollector.class, 1);
@@ -47,9 +47,14 @@ public class AnalysisInformationCollector {
 			5);
 	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(AnalysisInformationCollector.class,
 			6);
-	/** Result presentation: 'TEXT', 'DB' or the name of a class implementing {@link IResultPresentation}. */
+	/**
+	 * Result presentation: 'TEXT', 'DB' or the name of a class implementing
+	 * {@link IResultPresentation}.
+	 */
 	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(AnalysisInformationCollector.class,
 			7);
+	public static final ProgramArgsKey ARGS_USE_MULTI_FILE_OUTPUT = new ProgramArgsKey(
+			AnalysisInformationCollector.class, 8);
 
 	public static void main(String[] args) {
 		if (args.length == 0) {
@@ -74,24 +79,27 @@ public class AnalysisInformationCollector {
 		LOGGER.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {
-			final String[] jarsWithTests = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN)
+			String[] jarsWithTests = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN)
 					.split(CommonConstants.SEPARATOR_DEFAULT);
-			final String dataOutputPath = argsReader.getArgument(ARGS_RESULT_FILE);
-			final ITestRunner testRunner = JavaUtility.createInstance(argsReader.getArgument(ARGS_TEST_RUNNER_CLASS));
-			final boolean operateFaultTolerant = Boolean
+			String dataOutputPath = argsReader.getArgument(ARGS_RESULT_FILE);
+			ITestRunner testRunner = JavaUtility.createInstance(argsReader.getArgument(ARGS_TEST_RUNNER_CLASS));
+			boolean operateFaultTolerant = Boolean
 					.parseBoolean(argsReader.getArgument(ARGS_OPERATE_FAULT_TOLERANT, Boolean.FALSE.toString()));
-			final String[] testClassIncludes = ProcessExecution
+			String[] testClassIncludes = ProcessExecution
 					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_INCLUDES, true));
-			final String[] testClassExcludes = ProcessExecution
+			String[] testClassExcludes = ProcessExecution
 					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_EXCLUDES, true));
-			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
+			String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
+			boolean useMultiFileOutput = Boolean
+					.parseBoolean(argsReader.getArgument(ARGS_USE_MULTI_FILE_OUTPUT, Boolean.FALSE.toString()));
 
-			final IResultPresentation resultPresentation = ResultPresentationUtil
+			IResultPresentation resultPresentation = ResultPresentationUtil
 					.createResultPresentation(resultPresentationChoice, executionId);
 
 			analysisInformationCollectionLogic.setTestRunner(testRunner);
 			analysisInformationCollectionLogic.setOutputFile(dataOutputPath);
 			analysisInformationCollectionLogic.setResultPresentation(resultPresentation);
+			analysisInformationCollectionLogic.setUseMultiFileOutput(useMultiFileOutput);
 			analysisInformationCollectionLogic.execute(jarsWithTests, testClassIncludes, testClassExcludes,
 					operateFaultTolerant);
 

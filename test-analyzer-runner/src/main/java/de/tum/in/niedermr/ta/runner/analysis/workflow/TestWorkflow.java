@@ -87,14 +87,13 @@ public class TestWorkflow extends AbstractWorkflow {
 	protected void executeCoreWorkflow(ExecutionContext context, Configuration configuration)
 			throws ExecutionException, IOException {
 		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXECUTE_COLLECT_INFORMATION)) {
-			executeCollectInformation();
+			executeCollectInformation(context);
 		} else {
 			LOGGER.info("Skipping steps to collect information");
 		}
 
 		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXECUTE_MUTATE_AND_TEST)) {
-			ConcurrentLinkedQueue<TestInformation> testInformation = loadCollectedInformation(context);
-			executeMutateAndTest(testInformation);
+			loadCollectedInformationAndExecuteMutateAndTest(context);
 		} else {
 			LOGGER.info("Skipping the steps to mutate and test methods");
 		}
@@ -133,15 +132,21 @@ public class TestWorkflow extends AbstractWorkflow {
 		m_cleanupStep.start();
 	}
 
-	protected void executeCollectInformation() throws ExecutionException {
+	protected void executeCollectInformation(ExecutionContext context) throws ExecutionException {
 		m_instrumentationStep.start();
 		m_informationCollectorStep.start();
 	}
 
-	protected ConcurrentLinkedQueue<TestInformation> loadCollectedInformation(ExecutionContext context)
+	protected void loadCollectedInformationAndExecuteMutateAndTest(ExecutionContext context) throws IOException {
+		String fileWithCollectedInformation = getFileInWorkingArea(context,
+				EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION);
+		ConcurrentLinkedQueue<TestInformation> testInformation = loadCollectedInformation(fileWithCollectedInformation);
+		executeMutateAndTest(testInformation);
+	}
+
+	protected ConcurrentLinkedQueue<TestInformation> loadCollectedInformation(String fileWithCollectedInformation)
 			throws ExecutionException, IOException {
-		List<String> rawData = TextFileData.readFromFile(
-				AbstractWorkflow.getFileInWorkingArea(context, EnvironmentConstants.FILE_OUTPUT_COLLECTED_INFORMATION));
+		List<String> rawData = TextFileData.readFromFile(fileWithCollectedInformation);
 
 		ConcurrentLinkedQueue<TestInformation> testInformation = new ConcurrentLinkedQueue<>();
 		testInformation.addAll(CollectedInformationUtility.parseMethodTestcaseText(rawData));

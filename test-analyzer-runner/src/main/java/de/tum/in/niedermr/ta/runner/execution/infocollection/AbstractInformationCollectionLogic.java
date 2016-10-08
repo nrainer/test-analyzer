@@ -19,45 +19,66 @@ import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
 public abstract class AbstractInformationCollectionLogic {
+
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(AbstractInformationCollectionLogic.class);
 	private static final boolean LOG_FULL_STACKTRACE_OF_FAILED_UNMODIFIED_TESTS = false;
 
 	private final IFullExecutionId m_executionId;
+
 	private ITestRunner m_testRunner;
 	private String m_outputFile;
 	private IResultPresentation m_resultPresentation;
+	private boolean m_useMultiFileOutput;
 
+	/** Constructor. */
 	protected AbstractInformationCollectionLogic(IFullExecutionId executionId) {
 		this.m_executionId = executionId;
 	}
 
+	/** {@link #m_executionId} */
 	public IFullExecutionId getExecutionId() {
 		return m_executionId;
 	}
 
+	/** {@link #m_testRunner} */
 	public void setTestRunner(ITestRunner testRunner) {
 		this.m_testRunner = testRunner;
 	}
 
-	protected ITestRunner getTestRunner() {
+	/** {@link #m_testRunner} */
+	public ITestRunner getTestRunner() {
 		return m_testRunner;
 	}
 
-	protected String getOutputFile() {
+	/** {@link #m_outputFile} */
+	public String getOutputFile() {
 		return m_outputFile;
 	}
 
+	/** {@link #m_outputFile} */
 	public void setOutputFile(String outputFile) {
 		this.m_outputFile = outputFile;
 	}
 
+	/** {@link #m_resultPresentation} */
 	public void setResultPresentation(IResultPresentation resultPresentation) {
 		this.m_resultPresentation = resultPresentation;
 	}
 
-	protected IResultPresentation getResultPresentation() {
+	/** {@link #m_resultPresentation} */
+	public IResultPresentation getResultPresentation() {
 		return m_resultPresentation;
+	}
+
+	/** {@link #m_useMultiFileOutput} */
+	public void setUseMultiFileOutput(boolean useMultiFileOutput) {
+		this.m_useMultiFileOutput = useMultiFileOutput;
+	}
+
+	/** {@link #m_useMultiFileOutput} */
+	public boolean isUseMultiFileOutput() {
+		return m_useMultiFileOutput;
 	}
 
 	public void execute(String[] jarsWithTests, String[] testClassIncludes, String[] testClassExcludes,
