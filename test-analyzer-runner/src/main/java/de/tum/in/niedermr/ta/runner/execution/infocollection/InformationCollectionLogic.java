@@ -78,7 +78,11 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 				getAdditionalResultOutputFile(getOutputFile()), true, 1000);
 
 		CollectedInformationUtility.convertToParseableMethodTestcaseText(result, plainTextResultReceiver);
-		CollectedInformationUtility.convertToMethodTestcaseMappingResult(result, getResultPresentation(), additionalResultResultReceiver);
+		CollectedInformationUtility.convertToMethodTestcaseMappingResult(result, getResultPresentation(),
+				additionalResultResultReceiver);
+
+		plainTextResultReceiver.markResultAsComplete();
+		additionalResultResultReceiver.markResultAsComplete();
 	}
 
 	protected String getAdditionalResultOutputFile(String mainOutputFile) {
