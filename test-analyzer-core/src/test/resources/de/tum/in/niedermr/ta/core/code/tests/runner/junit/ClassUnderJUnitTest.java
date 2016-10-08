@@ -7,34 +7,41 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class ClassUnderJUnitTest {
+	static final String BEFORE_CLASS = "[beforeClass]";
+	static final String BEFORE = "[before]";
+	static final String TEST_A = "[a]";
+	static final String TEST_B = "[b]";
+	static final String AFTER = "[after]";
+	static final String AFTER_CLASS = "[afterClass]";
+
 	@BeforeClass
 	public static void beforeClass() {
-		printSyserr(JUnitTestRunnerTest.BEFORE_CLASS);
+		printSyserr(BEFORE_CLASS);
 	}
 
 	@Before
 	public void before() {
-		printSyserr(JUnitTestRunnerTest.BEFORE);
+		printSyserr(BEFORE);
 	}
 
 	@Test
 	public void a() {
-		printSyserr(JUnitTestRunnerTest.A);
+		printSyserr(TEST_A);
 	}
 
 	@Test
 	public void b() {
-		printSyserr(JUnitTestRunnerTest.B);
+		printSyserr(TEST_B);
 	}
 
 	@After
 	public void after() {
-		printSyserr(JUnitTestRunnerTest.AFTER);
+		printSyserr(AFTER);
 	}
 
 	@AfterClass
 	public static void afterClass() {
-		printSyserr(JUnitTestRunnerTest.AFTER_CLASS);
+		printSyserr(AFTER_CLASS);
 	}
 
 	private static void printSyserr(String s) {

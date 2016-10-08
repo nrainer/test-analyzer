@@ -12,12 +12,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class JUnitTestRunnerTest {
-	static final String BEFORE_CLASS = "[beforeClass]";
-	static final String BEFORE = "[before]";
-	static final String A = "[a]";
-	static final String B = "[b]";
-	static final String AFTER = "[after]";
-	static final String AFTER_CLASS = "[afterClass]";
 
 	private final JUnitTestRunner m_testRunner = new JUnitTestRunner();
 	private PrintStream m_originalSysErr;
@@ -44,7 +38,8 @@ public class JUnitTestRunnerTest {
 	public void testRunTest() throws IOException {
 		m_testRunner.runTest(ClassUnderJUnitTest.class, "a");
 
-		assertEquals(BEFORE_CLASS + BEFORE + A + AFTER + AFTER_CLASS, getSysErr());
+		assertEquals(ClassUnderJUnitTest.BEFORE_CLASS + ClassUnderJUnitTest.BEFORE + ClassUnderJUnitTest.TEST_A
+				+ ClassUnderJUnitTest.AFTER + ClassUnderJUnitTest.AFTER_CLASS, getSysErr());
 	}
 
 	@Test
@@ -53,9 +48,13 @@ public class JUnitTestRunnerTest {
 
 		String sysErr = getSysErr();
 
-		final String beginning = BEFORE_CLASS + BEFORE;
-		final String ending = AFTER + AFTER_CLASS;
+		final String beginning = ClassUnderJUnitTest.BEFORE_CLASS + ClassUnderJUnitTest.BEFORE;
+		final String ending = ClassUnderJUnitTest.AFTER + ClassUnderJUnitTest.AFTER_CLASS;
 
-		assertTrue(sysErr.equals(beginning + A + AFTER + BEFORE + B + ending) || sysErr.equals(beginning + B + AFTER + BEFORE + A + ending));
+		assertTrue(sysErr
+				.equals(beginning + ClassUnderJUnitTest.TEST_A + ClassUnderJUnitTest.AFTER + ClassUnderJUnitTest.BEFORE
+						+ ClassUnderJUnitTest.TEST_B + ending)
+				|| sysErr.equals(beginning + ClassUnderJUnitTest.TEST_B + ClassUnderJUnitTest.AFTER
+						+ ClassUnderJUnitTest.BEFORE + ClassUnderJUnitTest.TEST_A + ending));
 	}
 }
