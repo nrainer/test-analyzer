@@ -13,10 +13,17 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 
+	private boolean m_useMultiFileOutput;
+
 	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "ANACOL";
+	}
+
+	/** {@link #m_useMultiFileOutput} */
+	public void setUseMultiFileOutput(boolean useMultiFileOutput) {
+		m_useMultiFileOutput = useMultiFileOutput;
 	}
 
 	/** {@inheritDoc} */
@@ -44,6 +51,8 @@ public class AnalysisInformationCollectorStep extends AbstractExecutionStep {
 				ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
 		argsWriter.setValue(AnalysisInformationCollector.ARGS_RESULT_PRESENTATION,
 				configuration.getResultPresentation().getValue());
+		argsWriter.setValue(AnalysisInformationCollector.ARGS_USE_MULTI_FILE_OUTPUT,
+				Boolean.valueOf(m_useMultiFileOutput).toString());
 
 		processExecution.execute(fullExecutionId, ProcessExecution.NO_TIMEOUT, AnalysisInformationCollector.class,
 				classPath, argsWriter);

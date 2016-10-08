@@ -21,13 +21,15 @@ import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
 /**
- * <b>INFCOL:</b> Collects <b>information about test classes, testcases and methods under test.</b><br/>
+ * <b>INFCOL:</b> Collects <b>information about test classes, testcases and
+ * methods under test.</b><br/>
  * The instrumentation step (INSTRU) must have been executed before.<br/>
  * <br/>
  * Note: It does not yet filter the methods under test, because
  * <ul>
  * <li>the method descriptor is not available at this point</li>
- * <li>different return value generators might want to work on different methods</li>
+ * <li>different return value generators might want to work on different
+ * methods</li>
  * </ul>
  * <br/>
  * Dependencies: ASM, log4j, jUnit, core.<br/>
@@ -39,7 +41,7 @@ public class InformationCollector {
 	private static final Logger LOGGER = LogManager.getLogger(InformationCollector.class);
 
 	/** Number of args. */
-	private static final int ARGS_COUNT = 8;
+	private static final int ARGS_COUNT = 9;
 	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(InformationCollector.class, 0);
 	public static final ProgramArgsKey ARGS_FILE_WITH_TESTS_TO_RUN = new ProgramArgsKey(InformationCollector.class, 1);
 	public static final ProgramArgsKey ARGS_FILE_WITH_RESULTS = new ProgramArgsKey(InformationCollector.class, 2);
@@ -48,6 +50,7 @@ public class InformationCollector {
 	public static final ProgramArgsKey ARGS_TEST_CLASS_INCLUDES = new ProgramArgsKey(InformationCollector.class, 5);
 	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(InformationCollector.class, 6);
 	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(InformationCollector.class, 7);
+	public static final ProgramArgsKey ARGS_USE_MULTI_FILE_OUTPUT = new ProgramArgsKey(InformationCollector.class, 8);
 
 	/** Main method. */
 	public static void main(String[] args) {
@@ -71,24 +74,27 @@ public class InformationCollector {
 		LOGGER.info(LoggingUtil.getInputArgumentsF1(argsReader));
 
 		try {
-			final String[] jarsWithTests = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN)
+			String[] jarsWithTests = argsReader.getArgument(ARGS_FILE_WITH_TESTS_TO_RUN)
 					.split(CommonConstants.SEPARATOR_DEFAULT);
-			final String dataOutputPath = argsReader.getArgument(ARGS_FILE_WITH_RESULTS);
-			final ITestRunner testRunner = JavaUtility.createInstance(argsReader.getArgument(ARGS_TEST_RUNNER_CLASS));
-			final boolean operateFaultTolerant = Boolean
+			String dataOutputPath = argsReader.getArgument(ARGS_FILE_WITH_RESULTS);
+			ITestRunner testRunner = JavaUtility.createInstance(argsReader.getArgument(ARGS_TEST_RUNNER_CLASS));
+			boolean operateFaultTolerant = Boolean
 					.parseBoolean(argsReader.getArgument(ARGS_OPERATE_FAULT_TOLERANT, Boolean.FALSE.toString()));
-			final String[] testClassIncludes = ProcessExecution
+			String[] testClassIncludes = ProcessExecution
 					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_INCLUDES, true));
-			final String[] testClassExcludes = ProcessExecution
+			String[] testClassExcludes = ProcessExecution
 					.unwrapAndSplitPattern(argsReader.getArgument(ARGS_TEST_CLASS_EXCLUDES, true));
-			final String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
+			String resultPresentationChoice = argsReader.getArgument(ARGS_RESULT_PRESENTATION);
+			boolean useMultiFileOutput = Boolean
+					.parseBoolean(argsReader.getArgument(ARGS_USE_MULTI_FILE_OUTPUT, Boolean.FALSE.toString()));
 
-			final IResultPresentation resultPresentation = ResultPresentationUtil
+			IResultPresentation resultPresentation = ResultPresentationUtil
 					.createResultPresentation(resultPresentationChoice, executionId);
 
 			informationCollectionLogic.setTestRunner(testRunner);
 			informationCollectionLogic.setOutputFile(dataOutputPath);
 			informationCollectionLogic.setResultPresentation(resultPresentation);
+			informationCollectionLogic.setUseMultiFileOutput(useMultiFileOutput);
 			informationCollectionLogic.execute(jarsWithTests, testClassIncludes, testClassExcludes,
 					operateFaultTolerant);
 

@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.FileResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.MultiFileResultReceiver;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
@@ -73,9 +74,18 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 	}
 
 	protected void writeResultToFiles(Collection<TestInformation> result) throws IOException {
-		IResultReceiver plainTextResultReceiver = new FileResultReceiver(getOutputFile(), true, 1000);
-		IResultReceiver additionalResultResultReceiver = new FileResultReceiver(
-				getAdditionalResultOutputFile(getOutputFile()), true, 1000);
+		IResultReceiver plainTextResultReceiver;
+		IResultReceiver additionalResultResultReceiver;
+
+		if (isUseMultiFileOutput()) {
+			plainTextResultReceiver = new MultiFileResultReceiver(getOutputFile());
+			additionalResultResultReceiver = new MultiFileResultReceiver(
+					getAdditionalResultOutputFile(getOutputFile()));
+		} else {
+			plainTextResultReceiver = new FileResultReceiver(getOutputFile(), true);
+			additionalResultResultReceiver = new FileResultReceiver(getAdditionalResultOutputFile(getOutputFile()),
+					true);
+		}
 
 		CollectedInformationUtility.convertToParseableMethodTestcaseText(result, plainTextResultReceiver);
 		CollectedInformationUtility.convertToMethodTestcaseMappingResult(result, getResultPresentation(),

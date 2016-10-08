@@ -14,10 +14,22 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class InformationCollectorStep extends AbstractExecutionStep {
 
+	private boolean m_useMultiFileOutput;
+
 	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
 		return "INFCOL";
+	}
+
+	/** {@link #m_useMultiFileOutput} */
+	public void setUseMultiFileOutput(boolean useMultiFileOutput) {
+		m_useMultiFileOutput = useMultiFileOutput;
+	}
+
+	/** {@link #m_useMultiFileOutput} */
+	public boolean isUseMultiFileOutput() {
+		return m_useMultiFileOutput;
 	}
 
 	/** {@inheritDoc} */
@@ -31,6 +43,14 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 
 		IFullExecutionId executionId = createFullExecutionId();
 
+		ProgramArgsWriter argsWriter = createProgramArgs(configuration, executionId);
+
+		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class, classPath,
+				argsWriter);
+	}
+
+	/** Create the program args for the execution. */
+	protected ProgramArgsWriter createProgramArgs(Configuration configuration, IFullExecutionId executionId) {
 		ProgramArgsWriter argsWriter = InformationCollector.createProgramArgsWriter();
 		argsWriter.setValue(InformationCollector.ARGS_EXECUTION_ID, executionId.getFullId());
 		argsWriter.setValue(InformationCollector.ARGS_FILE_WITH_TESTS_TO_RUN,
@@ -46,9 +66,9 @@ public class InformationCollectorStep extends AbstractExecutionStep {
 				ProcessExecution.wrapPattern(configuration.getTestClassExcludes().getValue()));
 		argsWriter.setValue(InformationCollector.ARGS_RESULT_PRESENTATION,
 				configuration.getResultPresentation().getValue());
-
-		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class, classPath,
-				argsWriter);
+		argsWriter.setValue(InformationCollector.ARGS_USE_MULTI_FILE_OUTPUT,
+				Boolean.valueOf(m_useMultiFileOutput).toString());
+		return argsWriter;
 	}
 
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {
