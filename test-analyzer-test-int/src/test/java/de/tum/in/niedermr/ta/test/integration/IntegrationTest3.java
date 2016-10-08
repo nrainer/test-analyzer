@@ -23,16 +23,16 @@ public class IntegrationTest3 extends AbstractIntegrationTest {
 	/** {@inheritDoc} */
 	@Override
 	public void executeTestLogic() throws ConfigurationException, IOException {
-		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsText());
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsSql());
+		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
+		assertFilesExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsText());
+		assertFilesExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsSql());
 
 		FileSystemUtils.copyFile(getFileExpectedCollectedInformationAsText(), getFileOutputCollectedInformation());
 
 		executeTestAnalyzerWithConfiguration();
 
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResultAsSql());
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputExecutionInformationAsSql());
+		assertFilesExists(MSG_OUTPUT_MISSING, getFileOutputResultAsSql());
+		assertFilesExists(MSG_OUTPUT_MISSING, getFileOutputExecutionInformationAsSql());
 
 		assertFileContentEqual(MSG_NOT_EQUAL_COLLECTED_INFORMATION, false, getFileExpectedCollectedInformationAsText(),
 				getFileOutputCollectedInformation());

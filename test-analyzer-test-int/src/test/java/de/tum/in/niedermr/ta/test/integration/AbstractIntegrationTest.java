@@ -91,8 +91,10 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		AnalyzerRunnerStart.execute(getConfiguration());
 	}
 
-	protected void assertFileExists(String errorMsg, File file) {
-		assertTrue(errorMsg + "(" + file.getPath() + ")", file.exists());
+	protected void assertFilesExists(String errorMsg, File... files) {
+		for (File file : files) {
+			assertTrue(errorMsg + "(" + file.getPath() + ")", file.exists());
+		}
 	}
 
 	protected void assertFileContentEqual(String errorMsg, boolean orderIsRelevant, File fileWithExpectedContent,

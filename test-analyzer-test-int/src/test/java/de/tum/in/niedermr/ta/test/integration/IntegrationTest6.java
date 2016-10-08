@@ -17,13 +17,13 @@ public class IntegrationTest6 extends AbstractIntegrationTest implements FileSys
 	/** {@inheritDoc} */
 	@Override
 	public void executeTestLogic() throws ConfigurationException, IOException {
-		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
-		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TESTNG_TESTS));
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsText());
+		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
+		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TESTNG_TESTS));
+		assertFilesExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsText());
 
 		executeTestAnalyzerWithConfiguration();
 
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResultAsText());
+		assertFilesExists(MSG_OUTPUT_MISSING, getFileOutputResultAsText());
 
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResultAsText(), getFileOutputResultAsText());
 	}

@@ -23,16 +23,16 @@ public class IntegrationTest2 extends AbstractIntegrationTest {
 	/** {@inheritDoc} */
 	@Override
 	public void executeTestLogic() throws ConfigurationException, IOException {
-		assertFileExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsText());
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsSql());
-		assertFileExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsText());
+		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
+		assertFilesExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsText());
+		assertFilesExists(MSG_TEST_DATA_MISSING, getFileExpectedCollectedInformationAsSql());
+		assertFilesExists(MSG_TEST_DATA_MISSING, getFileExpectedResultAsText());
 
 		executeTestAnalyzerWithConfiguration();
 
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformation());
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformationAsSql());
-		assertFileExists(MSG_OUTPUT_MISSING, getFileOutputResultAsText());
+		assertFilesExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformation());
+		assertFilesExists(MSG_OUTPUT_MISSING, getFileOutputCollectedInformationAsSql());
+		assertFilesExists(MSG_OUTPUT_MISSING, getFileOutputResultAsText());
 
 		List<TestInformation> expectedTestInformationList = CollectedInformationUtility
 				.parseMethodTestcaseText(getContent(getFileExpectedCollectedInformationAsText()));
