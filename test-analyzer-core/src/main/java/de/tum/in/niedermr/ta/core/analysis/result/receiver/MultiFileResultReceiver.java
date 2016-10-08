@@ -5,6 +5,9 @@ import java.util.List;
 /** Rolling file receiver. */
 public class MultiFileResultReceiver implements IResultReceiver {
 
+	/** Default number of desired lines per file. */
+	public static final int DEFAULT_DESIRED_LINES_PER_FILE = 50000;
+
 	/** First index. */
 	public static final int FIRST_INDEX = 1;
 
@@ -25,6 +28,11 @@ public class MultiFileResultReceiver implements IResultReceiver {
 
 	/** Number of created files. */
 	private int m_fileCount;
+
+	/** Constructor. */
+	public MultiFileResultReceiver(String baseFileName) {
+		this(baseFileName, DEFAULT_DESIRED_LINES_PER_FILE);
+	}
 
 	/** Constructor. */
 	public MultiFileResultReceiver(String baseFileName, int desiredLinesPerFile) {

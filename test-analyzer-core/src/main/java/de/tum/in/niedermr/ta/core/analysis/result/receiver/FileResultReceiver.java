@@ -10,7 +10,7 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 public class FileResultReceiver implements IResultReceiver {
 
 	/** Buffer size in number of lines. */
-	protected static final int DEFAULT_BUFFER_SIZE = 100;
+	protected static final int DEFAULT_BUFFER_SIZE = 1000;
 
 	/** File name. */
 	private final String m_fileName;
