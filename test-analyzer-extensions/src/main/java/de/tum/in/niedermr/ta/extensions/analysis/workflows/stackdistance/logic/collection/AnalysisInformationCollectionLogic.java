@@ -3,9 +3,8 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.
 import java.util.Map;
 import java.util.Set;
 
-import de.tum.in.niedermr.ta.core.analysis.result.receiver.FileResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
-import de.tum.in.niedermr.ta.core.analysis.result.receiver.MultiFileResultReceiver;
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
@@ -27,11 +26,8 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 
 	@Override
 	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
-		if (isUseMultiFileOutput()) {
-			m_resultReceiver = new MultiFileResultReceiver(getOutputFile());
-		} else {
-			m_resultReceiver = new FileResultReceiver(getOutputFile(), true);
-		}
+		m_resultReceiver = ResultReceiverFactory.createFileResultReceiverWithDefaultSettings(isUseMultiFileOutput(),
+				getOutputFile());
 	}
 
 	/** {@inheritDoc} */
