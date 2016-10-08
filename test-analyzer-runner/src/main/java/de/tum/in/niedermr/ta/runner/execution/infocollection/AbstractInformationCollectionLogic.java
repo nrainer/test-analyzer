@@ -18,7 +18,7 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.tests.TestRunnerUtil;
 
-public abstract class AbstractInformationCollectionLogic {
+public abstract class AbstractInformationCollectionLogic implements IInformationCollectionLogic {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(AbstractInformationCollectionLogic.class);
@@ -36,51 +36,61 @@ public abstract class AbstractInformationCollectionLogic {
 		this.m_executionId = executionId;
 	}
 
-	/** {@link #m_executionId} */
+	/** {@inheritDoc} */
+	@Override
 	public IFullExecutionId getExecutionId() {
 		return m_executionId;
 	}
 
-	/** {@link #m_testRunner} */
+	/** {@inheritDoc} */
+	@Override
 	public void setTestRunner(ITestRunner testRunner) {
 		this.m_testRunner = testRunner;
 	}
 
-	/** {@link #m_testRunner} */
+	/** {@inheritDoc} */
+	@Override
 	public ITestRunner getTestRunner() {
 		return m_testRunner;
 	}
 
-	/** {@link #m_outputFile} */
+	/** {@inheritDoc} */
+	@Override
 	public String getOutputFile() {
 		return m_outputFile;
 	}
 
-	/** {@link #m_outputFile} */
+	/** {@inheritDoc} */
+	@Override
 	public void setOutputFile(String outputFile) {
 		this.m_outputFile = outputFile;
 	}
 
-	/** {@link #m_resultPresentation} */
+	/** {@inheritDoc} */
+	@Override
 	public void setResultPresentation(IResultPresentation resultPresentation) {
 		this.m_resultPresentation = resultPresentation;
 	}
 
-	/** {@link #m_resultPresentation} */
+	/** {@inheritDoc} */
+	@Override
 	public IResultPresentation getResultPresentation() {
 		return m_resultPresentation;
 	}
 
-	/** {@link #m_useMultiFileOutput} */
+	/** {@inheritDoc} */
+	@Override
 	public void setUseMultiFileOutput(boolean useMultiFileOutput) {
 		this.m_useMultiFileOutput = useMultiFileOutput;
 	}
 
-	/** {@link #m_useMultiFileOutput} */
+	/** {@inheritDoc} */
+	@Override
 	public boolean isUseMultiFileOutput() {
 		return m_useMultiFileOutput;
 	}
 
+	@Override
 	public void execute(String[] jarsWithTests, String[] testClassIncludes, String[] testClassExcludes,
 			boolean operateFaultTolerant) throws IteratorException, ReflectiveOperationException {
 		Map<Class<?>, Set<String>> testClassesWithTestcases = collectTestClassesWithTestcases(jarsWithTests,

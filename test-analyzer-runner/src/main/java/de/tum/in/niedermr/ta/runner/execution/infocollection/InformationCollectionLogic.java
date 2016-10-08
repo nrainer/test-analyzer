@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.runner.execution.infocollection;
 
-import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -66,14 +65,10 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 		LOGGER.info("Collected " + countTestcases(result) + " successful testcases from "
 				+ testClassesWithTestcases.size() + " test classes.");
 
-		try {
-			writeResultToFiles(result);
-		} catch (IOException ex) {
-			LOGGER.error("When writing data to file", ex);
-		}
+		writeResultToFiles(result);
 	}
 
-	protected void writeResultToFiles(Collection<TestInformation> result) throws IOException {
+	protected void writeResultToFiles(Collection<TestInformation> result) {
 		IResultReceiver plainTextResultReceiver;
 		IResultReceiver additionalResultResultReceiver;
 
