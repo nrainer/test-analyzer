@@ -29,22 +29,48 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 	private static final String RETURN_TYPE_LIST_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
 			+ "return-type-list" + FILE_EXTENSION_TXT;
 
+	private File m_expectedStackAnalysisFile;
+	private File m_outputStackAnalysisFile;
+	private File m_expectedCodeStatisticsFile;
+	private File m_outputCodeStatisticsFile;
+	private File m_expectedReturnTypeListFile;
+	private File m_outputReturnTypeListFile;
+	private File m_expectedCollectedInformationFile;
+	private File m_outputCollectedInformationFile;
+	private File m_expectedResultFile;
+	private File m_outputResultFile;
+	private File m_expectedParsedCoverageFile;
+	private File m_outputParsedCoverageFile;
+
 	/** {@inheritDoc} */
 	@Override
 	public void executeTestLogic() throws ConfigurationException, IOException {
-		File expectedStackAnalysisFile = getExpectedFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
-		File outputStackAnalysisFile = getOutputFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
-		File expectedCodeStatisticsFile = getExpectedFile(getFileName(CODE_STATISTICS_OUTPUT));
-		File outputCodeStatisticsFile = getOutputFile(getFileName(CODE_STATISTICS_OUTPUT));
-		File expectedReturnTypeListFile = getExpectedFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
-		File outputReturnTypeListFile = getOutputFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
-		File expectedCollectedInformationFile = new File(MultiFileResultReceiver.getFileName(
+		initializeFiles();
+
+		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
+		assertFilesExists(MSG_TEST_DATA_MISSING, m_expectedStackAnalysisFile, m_expectedCodeStatisticsFile,
+				m_expectedReturnTypeListFile, m_expectedCollectedInformationFile, m_expectedResultFile,
+				m_expectedParsedCoverageFile);
+
+		executeTestAnalyzerWithConfiguration();
+
+		checkResults();
+	}
+
+	private void initializeFiles() throws IOException {
+		m_expectedStackAnalysisFile = getExpectedFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
+		m_outputStackAnalysisFile = getOutputFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
+		m_expectedCodeStatisticsFile = getExpectedFile(getFileName(CODE_STATISTICS_OUTPUT));
+		m_outputCodeStatisticsFile = getOutputFile(getFileName(CODE_STATISTICS_OUTPUT));
+		m_expectedReturnTypeListFile = getExpectedFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
+		m_outputReturnTypeListFile = getOutputFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
+		m_expectedCollectedInformationFile = new File(MultiFileResultReceiver.getFileName(
 				getFileExpectedCollectedInformationAsSql().getPath(), MultiFileResultReceiver.FIRST_INDEX));
-		File outputCollectedInformationFile = new File(MultiFileResultReceiver
+		m_outputCollectedInformationFile = new File(MultiFileResultReceiver
 				.getFileName(getFileOutputCollectedInformationAsSql().getPath(), MultiFileResultReceiver.FIRST_INDEX));
-		File expectedResultFile = new File(MultiFileResultReceiver.getFileName(getFileExpectedResultAsSql().getPath(),
+		m_expectedResultFile = new File(MultiFileResultReceiver.getFileName(getFileExpectedResultAsSql().getPath(),
 				MultiFileResultReceiver.FIRST_INDEX));
-		File outputResultFile = new File(MultiFileResultReceiver.getFileName(getFileOutputResultAsSql().getPath(),
+		m_outputResultFile = new File(MultiFileResultReceiver.getFileName(getFileOutputResultAsSql().getPath(),
 				MultiFileResultReceiver.FIRST_INDEX));
 
 		File inputCoverageXmlFile = getFileInSpecificTestDataFolder("other/coverage.xml");
@@ -54,32 +80,28 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 				StandardCopyOption.REPLACE_EXISTING);
 		assertFilesExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFileInWorkingDirectory);
 
-		File expectedParsedCoverageFile = getExpectedFile(getFileName(COVERAGE_DATA_OUTPUT));
-		File outputParsedCoverageFile = getOutputFile(getFileName(COVERAGE_DATA_OUTPUT));
+		m_expectedParsedCoverageFile = getExpectedFile(getFileName(COVERAGE_DATA_OUTPUT));
+		m_outputParsedCoverageFile = getOutputFile(getFileName(COVERAGE_DATA_OUTPUT));
+	}
 
-		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, new File(getCommonFolderTestData() + JAR_TEST_DATA));
-		assertFilesExists(MSG_TEST_DATA_MISSING, expectedStackAnalysisFile, expectedCodeStatisticsFile,
-				expectedReturnTypeListFile, expectedCollectedInformationFile, expectedResultFile);
+	private void checkResults() {
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputStackAnalysisFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedStackAnalysisFile, m_outputStackAnalysisFile);
 
-		executeTestAnalyzerWithConfiguration();
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputCodeStatisticsFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedCodeStatisticsFile, m_outputCodeStatisticsFile);
 
-		assertFilesExists(MSG_OUTPUT_MISSING, outputStackAnalysisFile);
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedStackAnalysisFile, outputStackAnalysisFile);
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputParsedCoverageFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedParsedCoverageFile, m_outputParsedCoverageFile);
 
-		assertFilesExists(MSG_OUTPUT_MISSING, outputCodeStatisticsFile);
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedCodeStatisticsFile, outputCodeStatisticsFile);
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputReturnTypeListFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedReturnTypeListFile, m_outputReturnTypeListFile);
 
-		assertFilesExists(MSG_OUTPUT_MISSING, outputParsedCoverageFile);
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedParsedCoverageFile, outputParsedCoverageFile);
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputCollectedInformationFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedCollectedInformationFile,
+				m_outputCollectedInformationFile);
 
-		assertFilesExists(MSG_OUTPUT_MISSING, outputReturnTypeListFile);
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedReturnTypeListFile, outputReturnTypeListFile);
-
-		assertFilesExists(MSG_OUTPUT_MISSING, outputCollectedInformationFile);
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedCollectedInformationFile,
-				outputCollectedInformationFile);
-
-		assertFilesExists(MSG_OUTPUT_MISSING, outputResultFile);
-		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, expectedResultFile, outputResultFile);
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputResultFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedResultFile, m_outputResultFile);
 	}
 }
