@@ -5,14 +5,14 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /** Test {@link ResultReceiverFactory}. */
-public class ResultReceiverFactoryTest {
+public class ResultReceiverFactoryTest extends AbstractFileResultReceiverTest {
 
 	/** Test. */
 	@Test
 	public void testCreateFileReceiver() {
 		assertTrue(ResultReceiverFactory.createFileResultReceiverWithDefaultSettings(true,
-				"a") instanceof MultiFileResultReceiver);
+				OUTPUT_FOLDER + "/file1") instanceof MultiFileResultReceiver);
 		assertTrue(ResultReceiverFactory.createFileResultReceiverWithDefaultSettings(false,
-				"a") instanceof FileResultReceiver);
+				OUTPUT_FOLDER + "/file2") instanceof FileResultReceiver);
 	}
 }
