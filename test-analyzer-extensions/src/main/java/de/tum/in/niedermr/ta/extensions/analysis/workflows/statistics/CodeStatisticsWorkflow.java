@@ -1,18 +1,34 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics;
 
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
+import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
+import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.result.ResultReceiverForCodeStatistics;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.AssertionCounterStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.InstructionCounterStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.MethodModifierRetrievalStep;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.steps.PersistResultStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
+import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class CodeStatisticsWorkflow extends AbstractWorkflow {
+
+	private static final String RESULT_FILE = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics"
+			+ FileSystemConstants.FILE_EXTENSION_SQL_TXT;
+
+	/**
+	 * <code>extension.code.statistics.useMultipleOutputFiles</code>: Split the
+	 * output into multiple files.
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.useMultipleOutputFiles", false);
+
 	/** <code>extension.code.statistics.method.instructions</code> */
 	public static final DynamicConfigurationKey COUNT_INSTRUCTIONS = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.instructions", true);
@@ -29,43 +45,63 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
 		prepareStep.start();
 
-		PersistResultStep persistResultStep = createAndInitializeExecutionStep(PersistResultStep.class);
+		ResultReceiverForCodeStatistics resultReceiver = createResultReceiverForCodeStatistics(context);
 
 		if (configuration.getDynamicValues().getBooleanValue(COUNT_INSTRUCTIONS)) {
-			runCountInstructionsStep(persistResultStep);
+			runCountInstructionsStep(resultReceiver);
 		}
 
 		if (configuration.getDynamicValues().getBooleanValue(COUNT_ASSERTIONS)) {
-			runCountAssertionsStep(persistResultStep);
+			runCountAssertionsStep(resultReceiver);
 		}
 
 		if (configuration.getDynamicValues().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
-			runCollectAccessModifiersStep(persistResultStep);
+			runCollectAccessModifiersStep(resultReceiver);
 		}
 
-		persistResultStep.start();
+		resultReceiver.markResultAsComplete();
+	}
+
+	protected ResultReceiverForCodeStatistics createResultReceiverForCodeStatistics(ExecutionContext context) {
+		IResultPresentationExtended resultPresentationExtended = IResultPresentationExtended
+				.create(context.getExecutionId());
+
+		boolean useMultipleOutputFiles = context.getConfiguration().getDynamicValues()
+				.getBooleanValue(CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES);
+		String resultFileName = getFileInWorkingArea(context, RESULT_FILE);
+		IResultReceiver resultReceiver = ResultReceiverFactory
+				.createFileResultReceiverWithDefaultSettings(useMultipleOutputFiles, resultFileName);
+
+		return new ResultReceiverForCodeStatistics(resultReceiver, resultPresentationExtended);
 	}
 
 	/** Run the step to count the instructions of methods and test cases. */
-	protected void runCountInstructionsStep(PersistResultStep persistResultStep) {
+	protected void runCountInstructionsStep(ResultReceiverForCodeStatistics resultReceiver) {
 		InstructionCounterStep countInstructionsStep = createAndInitializeExecutionStep(InstructionCounterStep.class);
 		countInstructionsStep.start();
-		persistResultStep.addResultInstructionsPerMethod(countInstructionsStep.getInstructionsPerMethod());
-		persistResultStep.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
+
+		resultReceiver.addResultInstructionsPerMethod(countInstructionsStep.getInstructionsPerMethod());
+		resultReceiver.markResultAsPartiallyComplete();
+		resultReceiver.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
+		resultReceiver.markResultAsPartiallyComplete();
 	}
 
 	/** Run the step to count assertions. */
-	protected void runCountAssertionsStep(PersistResultStep persistResultStep) {
+	protected void runCountAssertionsStep(ResultReceiverForCodeStatistics resultReceiver) {
 		AssertionCounterStep countAssertionsStep = createAndInitializeExecutionStep(AssertionCounterStep.class);
 		countAssertionsStep.start();
-		persistResultStep.addResultAssertionsPerTestcase(countAssertionsStep.getAssertionsPerTestcase());
+
+		resultReceiver.addResultAssertionsPerTestcase(countAssertionsStep.getAssertionsPerTestcase());
+		resultReceiver.markResultAsPartiallyComplete();
 	}
 
 	/** Run the step to collect the access modifiers of methods. */
-	protected void runCollectAccessModifiersStep(PersistResultStep persistResultStep) {
+	protected void runCollectAccessModifiersStep(ResultReceiverForCodeStatistics resultReceiver) {
 		MethodModifierRetrievalStep modifierRetrievalStep = createAndInitializeExecutionStep(
 				MethodModifierRetrievalStep.class);
 		modifierRetrievalStep.start();
-		persistResultStep.addResultModifierPerMethod(modifierRetrievalStep.getModifierPerMethod());
+
+		resultReceiver.addResultModifierPerMethod(modifierRetrievalStep.getModifierPerMethod());
+		resultReceiver.markResultAsPartiallyComplete();
 	}
 }
