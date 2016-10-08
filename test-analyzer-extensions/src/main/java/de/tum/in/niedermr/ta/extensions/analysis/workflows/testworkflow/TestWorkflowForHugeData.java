@@ -16,8 +16,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
- * Test workflow that processes the data in multiple chunks and creates multiple
- * output files.
+ * Test workflow that processes the data in multiple chunks and creates multiple output files.
  */
 public class TestWorkflowForHugeData extends TestWorkflow {
 
@@ -36,6 +35,7 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 	}
 
 	/** {@inheritDoc} */
+	@Override
 	protected void afterExecution(ExecutionContext context) throws ExecutionException {
 		// do not run the finalize result step again
 		m_cleanupStep.start();
@@ -55,9 +55,8 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 	}
 
 	/**
-	 * Remove old collected information files. This is needed before creating
-	 * new files because not all files may be overwritten (if the new run
-	 * creates less files).
+	 * Remove old collected information files. This is needed before creating new files because not all files may be
+	 * overwritten (if the new run creates less files).
 	 */
 	protected void removeOldCollectedInformationFiles(ExecutionContext context) {
 		for (int index = MultiFileResultReceiver.FIRST_INDEX; true; index++) {
@@ -98,6 +97,16 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 		}
 	}
 
+	/**
+	 * Load the collected information and execute the mutation testing.
+	 * 
+	 * @param currentFile
+	 *            of the current chunk
+	 * @param index
+	 *            of the current chunk
+	 * @param context
+	 *            of the workflow
+	 */
 	protected void loadCollectedInformationAndExecuteMutateAndTest(String currentFile, int index,
 			ExecutionContext context) throws IOException {
 		ConcurrentLinkedQueue<TestInformation> testInformation = loadCollectedInformation(currentFile);

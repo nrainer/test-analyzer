@@ -30,11 +30,9 @@ public class TestWorkflow extends AbstractWorkflow {
 	private static final Logger LOGGER = LogManager.getLogger(TestWorkflow.class);
 
 	/**
-	 * <code>advanced.testworkflow.collectInformation</code>: Allows skipping
-	 * the information collections steps (default: collect information = true).
-	 * <br/>
-	 * If false, {@link InstrumentationStep} and
-	 * {@link InformationCollectorStep} will be skipped and
+	 * <code>advanced.testworkflow.collectInformation</code>: Allows skipping the information collections steps
+	 * (default: collect information = true). <br/>
+	 * If false, {@link InstrumentationStep} and {@link InformationCollectorStep} will be skipped and
 	 * {@link de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants#FILE_OUTPUT_COLLECTED_INFORMATION}
 	 * will be loaded instead from the working folder.<br/>
 	 */
@@ -42,16 +40,14 @@ public class TestWorkflow extends AbstractWorkflow {
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.collectInformation", true);
 
 	/**
-	 * <code>advanced.testworkflow.mutateAndTest</code>: Allows skipping the
-	 * mutation testing steps. <br/>
+	 * <code>advanced.testworkflow.mutateAndTest</code>: Allows skipping the mutation testing steps. <br/>
 	 * If false, {@link MutateAndTestStep} will be skipped.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXECUTE_MUTATE_AND_TEST = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.mutateAndTest", true);
 
 	/**
-	 * <code>advanced.testworkflow.abortchecker.disabled</code>: Disables the
-	 * abort checker.
+	 * <code>advanced.testworkflow.abortchecker.disabled</code>: Disables the abort checker.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_DISABLE_ABORT_CHECKER = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "testworkflow.abortchecker.disabled", false);
@@ -132,6 +128,12 @@ public class TestWorkflow extends AbstractWorkflow {
 		m_cleanupStep.start();
 	}
 
+	/**
+	 * Executed the collect information steps.
+	 * 
+	 * @param context
+	 *            of the workflow
+	 */
 	protected void executeCollectInformation(ExecutionContext context) throws ExecutionException {
 		m_instrumentationStep.start();
 		m_informationCollectorStep.start();
