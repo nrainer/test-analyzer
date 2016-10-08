@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.core.analysis.result.receiver;
 
+import java.io.File;
 import java.util.List;
 
 /** Rolling file receiver. */
@@ -112,14 +113,10 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	 * Get the file with the given index. The index is <b>not zero-based</b>.
 	 */
 	public static String getFileName(String fileName, int index) {
-		int lastIndexOfFileExtensionSeparator = fileName.lastIndexOf(".");
+		File file = new File(fileName);
 
-		if (lastIndexOfFileExtensionSeparator < 0) {
-			return fileName + index;
-		}
-
-		return fileName.substring(0, lastIndexOfFileExtensionSeparator) + index
-				+ fileName.substring(lastIndexOfFileExtensionSeparator);
+		String fileNameInsertion = "chunk-" + index + "-";
+		return new File(file.getParent(), fileNameInsertion + file.getName()).getPath();
 	}
 
 	/** {@link #m_fileCount} */
