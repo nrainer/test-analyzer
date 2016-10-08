@@ -7,7 +7,7 @@ import java.util.List;
 public class MultiFileResultReceiver implements IResultReceiver {
 
 	/** Default number of desired lines per file. */
-	public static final int DEFAULT_DESIRED_LINES_PER_FILE = 50000;
+	public static final int DEFAULT_DESIRED_LINES_PER_FILE = 100000;
 
 	/** First index. */
 	public static final int FIRST_INDEX = 1;
@@ -98,8 +98,7 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	}
 
 	/**
-	 * Get the file with the given index. The first index is
-	 * {@value #FIRST_INDEX}.
+	 * Get the file with the given index. The first index is {@value #FIRST_INDEX}.
 	 */
 	public String getFileName(int index) {
 		if (index < FIRST_INDEX || index > m_fileCount) {
