@@ -3,17 +3,22 @@
 
 	<properties>
 		<property name="mainLogFile">./logs/TestAnalyzer.log</property>
+		<property name="mainLogFilePattern">./logs/TestAnalyzer-%i.log</property>
 		<property name="testSysErrLogFile">./logs/TestAnalyzer-testSysErr.log</property>
 		<property name="loggingPattern">%d{dd.MM.yy HH:mm:ss} %level %c{1} [%t] %m%n</property>
 	</properties>
 	
  	<appenders>
-		<File name="MainFile" fileName="${mainLogFile}">
+		<RollingFile name="MainFile" fileName="${mainLogFile}" filePattern="${mainLogFilePattern}">
 			<PatternLayout>
 				<pattern>${loggingPattern}</pattern>
 			</PatternLayout>
+			<Policies>
+		    	<SizeBasedTriggeringPolicy size="100 MB" />
+		    </Policies>
+		    <DefaultRolloverStrategy />
 			<RegexFilter regex="TestSysErr" onMatch="DENY" onMismatch="ACCEPT"/>
-		</File>
+		</RollingFile>
 		
 		<File name="TestSysErr" fileName="${testSysErrLogFile}">
 			<PatternLayout>
