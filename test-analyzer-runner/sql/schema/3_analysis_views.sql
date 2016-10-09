@@ -41,6 +41,8 @@ CREATE VIEW V_Tested_Methods_Info AS
 				SELECT ri2.testcaseId FROM Relation_Info ri2 WHERE ri.execution = ri2.execution AND ri.methodId = ri2.methodId
 				)
 			) AS minNumberOfCoveredMethodsOfAnyTestcase,
+		-- explicit also check for hashCode as fallback for the case that no classification was made
+		(mi.method LIKE '%hashCode()' OR mi.classificationId IN (SELECT mci.classificationId FROM Method_Classification_Info mci WHERE mci.isIrrelevant = 1)) AS isIrrelevant,
 		mi.method, 
 		mi.methodHash
     FROM Relation_Info ri
@@ -65,13 +67,14 @@ CREATE VIEW V_Tested_Methods_Info_Agg AS
 		vtmi.methodId, 
 		vtmi.method, 
 		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END AS killedResult,
+		vtmi.isIrrelevant,
 		vtmi.testcaseCount,
 		vtmi.minStackDistance,
 		vtmi.sumCountInvocations,
 		vtmi.minNumberOfCoveredMethodsOfAnyTestcase
     FROM V_Tested_Methods_Info vtmi;
     
-/** Test result, extended by test and method ids and names. */
+/** Test result, extended by test and method ids and names. Note that it does not contain test aborts. */
 CREATE VIEW V_Test_Result_Info AS 
 	SELECT 
 		t.execution,
@@ -95,7 +98,8 @@ CREATE VIEW V_Method_Classification AS
 		vtmia.methodId,
 		vtmia.method,
 		mci.category AS methodCategory,
-		mci.severity AS methodSeverity
+		mci.severity AS methodSeverity,
+		mci.isIrrelevant
 	FROM V_Tested_Methods_Info_Agg vtmia
 	INNER JOIN Method_Info mi
 	ON vtmia.execution = mi.execution
