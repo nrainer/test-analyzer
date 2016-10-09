@@ -41,8 +41,8 @@ CREATE VIEW V_Tested_Methods_Info AS
 				SELECT ri2.testcaseId FROM Relation_Info ri2 WHERE ri.execution = ri2.execution AND ri.methodId = ri2.methodId
 				)
 			) AS minNumberOfCoveredMethodsOfAnyTestcase,
-		-- explicit also check for hashCode as fallback for the case that no classification was made
-		(mi.method LIKE '%hashCode()' OR mi.classificationId IN (SELECT mci.classificationId FROM Method_Classification_Info mci WHERE mci.isIrrelevant = 1)) AS isIrrelevant,
+		-- explicit also check for hashCode as fallback for the case that no classifications were made yet / the method is not classified
+		(mi.method LIKE '%hashCode()' OR (mi.classificationId IS NOT NULL AND mi.classificationId IN (SELECT mci.classificationId FROM Method_Classification_Info mci WHERE mci.isIrrelevant = 1))) AS isIrrelevant,
 		mi.method, 
 		mi.methodHash
     FROM Relation_Info ri
