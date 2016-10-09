@@ -16,7 +16,8 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
- * Test workflow that processes the data in multiple chunks and creates multiple output files.
+ * Test workflow that processes the data in multiple chunks and creates multiple
+ * output files.
  */
 public class TestWorkflowForHugeData extends TestWorkflow {
 
@@ -55,8 +56,9 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 	}
 
 	/**
-	 * Remove old collected information files. This is needed before creating new files because not all files may be
-	 * overwritten (if the new run creates less files).
+	 * Remove old collected information files. This is needed before creating
+	 * new files because not all files may be overwritten (if the new run
+	 * creates less files).
 	 */
 	protected void removeOldCollectedInformationFiles(ExecutionContext context) {
 		for (int index = MultiFileResultReceiver.FIRST_INDEX; true; index++) {
@@ -74,9 +76,7 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 	/** {@inheritDoc} */
 	@Override
 	protected void loadCollectedInformationAndExecuteMutateAndTest(ExecutionContext context) throws IOException {
-		int index = MultiFileResultReceiver.FIRST_INDEX;
-
-		while (true) {
+		for (int index = MultiFileResultReceiver.FIRST_INDEX; true; index++) {
 			String fileNameOfCurrentIndex = getFileWithCollectedInformation(context, index);
 
 			if (!new File(fileNameOfCurrentIndex).exists()) {
@@ -92,8 +92,6 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 			LOGGER.info("Start test workflow for file chunk " + index);
 			loadCollectedInformationAndExecuteMutateAndTest(fileNameOfCurrentIndex, index, context);
 			LOGGER.info("Complete test workflow for file chunk " + index);
-
-			index++;
 		}
 	}
 
