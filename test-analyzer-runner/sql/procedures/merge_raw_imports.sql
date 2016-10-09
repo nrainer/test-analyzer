@@ -65,15 +65,15 @@ FROM Testcase_Info_Import tii2
 WHERE tii2.execution = @executionIdOld2;
 
 INSERT INTO Stack_Info_Import
-(execution, testcase, method, minStackDistance, maxStackDistance)
-SELECT @executionIdTarget, x.testcase, x.method, MIN(x.minStackDistance), MAX(x.maxStackDistance)
+(execution, testcase, method, minStackDistance, maxStackDistance, invocationCount)
+SELECT @executionIdTarget, x.testcase, x.method, MIN(x.minStackDistance), MAX(x.maxStackDistance), SUM(x.invocationCount)
 FROM
 (
-SELECT sii1.testcase, sii1.method, sii1.minStackDistance, sii1.maxStackDistance
+SELECT sii1.testcase, sii1.method, sii1.minStackDistance, sii1.maxStackDistance, sii1.invocationCount
 FROM Stack_Info_Import sii1
 WHERE sii1.execution = @executionIdOld1
 UNION 
-SELECT sii2.testcase, sii2.method, sii2.minStackDistance, sii2.maxStackDistance
+SELECT sii2.testcase, sii2.method, sii2.minStackDistance, sii2.maxStackDistance, sii2.invocationCount
 FROM Stack_Info_Import sii2
 WHERE sii2.execution = @executionIdOld2
 ) x

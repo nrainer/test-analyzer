@@ -40,18 +40,19 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
 		appendToResult(testCaseIdentifier, StackLogger.getInvocationsMinDistance(),
-				StackLogger.getInvocationsMaxDistance());
+				StackLogger.getInvocationsMaxDistance(), StackLogger.getInvocationsCount());
 	}
 
 	protected void appendToResult(TestcaseIdentifier testCaseIdentifier,
 			Map<MethodIdentifier, Integer> invocationMinDistances,
-			Map<MethodIdentifier, Integer> invocationMaxDistances) {
+			Map<MethodIdentifier, Integer> invocationMaxDistances, Map<MethodIdentifier, Integer> invocationsCount) {
 		for (MethodIdentifier invokedMethod : invocationMinDistances.keySet()) {
 			int minInvocationDistance = invocationMinDistances.get(invokedMethod);
 			int maxInvocationDistance = invocationMaxDistances.get(invokedMethod);
+			int invocationCount = invocationsCount.get(invokedMethod);
 
 			m_resultReceiver.append(m_resultPresentation.formatStackDistanceInfoEntry(testCaseIdentifier, invokedMethod,
-					minInvocationDistance, maxInvocationDistance));
+					minInvocationDistance, maxInvocationDistance, invocationCount));
 		}
 
 		m_resultReceiver.markResultAsPartiallyComplete();

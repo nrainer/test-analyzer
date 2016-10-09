@@ -44,6 +44,8 @@ CREATE TABLE Relation_Info
 	testcaseId INT(11) NOT NULL REFERENCES Testcase_Info(testcaseId),
 	minStackDistance INT(8),
 	maxStackDistance INT(8),
+	-- number of invocations of the method during the test execution
+	invocationCount INT(8),
 	-- the execution does not need to be part of the primary key since methodId and testcaseId are already unique
 	PRIMARY KEY (methodId, testcaseId)
 );
