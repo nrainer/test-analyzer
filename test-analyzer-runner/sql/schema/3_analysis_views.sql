@@ -34,6 +34,7 @@ CREATE VIEW V_Tested_Methods_Info AS
 		COUNT(mtai.execution) > 0 AS aborted,
 		COUNT(DISTINCT ri.testcaseId) AS testcaseCount,
 		MIN(ri.minStackDistance) AS minStackDistance,
+		SUM(ri.invocationCount) AS sumCountInvocations,
 		-- minimum of: number of methods that a test case (that test-executes this method) covers (out of all methods, also of not investigated ones)
 		(SELECT MIN(ti.countCoveredMethods) FROM Testcase_Info ti WHERE ti.execution = ri.execution AND ti.testcaseId IN (
 				-- test cases that cover the given method
@@ -66,6 +67,7 @@ CREATE VIEW V_Tested_Methods_Info_Agg AS
 		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END AS killedResult,
 		vtmi.testcaseCount,
 		vtmi.minStackDistance,
+		vtmi.sumCountInvocations,
 		vtmi.minNumberOfCoveredMethodsOfAnyTestcase
     FROM V_Tested_Methods_Info vtmi;
     
@@ -154,6 +156,7 @@ CREATE VIEW V_Project_Overview AS
 		(SELECT AVG(ri.minStackDistance) FROM Relation_Info ri WHERE ri.execution = e.execution AND (ri.methodId, ri.testcaseId) IN (SELECT r.methodId, r.testcaseId FROM Test_Result_Info r WHERE r.execution = e.execution)) AS avgMinStackDistOfExecuted,
 		(SELECT STDDEV(ri.minStackDistance) FROM Relation_Info ri WHERE ri.execution = e.execution AND (ri.methodId, ri.testcaseId) IN (SELECT r.methodId, r.testcaseId FROM Test_Result_Info r WHERE r.execution = e.execution)) AS stddevMinStackDistOfExecuted,
 		(SELECT MAX(ri.minStackDistance) FROM Relation_Info ri WHERE ri.execution = e.execution AND (ri.methodId, ri.testcaseId) IN (SELECT r.methodId, r.testcaseId FROM Test_Result_Info r WHERE r.execution = e.execution)) AS absMaxOfMinStackDistOfExecuted,
+		(SELECT AVG(ri.invocationCount) FROM Relation_Info ri WHERE ri.execution = e.execution AND (ri.methodId, ri.testcaseId) IN (SELECT r.methodId, r.testcaseId FROM Test_Result_Info r WHERE r.execution = e.execution)) AS avgInvocationOfMethodPerTestcase,
 		(SELECT COUNT(*) > 0 FROM Testcase_Info ti WHERE ti.execution = e.execution AND ti.instructions IS NOT NULL AND ti.instructions IS NOT NULL) AS hasTestcaseInformation,
 		(SELECT COUNT(*) > 0 FROM Method_Info mi WHERE mi.execution = e.execution AND mi.bytecodeInstructionCount IS NOT NULL AND mi.modifier IS NOT NULL) AS hasMethodInformation,
 		(SELECT COUNT(*) > 0 FROM Method_Info mi WHERE mi.execution = e.execution AND mi.instructionCovered IS NOT NULL AND mi.branchCovered IS NOT NULL) AS hasCoverageInformation,

@@ -69,6 +69,7 @@ CREATE TABLE Stack_Info_Import
 	method VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	minStackDistance INT(8) NOT NULL,
 	maxStackDistance INT(8) NOT NULL,
+	invocationCount INT(8),
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL,
     testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL
 );

@@ -141,7 +141,8 @@ AND sii.testcaseHash = mapping.testcaseHash
 AND sii.method = mapping.method
 AND sii.testcase = mapping.testcase
 SET ri.minStackDistance = sii.minStackDistance,
-ri.maxStackDistance = sii.maxStackDistance
+	ri.maxStackDistance = sii.maxStackDistance,
+	ri.invocationCount = sii.invocationCount
 WHERE sii.execution = @executionId;
 
 /** Update the number of covered methods per testcase (must be done after filling Relation_Info). */
