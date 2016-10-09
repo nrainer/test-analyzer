@@ -11,7 +11,10 @@ import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 
+/** Test {@link StackLogger}. */
 public class StackLoggerTests {
+
+	/** Test. */
 	@Test
 	public void testStartLog() {
 		TestcaseIdentifier testcaseIdentifier1 = TestcaseIdentifier
@@ -27,6 +30,7 @@ public class StackLoggerTests {
 		assertEquals(testcaseIdentifier2, StackLogger.getCurrentTestCaseIdentifier());
 	}
 
+	/** Test. */
 	@Test
 	public void testPushInvocation() {
 		TestcaseIdentifier testcaseIdentifier = TestcaseIdentifier
@@ -50,11 +54,16 @@ public class StackLoggerTests {
 
 		Map<MethodIdentifier, Integer> invocationsMinDistance = StackLogger.getInvocationsMinDistance();
 		Map<MethodIdentifier, Integer> invocationsMaxDistance = StackLogger.getInvocationsMaxDistance();
+		Map<MethodIdentifier, Integer> invocationsCount = StackLogger.getInvocationsCount();
 
 		assertEquals(2, (int) invocationsMaxDistance.get(methodIdentifier2));
 		assertEquals(3, (int) invocationsMaxDistance.get(methodIdentifier3));
 
 		assertEquals(2, (int) invocationsMinDistance.get(methodIdentifier2));
 		assertEquals(2, (int) invocationsMinDistance.get(methodIdentifier3));
+
+		assertEquals(1, (int) invocationsCount.get(methodIdentifier1));
+		assertEquals(1, (int) invocationsCount.get(methodIdentifier2));
+		assertEquals(2, (int) invocationsCount.get(methodIdentifier3));
 	}
 }

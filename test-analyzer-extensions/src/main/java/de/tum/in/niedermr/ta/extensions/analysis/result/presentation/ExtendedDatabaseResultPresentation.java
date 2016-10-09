@@ -10,7 +10,7 @@ import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultP
 public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentation
 		implements IResultPresentationExtended {
 
-	private static final String SQL_INSERT_STACK_INFO_IMPORT = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, maxStackDistance) VALUES ('%s', '%s', '%s', '%s', '%s');";
+	private static final String SQL_INSERT_STACK_INFO_IMPORT = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, maxStackDistance, invocationCount) VALUES ('%s', '%s', '%s', '%s', '%s', '%s');";
 	private static final String SQL_INSERT_METHOD_INFO_IMPORT = "INSERT INTO Method_Info_Import (execution, method, %s, valueName) VALUES ('%s', '%s', '%s', '%s');";
 	private static final String SQL_INSERT_TESTCASE_INFO_IMPORT = "INSERT INTO Testcase_Info_Import (execution, testcase, %s, valueName) VALUES ('%s', '%s', '%s', '%s');";
 
@@ -21,10 +21,10 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 	/** {@inheritDoc} */
 	@Override
 	public String formatStackDistanceInfoEntry(TestcaseIdentifier testcaseIdentifier, MethodIdentifier methodUnderTest,
-			int minInvocationDistance, int maxInvocationDistance) {
+			int minInvocationDistance, int maxInvocationDistance, int invocationCount) {
 		return String.format(SQL_INSERT_STACK_INFO_IMPORT, getExecutionId().getShortId(),
 				testcaseIdentifier.toMethodIdentifier().get(), methodUnderTest.get(), minInvocationDistance,
-				maxInvocationDistance);
+				maxInvocationDistance, invocationCount);
 	}
 
 	/** {@inheritDoc} */

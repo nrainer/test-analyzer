@@ -7,7 +7,7 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
 
-/** Result presentation. */
+/** Result presentation for extensions. */
 public interface IResultPresentationExtended extends IResultPresentation {
 
 	/** Create an instance and assign the execution id. */
@@ -19,7 +19,7 @@ public interface IResultPresentationExtended extends IResultPresentation {
 
 	/** Format a stack distance information entry. */
 	public String formatStackDistanceInfoEntry(TestcaseIdentifier testcaseIdentifier, MethodIdentifier methodUnderTest,
-			int minInvocationDistance, int maxInvocationDistance);
+			int minInvocationDistance, int maxInvocationDistance, int invocationCount);
 
 	public String formatInstructionsPerMethod(MethodIdentifier methodIdentifier, int instructionCount);
 
