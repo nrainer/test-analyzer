@@ -11,6 +11,8 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.MultiFileResultReceiv
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.testworkflow.steps.MultiFileFinalizeResultStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.TestWorkflow;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
@@ -23,6 +25,17 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(TestWorkflowForHugeData.class);
+
+	/**
+	 * <code>extension.testworkflowHugeData.mutateAndTest.startIndex</code>:
+	 * Allows to start the mutation testing at the chunk of the specified index.
+	 * (This option only makes sense if
+	 * {@link TestWorkflow#CONFIGURATION_KEY_EXECUTE_COLLECT_INFORMATION} is set
+	 * to false.)
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXECUTE_MUTATE_AND_TEST_FROM_INDEX = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "testworkflowHugeData.mutateAndTest.startIndex",
+					MultiFileResultReceiver.FIRST_INDEX);
 
 	/** {@inheritDoc} */
 	@Override
@@ -76,12 +89,16 @@ public class TestWorkflowForHugeData extends TestWorkflow {
 	/** {@inheritDoc} */
 	@Override
 	protected void loadCollectedInformationAndExecuteMutateAndTest(ExecutionContext context) throws IOException {
-		for (int index = MultiFileResultReceiver.FIRST_INDEX; true; index++) {
+		final int firstIndex = context.getConfiguration().getDynamicValues()
+				.getIntegerValue(CONFIGURATION_KEY_EXECUTE_MUTATE_AND_TEST_FROM_INDEX);
+		LOGGER.info("First index for test workflow is: " + firstIndex);
+
+		for (int index = firstIndex; true; index++) {
 			String fileNameOfCurrentIndex = getFileWithCollectedInformation(context, index);
 
 			if (!new File(fileNameOfCurrentIndex).exists()) {
-				if (index == MultiFileResultReceiver.FIRST_INDEX) {
-					LOGGER.error("No file chunks exist!");
+				if (index == firstIndex) {
+					LOGGER.error("No file chunks exist! (First index: " + firstIndex + ")");
 				} else {
 					LOGGER.info("No file chunk exists for index: " + index + ". Terminating.");
 				}
