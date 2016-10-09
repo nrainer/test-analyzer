@@ -165,6 +165,7 @@ CREATE VIEW V_Project_Overview AS
 		(SELECT COUNT(*) > 0 FROM Method_Info mi WHERE mi.execution = e.execution AND mi.bytecodeInstructionCount IS NOT NULL AND mi.modifier IS NOT NULL) AS hasMethodInformation,
 		(SELECT COUNT(*) > 0 FROM Method_Info mi WHERE mi.execution = e.execution AND mi.instructionCovered IS NOT NULL AND mi.branchCovered IS NOT NULL) AS hasCoverageInformation,
 		(SELECT COUNT(*) > 0 FROM Relation_Info ri WHERE ri.execution = e.execution AND ri.minStackDistance IS NOT NULL) AS hasStackDistanceInformation,
+		(SELECT COUNT(*) > 0 FROM Relation_Info ri WHERE ri.execution = e.execution AND ri.invocationCount IS NOT NULL) AS hasInvocationCountInformation,
 		(SELECT COUNT(*) > 0 FROM Method_Info mi WHERE mi.execution = e.execution AND mi.classificationId IS NOT NULL) AS areMethodsClassified,
 		e.description,
 		e.notes,
