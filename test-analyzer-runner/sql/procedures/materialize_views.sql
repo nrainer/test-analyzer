@@ -11,15 +11,12 @@ BEGIN
 
 DROP TABLE IF EXISTS MV_Project_Results;
 DROP TABLE IF EXISTS MV_Project_Overview;
-DROP TABLE IF EXISTS MV_Tested_Methods_Info_Agg;
 DROP TABLE IF EXISTS MV_Tested_Methods_Info;
+DROP TABLE IF EXISTS MV_Tested_Methods_Info_Agg;
 
-CREATE TABLE MV_Tested_Methods_Info AS SELECT * FROM V_Tested_Methods_Info;
 CREATE TABLE MV_Tested_Methods_Info_Agg AS SELECT * FROM V_Tested_Methods_Info_Agg;
 CREATE TABLE MV_Project_Overview AS SELECT * FROM V_Project_Overview;
 
-CREATE INDEX mv_tmi_1 ON MV_Tested_Methods_Info(execution);
-CREATE INDEX mv_tmi_2 ON MV_Tested_Methods_Info(methodId);
 CREATE INDEX mv_tmia_1 ON MV_Tested_Methods_Info_Agg(execution);
 CREATE INDEX mv_tmia_2 ON MV_Tested_Methods_Info_Agg(methodId);
 
