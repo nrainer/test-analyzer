@@ -41,7 +41,7 @@ CREATE VIEW V_Tested_Methods_Info AS
 				)
 			) AS minNumberOfCoveredMethodsOfAnyTestcase,
 		-- explicit also check for hashCode as fallback for the case that no classifications were made yet / the method is not classified
-		(mi.method LIKE '%hashCode()' OR (mi.classificationId IS NOT NULL AND mi.classificationId IN (SELECT mci.classificationId FROM Method_Classification_Info mci WHERE mci.isIrrelevant = 1))) AS isIrrelevant,
+		(mi.method LIKE '%hashCode()' OR (mi.classificationId IS NOT NULL AND mi.classificationId IN (SELECT mci.classificationId FROM Method_Classification_Info mci WHERE mci.isToBeExcluded = 1))) AS isToBeExcluded,
 		mi.method, 
 		mi.methodHash
     FROM Relation_Info ri
@@ -59,19 +59,19 @@ CREATE VIEW V_Tested_Methods_Info AS
     HAVING COUNT(tri.execution) > 0
     OR COUNT(mtai.execution) > 0;
     
-/* Methods that were tested and their aggregated test result. */
+/* Methods that were tested and their aggregated test result (without excluded ones). */
 CREATE VIEW V_Tested_Methods_Info_Agg AS
 	SELECT 
 		vtmi.execution, 
 		vtmi.methodId, 
 		vtmi.method, 
 		CASE WHEN vtmi.killed + vtmi.aborted > 0 THEN 1 ELSE 0 END AS killedResult,
-		vtmi.isIrrelevant,
 		vtmi.testcaseCount,
 		vtmi.minStackDistance,
 		vtmi.sumCountInvocations,
 		vtmi.minNumberOfCoveredMethodsOfAnyTestcase
-    FROM V_Tested_Methods_Info vtmi;
+    FROM V_Tested_Methods_Info vtmi
+    WHERE vtmi.isToBeExcluded = 0;
     
 CREATE VIEW V_Method_Classification AS
 	SELECT
@@ -80,7 +80,7 @@ CREATE VIEW V_Method_Classification AS
 		vtmia.method,
 		mci.category AS methodCategory,
 		mci.severity AS methodSeverity,
-		mci.isIrrelevant
+		mci.isToBeExcluded
 	FROM V_Tested_Methods_Info_Agg vtmia
 	INNER JOIN Method_Info mi
 	ON vtmia.execution = mi.execution

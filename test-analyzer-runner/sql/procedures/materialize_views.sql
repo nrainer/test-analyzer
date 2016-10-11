@@ -27,21 +27,18 @@ CREATE TABLE MV_Project_Results AS
 		e.testType,
 		e.processed,
 		e.valid,
-		(SELECT COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS countKilledMethods,
-		(SELECT COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS countPseudoTestedMethods,
-		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution) AS mutationScore,
-		(SELECT COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1 AND vtmia.isIrrelevant = 0) AS countKilledMethodsFiltered,
-		(SELECT COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0 AND vtmia.isIrrelevant = 0) AS countPseudoTestedMethodsFiltered,
-		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0) AS mutationScoreFiltered,
-		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.minStackDistance >= 5) AS mutationScoreFilteredD5,
-		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.minStackDistance >= 6) AS mutationScoreFilteredD6,
-		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.minStackDistance >= 7) AS mutationScoreFilteredD7,
-		(SELECT AVG(vtmia.minStackDistance) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.killedResult = 1) AS avgMinStackDistKilledFilt,
-		(SELECT AVG(vtmia.minStackDistance) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.killedResult = 0) AS avgMinStackDistLivingFilt,
-		(SELECT AVG(vtmia.sumCountInvocations) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.killedResult = 1) AS avgInvocationCountKilledFilt,
-		(SELECT AVG(vtmia.sumCountInvocations) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.killedResult = 0) AS avgInvocationCountLivingFilt,
-		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.killedResult = 1) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseKilledFilt,
-		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.isIrrelevant = 0 AND vtmia.killedResult = 0) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseLivingFilt
+		(SELECT COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS countKilledMethodsFiltered,
+		(SELECT COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS countPseudoTestedMethodsFiltered,
+		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution) AS mutationScoreFiltered,
+		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.minStackDistance >= 5) AS mutationScoreFilteredD5,
+		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.minStackDistance >= 6) AS mutationScoreFilteredD6,
+		(SELECT SUM(CASE WHEN vtmia.killedResult = 1 THEN 1 ELSE 0 END) / COUNT(*) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.minStackDistance >= 7) AS mutationScoreFilteredD7,
+		(SELECT AVG(vtmia.minStackDistance) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgMinStackDistKilledFilt,
+		(SELECT AVG(vtmia.minStackDistance) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgMinStackDistLivingFilt,
+		(SELECT AVG(vtmia.sumCountInvocations) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgInvocationCountKilledFilt,
+		(SELECT AVG(vtmia.sumCountInvocations) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgInvocationCountLivingFilt,
+		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseKilledFilt,
+		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseLivingFilt
 	FROM Execution_Information e
 	ORDER BY e.testType, e.project;
 

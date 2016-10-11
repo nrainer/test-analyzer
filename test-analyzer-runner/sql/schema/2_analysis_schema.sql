@@ -84,7 +84,7 @@ CREATE TABLE Method_Classification_Info
   description VARCHAR(64),
   example VARCHAR(64),
   severity VARCHAR(12),
-  isIrrelevant TINYINT(1) GENERATED ALWAYS AS (severity = 'irrelevant') VIRTUAL
+  isToBeExcluded TINYINT(1) NOT NULL DEFAULT 0
 );
 
 CREATE INDEX idx_aly_mi_1 ON Method_Info(execution, methodHash);
