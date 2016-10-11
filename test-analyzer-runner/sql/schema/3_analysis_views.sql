@@ -1,9 +1,9 @@
--- DROP VIEW IF EXISTS V_Project_Overview;
--- DROP VIEW IF EXISTS V_Project_Overview_Sub;
--- DROP VIEW IF EXISTS V_Method_Classification;
--- DROP VIEW IF EXISTS V_Tested_Methods_Info_Agg;
--- DROP VIEW IF EXISTS V_Tested_Methods_Info;
--- DROP VIEW IF EXISTS V_Name_Mapping;
+DROP VIEW IF EXISTS V_Project_Overview;
+DROP VIEW IF EXISTS V_Project_Overview_Sub;
+DROP VIEW IF EXISTS V_Method_Classification;
+DROP VIEW IF EXISTS V_Tested_Methods_Info_Agg;
+DROP VIEW IF EXISTS V_Tested_Methods_Info;
+DROP VIEW IF EXISTS V_Name_Mapping;
 
 /* Mapping between methodId, testcaseId and method (name) and testcase (name). */
 CREATE VIEW V_Name_Mapping AS
