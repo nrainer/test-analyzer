@@ -1,7 +1,6 @@
 -- DROP VIEW IF EXISTS V_Project_Overview;
 -- DROP VIEW IF EXISTS V_Project_Overview_Sub;
 -- DROP VIEW IF EXISTS V_Method_Classification;
--- DROP VIEW IF EXISTS V_Test_Result_Info;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info_Agg;
 -- DROP VIEW IF EXISTS V_Tested_Methods_Info;
 -- DROP VIEW IF EXISTS V_Name_Mapping;
@@ -74,24 +73,6 @@ CREATE VIEW V_Tested_Methods_Info_Agg AS
 		vtmi.minNumberOfCoveredMethodsOfAnyTestcase
     FROM V_Tested_Methods_Info vtmi;
     
-/** Test result, extended by test and method ids and names. Note that it does not contain test aborts. */
-CREATE VIEW V_Test_Result_Info AS 
-	SELECT 
-		t.execution,
-		t.methodId, 
-		t.testcaseId, 
-		t.retValGenId, 
-		mapping.method, 
-		mapping.testcase, 
-		t.killed, 
-		mapping.methodHash, 
-		mapping.testcaseHash
-	FROM Test_Result_Info t
-	INNER JOIN V_Name_Mapping mapping
-	ON t.execution = mapping.execution
-	AND t.methodId = mapping.methodId
-	AND t.testcaseId = mapping.testcaseId;
-	
 CREATE VIEW V_Method_Classification AS
 	SELECT
 		vtmia.execution,

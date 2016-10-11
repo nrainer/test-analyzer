@@ -444,10 +444,6 @@ FROM V_Name_Mapping;
 CALL AssertEquals(65, @actualCount);
 
 SELECT COUNT(*) INTO @actualCount
-FROM V_Test_Result_Info;
-CALL AssertEquals(36, @actualCount);
-
-SELECT COUNT(*) INTO @actualCount
 FROM V_Tested_Methods_Info;
 CALL AssertEquals(10, @actualCount);
 
