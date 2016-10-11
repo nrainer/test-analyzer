@@ -16,6 +16,8 @@ CREATE TABLE Execution_Information
 	project VARCHAR(64) NOT NULL,
 	testType VARCHAR(64),
 	description VARCHAR(512),
+	nameInText VARCHAR(64) NOT NULL,
+	nameShort VARCHAR(64) NOT NULL,
 	repositoryUrl VARCHAR(128),
 	reference VARCHAR(128),
 	notes VARCHAR(512),
