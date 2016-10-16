@@ -40,6 +40,12 @@ CREATE VIEW V_Tested_Methods_Info AS
 				SELECT ri2.testcaseId FROM Relation_Info ri2 WHERE ri.execution = ri2.execution AND ri.methodId = ri2.methodId
 				)
 			) AS minNumberOfCoveredMethodsOfAnyTestcase,
+		-- minimum of: number of methods that a test case (that test-executes this method) covers (out of all methods, also of not investigated ones)
+		(SELECT AVG(ti.countCoveredMethods) FROM Testcase_Info ti WHERE ti.execution = ri.execution AND ti.testcaseId IN (
+				-- test cases that cover the given method
+				SELECT ri2.testcaseId FROM Relation_Info ri2 WHERE ri.execution = ri2.execution AND ri.methodId = ri2.methodId
+				)
+			) AS avgNumberOfCoveredMethodsOfAnyTestcase,
 		-- explicit also check for hashCode as fallback for the case that no classifications were made yet / the method is not classified
 		(mi.method LIKE '%hashCode()' OR (mi.classificationId IS NOT NULL AND mi.classificationId IN (SELECT mci.classificationId FROM Method_Classification_Info mci WHERE mci.isToBeExcluded = 1))) AS isToBeExcluded,
 		mi.method, 
@@ -69,7 +75,8 @@ CREATE VIEW V_Tested_Methods_Info_Agg AS
 		vtmi.testcaseCount,
 		vtmi.minStackDistance,
 		vtmi.sumCountInvocations,
-		vtmi.minNumberOfCoveredMethodsOfAnyTestcase
+		vtmi.minNumberOfCoveredMethodsOfAnyTestcase,
+		vtmi.avgNumberOfCoveredMethodsOfAnyTestcase
     FROM V_Tested_Methods_Info vtmi
     WHERE vtmi.isToBeExcluded = 0;
     

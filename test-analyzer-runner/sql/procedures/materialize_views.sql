@@ -33,7 +33,9 @@ CREATE TABLE MV_Project_Results AS
 		(SELECT AVG(vtmia.sumCountInvocations) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgInvocationCountKilledFilt,
 		(SELECT AVG(vtmia.sumCountInvocations) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgInvocationCountLivingFilt,
 		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseKilledFilt,
-		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseLivingFilt
+		(SELECT AVG(vtmia.minNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgMinNumberOfCoveredMethodsOfAnyTestcaseLivingFilt,
+		(SELECT AVG(vtmia.avgNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 1) AS avgAvgNumberOfCoveredMethodsOfAnyTestcaseKilledFilt,
+		(SELECT AVG(vtmia.avgNumberOfCoveredMethodsOfAnyTestcase) FROM MV_Tested_Methods_Info_Agg vtmia WHERE vtmia.execution = e.execution AND vtmia.killedResult = 0) AS avgAvgNumberOfCoveredMethodsOfAnyTestcaseLivingFilt
 	FROM Execution_Information e
 	ORDER BY e.testType, e.project;
 
