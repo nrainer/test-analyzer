@@ -8,7 +8,9 @@ import java.util.Map.Entry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
+import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractConfigurationProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 /** Value manager for dynamic configuration properties. */
 public class DynamicConfigurationValuesManager {
@@ -33,8 +35,7 @@ public class DynamicConfigurationValuesManager {
 	}
 
 	/**
-	 * Throws an exception if the value of the specified key is not
-	 * specified.<br/>
+	 * Throws an exception if the value of the specified key is not specified.<br/>
 	 * Note that default values are not considered.
 	 */
 	public void requireValueIsSet(DynamicConfigurationKey key) {
@@ -44,24 +45,21 @@ public class DynamicConfigurationValuesManager {
 	}
 
 	/**
-	 * Get the value of the specified key as String. Return the default value if
-	 * no value is specified.
+	 * Get the value of the specified key as String. Return the default value if no value is specified.
 	 */
 	public String getStringValue(DynamicConfigurationKey key) {
 		return getStringValue(key, key.getDefaultValue());
 	}
 
 	/**
-	 * Get the raw value of the specified key or the specified default value if
-	 * no value is specified.
+	 * Get the raw value of the specified key or the specified default value if no value is specified.
 	 */
 	private String getStringValue(DynamicConfigurationKey key, String defaultValue) {
 		return m_dataMap.getOrDefault(key, defaultValue);
 	}
 
 	/**
-	 * Get the value of the specified key as Integer. Return the default value
-	 * if no value is specified.
+	 * Get the value of the specified key as Integer. Return the default value if no value is specified.
 	 */
 	public Integer getIntegerValue(DynamicConfigurationKey key) {
 		String stringValue = getStringValue(key, null);
@@ -74,8 +72,7 @@ public class DynamicConfigurationValuesManager {
 	}
 
 	/**
-	 * Get the value of the specified key as Boolean. Return the default value
-	 * if no value is specified.
+	 * Get the value of the specified key as Boolean. Return the default value if no value is specified.
 	 */
 	public boolean getBooleanValue(DynamicConfigurationKey key) {
 		String stringValue = getStringValue(key, null);
@@ -85,6 +82,20 @@ public class DynamicConfigurationValuesManager {
 		}
 
 		return Boolean.parseBoolean(stringValue.trim());
+	}
+
+	/** Get the value by filling it into the provided property. */
+	public <T extends IConfigurationProperty<?>> T getValueAsProperty(DynamicConfigurationKey key, T propertyToFill)
+			throws ConfigurationException {
+		String stringValue = getStringValue(key, null);
+
+		if (stringValue == null) {
+			propertyToFill.setDefault();
+		} else {
+			propertyToFill.setValueUnsafe(stringValue);
+		}
+
+		return propertyToFill;
 	}
 
 	/** {@inheritDoc} */

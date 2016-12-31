@@ -8,6 +8,10 @@ import java.util.List;
 
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMultiClassnameProperty;
+
 /** Test {@link DynamicConfigurationValuesManager} */
 public class DynamicConfigurationValuesManagerTest {
 
@@ -45,6 +49,41 @@ public class DynamicConfigurationValuesManagerTest {
 
 		configurationExtension.removeEntry(CONFIGURATION_KEY_FOR_STRING_VALUE);
 		assertFalse(configurationExtension.isSet(CONFIGURATION_KEY_FOR_STRING_VALUE));
+	}
+
+	/** Test. */
+	@Test
+	public void testDynamicValuesWithProperties() throws ConfigurationException {
+		DynamicConfigurationValuesManager configurationExtension = new DynamicConfigurationValuesManager();
+
+		configurationExtension.setRawValue(CONFIGURATION_KEY_FOR_STRING_VALUE,
+				Long.class.getName() + CommonConstants.SEPARATOR_DEFAULT + Double.class.getName());
+		assertTrue(configurationExtension.isSet(CONFIGURATION_KEY_FOR_STRING_VALUE));
+
+		AbstractMultiClassnameProperty<Number> classnameProperty = new AbstractMultiClassnameProperty<Number>() {
+			/** {@inheritDoc} */
+			@Override
+			public String getName() {
+				return CONFIGURATION_KEY_FOR_STRING_VALUE.getName();
+			}
+
+			/** {@inheritDoc} */
+			@Override
+			public String getDescription() {
+				return "";
+			}
+
+			/** {@inheritDoc} */
+			@Override
+			protected Class<Number> getRequiredType() {
+				return Number.class;
+			}
+		};
+
+		configurationExtension.getValueAsProperty(CONFIGURATION_KEY_FOR_STRING_VALUE, classnameProperty);
+
+		assertEquals(2, classnameProperty.countElements());
+		assertEquals(Double.class.getName(), classnameProperty.getElements()[1]);
 	}
 
 	/** Test. */
