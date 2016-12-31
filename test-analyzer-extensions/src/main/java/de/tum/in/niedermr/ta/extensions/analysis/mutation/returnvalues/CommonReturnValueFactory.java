@@ -136,7 +136,7 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		throw new NoSuchElementException();
 	}
 
-	private Object tryCreateJavaLangWrapper(String returnType) throws NoSuchElementException {
+	protected Object tryCreateJavaLangWrapper(String returnType) throws NoSuchElementException {
 		switch (returnType) {
 		case "java.lang.Boolean":
 			return Boolean.valueOf(false);
