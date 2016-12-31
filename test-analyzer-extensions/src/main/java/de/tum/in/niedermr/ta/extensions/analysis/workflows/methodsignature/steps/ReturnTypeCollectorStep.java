@@ -5,7 +5,9 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.function.Predicate;
 
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
@@ -25,9 +27,17 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** Result receiver. */
 	private IResultReceiver m_resultReceiver;
 
+	/** Filter for the class names. */
+	private Optional<Predicate<String>> m_classNameFilter;
+
 	/** Set the result receiver. */
 	public void setResultReceiver(IResultReceiver resultReceiver) {
 		m_resultReceiver = resultReceiver;
+	}
+
+	/** {@link #m_classNameFilter} */
+	public void setClassNameFilter(Optional<Predicate<String>> classNameFilter) {
+		m_classNameFilter = classNameFilter;
 	}
 
 	/** {@inheritDoc} */
@@ -40,6 +50,10 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 
 		for (String sourceJarFileName : configuration.getCodePathToMutate().getElements()) {
 			returnTypeClassNameSet.addAll(getNonPrimitiveReturnTypes(configuration, testCollector, sourceJarFileName));
+		}
+
+		if (m_classNameFilter.isPresent()) {
+			returnTypeClassNameSet.removeIf(m_classNameFilter.get());
 		}
 
 		List<String> returnTypeClassNameList = new ArrayList<>();
