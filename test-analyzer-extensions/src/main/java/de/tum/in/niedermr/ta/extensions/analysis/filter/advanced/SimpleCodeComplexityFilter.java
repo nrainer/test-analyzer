@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.filter.advanced;
+package de.tum.in.niedermr.ta.extensions.analysis.filter.advanced;
 
 import org.objectweb.asm.tree.MethodNode;
 

@@ -11,7 +11,6 @@ import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.HashCodeMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.SetterGetterFilter;
-import de.tum.in.niedermr.ta.core.analysis.filter.advanced.SimpleCodeComplexityFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.ConstructorFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.MethodNameFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.NonEmptyMethodFilter;
@@ -85,23 +84,6 @@ public class FilterTest {
 	}
 
 	@Test
-	public void testSimpleCodeComplexityFilter() throws Exception {
-		final String className = SampleClass.class.getName();
-
-		IMethodFilter filter1 = new SimpleCodeComplexityFilter(4);
-		IMethodFilter filter2 = new SimpleCodeComplexityFilter(5);
-		IMethodFilter filter3 = new SimpleCodeComplexityFilter(6);
-
-		MethodNode methodNode = new MethodNode();
-		methodNode.maxLocals = 3;
-		methodNode.maxStack = 2;
-
-		assertTrue(analyze(filter1, className, "setX", "(I)V", methodNode));
-		assertFalse(analyze(filter2, className, "setX", "(I)V", methodNode));
-		assertFalse(analyze(filter3, className, "setX", "(I)V", methodNode));
-	}
-
-	@Test
 	public void testHashcodeMethodFilter() throws Exception {
 		final String className = SampleClass.class.getName();
 
@@ -130,12 +112,13 @@ public class FilterTest {
 		assertFalse(analyze(filter, className, "setX", "(I)V"));
 	}
 
-	private boolean analyze(IMethodFilter filter, String className, String methodName, String desc) throws Exception {
+	public static boolean analyze(IMethodFilter filter, String className, String methodName, String desc)
+			throws Exception {
 		return analyze(filter, className, methodName, desc, new MethodNode());
 	}
 
-	private boolean analyze(IMethodFilter filter, String className, String methodName, String desc, MethodNode node)
-			throws Exception {
+	public static boolean analyze(IMethodFilter filter, String className, String methodName, String desc,
+			MethodNode node) throws Exception {
 		return filter.apply(MethodIdentifier.create(className, methodName, desc), node).isAccepted();
 	}
 }
