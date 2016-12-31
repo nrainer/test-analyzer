@@ -28,7 +28,7 @@ public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturn
 	 * @throws IllegalFormatException
 	 *             if the INSTANCE field is not specified as expected
 	 */
-	public AbstractFactoryReturnValueGenerator(Class<? extends AbstractReturnFactory> factoryClass)
+	public AbstractFactoryReturnValueGenerator(Class<? extends AbstractReturnValueFactory> factoryClass)
 			throws ReflectiveOperationException, InvalidClassException {
 		m_factoryInstance = (IReturnValueFactory) factoryClass.getField(INSTANCE_FIELD_NAME).get(null);
 		m_factoryPathName = JavaUtility.toClassPathWithoutEnding(factoryClass);
@@ -56,7 +56,7 @@ public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturn
 		mv.visitTypeInsn(Opcodes.CHECKCAST, returnType.getInternalName());
 	}
 
-	protected void checkFactoryValidity(Class<? extends AbstractReturnFactory> factoryClass)
+	protected void checkFactoryValidity(Class<? extends AbstractReturnValueFactory> factoryClass)
 			throws InvalidClassException {
 		try {
 			Field instanceField = factoryClass.getField(INSTANCE_FIELD_NAME);

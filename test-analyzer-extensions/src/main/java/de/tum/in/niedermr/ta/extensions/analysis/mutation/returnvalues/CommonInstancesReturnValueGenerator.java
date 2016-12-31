@@ -9,10 +9,10 @@ import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractFa
  * instances (such as Date, List, Set). Primitive return types, String and void
  * are not supported.
  * 
- * @see CommonFactory
+ * @see CommonReturnValueFactory
  */
 public class CommonInstancesReturnValueGenerator extends AbstractFactoryReturnValueGenerator {
 	public CommonInstancesReturnValueGenerator() throws ReflectiveOperationException, InvalidClassException {
-		super(CommonFactory.class);
+		super(CommonReturnValueFactory.class);
 	}
 }

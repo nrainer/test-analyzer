@@ -42,7 +42,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 		};
 	}
 
-	private static class ValidFactory1 extends AbstractReturnFactory {
+	private static class ValidFactory1 extends AbstractReturnValueFactory {
 		public static final ValidFactory1 INSTANCE = new ValidFactory1();
 
 		@Override
@@ -55,7 +55,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 	/**
 	 * Has no field instance.
 	 */
-	private static class InvalidFactory1 extends AbstractReturnFactory {
+	private static class InvalidFactory1 extends AbstractReturnValueFactory {
 		@Override
 		public Object getWithException(MethodIdentifier methodIdentifier, String returnType)
 				throws NoSuchElementException {
@@ -66,7 +66,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 	/**
 	 * Instance is not static and not public.
 	 */
-	private static class InvalidFactory2 extends AbstractReturnFactory {
+	private static class InvalidFactory2 extends AbstractReturnValueFactory {
 		private final InvalidFactory2 INSTANCE = new InvalidFactory2();
 
 		@Override
@@ -79,7 +79,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 	/**
 	 * Wrong type of instance.
 	 */
-	private static class InvalidFactory3 extends AbstractReturnFactory {
+	private static class InvalidFactory3 extends AbstractReturnValueFactory {
 		public static final IReturnValueFactory INSTANCE = new InvalidFactory3();
 
 		@Override

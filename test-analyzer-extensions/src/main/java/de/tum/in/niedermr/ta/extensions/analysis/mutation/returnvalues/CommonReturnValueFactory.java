@@ -18,7 +18,7 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
 
-import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnFactory;
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueFactory;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
@@ -26,8 +26,8 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
  * Can be used as fallback factory. Note that the type string is supposed to be handled by a simple return value
  * generator on request.
  */
-public class CommonFactory extends AbstractReturnFactory {
-	public static final CommonFactory INSTANCE = new CommonFactory();
+public class CommonReturnValueFactory extends AbstractReturnValueFactory {
+	public static final CommonReturnValueFactory INSTANCE = new CommonReturnValueFactory();
 
 	private static final String PCKG_JAVA = "java";
 	private static final String PCKG_JAVA_LANG = PCKG_JAVA + JavaConstants.PACKAGE_SEPARATOR + "lang";

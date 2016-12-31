@@ -13,11 +13,11 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
-public class CommonFactoryTest {
+public class CommonReturnValueFactoryTest {
 	private static final String NOT_SUPPORTED_CLASS = "java.unsupported.UnsupportedClass";
 	private static final String JAVA_UTIL_LIST = "java.util.List";
 
-	private static final CommonFactory FACTORY = CommonFactory.INSTANCE;
+	private static final CommonReturnValueFactory FACTORY = CommonReturnValueFactory.INSTANCE;
 
 	@Test
 	public void testObjectsAreNew() {

@@ -31,7 +31,7 @@ public class CommonInstancesReturnValueGeneratorTest
 	@Override
 	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
-		CommonFactory factory = new CommonFactory();
+		CommonReturnValueFactory factory = new CommonReturnValueFactory();
 		Object expected;
 
 		expected = factory.get(MethodIdentifier.EMPTY.get(), StringBuilder.class.getName());
@@ -55,7 +55,7 @@ public class CommonInstancesReturnValueGeneratorTest
 	public void testSupports() throws Exception {
 		CommonInstancesReturnValueGenerator retValGen = new CommonInstancesReturnValueGenerator();
 
-		assertTrue(CommonFactory.INSTANCE.supports(MethodIdentifier.EMPTY, CLASS_NAME_STRING_ARRAY));
+		assertTrue(CommonReturnValueFactory.INSTANCE.supports(MethodIdentifier.EMPTY, CLASS_NAME_STRING_ARRAY));
 		assertTrue(retValGen.checkReturnValueSupported(MethodIdentifier.EMPTY, Type.getType(DESCRIPTOR_STRING_ARRAY)));
 	}
 }

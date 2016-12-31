@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
-public abstract class AbstractReturnFactory implements IReturnValueFactory {
+public abstract class AbstractReturnValueFactory implements IReturnValueFactory {
 
 	/** {@inheritDoc} */
 	@Override
