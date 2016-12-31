@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -35,6 +36,12 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 	private static final String PCKG_JAVA_IO = PCKG_JAVA + JavaConstants.PACKAGE_SEPARATOR + "io";
 	private static final String PCKG_JAVA_MATH = PCKG_JAVA + JavaConstants.PACKAGE_SEPARATOR + "math";
 	private static final String ARRAY_BRACKETS = "[]";
+
+	/** {@inheritDoc} */
+	@Override
+	protected Optional<AbstractReturnValueFactory> getConfiguredFallbackFactory() {
+		return Optional.of(ReflectiveParameterlessReturnValueFactory.INSTANCE);
+	}
 
 	/** {@inheritDoc} */
 	@Override

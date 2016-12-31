@@ -19,6 +19,7 @@ public class CommonReturnValueFactoryTest {
 
 	private static final CommonReturnValueFactory FACTORY = CommonReturnValueFactory.INSTANCE;
 
+	/** Test. */
 	@Test
 	public void testObjectsAreNew() {
 		List<?> list1 = (List<?>) FACTORY.get(MethodIdentifier.EMPTY.get(), JAVA_UTIL_LIST);
@@ -27,6 +28,7 @@ public class CommonReturnValueFactoryTest {
 		assertFalse(list1 == list2);
 	}
 
+	/** Test. */
 	@Test
 	public void testSomeObjects() {
 		Object obj;
@@ -56,6 +58,7 @@ public class CommonReturnValueFactoryTest {
 		assertTrue(obj instanceof Integer[]);
 	}
 
+	/** Test. */
 	@Test
 	public void testSupports() {
 		boolean supported;
@@ -67,6 +70,15 @@ public class CommonReturnValueFactoryTest {
 		assertTrue(supported == (FACTORY.get(MethodIdentifier.EMPTY.get(), NOT_SUPPORTED_CLASS) != null));
 	}
 
+	/** Test. */
+	@Test
+	public void testSimpleReflectionFallback() {
+		Object obj = FACTORY.get(MethodIdentifier.EMPTY.get(), CommonReturnValueFactoryTest.class.getName());
+		assertNotNull(obj);
+		assertTrue(obj instanceof CommonReturnValueFactoryTest);
+	}
+
+	/** Test. */
 	@Test(expected = NoSuchElementException.class)
 	public void testThrowsException() {
 		FACTORY.getWithException(MethodIdentifier.EMPTY, NOT_SUPPORTED_CLASS);
