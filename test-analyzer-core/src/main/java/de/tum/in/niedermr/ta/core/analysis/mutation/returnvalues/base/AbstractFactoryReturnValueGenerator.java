@@ -17,21 +17,21 @@ import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturnValueGenerator {
 	private static final String INSTANCE_FIELD_NAME = "INSTANCE";
 
-	private final AbstractReturnFactory m_factoryInstance;
+	private final IReturnValueFactory m_factoryInstance;
 	private final String m_factoryPathName;
 
 	/**
 	 * Constructor. <br/>
-	 * Important: The factory (of type factoryClass) MUST have a static field
-	 * named {@value #INSTANCE_FIELD_NAME} of the type factoryClass.
+	 * Important: The factory (of type factoryClass) MUST have a static field named {@value #INSTANCE_FIELD_NAME} of the
+	 * type factoryClass.
 	 * 
 	 * @throws IllegalFormatException
 	 *             if the INSTANCE field is not specified as expected
 	 */
 	public AbstractFactoryReturnValueGenerator(Class<? extends AbstractReturnFactory> factoryClass)
 			throws ReflectiveOperationException, InvalidClassException {
-		this.m_factoryInstance = (AbstractReturnFactory) factoryClass.getField(INSTANCE_FIELD_NAME).get(null);
-		this.m_factoryPathName = JavaUtility.toClassPathWithoutEnding(factoryClass);
+		m_factoryInstance = (IReturnValueFactory) factoryClass.getField(INSTANCE_FIELD_NAME).get(null);
+		m_factoryPathName = JavaUtility.toClassPathWithoutEnding(factoryClass);
 
 		checkFactoryValidity(factoryClass);
 	}

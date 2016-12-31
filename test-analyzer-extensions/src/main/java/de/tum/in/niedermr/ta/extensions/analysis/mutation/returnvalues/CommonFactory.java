@@ -23,8 +23,8 @@ import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 /**
- * Can be used as fallback factory. Note that the type string is supposed to be
- * handled by a simple return value generator on request.
+ * Can be used as fallback factory. Note that the type string is supposed to be handled by a simple return value
+ * generator on request.
  */
 public class CommonFactory extends AbstractReturnFactory {
 	public static final CommonFactory INSTANCE = new CommonFactory();
@@ -36,6 +36,7 @@ public class CommonFactory extends AbstractReturnFactory {
 	private static final String PCKG_JAVA_MATH = PCKG_JAVA + JavaConstants.PACKAGE_SEPARATOR + "math";
 	private static final String ARRAY_BRACKETS = "[]";
 
+	/** {@inheritDoc} */
 	@Override
 	public Object getWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
 		if (returnType.endsWith(ARRAY_BRACKETS)) {

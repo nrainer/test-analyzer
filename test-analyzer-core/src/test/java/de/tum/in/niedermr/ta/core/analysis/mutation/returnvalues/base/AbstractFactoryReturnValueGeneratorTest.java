@@ -80,7 +80,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 	 * Wrong type of instance.
 	 */
 	private static class InvalidFactory3 extends AbstractReturnFactory {
-		public static final AbstractReturnFactory INSTANCE = new InvalidFactory3();
+		public static final IReturnValueFactory INSTANCE = new InvalidFactory3();
 
 		@Override
 		public Object getWithException(MethodIdentifier methodIdentifier, String returnType)
