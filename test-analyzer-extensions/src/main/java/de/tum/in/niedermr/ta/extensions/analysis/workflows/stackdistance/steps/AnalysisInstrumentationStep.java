@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogger;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.instrumentation.AnalysisInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -9,10 +10,9 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
- * Instrument the methods of the jars to compute the min and max stack distance
- * to the testcase.<br/>
- * Note that it is ok to log invocations from framing methods (@Before) too
- * because they also invoke the mutated methods.
+ * Instrument the methods of the jars to compute the min and max stack distance to the testcase.<br/>
+ * Note that it is ok to log invocations from framing methods (@Before) too because they also invoke the mutated
+ * methods.
  */
 public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 	/** {@inheritDoc} */
@@ -29,7 +29,7 @@ public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 		ITestRunner testRunner = configuration.getTestRunner().createInstance();
 
 		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(createFullExecutionId(),
-				operateFaultTolerant);
+				StackLogger.class, operateFaultTolerant);
 		analysisInstrumentation.injectAnalysisStatements(configuration.getCodePathToMutate().getElements(),
 				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,
 				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());

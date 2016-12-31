@@ -41,6 +41,12 @@ public abstract class AbstractInformationCollectorStep extends AbstractExecution
 
 		ProgramArgsWriter argsWriter = createProgramArgs(configuration, executionId);
 
+		startInformationCollectionProcess(processExecution, classPath, executionId, argsWriter);
+	}
+
+	/** Start the process to collect the information. */
+	protected void startInformationCollectionProcess(ProcessExecution processExecution, final String classPath,
+			IFullExecutionId executionId, ProgramArgsWriter argsWriter) {
 		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, getInformationCollectorClass(), classPath,
 				argsWriter);
 	}
