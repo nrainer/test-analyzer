@@ -14,6 +14,11 @@ public class ReflectiveParameterlessReturnValueFactory extends AbstractReturnVal
 	public Object getWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
 		try {
 			Class<?> cls = Class.forName(returnType);
+
+			if (isBlacklistedClass(cls)) {
+				throw new NoSuchElementException();
+			}
+
 			Constructor<?>[] publicConstructors = cls.getConstructors();
 
 			for (Constructor<?> constructor : publicConstructors) {
@@ -27,5 +32,14 @@ public class ReflectiveParameterlessReturnValueFactory extends AbstractReturnVal
 		}
 
 		throw new NoSuchElementException();
+	}
+
+	protected boolean isBlacklistedClass(Class<?> cls) {
+		if (cls == String.class) {
+			// already handled by the simple return value generator classes
+			return true;
+		}
+
+		return false;
 	}
 }
