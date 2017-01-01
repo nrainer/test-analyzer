@@ -255,7 +255,7 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 	private Object createJavaIO(String returnType) throws NoSuchElementException {
 		switch (returnType) {
 		case "java.io.File":
-			return new File(".");
+			return new File("./files/textfile.txt");
 		case "java.io.Serializable":
 			return "";
 		default:
