@@ -11,23 +11,23 @@ import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 
-/** Test {@link StackLogger}. */
-public class StackLoggerTests {
+/** Test {@link StackLogRecorderV1}. */
+public class StackLogRecorderV1Test {
 
 	/** Test. */
 	@Test
 	public void testStartLog() {
 		TestcaseIdentifier testcaseIdentifier1 = TestcaseIdentifier
 				.parse("CommonTest" + TestcaseIdentifier.SEPARATOR + "testcase1");
-		StackLogger.startLog(testcaseIdentifier1);
-		StackLogger.pushInvocation("method1");
-		assertEquals(testcaseIdentifier1, StackLogger.getCurrentTestCaseIdentifier());
+		StackLogRecorderV1.startLog(testcaseIdentifier1);
+		StackLogRecorderV1.pushInvocation("method1");
+		assertEquals(testcaseIdentifier1, StackLogRecorderV1.getCurrentTestCaseIdentifier());
 
 		TestcaseIdentifier testcaseIdentifier2 = TestcaseIdentifier
 				.parse("CommonTest" + TestcaseIdentifier.SEPARATOR + "testcase2");
-		StackLogger.startLog(testcaseIdentifier2);
-		assertTrue(StackLogger.getInvocationsMinDistance().isEmpty());
-		assertEquals(testcaseIdentifier2, StackLogger.getCurrentTestCaseIdentifier());
+		StackLogRecorderV1.startLog(testcaseIdentifier2);
+		assertTrue(StackLogRecorderV1.getInvocationsMinDistance().isEmpty());
+		assertEquals(testcaseIdentifier2, StackLogRecorderV1.getCurrentTestCaseIdentifier());
 	}
 
 	/** Test. */
@@ -42,19 +42,19 @@ public class StackLoggerTests {
 		MethodIdentifier methodIdentifier3 = MethodIdentifier.create("X", "method3",
 				BytecodeConstants.DESCRIPTOR_NO_PARAM_AND_VOID);
 
-		StackLogger.startLog(testcaseIdentifier);
-		StackLogger.pushInvocation(methodIdentifier1.get());
-		StackLogger.pushInvocation(methodIdentifier2.get());
-		StackLogger.pushInvocation(methodIdentifier3.get());
-		StackLogger.popInvocation();
-		StackLogger.popInvocation();
-		StackLogger.pushInvocation(methodIdentifier3.get());
-		StackLogger.popInvocation();
-		StackLogger.popInvocation();
+		StackLogRecorderV1.startLog(testcaseIdentifier);
+		StackLogRecorderV1.pushInvocation(methodIdentifier1.get());
+		StackLogRecorderV1.pushInvocation(methodIdentifier2.get());
+		StackLogRecorderV1.pushInvocation(methodIdentifier3.get());
+		StackLogRecorderV1.popInvocation();
+		StackLogRecorderV1.popInvocation();
+		StackLogRecorderV1.pushInvocation(methodIdentifier3.get());
+		StackLogRecorderV1.popInvocation();
+		StackLogRecorderV1.popInvocation();
 
-		Map<MethodIdentifier, Integer> invocationsMinDistance = StackLogger.getInvocationsMinDistance();
-		Map<MethodIdentifier, Integer> invocationsMaxDistance = StackLogger.getInvocationsMaxDistance();
-		Map<MethodIdentifier, Integer> invocationsCount = StackLogger.getInvocationsCount();
+		Map<MethodIdentifier, Integer> invocationsMinDistance = StackLogRecorderV1.getInvocationsMinDistance();
+		Map<MethodIdentifier, Integer> invocationsMaxDistance = StackLogRecorderV1.getInvocationsMaxDistance();
+		Map<MethodIdentifier, Integer> invocationsCount = StackLogRecorderV1.getInvocationsCount();
 
 		assertEquals(2, (int) invocationsMaxDistance.get(methodIdentifier2));
 		assertEquals(3, (int) invocationsMaxDistance.get(methodIdentifier3));

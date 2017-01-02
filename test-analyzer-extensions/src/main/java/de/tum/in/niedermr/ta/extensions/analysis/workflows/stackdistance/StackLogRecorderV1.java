@@ -10,7 +10,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
  * Stack logger.<br/>
  * Used by instrumented code. DO NOT MODIFY.
  */
-public class StackLogger {
+public class StackLogRecorderV1 {
 	private static TestcaseIdentifier s_currentTestCaseIdentifier;
 	private static int s_currentStackDistance;
 	private static Map<MethodIdentifier, Integer> s_invocationsMinDistance = new HashMap<>();

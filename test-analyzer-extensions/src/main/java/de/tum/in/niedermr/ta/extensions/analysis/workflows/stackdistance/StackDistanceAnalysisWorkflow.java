@@ -16,7 +16,7 @@ public class StackDistanceAnalysisWorkflow extends AbstractStackDistanceAnalysis
 	@Override
 	protected AnalysisInstrumentationStep createAnalysisInstrumentationStep() {
 		AnalysisInstrumentationStep step = createAndInitializeExecutionStep(AnalysisInstrumentationStep.class);
-		step.setInstrumentationLoggerClass(StackLogger.class);
+		step.setStackLogRecorderClass(StackLogRecorderV1.class);
 		return step;
 	}
 

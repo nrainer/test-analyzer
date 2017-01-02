@@ -16,11 +16,11 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 
 	/** Class that records the the data from the instrumented classes. */
-	private Class<?> m_instrumentationClass;
+	private Class<?> m_recorderClass;
 
-	/** {@link #m_instrumentationClass} */
-	public void setInstrumentationLoggerClass(Class<?> instrumentationClass) {
-		m_instrumentationClass = instrumentationClass;
+	/** {@link #m_recorderClass} */
+	public void setStackLogRecorderClass(Class<?> recorderClass) {
+		m_recorderClass = recorderClass;
 	}
 
 	/** {@inheritDoc} */
@@ -37,7 +37,7 @@ public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 		ITestRunner testRunner = configuration.getTestRunner().createInstance();
 
 		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(createFullExecutionId(),
-				m_instrumentationClass, operateFaultTolerant);
+				m_recorderClass, operateFaultTolerant);
 		analysisInstrumentation.injectAnalysisStatements(configuration.getCodePathToMutate().getElements(),
 				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,
 				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());

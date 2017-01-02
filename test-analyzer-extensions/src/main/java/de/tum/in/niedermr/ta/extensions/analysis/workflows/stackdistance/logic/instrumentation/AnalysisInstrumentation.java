@@ -8,6 +8,7 @@ import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractInstrumentation;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
+/** Analysis instrumentation to compute the stack distance and invocation count. */
 public class AnalysisInstrumentation extends AbstractInstrumentation {
 
 	/** Class that records the data gathered from the instrumentation. */
