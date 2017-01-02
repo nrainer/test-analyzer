@@ -12,7 +12,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 /**
  * Integration test with extensions involved.<br/>
  * <li>Code-statistics workflow</li>
- * <li>Stack-analysis workflow</li>
+ * <li>Stack-analysis workflow V1</li>
  * <li>Coverage-parser workflow</li>
  * <li>Return-type collector workflow</li>
  * <li>Test workflow for huge data</li>

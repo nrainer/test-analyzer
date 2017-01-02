@@ -1,9 +1,10 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 
-import de.tum.in.niedermr.ta.runner.analysis.InformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.AbstractInformationCollectorStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.IInformationCollectionLogic;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.InformationCollectionLogic;
 
 /** Information collector step. */
 public class InformationCollectorStep extends AbstractInformationCollectorStep {
@@ -18,12 +19,6 @@ public class InformationCollectorStep extends AbstractInformationCollectorStep {
 	@Override
 	protected String getDescription() {
 		return "Loading information about the testcases and the methods they are invoking";
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected Class<?> getInformationCollectorClass() {
-		return InformationCollector.class;
 	}
 
 	/** {@inheritDoc} */
@@ -44,5 +39,10 @@ public class InformationCollectorStep extends AbstractInformationCollectorStep {
 	protected String getTestInstrumentedJarFilesClasspath(Configuration configuration) {
 		return Environment.getClasspathOfIndexedFiles(getFileInWorkingArea(FILE_TEMP_JAR_INSTRUMENTED_TEST_X), 0,
 				configuration.getCodePathToTest().countElements());
+	}
+
+	@Override
+	protected Class<? extends IInformationCollectionLogic> getInformationCollectorLogicClass() {
+		return InformationCollectionLogic.class;
 	}
 }

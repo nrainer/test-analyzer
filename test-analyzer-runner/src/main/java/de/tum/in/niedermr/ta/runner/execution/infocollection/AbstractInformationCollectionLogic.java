@@ -24,16 +24,17 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 	private static final Logger LOGGER = LogManager.getLogger(AbstractInformationCollectionLogic.class);
 	private static final boolean LOG_FULL_STACKTRACE_OF_FAILED_UNMODIFIED_TESTS = false;
 
-	private final IFullExecutionId m_executionId;
+	private IFullExecutionId m_executionId;
 
 	private ITestRunner m_testRunner;
 	private String m_outputFile;
 	private IResultPresentation m_resultPresentation;
 	private boolean m_useMultiFileOutput;
 
-	/** Constructor. */
-	protected AbstractInformationCollectionLogic(IFullExecutionId executionId) {
-		this.m_executionId = executionId;
+	/** {@inheritDoc} */
+	@Override
+	public void setExecutionId(IFullExecutionId executionId) {
+		m_executionId = executionId;
 	}
 
 	/** {@inheritDoc} */

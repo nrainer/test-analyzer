@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.collection;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
@@ -9,23 +10,24 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogger;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogDataManager;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
 /** Logic to collect information about the test cases and methods under test. */
-public class AnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
+public abstract class AbstractAnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
 
-	private final IResultPresentationExtended m_resultPresentation;
+	private IResultPresentationExtended m_resultPresentation;
 	private IResultReceiver m_resultReceiver;
 
-	/** Constructor. */
-	public AnalysisInformationCollectionLogic(IFullExecutionId executionId) {
-		super(executionId);
+	@Override
+	public void setExecutionId(IFullExecutionId executionId) {
+		super.setExecutionId(executionId);
 		m_resultPresentation = IResultPresentationExtended.create(executionId);
 	}
 
 	@Override
 	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
+		Objects.requireNonNull(m_resultPresentation);
 		m_resultReceiver = ResultReceiverFactory.createFileResultReceiverWithDefaultSettings(isUseMultiFileOutput(),
 				getOutputFile());
 	}
@@ -33,14 +35,17 @@ public class AnalysisInformationCollectionLogic extends AbstractInformationColle
 	/** {@inheritDoc} */
 	@Override
 	protected void execBeforeExecutingTestcase(TestcaseIdentifier testCaseIdentifier) {
-		StackLogger.startLog(testCaseIdentifier);
+		startStackLogRecorder(testCaseIdentifier);
 	}
+
+	/** Start the stack logger. */
+	protected abstract void startStackLogRecorder(TestcaseIdentifier testCaseIdentifier);
 
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
-		appendToResult(testCaseIdentifier, StackLogger.getInvocationsMinDistance(),
-				StackLogger.getInvocationsMaxDistance(), StackLogger.getInvocationsCount());
+		appendToResult(testCaseIdentifier, StackLogDataManager.getInvocationsMinDistance(),
+				StackLogDataManager.getInvocationsMaxDistance(), StackLogDataManager.getInvocationsCount());
 	}
 
 	protected void appendToResult(TestcaseIdentifier testCaseIdentifier,

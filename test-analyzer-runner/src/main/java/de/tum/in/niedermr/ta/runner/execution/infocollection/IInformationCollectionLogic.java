@@ -8,6 +8,9 @@ import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 /** Information collector logic. */
 public interface IInformationCollectionLogic {
 
+	/** Set the execution id. */
+	void setExecutionId(IFullExecutionId executionId);
+
 	/** Get the execution id. */
 	IFullExecutionId getExecutionId();
 
