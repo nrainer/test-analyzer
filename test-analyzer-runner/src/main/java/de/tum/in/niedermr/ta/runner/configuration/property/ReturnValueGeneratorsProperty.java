@@ -1,8 +1,8 @@
 package de.tum.in.niedermr.ta.runner.configuration.property;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
-import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith0;
-import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleReturnValueGeneratorWith1;
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleAndWrapperReturnValueGeneratorWith0;
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.SimpleAndWrapperReturnValueGeneratorWith1;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMultiClassnameProperty;
@@ -10,8 +10,8 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMul
 public class ReturnValueGeneratorsProperty extends AbstractMultiClassnameProperty<IReturnValueGenerator> {
 
 	public static final String RETURN_VALUE_GENERATORS_VOID_PRIMITIVE_STRING = VoidReturnValueGenerator.class.getName()
-			+ CommonConstants.SEPARATOR_DEFAULT + SimpleReturnValueGeneratorWith0.class.getName()
-			+ CommonConstants.SEPARATOR_DEFAULT + SimpleReturnValueGeneratorWith1.class.getName();
+			+ CommonConstants.SEPARATOR_DEFAULT + SimpleAndWrapperReturnValueGeneratorWith0.class.getName()
+			+ CommonConstants.SEPARATOR_DEFAULT + SimpleAndWrapperReturnValueGeneratorWith1.class.getName();
 
 	@Override
 	public String getName() {
