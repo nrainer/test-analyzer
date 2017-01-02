@@ -27,6 +27,11 @@ public class ThreadStackManager implements IThreadListener {
 	/** Stop class from where to stop counting the stacks. Occurences of this class will be excluded. */
 	private String m_stopClassName;
 
+	/**
+	 * Class names which start with one of the specified prefixes will not be counted when computing the stack distance.
+	 */
+	private String[] m_stackCountIgnoreClassNamePrefixes;
+
 	/** {@inheritDoc} */
 	@Override
 	public synchronized void threadStarted(String newThreadName) {
@@ -65,6 +70,11 @@ public class ThreadStackManager implements IThreadListener {
 	/** {@link #m_stopClassName} */
 	public synchronized void setStopClassName(String stopClassName) {
 		m_stopClassName = stopClassName;
+	}
+
+	/** {@link #m_stackCountIgnoreClassNamePrefixes} */
+	public synchronized void setStackCountIgnoreClassNamesPrefixes(String[] stackCountIgnoreClassNamePrefixes) {
+		m_stackCountIgnoreClassNamePrefixes = stackCountIgnoreClassNamePrefixes;
 	}
 
 	/**
@@ -163,11 +173,27 @@ public class ThreadStackManager implements IThreadListener {
 				break;
 			}
 
+			if (isCountIgnoredClass(stackElementClassName)) {
+				LOGGER.debug("Skipping ignored element: " + stackTraceElement);
+				continue;
+			}
+
 			count++;
 			LOGGER.debug("Counted element: " + stackTraceElement);
 		}
 
 		LOGGER.debug("Stack height is: " + count);
 		return count;
+	}
+
+	/** Check if the class should not be counted. */
+	private boolean isCountIgnoredClass(String stackElementClassName) {
+		for (String classNamePrefix : m_stackCountIgnoreClassNamePrefixes) {
+			if (stackElementClassName.startsWith(classNamePrefix)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
