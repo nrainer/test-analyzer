@@ -1,29 +1,23 @@
 package de.tum.in.ma.simpleproject.special;
 
-public class SpecialTest2Object
-{
-	public void callBeforeClass()
-	{
-		
+public class SpecialTest2Object {
+	public void callBeforeClass() {
+		// NOP
 	}
-	
-	public void callBefore()
-	{
-		
+
+	public void callBefore() {
+		// NOP
 	}
-	
-	public int callTest()
-	{
+
+	public int callTest() {
 		return 5;
 	}
-	
-	public void callAfter()
-	{
-		
+
+	public void callAfter() {
+		// NOP
 	}
-	
-	public void callAfterClass()
-	{
-		
+
+	public void callAfterClass() {
+		// NOP
 	}
 }

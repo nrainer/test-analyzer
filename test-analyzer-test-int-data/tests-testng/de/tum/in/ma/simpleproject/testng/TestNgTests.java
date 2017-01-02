@@ -25,6 +25,6 @@ public class TestNgTests
 	@org.testng.annotations.Test(enabled = false)
 	public void ignoredTest()
 	{
-		
+		new CalculationLite().increment();
 	}
 }

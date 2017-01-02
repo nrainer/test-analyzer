@@ -17,8 +17,8 @@ de.tum.in.ma.simpleproject.core.CalculationDefaultTests;clear
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;sub
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;mult1
 de.tum.in.ma.simpleproject.core.CalculationStringTests;stringReturnNotNull
-de.tum.in.ma.simpleproject.core.CalculationTrivialTests;emptyAtBeginning
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;increment
+de.tum.in.ma.simpleproject.core.CalculationTrivialTests;emptyAtBeginning
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;add5
 de.tum.in.ma.simpleproject.core.CalculationStringTests;parse
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;constructor
@@ -33,8 +33,8 @@ de.tum.in.ma.simpleproject.core.CalculationDefaultTests;mult3
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;clear
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;sub
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;mult1
-de.tum.in.ma.simpleproject.core.CalculationTrivialTests;emptyAtBeginning
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;increment
+de.tum.in.ma.simpleproject.core.CalculationTrivialTests;emptyAtBeginning
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;add5
 de.tum.in.ma.simpleproject.core.CalculationStringTests;parse
 de.tum.in.ma.simpleproject.core.CalculationDefaultTests;constructor

@@ -1,9 +1,9 @@
-de.tum.in.ma.simpleproject.special.Java8.applyMultiplyWithEight(int)
-de.tum.in.ma.simpleproject.special.Java8Test;testMultiplyEight
-.
 de.tum.in.ma.simpleproject.special.Special.staticMethod()
 de.tum.in.ma.simpleproject.special.HasFailingTest;successfulTest
 de.tum.in.ma.simpleproject.special.MiscellaneousTests;testStaticMethod
+.
+de.tum.in.ma.simpleproject.special.Java8.applyMultiplyWithEight(int)
+de.tum.in.ma.simpleproject.special.Java8Test;testMultiplyEight
 .
 de.tum.in.ma.simpleproject.special.Java8.usePredicateLambda()
 de.tum.in.ma.simpleproject.special.Java8Test;testPredicateLambda
