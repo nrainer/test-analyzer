@@ -4,12 +4,14 @@ import java.io.IOException;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
+import de.tum.in.niedermr.ta.runner.analysis.InformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.infocollection.InformationCollectorParameters;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.IInformationCollectionLogic;
 
 /** Base class for a step to start an InformationCollector. */
 public abstract class AbstractInformationCollectorStep extends AbstractExecutionStep {
@@ -25,8 +27,6 @@ public abstract class AbstractInformationCollectorStep extends AbstractExecution
 	public boolean isUseMultiFileOutput() {
 		return m_useMultiFileOutput;
 	}
-
-	protected abstract Class<?> getInformationCollectorClass();
 
 	/** {@inheritDoc} */
 	@Override
@@ -47,7 +47,7 @@ public abstract class AbstractInformationCollectorStep extends AbstractExecution
 	/** Start the process to collect the information. */
 	protected void startInformationCollectionProcess(ProcessExecution processExecution, final String classPath,
 			IFullExecutionId executionId, ProgramArgsWriter argsWriter) {
-		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, getInformationCollectorClass(), classPath,
+		processExecution.execute(executionId, ProcessExecution.NO_TIMEOUT, InformationCollector.class, classPath,
 				argsWriter);
 	}
 
@@ -60,6 +60,8 @@ public abstract class AbstractInformationCollectorStep extends AbstractExecution
 		argsWriter.setValue(InformationCollectorParameters.ARGS_FILE_WITH_RESULTS, getFileWithResultsParameterValue());
 		argsWriter.setValue(InformationCollectorParameters.ARGS_TEST_RUNNER_CLASS,
 				configuration.getTestRunner().getValue());
+		argsWriter.setValue(InformationCollectorParameters.ARGS_INFORMATION_COLLECTOR_LOGIC_CLASS,
+				getInformationCollectorLogicClass().getName());
 		argsWriter.setValue(InformationCollectorParameters.ARGS_OPERATE_FAULT_TOLERANT,
 				configuration.getOperateFaultTolerant().getValueAsString());
 		argsWriter.setValue(InformationCollectorParameters.ARGS_TEST_CLASS_INCLUDES,
@@ -72,6 +74,8 @@ public abstract class AbstractInformationCollectorStep extends AbstractExecution
 				Boolean.valueOf(m_useMultiFileOutput).toString());
 		return argsWriter;
 	}
+
+	protected abstract Class<? extends IInformationCollectionLogic> getInformationCollectorLogicClass();
 
 	protected abstract String getFileWithResultsParameterValue();
 

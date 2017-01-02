@@ -16,16 +16,19 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 
+/**
+ * Logic to collect the information. <br/>
+ * Parameterless constructor required.
+ */
 public class InformationCollectionLogic extends AbstractInformationCollectionLogic {
+
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(InformationCollectionLogic.class);
 
 	protected final Map<MethodIdentifier, TestInformation> m_methodInformation;
 
-	public InformationCollectionLogic(IFullExecutionId executionId) {
-		super(executionId);
+	public InformationCollectionLogic() {
 		this.m_methodInformation = new HashMap<>();
 	}
 

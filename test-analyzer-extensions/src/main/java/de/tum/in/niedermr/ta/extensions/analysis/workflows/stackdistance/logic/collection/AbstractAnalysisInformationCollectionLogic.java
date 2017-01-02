@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.collection;
 
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
@@ -15,17 +16,18 @@ import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformation
 /** Logic to collect information about the test cases and methods under test. */
 public abstract class AbstractAnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
 
-	private final IResultPresentationExtended m_resultPresentation;
+	private IResultPresentationExtended m_resultPresentation;
 	private IResultReceiver m_resultReceiver;
 
-	/** Constructor. */
-	public AbstractAnalysisInformationCollectionLogic(IFullExecutionId executionId) {
-		super(executionId);
+	@Override
+	public void setExecutionId(IFullExecutionId executionId) {
+		super.setExecutionId(executionId);
 		m_resultPresentation = IResultPresentationExtended.create(executionId);
 	}
 
 	@Override
 	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
+		Objects.requireNonNull(m_resultPresentation);
 		m_resultReceiver = ResultReceiverFactory.createFileResultReceiverWithDefaultSettings(isUseMultiFileOutput(),
 				getOutputFile());
 	}

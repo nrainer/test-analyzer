@@ -10,7 +10,7 @@ import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 public class InformationCollectorParameters {
 
 	/** Number of args. */
-	private static final int ARGS_COUNT = 9;
+	private static final int ARGS_COUNT = 10;
 	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(InformationCollectorParameters.class, 0);
 	public static final ProgramArgsKey ARGS_FILE_WITH_TESTS_TO_RUN = new ProgramArgsKey(
 			InformationCollectorParameters.class, 1);
@@ -18,16 +18,18 @@ public class InformationCollectorParameters {
 			2);
 	public static final ProgramArgsKey ARGS_TEST_RUNNER_CLASS = new ProgramArgsKey(InformationCollectorParameters.class,
 			3);
-	public static final ProgramArgsKey ARGS_OPERATE_FAULT_TOLERANT = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_INFORMATION_COLLECTOR_LOGIC_CLASS = new ProgramArgsKey(
 			InformationCollectorParameters.class, 4);
-	public static final ProgramArgsKey ARGS_TEST_CLASS_INCLUDES = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_OPERATE_FAULT_TOLERANT = new ProgramArgsKey(
 			InformationCollectorParameters.class, 5);
-	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_TEST_CLASS_INCLUDES = new ProgramArgsKey(
 			InformationCollectorParameters.class, 6);
-	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(
 			InformationCollectorParameters.class, 7);
-	public static final ProgramArgsKey ARGS_USE_MULTI_FILE_OUTPUT = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(
 			InformationCollectorParameters.class, 8);
+	public static final ProgramArgsKey ARGS_USE_MULTI_FILE_OUTPUT = new ProgramArgsKey(
+			InformationCollectorParameters.class, 9);
 
 	/** Create a writer for the program arguments. */
 	public static ProgramArgsWriter createProgramArgsWriter() {
