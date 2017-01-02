@@ -12,7 +12,7 @@ import de.tum.in.niedermr.ta.core.code.visitor.NoModificationClassVisitor;
 
 public class AnalysisInstrumentationOperation extends AbstractTestAwareCodeModificationOperation {
 
-	/** Class that handles the data gathered from the instrumentation. */
+	/** Class that records the data gathered from the instrumentation. */
 	private final Class<?> m_instrumentationDataRetrieverClass;
 
 	/** Constructor. */

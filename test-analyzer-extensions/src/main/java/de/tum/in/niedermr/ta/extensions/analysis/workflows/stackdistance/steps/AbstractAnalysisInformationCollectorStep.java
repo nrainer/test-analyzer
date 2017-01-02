@@ -1,13 +1,12 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.AbstractInformationCollectorStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
 
 /** Analysis information collector step. */
-public class AnalysisInformationCollectorStep extends AbstractInformationCollectorStep {
+public abstract class AbstractAnalysisInformationCollectorStep extends AbstractInformationCollectorStep {
 
 	/** {@inheritDoc} */
 	@Override
@@ -19,12 +18,6 @@ public class AnalysisInformationCollectorStep extends AbstractInformationCollect
 	@Override
 	protected String getDescription() {
 		return "Analyzing stack distance";
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected Class<?> getInformationCollectorClass() {
-		return AnalysisInformationCollector.class;
 	}
 
 	/** {@inheritDoc} */

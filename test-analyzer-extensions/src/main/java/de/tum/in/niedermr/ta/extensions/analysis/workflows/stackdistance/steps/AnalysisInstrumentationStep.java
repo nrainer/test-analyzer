@@ -2,7 +2,6 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogger;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.instrumentation.AnalysisInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -15,6 +14,15 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
  * methods.
  */
 public class AnalysisInstrumentationStep extends AbstractExecutionStep {
+
+	/** Class that records the the data from the instrumented classes. */
+	private Class<?> m_instrumentationClass;
+
+	/** {@link #m_instrumentationClass} */
+	public void setInstrumentationLoggerClass(Class<?> instrumentationClass) {
+		m_instrumentationClass = instrumentationClass;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
@@ -29,7 +37,7 @@ public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 		ITestRunner testRunner = configuration.getTestRunner().createInstance();
 
 		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(createFullExecutionId(),
-				StackLogger.class, operateFaultTolerant);
+				m_instrumentationClass, operateFaultTolerant);
 		analysisInstrumentation.injectAnalysisStatements(configuration.getCodePathToMutate().getElements(),
 				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,
 				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());

@@ -8,20 +8,20 @@ import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
 /**
- * <b>ANACOL:</b> Collects <b>information about the minimal and maximal stack
- * distance between test case and method under test.</b><br/>
+ * <b>ANACOL:</b> Collects <b>information about the minimal and maximal stack distance between test case and method
+ * under test.</b><br/>
  * The instrumentation step (ANAINS) must have been executed before.<br/>
  * <br/>
  * Dependencies: same as InformationCollector (INFCOL)<br/>
  * Further classpath entries: jars to be processed and dependencies.
  * 
  */
-public class AnalysisInformationCollector {
+public class AnalysisInformationCollectorV1 {
 
 	/** Main method. */
 	public static void main(String[] args) {
 		if (args.length == 0) {
-			LoggingUtil.printDontStartThisClass(AnalysisInformationCollector.class, AnalyzerRunnerStart.class);
+			LoggingUtil.printDontStartThisClass(AnalysisInformationCollectorV1.class, AnalyzerRunnerStart.class);
 			return;
 		}
 

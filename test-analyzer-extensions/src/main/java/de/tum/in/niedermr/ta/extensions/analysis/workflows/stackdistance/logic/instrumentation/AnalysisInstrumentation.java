@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.instrumentation;
 
+import java.util.Objects;
+
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
@@ -8,13 +10,13 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 public class AnalysisInstrumentation extends AbstractInstrumentation {
 
-	/** Class that handles the data gathered from the instrumentation. */
+	/** Class that records the data gathered from the instrumentation. */
 	private Class<?> m_instrumentationDataRetrieverClass;
 
 	public AnalysisInstrumentation(IFullExecutionId executionId, Class<?> instrumentationLoggerClass,
 			boolean operateFaultTolerant) {
 		super(executionId, operateFaultTolerant);
-		m_instrumentationDataRetrieverClass = instrumentationLoggerClass;
+		m_instrumentationDataRetrieverClass = Objects.requireNonNull(instrumentationLoggerClass);
 	}
 
 	public void injectAnalysisStatements(String[] jarsToBeInstrumented, String genericJarOutputPath,

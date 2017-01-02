@@ -1,6 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance;
 
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.AnalysisInformationCollectorStep;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.AbstractAnalysisInformationCollectorStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.AnalysisInstrumentationStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.CleanupStep;
@@ -27,7 +27,7 @@ public abstract class AbstractStackDistanceAnalysisWorkflow extends AbstractWork
 	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
 		AnalysisInstrumentationStep analysisInstrumentationStep = createAnalysisInstrumentationStep();
-		AnalysisInformationCollectorStep analysisInformationCollectorStep = createAnalysisInformationCollectorStep();
+		AbstractAnalysisInformationCollectorStep analysisInformationCollectorStep = createAnalysisInformationCollectorStep();
 		CleanupStep cleanupStep = createAndInitializeExecutionStep(CleanupStep.class);
 
 		analysisInformationCollectorStep.setUseMultiFileOutput(
@@ -42,6 +42,6 @@ public abstract class AbstractStackDistanceAnalysisWorkflow extends AbstractWork
 	/** Create an appropriate instance of {@link AnalysisInstrumentationStep}. */
 	protected abstract AnalysisInstrumentationStep createAnalysisInstrumentationStep();
 
-	/** Create an appropriate instance of {@link AnalysisInformationCollectorStep}. */
-	protected abstract AnalysisInformationCollectorStep createAnalysisInformationCollectorStep();
+	/** Create an appropriate instance of {@link AbstractAnalysisInformationCollectorStep}. */
+	protected abstract AbstractAnalysisInformationCollectorStep createAnalysisInformationCollectorStep();
 }
