@@ -1,5 +1,5 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
-  <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_8</version>
+  <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_13</version>
   <payload class="com.teamscale.index.dashboard.DashboardDescriptor">
     <name>TestAnalyzer TGA</name>
     <owner>admin</owner>
@@ -28,8 +28,8 @@
         "value": 0
       },
       "Execution only": false,
-      "Environments": {
-        "selectedEnvironments": [],
+      "Coverage Sources": {
+        "selectedCoverageSources": [],
         "useAll": true
       },
       "Outline depth": 0,

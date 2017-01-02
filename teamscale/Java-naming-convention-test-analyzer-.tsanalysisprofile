@@ -1,17 +1,28 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
-  <version class="com.teamscale.index.configuration.service.EAnalysisProfileVersion">ANALYSIS_PROFILE_VERSION_16</version>
+  <version class="com.teamscale.index.configuration.service.EAnalysisProfileVersion">ANALYSIS_PROFILE_VERSION_20</version>
   <payload class="org.conqat.engine.index.configuration.instance.AnalysisProfile">
     <options class="linked-hash-map">
       <entry>
+        <string>Disable clone-based move tracking</string>
+        <string>false</string>
+      </entry>
+      <entry>
         <string>Enable search</string>
         <string>true</string>
+      </entry>
+      <entry>
+        <string>Enable Redundant Literal Analysis</string>
+        <string>false</string>
       </entry>
     </options>
     <name>Java (naming convention test-analyzer)</name>
     <languages class="linked-hash-set">
       <eu.cqse.check.framework.scanner.ELanguage>JAVA</eu.cqse.check.framework.scanner.ELanguage>
     </languages>
-    <tools class="linked-hash-set"/>
+    <tools class="linked-hash-set">
+      <org.conqat.engine.index.configuration.model.EAnalysisTool>CUSTOM</org.conqat.engine.index.configuration.model.EAnalysisTool>
+      <org.conqat.engine.index.configuration.model.EAnalysisTool>JACOCO</org.conqat.engine.index.configuration.model.EAnalysisTool>
+    </tools>
     <qualityIndicators>
       <org.conqat.engine.index.configuration.instance.QualityIndicator>
         <options class="linked-hash-map">
@@ -21,6 +32,22 @@
           </entry>
           <entry>
             <string>Findings Density</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
             <string>false</string>
           </entry>
         </options>
@@ -55,6 +82,22 @@
             <string>Findings Density</string>
             <string>false</string>
           </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
+            <string>false</string>
+          </entry>
         </options>
         <name>Code Anomalies</name>
         <groups>
@@ -73,6 +116,10 @@
                 <string>true</string>
               </entry>
               <entry>
+                <string>Empty blocks: allow empty types</string>
+                <string>true</string>
+              </entry>
+              <entry>
                 <string>Missing code</string>
                 <string>Yellow</string>
               </entry>
@@ -82,11 +129,11 @@
           <org.conqat.engine.index.configuration.instance.AnalysisGroup>
             <options class="linked-hash-map">
               <entry>
-                <string>Avoid unused private methods</string>
+                <string>Avoid unused private fields (Java)</string>
                 <string>Yellow</string>
               </entry>
               <entry>
-                <string>Avoid unused private fields (Java)</string>
+                <string>Avoid unused private methods</string>
                 <string>Yellow</string>
               </entry>
             </options>
@@ -99,35 +146,23 @@
                 <string>Yellow</string>
               </entry>
               <entry>
-                <string>Properly initialize static variable</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
                 <string>Method must not be named like constructor</string>
                 <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Don&apos;t throw Throwable, Error or RuntimeException</string>
-                <string>Red</string>
-              </entry>
-              <entry>
-                <string>Maximum case block length</string>
-                <string>10</string>
               </entry>
               <entry>
                 <string>Case Blocks Length</string>
                 <string>Off</string>
               </entry>
               <entry>
-                <string>Maximum number of imports</string>
-                <string>50</string>
-              </entry>
-              <entry>
-                <string>Too Many Imports</string>
-                <string>Off</string>
+                <string>Maximum case block length</string>
+                <string>10</string>
               </entry>
               <entry>
                 <string>Import from java.lang</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Logger was specified with a different class</string>
                 <string>Yellow</string>
               </entry>
               <entry>
@@ -139,19 +174,35 @@
                 <string>Yellow</string>
               </entry>
               <entry>
-                <string>Unwanted constructor names</string>
-                <string>Boolean,Byte,Short,Integer,Long,Float,Double,String</string>
-              </entry>
-              <entry>
                 <string>Unwanted constructor calls</string>
                 <string>Yellow</string>
               </entry>
               <entry>
-                <string>Suspicious methods</string>
-                <string>Yellow</string>
+                <string>Unwanted constructor names</string>
+                <string>Boolean,Byte,Short,Integer,Long,Float,Double,String</string>
+              </entry>
+              <entry>
+                <string>Multiple top-level classes</string>
+                <string>Red</string>
+              </entry>
+              <entry>
+                <string>Custom exception class</string>
+                <string>Off</string>
               </entry>
               <entry>
                 <string>Field could be final (Java)</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Java annotations for non-final fields</string>
+                <string>Inject,Autowired,SpringBean</string>
+              </entry>
+              <entry>
+                <string>Never check for more than one condition in assert statements</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Avoid ignoring JUnit tests</string>
                 <string>Yellow</string>
               </entry>
               <entry>
@@ -159,24 +210,118 @@
                 <string>Yellow</string>
               </entry>
               <entry>
-                <string>Private methods must not be final</string>
-                <string>Yellow</string>
+                <string>Number of Method Parameters</string>
+                <string>Off</string>
               </entry>
               <entry>
                 <string>Maximum number of parameters</string>
                 <string>5</string>
               </entry>
               <entry>
-                <string>Number of Method Parameters</string>
+                <string>Call to printStackTrace()</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>hashCode() and equals()</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>File must have a valid copyright header</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Copyright Header</string>
+                <string>/**
+* Sample Copyright Comment.
+*/</string>
+              </entry>
+              <entry>
+                <string>Multiple Assignments</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Too Many Constructors</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Maximum number of constructors</string>
+                <string>5</string>
+              </entry>
+              <entry>
+                <string>Do not compare this and null</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Avoid using ternary operators</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Use assertFalse instead of assertTrue with inverted condition (and vice versa)!</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Too Many Methods</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Maximum number of methods</string>
+                <string>32</string>
+              </entry>
+              <entry>
+                <string>Avoid leaving deprecated classes / methods / fields</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Public class attribute</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Annotation filter for public fields</string>
+                <string>@Inject,@Rule,@Mock,@AConQATFieldParameter,@AOptionFieldDescription</string>
+              </entry>
+              <entry>
+                <string>Properly initialize static variable</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Too Many Imports</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Maximum number of imports</string>
+                <string>50</string>
+              </entry>
+              <entry>
+                <string>Suspicious methods</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Catch of generic exception</string>
+                <string>Red</string>
+              </entry>
+              <entry>
+                <string>Java Unwanted Method Calls</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Java Unwanted Methods</string>
+                <string>System.gc,System.err.println,System.exit,System.out.println</string>
+              </entry>
+              <entry>
+                <string>Private methods must not be final</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Throw of generic exception</string>
+                <string>Red</string>
+              </entry>
+              <entry>
+                <string>Maximum type name length</string>
                 <string>Off</string>
               </entry>
               <entry>
                 <string>Maximum name length</string>
                 <string>30</string>
-              </entry>
-              <entry>
-                <string>Maximum type name length</string>
-                <string>Off</string>
               </entry>
               <entry>
                 <string>Switch/case without default</string>
@@ -187,67 +332,36 @@
                 <string>Off</string>
               </entry>
               <entry>
-                <string>Multiple Assignments</string>
+                <string>Modifiers must be in the right order</string>
                 <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Allowed package prefixes</string>
-                <string></string>
               </entry>
               <entry>
                 <string>Package Name Mismatch</string>
                 <string>Off</string>
               </entry>
               <entry>
-                <string>Maximum number of constructors</string>
-                <string>5</string>
+                <string>Allowed package prefixes</string>
+                <string></string>
               </entry>
               <entry>
-                <string>Too Many Constructors</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Do not compare this and null</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Unwanted methods</string>
-                <string>System.exit,System.gc,System.out.println,System.err.println</string>
-              </entry>
-              <entry>
-                <string>Unwanted method calls</string>
+                <string>Transformation of byte sequence into String must consider encoding</string>
                 <string>Yellow</string>
               </entry>
               <entry>
                 <string>Inner Type Visiblity</string>
                 <string>Off</string>
               </entry>
-              <entry>
-                <string>Maximum number of methods</string>
-                <string>32</string>
-              </entry>
-              <entry>
-                <string>Too Many Methods</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Annotation filter for public fields</string>
-                <string>@Rule,@Mock,@Inject,@AOptionFieldDescription,@AConQATFieldParameter</string>
-              </entry>
-              <entry>
-                <string>Public class attribute</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Multiple top-level classes</string>
-                <string>Red</string>
-              </entry>
-              <entry>
-                <string>hashCode() and equals()</string>
-                <string>Yellow</string>
-              </entry>
             </options>
             <name>Bad practice</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Method returns null but return type is Optional</string>
+                <string>Red</string>
+              </entry>
+            </options>
+            <name>Correctness</name>
           </org.conqat.engine.index.configuration.instance.AnalysisGroup>
         </groups>
       </org.conqat.engine.index.configuration.instance.QualityIndicator>
@@ -259,6 +373,22 @@
           </entry>
           <entry>
             <string>Findings Density</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
             <string>false</string>
           </entry>
         </options>
@@ -290,6 +420,10 @@
                 <string>Alert inconsistent changes</string>
                 <string>true</string>
               </entry>
+              <entry>
+                <string>Exclude Path Patterns</string>
+                <string></string>
+              </entry>
             </options>
             <name>Cloning</name>
           </org.conqat.engine.index.configuration.instance.AnalysisGroup>
@@ -305,38 +439,25 @@
             <string>Findings Density</string>
             <string>false</string>
           </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
+            <string>false</string>
+          </entry>
         </options>
         <name>Documentation</name>
         <groups>
-          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
-            <options class="linked-hash-map">
-              <entry>
-                <string>Interface comment completeness</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Required interface comments</string>
-                <string>public &amp; (type | method | property) &amp; !(simpleGetter | simpleSetter | annotated(Override) | override)</string>
-              </entry>
-              <entry>
-                <string>Interface comments must be doc comments</string>
-                <string>true</string>
-              </entry>
-              <entry>
-                <string>Comment ratio</string>
-                <string>false</string>
-              </entry>
-              <entry>
-                <string>Comment type metrics</string>
-                <string>false</string>
-              </entry>
-              <entry>
-                <string>Comment Completeness Assessment</string>
-                <string>true</string>
-              </entry>
-            </options>
-            <name>Comment completeness</name>
-          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
           <org.conqat.engine.index.configuration.instance.AnalysisGroup>
             <options class="linked-hash-map">
               <entry>
@@ -350,6 +471,76 @@
             </options>
             <name>Task tags</name>
           </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Unrelated interface comment</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Trivial interface comment</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Empty interface comment</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Short inline comment</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Long inline comment</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Comment with exclamation or question mark</string>
+                <string>Off</string>
+              </entry>
+            </options>
+            <name>Comment quality</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Interface comment completeness</string>
+                <string>Off</string>
+              </entry>
+              <entry>
+                <string>Required interface comments</string>
+                <string>public &amp; (type | method | property) &amp; !(simpleGetter | simpleSetter | annotated(Override) | override)</string>
+              </entry>
+              <entry>
+                <string>Interface comments must be doc comments</string>
+                <string>true</string>
+              </entry>
+              <entry>
+                <string>Comment Completeness Assessment</string>
+                <string>true</string>
+              </entry>
+              <entry>
+                <string>Comment ratio</string>
+                <string>false</string>
+              </entry>
+              <entry>
+                <string>Comment type metrics</string>
+                <string>false</string>
+              </entry>
+              <entry>
+                <string>Comment Completeness Assessment for Types</string>
+                <string>false</string>
+              </entry>
+              <entry>
+                <string>Comment Completeness Assessment for Methods</string>
+                <string>false</string>
+              </entry>
+              <entry>
+                <string>Comment Completeness Assessment for Attributes</string>
+                <string>false</string>
+              </entry>
+            </options>
+            <name>Comment completeness</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
         </groups>
       </org.conqat.engine.index.configuration.instance.QualityIndicator>
       <org.conqat.engine.index.configuration.instance.QualityIndicator>
@@ -360,6 +551,22 @@
           </entry>
           <entry>
             <string>Findings Density</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
             <string>false</string>
           </entry>
         </options>
@@ -415,6 +622,22 @@
             <string>Findings Density</string>
             <string>false</string>
           </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
+            <string>false</string>
+          </entry>
         </options>
         <name>Naming</name>
         <groups>
@@ -465,6 +688,22 @@
           </entry>
           <entry>
             <string>Findings Density</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
             <string>false</string>
           </entry>
         </options>
@@ -560,6 +799,63 @@
               </entry>
             </options>
             <name>Nesting Depth</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+        </groups>
+      </org.conqat.engine.index.configuration.instance.QualityIndicator>
+      <org.conqat.engine.index.configuration.instance.QualityIndicator>
+        <options class="linked-hash-map">
+          <entry>
+            <string>Number of Findings</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Red)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Number of Findings (Yellow)</string>
+            <string>false</string>
+          </entry>
+          <entry>
+            <string>Findings Density (Yellow)</string>
+            <string>false</string>
+          </entry>
+        </options>
+        <name>Testing</name>
+        <groups>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Line Coverage</string>
+                <string>true</string>
+              </entry>
+              <entry>
+                <string>Branch Coverage</string>
+                <string>false</string>
+              </entry>
+            </options>
+            <name>Test Coverage</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Unit test classes should be located in the same package as the class under test</string>
+                <string>Yellow</string>
+              </entry>
+              <entry>
+                <string>Test class name ending</string>
+                <string>Test</string>
+              </entry>
+            </options>
+            <name>Test Conventions</name>
           </org.conqat.engine.index.configuration.instance.AnalysisGroup>
         </groups>
       </org.conqat.engine.index.configuration.instance.QualityIndicator>

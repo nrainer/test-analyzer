@@ -1,5 +1,5 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
-  <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_8</version>
+  <version class="com.teamscale.index.dashboard.EDashboardDescriptorVersion">DASHBOARD_DESCRIPTOR_VERSION_13</version>
   <payload class="com.teamscale.index.dashboard.DashboardDescriptor">
     <name>Testanalyzer Overview</name>
     <owner>admin</owner>
@@ -141,10 +141,11 @@
         "type": "timespan",
         "value": 0
       },
-      "Show details": false,
+      "Show details (groups only)": false,
       "Horizontal orientation": false,
       "Sort by findings count": false,
-      "Show assessment": false
+      "Assessment filter": "Show all",
+      "Selected categories": ""
     },
     {
       "widget-id": "treemap",
@@ -413,8 +414,26 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": true
+        "hiddenInWidgetTitle": true,
+        "isArchitecture": false
       },
+      "Metrics": [
+        {
+          "name": "General",
+          "selectedMetrics": [
+            "Findings Density",
+            "Clone Coverage",
+            "Method Length Assessment",
+            "Comment Completeness Assessment"
+          ],
+          "allMetrics": [
+            "Findings Density",
+            "Clone Coverage",
+            "Method Length Assessment",
+            "Comment Completeness Assessment"
+          ]
+        }
+      ],
       "Show actions": false,
       "Show values": true,
       "Show icons": true,
@@ -423,7 +442,8 @@
         "value": "30",
         "type": "timespan"
       },
-      "Metric Threshold Configuration": "Project Default"
+      "Metric Threshold Configuration": "Test Analyzer",
+      "Flatten Single Group": true
     },
     {
       "widget-id": "assessment-trend-chart",

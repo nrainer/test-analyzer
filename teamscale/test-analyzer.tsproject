@@ -1,5 +1,5 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
-  <version class="com.teamscale.index.configuration.service.EProjectConfigurationVersion">PROJECT_CONFIGURATION_VERSION_3</version>
+  <version class="com.teamscale.index.configuration.service.EProjectConfigurationVersion">PROJECT_CONFIGURATION_VERSION_5</version>
   <payload class="org.conqat.engine.index.configuration.instance.ProjectConfiguration">
     <name>test-analyzer</name>
     <id>test-analyzer</id>
@@ -32,6 +32,18 @@
             <string>**/package-info.java,**/test-analyzer-test-int-data/**,**/src/test/resources/**,**/test-analyzer-core/utilities/**</string>
           </entry>
           <entry>
+            <string>Enable branch analysis</string>
+            <string>true</string>
+          </entry>
+          <entry>
+            <string>Included branches</string>
+            <string>.*</string>
+          </entry>
+          <entry>
+            <string>Excluded branches</string>
+            <string>_anon.*</string>
+          </entry>
+          <entry>
             <string>Start revision</string>
             <string></string>
           </entry>
@@ -44,12 +56,12 @@
             <string>60</string>
           </entry>
           <entry>
-            <string>End revision</string>
-            <string></string>
-          </entry>
-          <entry>
             <string>Prepend repository identifier</string>
             <string>false</string>
+          </entry>
+          <entry>
+            <string>End revision</string>
+            <string></string>
           </entry>
           <entry>
             <string>Text filter</string>
@@ -80,7 +92,7 @@
             <string></string>
           </entry>
         </options>
-        <type>Git Remote</type>
+        <type>Git</type>
       </org.conqat.engine.index.configuration.instance.ConnectorConfiguration>
     </connectors>
   </payload>
