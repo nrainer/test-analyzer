@@ -94,10 +94,6 @@ public class ThreadStackManager implements IThreadListener {
 			stackHeight = 0;
 		}
 
-		LOGGER.warn("stack height of thread: " + getStackHeightOfThread(currentThreadName));
-		LOGGER.warn(m_stackHeightAtStartByThreadName);
-		LOGGER.warn(m_threadNameStartedByThreadName);
-
 		return stackHeight;
 	}
 
