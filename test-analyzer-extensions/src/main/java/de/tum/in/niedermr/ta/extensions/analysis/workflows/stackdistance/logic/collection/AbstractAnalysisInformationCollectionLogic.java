@@ -9,7 +9,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogRecorderV1;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackLogDataManager;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
 /** Logic to collect information about the test cases and methods under test. */
@@ -42,8 +42,8 @@ public abstract class AbstractAnalysisInformationCollectionLogic extends Abstrac
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
-		appendToResult(testCaseIdentifier, StackLogRecorderV1.getInvocationsMinDistance(),
-				StackLogRecorderV1.getInvocationsMaxDistance(), StackLogRecorderV1.getInvocationsCount());
+		appendToResult(testCaseIdentifier, StackLogDataManager.getInvocationsMinDistance(),
+				StackLogDataManager.getInvocationsMaxDistance(), StackLogDataManager.getInvocationsCount());
 	}
 
 	protected void appendToResult(TestcaseIdentifier testCaseIdentifier,

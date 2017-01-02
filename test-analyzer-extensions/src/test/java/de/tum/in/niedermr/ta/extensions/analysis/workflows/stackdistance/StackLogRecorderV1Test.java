@@ -21,13 +21,13 @@ public class StackLogRecorderV1Test {
 				.parse("CommonTest" + TestcaseIdentifier.SEPARATOR + "testcase1");
 		StackLogRecorderV1.startLog(testcaseIdentifier1);
 		StackLogRecorderV1.pushInvocation("method1");
-		assertEquals(testcaseIdentifier1, StackLogRecorderV1.getCurrentTestCaseIdentifier());
+		assertEquals(testcaseIdentifier1, StackLogDataManager.getCurrentTestCaseIdentifier());
 
 		TestcaseIdentifier testcaseIdentifier2 = TestcaseIdentifier
 				.parse("CommonTest" + TestcaseIdentifier.SEPARATOR + "testcase2");
 		StackLogRecorderV1.startLog(testcaseIdentifier2);
-		assertTrue(StackLogRecorderV1.getInvocationsMinDistance().isEmpty());
-		assertEquals(testcaseIdentifier2, StackLogRecorderV1.getCurrentTestCaseIdentifier());
+		assertTrue(StackLogDataManager.getInvocationsMinDistance().isEmpty());
+		assertEquals(testcaseIdentifier2, StackLogDataManager.getCurrentTestCaseIdentifier());
 	}
 
 	/** Test. */
@@ -52,9 +52,9 @@ public class StackLogRecorderV1Test {
 		StackLogRecorderV1.popInvocation();
 		StackLogRecorderV1.popInvocation();
 
-		Map<MethodIdentifier, Integer> invocationsMinDistance = StackLogRecorderV1.getInvocationsMinDistance();
-		Map<MethodIdentifier, Integer> invocationsMaxDistance = StackLogRecorderV1.getInvocationsMaxDistance();
-		Map<MethodIdentifier, Integer> invocationsCount = StackLogRecorderV1.getInvocationsCount();
+		Map<MethodIdentifier, Integer> invocationsMinDistance = StackLogDataManager.getInvocationsMinDistance();
+		Map<MethodIdentifier, Integer> invocationsMaxDistance = StackLogDataManager.getInvocationsMaxDistance();
+		Map<MethodIdentifier, Integer> invocationsCount = StackLogDataManager.getInvocationsCount();
 
 		assertEquals(2, (int) invocationsMaxDistance.get(methodIdentifier2));
 		assertEquals(3, (int) invocationsMaxDistance.get(methodIdentifier3));
