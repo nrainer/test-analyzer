@@ -33,7 +33,7 @@
 	</appenders>
 	
 	<loggers>
-		<root level="debug">
+		<root level="info">
 			<appender-ref ref="MainFile"/>
 			<appender-ref ref="TestSysErr"/>
 			<appender-ref ref="Console"/>
