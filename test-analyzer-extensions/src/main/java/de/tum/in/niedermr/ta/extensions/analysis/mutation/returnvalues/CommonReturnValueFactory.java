@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -36,18 +35,17 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 	private static final String PCKG_JAVA_UTIL = PCKG_JAVA + JavaConstants.PACKAGE_SEPARATOR + "util";
 	private static final String PCKG_JAVA_IO = PCKG_JAVA + JavaConstants.PACKAGE_SEPARATOR + "io";
 	private static final String PCKG_JAVA_MATH = PCKG_JAVA + JavaConstants.PACKAGE_SEPARATOR + "math";
-	private static final String ARRAY_BRACKETS = "[]";
 
 	/** {@inheritDoc} */
 	@Override
 	protected Optional<AbstractReturnValueFactory> getConfiguredFallbackFactory() {
-		return Optional.of(ReflectiveParameterlessReturnValueFactory.INSTANCE);
+		return Optional.of(SimpleReflectionReturnValueFactory.INSTANCE);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public Object getWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
-		if (returnType.endsWith(ARRAY_BRACKETS)) {
+		if (returnType.endsWith(JavaConstants.ARRAY_BRACKETS)) {
 			if (returnType.startsWith(PCKG_JAVA_LANG)) {
 				return createJavaLangArray(returnType);
 			} else {
@@ -116,15 +114,7 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		case "long[]":
 			return new long[0];
 		default:
-			if (returnType.endsWith(ARRAY_BRACKETS + ARRAY_BRACKETS)) {
-				throw new NoSuchElementException("Only arrays of a single dimension supported");
-			}
-			try {
-				String classNameWithoutArrayBrackets = returnType.substring(0, returnType.length() - 2);
-				return Array.newInstance(Class.forName(classNameWithoutArrayBrackets), 0);
-			} catch (ClassNotFoundException e) {
-				throw new NoSuchElementException(e.getMessage());
-			}
+			throw new NoSuchElementException();
 		}
 	}
 

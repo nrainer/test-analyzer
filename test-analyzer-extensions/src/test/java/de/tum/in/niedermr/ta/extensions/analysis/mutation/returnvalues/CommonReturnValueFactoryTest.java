@@ -74,15 +74,7 @@ public class CommonReturnValueFactoryTest {
 
 	/** Test. */
 	@Test
-	public void testCreateArray() {
-		Object obj = FACTORY.get(MethodIdentifier.EMPTY.get(), CommonReturnValueFactoryTest.class.getName() + "[]");
-		assertNotNull(obj);
-		assertTrue(obj.getClass().isArray());
-	}
-
-	/** Test. */
-	@Test
-	public void testSimpleReflectionFallback() {
+	public void testFallback() {
 		Object obj = FACTORY.get(MethodIdentifier.EMPTY.get(), CommonReturnValueFactoryTest.class.getName());
 		assertNotNull(obj);
 		assertTrue(obj instanceof CommonReturnValueFactoryTest);
