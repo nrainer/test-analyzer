@@ -52,6 +52,12 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXISTING_FACTORY_NAMES = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactories", "");
 
+	/**
+	 * <code>extension.methodsignature.returnvalue.outputFormat</code>: LIST or CODE
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_OUTPUT_FORMAT = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.outputFormat", "");
+
 	/** Result file name. */
 	private static final String RESULT_FILE_NAME = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "return-type-list"
 			+ FileSystemConstants.FILE_EXTENSION_TXT;
@@ -66,6 +72,8 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 
 		ReturnTypeCollectorStep collectorStep = createAndInitializeExecutionStep(ReturnTypeCollectorStep.class);
 		collectorStep.setResultReceiver(resultReceiver);
+
+		collectorStep.setOutputFormat(configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_OUTPUT_FORMAT));
 
 		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_SUPPRESS_SUPPORTED_TYPES)) {
 			collectorStep.setClassNameFilter(createClassNameFilter(configuration));

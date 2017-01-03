@@ -14,6 +14,7 @@ import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
+import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.ReturnTypeRetrieverOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -30,6 +31,9 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** Filter for the class names. */
 	private Optional<Predicate<String>> m_classNameFilter;
 
+	/** Result output format. LIST or CODE. */
+	private String m_outputFormat;
+
 	/** Set the result receiver. */
 	public void setResultReceiver(IResultReceiver resultReceiver) {
 		m_resultReceiver = resultReceiver;
@@ -38,6 +42,11 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** {@link #m_classNameFilter} */
 	public void setClassNameFilter(Optional<Predicate<String>> classNameFilter) {
 		m_classNameFilter = classNameFilter;
+	}
+
+	/** {@link #m_outputFormat} */
+	public void setOutputFormat(String outputFormat) {
+		m_outputFormat = outputFormat;
 	}
 
 	/** {@inheritDoc} */
@@ -60,8 +69,21 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 		returnTypeClassNameList.addAll(returnTypeClassNameSet);
 		Collections.sort(returnTypeClassNameList);
 
-		m_resultReceiver.append(returnTypeClassNameList);
+		for (String returnTypeCls : returnTypeClassNameList) {
+			m_resultReceiver.append(format(returnTypeCls));
+		}
+
 		m_resultReceiver.markResultAsComplete();
+	}
+
+	/** Format an output entry. */
+	private String format(String returnTypeCls) {
+		if (m_outputFormat.equals("CODE")) {
+			return String.format("case \"%s\":%s return new %s();", returnTypeCls, CommonConstants.NEW_LINE,
+					returnTypeCls);
+		}
+
+		return returnTypeCls;
 	}
 
 	/** Get data about the method access modifier. */
