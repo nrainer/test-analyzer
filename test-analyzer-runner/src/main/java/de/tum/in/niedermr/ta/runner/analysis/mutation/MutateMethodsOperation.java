@@ -1,6 +1,6 @@
 package de.tum.in.niedermr.ta.runner.analysis.mutation;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.objectweb.asm.ClassReader;
@@ -17,41 +17,42 @@ import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 
+/** Code modification operation to mutate methods. */
 public class MutateMethodsOperation implements ICodeModificationOperation {
+
 	private final IReturnValueGenerator m_returnValueGenerator;
 	private final MethodFilterList m_methodFilters;
 	private final List<MethodIdentifier> m_mutatedMethods;
 
+	/** Constructor. */
 	public MutateMethodsOperation(IReturnValueGenerator returnValueGen, MethodFilterList methodFilters) {
-		this.m_returnValueGenerator = returnValueGen;
-		this.m_methodFilters = methodFilters;
+		m_returnValueGenerator = returnValueGen;
+		m_methodFilters = methodFilters;
 
-		this.m_mutatedMethods = new LinkedList<>();
+		m_mutatedMethods = new ArrayList<>();
 	}
 
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void modify(ClassReader cr, ClassWriter cw) throws CodeOperationException {
-		ClassNode cn = new ClassNode();
-		cr.accept(cn, 0);
+		ClassNode classNode = new ClassNode();
+		cr.accept(classNode, 0);
 
-		final String className = cr.getClassName();
-
-		for (MethodNode method : (List<MethodNode>) cn.methods) {
-			final MethodIdentifier methodIdentifier = MethodIdentifier.create(className, method);
+		for (MethodNode method : (List<MethodNode>) classNode.methods) {
+			MethodIdentifier methodIdentifier = MethodIdentifier.create(classNode, method);
 
 			if (m_methodFilters.apply(methodIdentifier, method).isAccepted()) {
 				mutate(method, methodIdentifier);
 			}
 		}
 
-		cn.accept(cw);
+		classNode.accept(cw);
 	}
 
 	private void mutate(MethodNode method, MethodIdentifier methodIdentifier) {
 		if (!ReturnValueGeneratorUtil.canHandleType(m_returnValueGenerator, methodIdentifier, method.desc)) {
-			// Note that capability to handle the return type is - if used
-			// correctly - already checked by the method
+			// Note that capability to handle the return type is - if used correctly - already checked by the method
 			// filter.
 			throw new IllegalStateException(
 					"The selected return value generator does not support a value generation for the method "
@@ -71,6 +72,7 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 		m_mutatedMethods.add(methodIdentifier);
 	}
 
+	/** {@link #m_mutatedMethods} */
 	public List<MethodIdentifier> getMutatedMethods() {
 		return m_mutatedMethods;
 	}
