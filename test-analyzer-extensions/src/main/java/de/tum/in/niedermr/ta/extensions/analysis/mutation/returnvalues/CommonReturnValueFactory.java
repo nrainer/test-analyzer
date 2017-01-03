@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 
 import java.io.File;
+import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -114,7 +115,15 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		case "long[]":
 			return new long[0];
 		default:
-			throw new NoSuchElementException();
+			if (returnType.endsWith(ARRAY_BRACKETS + ARRAY_BRACKETS)) {
+				throw new NoSuchElementException("Only arrays of a single dimension supported");
+			}
+			try {
+				String classNameWithoutArrayBrackets = returnType.substring(0, returnType.length() - 2);
+				return Array.newInstance(Class.forName(classNameWithoutArrayBrackets), 0);
+			} catch (ClassNotFoundException e) {
+				throw new NoSuchElementException(e.getMessage());
+			}
 		}
 	}
 

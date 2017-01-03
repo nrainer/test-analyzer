@@ -13,7 +13,9 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
+/** Test {@link CommonReturnValueFactory}. */
 public class CommonReturnValueFactoryTest {
+
 	private static final String NOT_SUPPORTED_CLASS = "java.unsupported.UnsupportedClass";
 	private static final String JAVA_UTIL_LIST = "java.util.List";
 
@@ -68,6 +70,14 @@ public class CommonReturnValueFactoryTest {
 
 		supported = FACTORY.supports(MethodIdentifier.EMPTY, NOT_SUPPORTED_CLASS);
 		assertTrue(supported == (FACTORY.get(MethodIdentifier.EMPTY.get(), NOT_SUPPORTED_CLASS) != null));
+	}
+
+	/** Test. */
+	@Test
+	public void testCreateArray() {
+		Object obj = FACTORY.get(MethodIdentifier.EMPTY.get(), CommonReturnValueFactoryTest.class.getName() + "[]");
+		assertNotNull(obj);
+		assertTrue(obj.getClass().isArray());
 	}
 
 	/** Test. */
