@@ -9,6 +9,7 @@ import org.junit.Test;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueFactory;
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortReason;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.SampleClass2;
 
 /** Test {@link SimpleReflectionReturnValueFactory}. */
 public class SimpleReflectionReturnValueFactoryTest {
@@ -38,5 +39,13 @@ public class SimpleReflectionReturnValueFactoryTest {
 		Object obj = FACTORY.get(MethodIdentifier.EMPTY.get(), SimpleReflectionReturnValueFactoryTest.class.getName());
 		assertNotNull(obj);
 		assertTrue(obj instanceof SimpleReflectionReturnValueFactoryTest);
+	}
+
+	/** Test. */
+	@Test
+	public void testSimpleConstructor() {
+		Object obj = FACTORY.get(MethodIdentifier.EMPTY.get(), SampleClass2.class.getName());
+		assertNotNull(obj);
+		assertTrue(obj instanceof SampleClass2);
 	}
 }
