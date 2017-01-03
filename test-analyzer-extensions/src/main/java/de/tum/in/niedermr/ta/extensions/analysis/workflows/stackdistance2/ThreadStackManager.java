@@ -142,16 +142,17 @@ public class ThreadStackManager implements IThreadListener {
 
 		for (StackTraceElement stackTraceElement : stackTrace) {
 			String stackElementClassName = stackTraceElement.getClassName();
+			String stackTraceElementString = stackTraceElement.toString();
 
 			if (!startClassCompleted) {
 				boolean inStartClass = startClassName.equals(stackElementClassName);
 
 				if (startClassReached && inStartClass) {
-					LOGGER.debug("Ignoring element in start class: " + stackTraceElement);
+					LOGGER.debug("Ignoring element in start class: " + stackTraceElementString);
 				}
 				if (!startClassReached && inStartClass) {
 					// start class reached -> start counting when the start class is left
-					LOGGER.debug("Start class reached: " + stackTraceElement);
+					LOGGER.debug("Start class reached: " + stackTraceElementString);
 					startClassReached = true;
 				}
 				if (startClassReached && !inStartClass) {
@@ -165,17 +166,17 @@ public class ThreadStackManager implements IThreadListener {
 			}
 
 			if (m_stopClassName.equals(stackElementClassName)) {
-				LOGGER.debug("Abort counting at element: " + stackTraceElement);
+				LOGGER.debug("Abort counting at element: " + stackTraceElementString);
 				break;
 			}
 
 			if (isCountIgnoredClass(stackElementClassName)) {
-				LOGGER.debug("Skipping ignored element: " + stackTraceElement);
+				LOGGER.debug("Skipping ignored element: " + stackTraceElementString);
 				continue;
 			}
 
 			count++;
-			LOGGER.debug("Counted element: " + stackTraceElement);
+			LOGGER.debug("Counted element: " + stackTraceElementString);
 		}
 
 		LOGGER.debug("Stack height is: " + count);
