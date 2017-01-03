@@ -53,25 +53,26 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			} else {
 				return createOtherArray(returnType);
 			}
-		} else {
-			if (returnType.startsWith(PCKG_JAVA_LANG)) {
-				return createJavaLang(returnType);
-			} else if (returnType.startsWith(PCKG_JAVA_UTIL)) {
-				return createJavaUtil(returnType);
-			} else if (returnType.startsWith(PCKG_JAVA_IO)) {
-				return createJavaIO(returnType);
-			} else if (returnType.startsWith(PCKG_JAVA_MATH)) {
-				return createJavaMath(returnType);
-			}
 		}
 
-		throw new NoSuchElementException();
+		if (returnType.startsWith(PCKG_JAVA_LANG)) {
+			return createJavaLang(returnType);
+		} else if (returnType.startsWith(PCKG_JAVA_UTIL)) {
+			return createJavaUtil(returnType);
+		} else if (returnType.startsWith(PCKG_JAVA_IO)) {
+			return createJavaIO(returnType);
+		} else if (returnType.startsWith(PCKG_JAVA_MATH)) {
+			return createJavaMath(returnType);
+		}
+		return createOther(returnType);
 	}
 
 	private Object createJavaLangArray(String returnType) {
 		switch (returnType) {
 		case "java.lang.Object[]":
 			return new Object[0];
+		case "java.lang.Object[][]":
+			return new Object[0][];
 		case "java.lang.String[]":
 			return new String[0];
 		case "java.lang.Boolean[]":
@@ -191,6 +192,10 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return new StringBuffer();
 		case "java.lang.StringBuilder":
 			return new StringBuilder();
+		case "java.lang.ClassLoader":
+			return this.getClass().getClassLoader();
+		case "java.lang.StackTraceElement":
+			return new Exception().getStackTrace()[0];
 		default:
 			return null;
 		}
@@ -256,6 +261,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return Calendar.getInstance();
 		case "java.util.regex.Pattern":
 			return Pattern.compile(".");
+		case "java.util.concurrent.ThreadPoolExecutor":
+			return new java.util.concurrent.ScheduledThreadPoolExecutor(1);
 		default:
 			return null;
 		}
@@ -267,6 +274,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return new File("./files/textfile.txt");
 		case "java.io.Serializable":
 			return "";
+		case "java.io.Reader":
+			return new java.io.StringReader("a");
 		default:
 			throw new NoSuchElementException();
 		}
@@ -283,7 +292,17 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		default:
 			throw new NoSuchElementException();
 		}
+	}
 
+	private Object createOther(String returnType) throws NoSuchElementException {
+		switch (returnType) {
+		case "java.net.InetAddress":
+			return java.net.InetAddress.getLoopbackAddress();
+		case "java.nio.charset.Charset":
+			return java.nio.charset.Charset.defaultCharset();
+		default:
+			throw new NoSuchElementException();
+		}
 	}
 
 	private Object newComparable() {
