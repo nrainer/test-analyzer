@@ -29,17 +29,17 @@ import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 /** Base class for integration tests. */
 public abstract class AbstractIntegrationTest implements IntegrationTestConstants, FileSystemConstants {
 
-	private final static String TEST_WORKING_AREA = "./src/test/temp/";
-	private final static String TEST_DATA_FOLDER = "./src/test/data/";
-	private final static String TEST_DATA_COMMON_FOLDER = TEST_DATA_FOLDER + "common/";
-	private final static String TEST_WORKING_AREA_TO_ROOT = "../../../";
+	private static final String TEST_WORKING_AREA = "./src/test/temp/";
+	private static final String TEST_DATA_FOLDER = "./src/test/data/";
+	private static final String TEST_DATA_COMMON_FOLDER = TEST_DATA_FOLDER + "common/";
+	private static final String TEST_WORKING_AREA_TO_ROOT = "../../../";
 
-	private final static String FOLDER_EXPECTED = "expected/";
-	private final static String FOLDER_CONFIGURATION = "configuration/";
-	private final static String FOLDER_OUTPUT = "result/";
-	private final static String FOLDER_LOG = "logs/";
+	private static final String FOLDER_EXPECTED = "expected/";
+	private static final String FOLDER_CONFIGURATION = "configuration/";
+	private static final String FOLDER_OUTPUT = "result/";
+	private static final String FOLDER_LOG = "logs/";
 
-	private final static String FILE_NAME_CONFIGURATION = "config" + FILE_EXTENSION_CONFIG;
+	private static final String FILE_NAME_CONFIGURATION = "config" + FILE_EXTENSION_CONFIG;
 
 	private Configuration m_configuration;
 	private final String m_systemTestName;
@@ -64,7 +64,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	}
 
 	@Test(timeout = 60000)
-	public void testSystem() throws Exception {
+	public void testSystem() throws ConfigurationException, IOException {
 		try {
 			executeTestLogic();
 			m_wasSuccessful = true;
@@ -74,7 +74,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		}
 	}
 
-	protected abstract void executeTestLogic() throws Exception;
+	protected abstract void executeTestLogic() throws ConfigurationException, IOException;
 
 	@After
 	public void afterTest() {
