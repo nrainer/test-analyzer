@@ -69,10 +69,14 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		Constructor<?>[] publicConstructors = cls.getConstructors();
 
 		for (Constructor<?> constructor : publicConstructors) {
-			if (constructor.getParameterTypes().length == 0) {
-				return constructor.newInstance();
-			} else if (areAllPrimitiveTypeOrStringParameters(constructor)) {
-				return createInstanceWithSimpleParameters(constructor);
+			try {
+				if (constructor.getParameterTypes().length == 0) {
+					return constructor.newInstance();
+				} else if (areAllPrimitiveTypeOrStringParameters(constructor)) {
+					return createInstanceWithSimpleParameters(constructor);
+				}
+			} catch (Throwable t) {
+				continue;
 			}
 		}
 
@@ -90,6 +94,8 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 			if (parameterType.isArray()) {
 				parameterValue = Array.newInstance(parameterType.getComponentType(), 0);
+			} else if (parameterType.isEnum()) {
+				parameterValue = getEnumInstance(parameterType);
 			} else if (parameterType == String.class) {
 				parameterValue = "";
 			} else if (parameterType == Object.class) {
@@ -113,7 +119,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 			} else if (parameterType == double.class) {
 				parameterValue = 1.0;
 			} else {
-				throw new IllegalStateException("Not a primitive type or String: " + parameterType);
+				throw new IllegalStateException("Not a supported parameter type: " + parameterType);
 			}
 
 			parameterValues[i] = parameterValue;
@@ -124,7 +130,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 	private boolean areAllPrimitiveTypeOrStringParameters(Constructor<?> constructor) {
 		for (Class<?> parameterType : constructor.getParameterTypes()) {
-			if (!parameterType.isPrimitive() && !parameterType.isArray()
+			if (!parameterType.isPrimitive() && !parameterType.isArray() && !parameterType.isEnum()
 					&& !SUPPORTED_CONSTRUCTOR_PARAMETER_TYPES.contains(parameterType)) {
 				return false;
 			}
@@ -133,7 +139,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		return true;
 	}
 
-	private Object getEnumInstance(Class<?> enumCls) {
+	protected static Object getEnumInstance(Class<?> enumCls) {
 		Object[] enumConstants = enumCls.getEnumConstants();
 
 		if (enumConstants.length > 0) {
