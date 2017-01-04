@@ -27,6 +27,10 @@ public class SimpleReflectionReturnValueFactoryTest extends AbstractInstancesRet
 				SimpleReflectionReturnValueFactoryTest.class.getName() + "[]");
 		assertNotNull(obj);
 		assertTrue(obj.getClass().isArray());
+
+		Object multiDimensionalArray = SimpleReflectionReturnValueFactory.createArray(Object.class.getName() + "[][][]",
+				Object.class);
+		assertEquals(new Object[0][][].getClass(), multiDimensionalArray.getClass());
 	}
 
 	/** Test. */

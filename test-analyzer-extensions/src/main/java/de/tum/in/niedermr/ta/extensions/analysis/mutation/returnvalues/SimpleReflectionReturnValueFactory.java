@@ -33,7 +33,8 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 	/** {@inheritDoc} */
 	@Override
-	public Object createWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
+	public Object createWithException(MethodIdentifier methodIdentifier, String returnType)
+			throws NoSuchElementException {
 		try {
 			if (isBlacklistedType(returnType)) {
 				throw new NoSuchElementException("Blacklisted: " + returnType);
@@ -142,12 +143,13 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		throw new NoSuchElementException("Enum does not contain any values: " + enumCls);
 	}
 
-	private Object createArray(String returnType, Class<?> arrayCls) {
-		if (returnType.endsWith(JavaConstants.ARRAY_BRACKETS + JavaConstants.ARRAY_BRACKETS)) {
-			throw new NoSuchElementException("Only arrays of a single dimension supported: " + returnType);
-		}
+	protected static Object createArray(String returnType, Class<?> arrayCls) {
+		int countArrayDimensions = (returnType.length() - returnType.replace(JavaConstants.ARRAY_BRACKETS, "").length())
+				/ 2;
 
-		return Array.newInstance(arrayCls, 0);
+		// keep all values 0
+		int[] dimensionLengths = new int[countArrayDimensions];
+		return Array.newInstance(arrayCls, dimensionLengths);
 	}
 
 	/**
