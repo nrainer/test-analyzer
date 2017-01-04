@@ -3,9 +3,15 @@ package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 public abstract class AbstractReturnValueFactory implements IReturnValueFactory {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AbstractReturnValueFactory.class);
 
 	private Optional<AbstractReturnValueFactory> m_fallbackFactory;
 
@@ -31,21 +37,23 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 	public final Object get(String identifierAsString, String returnType) {
 		try {
 			return getRecursiveWithException(MethodIdentifier.parse(identifierAsString), returnType);
-		} catch (NoSuchElementException ex) {
+		} catch (Throwable t) {
+			// should not happen because this method gets only invoked if the supports method returns true
+			LOGGER.error("Return null because instance creation failed unexpectedly", t);
 			return null;
 		}
 	}
 
-	protected Object getRecursiveWithException(MethodIdentifier methodIdentifier, String returnType)
-			throws NoSuchElementException {
+	protected final Object getRecursiveWithException(MethodIdentifier methodIdentifier, String returnType)
+			throws Throwable, NoSuchElementException {
 		try {
 			return getWithException(methodIdentifier, returnType);
-		} catch (NoSuchElementException e) {
+		} catch (Throwable t) {
 			if (m_fallbackFactory.isPresent()) {
 				return m_fallbackFactory.get().getWithException(methodIdentifier, returnType);
 			}
 
-			throw e;
+			throw t;
 		}
 	}
 
