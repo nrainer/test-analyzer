@@ -234,6 +234,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return new HashMap<>();
 		case "java.util.SortedMap":
 			return new TreeMap<>();
+		case "java.util.Optional":
+			return Optional.empty();
 		default:
 			return null;
 		}
