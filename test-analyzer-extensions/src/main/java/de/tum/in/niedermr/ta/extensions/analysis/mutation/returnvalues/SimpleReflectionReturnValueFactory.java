@@ -57,19 +57,19 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		Constructor<?>[] publicConstructors = cls.getConstructors();
 
 		for (Constructor<?> constructor : publicConstructors) {
-			Class<?>[] parameterTypes = constructor.getParameterTypes();
-			if (parameterTypes.length == 0) {
+			if (constructor.getParameterTypes().length == 0) {
 				return constructor.newInstance();
-			} else if (areAllPrimitiveTypeOrStringParameters(parameterTypes)) {
-				return createInstanceWithSimpleParameters(constructor, parameterTypes);
+			} else if (areAllPrimitiveTypeOrStringParameters(constructor)) {
+				return createInstanceWithSimpleParameters(constructor);
 			}
 		}
 
 		throw new NoSuchElementException("No public parameterless constructor exists: " + cls);
 	}
 
-	private Object createInstanceWithSimpleParameters(Constructor<?> constructor, Class<?>[] parameterTypes)
+	protected Object createInstanceWithSimpleParameters(Constructor<?> constructor)
 			throws ReflectiveOperationException {
+		Class<?>[] parameterTypes = constructor.getParameterTypes();
 		Object[] parameterValues = new Object[parameterTypes.length];
 
 		for (int i = 0; i < parameterTypes.length; i++) {
@@ -104,8 +104,8 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		return constructor.newInstance(parameterValues);
 	}
 
-	private boolean areAllPrimitiveTypeOrStringParameters(Class<?>[] parameters) {
-		for (Class<?> parameterType : parameters) {
+	private boolean areAllPrimitiveTypeOrStringParameters(Constructor<?> constructor) {
+		for (Class<?> parameterType : constructor.getParameterTypes()) {
 			if (!parameterType.isPrimitive() && parameterType != String.class) {
 				return false;
 			}
