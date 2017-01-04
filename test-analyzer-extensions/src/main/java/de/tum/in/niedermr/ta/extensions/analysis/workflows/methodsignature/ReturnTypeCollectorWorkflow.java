@@ -64,6 +64,14 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 					true);
 
 	/**
+	 * <code>extension.methodsignature.returnvalue.minTypeOccurrenceCount</code>: Number of minimal occurrences for a
+	 * type to be included in the result list.
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_MIN_TYPE_OCCURRENCE_COUNT = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.minTypeOccurrenceCount",
+					1);
+
+	/**
 	 * <code>extension.methodsignature.returnvalue.outputFormat</code>: LIST, COUNT or CODE
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_OUTPUT_FORMAT = DynamicConfigurationKey
@@ -87,6 +95,8 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 		collectorStep.setOutputFormat(configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_OUTPUT_FORMAT));
 		collectorStep.setExcludeWrapperAndString(
 				configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXCLUDE_WRAPPER_AND_STRING));
+		collectorStep.setMinTypeOccurrenceCount(
+				configuration.getDynamicValues().getIntegerValue(CONFIGURATION_KEY_MIN_TYPE_OCCURRENCE_COUNT));
 
 		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_SUPPRESS_SUPPORTED_TYPES)) {
 			collectorStep.setClassNameFilter(createClassNameFilter(configuration));

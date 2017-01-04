@@ -46,6 +46,9 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** Exclude wrapper types and String. */
 	private boolean m_excludeWrapperTypesAndString;
 
+	/** Minimum occurrences of a type to be included in the result list. */
+	private int m_minTypeOccurrences;
+
 	/** Set the result receiver. */
 	public void setResultReceiver(IResultReceiver resultReceiver) {
 		m_resultReceiver = resultReceiver;
@@ -64,6 +67,11 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** {@link #m_excludeWrapperTypesAndString} */
 	public void setExcludeWrapperAndString(boolean excludeWrapperTypesAndString) {
 		m_excludeWrapperTypesAndString = excludeWrapperTypesAndString;
+	}
+
+	/** {@link #m_minTypeOccurrences} */
+	public void setMinTypeOccurrenceCount(int minOccurrences) {
+		m_minTypeOccurrences = minOccurrences;
 	}
 
 	/** {@inheritDoc} */
@@ -92,15 +100,22 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 
 		appendStatistics(countTypes, countTypeUsages, countUnsupportedTypes, countUnsupportedTypeUsages);
 
-		List<String> returnTypeClassNameList = new ArrayList<>();
-		returnTypeClassNameList.addAll(returnTypeClassNameOccurrences.keySet());
-		Collections.sort(returnTypeClassNameList);
+		if (m_minTypeOccurrences > 1) {
+			returnTypeClassNameOccurrences.entrySet().removeIf(entry -> entry.getValue() < m_minTypeOccurrences);
+		}
 
-		for (String returnTypeCls : returnTypeClassNameList) {
+		for (String returnTypeCls : getTypeListOrderedByName(returnTypeClassNameOccurrences)) {
 			m_resultReceiver.append(format(returnTypeCls, returnTypeClassNameOccurrences));
 		}
 
 		m_resultReceiver.markResultAsComplete();
+	}
+
+	protected List<String> getTypeListOrderedByName(Map<String, Integer> returnTypeClassNameOccurrences) {
+		List<String> returnTypeClassNameList = new ArrayList<>();
+		returnTypeClassNameList.addAll(returnTypeClassNameOccurrences.keySet());
+		Collections.sort(returnTypeClassNameList);
+		return returnTypeClassNameList;
 	}
 
 	protected void appendStatistics(int countTypes, int countTypeUsages, int countUnsupportedTypes,
