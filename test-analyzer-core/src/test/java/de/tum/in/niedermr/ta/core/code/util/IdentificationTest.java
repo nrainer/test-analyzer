@@ -9,17 +9,21 @@ import org.objectweb.asm.Type;
 
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 
-public class IdentificationTest implements JavaConstants {
+/** Test {@link Identification}. */
+public class IdentificationTest {
 	private static final String DESCRIPTOR_BIG_INTEGER = "Ljava/lang/BigInteger;";
 	private static final String DESCRIPTOR_STRING = "Ljava/lang/String;";
 
 	private static final String SAMPLE_CLASS_NAME = "org.test.Class";
 
+	/** Test. */
 	@Test
 	public void testAsClassname() {
-		assertEquals(SAMPLE_CLASS_NAME, Identification.asClassName(SAMPLE_CLASS_NAME.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR)));
+		assertEquals(SAMPLE_CLASS_NAME, Identification
+				.asClassName(SAMPLE_CLASS_NAME.replace(JavaConstants.PACKAGE_SEPARATOR, JavaConstants.PATH_SEPARATOR)));
 	}
 
+	/** Test. */
 	@Test
 	public void testIsString() {
 		Type t;

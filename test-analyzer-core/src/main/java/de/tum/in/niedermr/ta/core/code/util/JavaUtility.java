@@ -7,7 +7,7 @@ import org.objectweb.asm.tree.ClassNode;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
-public class JavaUtility implements JavaConstants {
+public class JavaUtility {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JavaUtility.class);
@@ -38,7 +38,7 @@ public class JavaUtility implements JavaConstants {
 	 * Converts a class path to a class name.
 	 */
 	public static String toClassName(String classPath) {
-		return removeClassFileEnding(classPath).replace(PATH_SEPARATOR, PACKAGE_SEPARATOR);
+		return removeClassFileEnding(classPath).replace(JavaConstants.PATH_SEPARATOR, JavaConstants.PACKAGE_SEPARATOR);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class JavaUtility implements JavaConstants {
 	}
 
 	private static String getClassPath(String className) {
-		return className.replace(PACKAGE_SEPARATOR, PATH_SEPARATOR);
+		return className.replace(JavaConstants.PACKAGE_SEPARATOR, JavaConstants.PATH_SEPARATOR);
 	}
 
 	/**

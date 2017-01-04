@@ -2,9 +2,7 @@ package de.tum.in.niedermr.ta.core.code.util;
 
 import org.objectweb.asm.Type;
 
-import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
-
-public class Identification implements JavaConstants {
+public class Identification {
 	/**
 	 * Usage scenario: convert ClassNode.name to the class name
 	 */

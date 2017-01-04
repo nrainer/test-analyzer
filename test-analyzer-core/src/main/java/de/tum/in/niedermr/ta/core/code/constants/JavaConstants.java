@@ -1,7 +1,13 @@
 package de.tum.in.niedermr.ta.core.code.constants;
 
 /** Java constants. */
-public interface JavaConstants {
+public final class JavaConstants {
+
+	/** Constructor. */
+	private JavaConstants() {
+		// NOP
+	}
+
 	/** {@value} */
 	public static final String PATH_SEPARATOR = "/";
 	/** {@value} */

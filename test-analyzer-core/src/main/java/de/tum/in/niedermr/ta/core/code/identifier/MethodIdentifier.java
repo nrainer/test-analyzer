@@ -8,7 +8,7 @@ import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
 
 /** Identifier for Java methods. */
-public final class MethodIdentifier implements Identifier, JavaConstants {
+public final class MethodIdentifier implements Identifier {
 	private static final String UNKNOWN_RETURN_TYPE = "?";
 	public static final MethodIdentifier EMPTY = new MethodIdentifier("*", UNKNOWN_RETURN_TYPE);
 
@@ -76,7 +76,7 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	 *            either with dots or slashes
 	 */
 	public static MethodIdentifier create(String className, String methodName, String methodDesc) {
-		String identifier = Identification.asClassName(className) + CLASS_METHOD_SEPARATOR + methodName
+		String identifier = Identification.asClassName(className) + JavaConstants.CLASS_METHOD_SEPARATOR + methodName
 				+ convertDescriptor(methodDesc);
 		String returnType = Identification.getMethodReturnType(methodDesc);
 
@@ -84,7 +84,7 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	}
 
 	public static MethodIdentifier parse(String methodIdentifier) {
-		String[] values = methodIdentifier.split(RETURN_TYPE_SEPARATOR);
+		String[] values = methodIdentifier.split(JavaConstants.RETURN_TYPE_SEPARATOR);
 
 		return new MethodIdentifier(values[0], values.length > 1 ? values[1] : UNKNOWN_RETURN_TYPE);
 	}
@@ -98,14 +98,12 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	 * @see #getOnlyReturnType()
 	 */
 	public final String getWithReturnType() {
-		return get() + RETURN_TYPE_SEPARATOR + getOnlyReturnType();
+		return get() + JavaConstants.RETURN_TYPE_SEPARATOR + getOnlyReturnType();
 	}
 
 	/**
-	 * The return type would be available if the instance was created using the
-	 * 'create' method or if the string to be parsed by the 'parse' method
-	 * contained the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be
-	 * returned.
+	 * The return type would be available if the instance was created using the 'create' method or if the string to be
+	 * parsed by the 'parse' method contained the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be returned.
 	 */
 	public final String getOnlyReturnType() {
 		return m_returnType;
@@ -116,10 +114,10 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 
 		try {
 			// cut the arguments
-			s = s.substring(0, s.indexOf(ARGUMENTS_BEGIN));
+			s = s.substring(0, s.indexOf(JavaConstants.ARGUMENTS_BEGIN));
 
 			// cut the method name
-			s = s.substring(0, s.lastIndexOf(CLASS_METHOD_SEPARATOR));
+			s = s.substring(0, s.lastIndexOf(JavaConstants.CLASS_METHOD_SEPARATOR));
 		} catch (IndexOutOfBoundsException ex) {
 			throw new IllegalStateException("Method identifier is invalid: " + get());
 		}
@@ -132,10 +130,10 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 
 		try {
 			// cut the arguments
-			s = s.substring(0, s.indexOf(ARGUMENTS_BEGIN));
+			s = s.substring(0, s.indexOf(JavaConstants.ARGUMENTS_BEGIN));
 
 			// cut the method name
-			s = s.substring(s.lastIndexOf(CLASS_METHOD_SEPARATOR) + 1);
+			s = s.substring(s.lastIndexOf(JavaConstants.CLASS_METHOD_SEPARATOR) + 1);
 		} catch (IndexOutOfBoundsException ex) {
 			throw new IllegalStateException("Method identifier is invalid: " + get());
 		}
@@ -149,8 +147,7 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 	}
 
 	/**
-	 * Two method identifiers are supposed to be equal if the identifiers are
-	 * equal. The return type is not considered.
+	 * Two method identifiers are supposed to be equal if the identifiers are equal. The return type is not considered.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -164,7 +161,7 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 		StringBuilder builder = new StringBuilder();
 
 		for (Type argument : type.getArgumentTypes()) {
-			builder.append(ARGUMENTS_SEPARATOR);
+			builder.append(JavaConstants.ARGUMENTS_SEPARATOR);
 			builder.append(argument.getClassName());
 		}
 
@@ -174,7 +171,7 @@ public final class MethodIdentifier implements Identifier, JavaConstants {
 			arguments = arguments.substring(1);
 		}
 
-		return ARGUMENTS_BEGIN + arguments + ARGUMENTS_END;
+		return JavaConstants.ARGUMENTS_BEGIN + arguments + JavaConstants.ARGUMENTS_END;
 	}
 
 	@Override
