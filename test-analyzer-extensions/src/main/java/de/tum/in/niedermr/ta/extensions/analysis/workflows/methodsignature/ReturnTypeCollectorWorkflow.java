@@ -25,7 +25,10 @@ import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
-/** Workflow that collects the declared return types of methods under test. */
+/**
+ * Workflow that collects the declared return types of methods under test. <b>Note that it does not collect / consider
+ * primitive types, their wrapper types and String.
+ */
 public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 
 	/** Logger. */
@@ -53,6 +56,14 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactories", "");
 
 	/**
+	 * <code>extension.methodsignature.returnvalue.excludeWrapperAndString</code>: Whether wrapper types and String
+	 * should be excluded.
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXCLUDE_WRAPPER_AND_STRING = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.excludeWrapperAndString",
+					true);
+
+	/**
 	 * <code>extension.methodsignature.returnvalue.outputFormat</code>: LIST, COUNT or CODE
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_OUTPUT_FORMAT = DynamicConfigurationKey
@@ -74,6 +85,8 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 		collectorStep.setResultReceiver(resultReceiver);
 
 		collectorStep.setOutputFormat(configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_OUTPUT_FORMAT));
+		collectorStep.setExcludeWrapperAndString(
+				configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXCLUDE_WRAPPER_AND_STRING));
 
 		if (configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_SUPPRESS_SUPPORTED_TYPES)) {
 			collectorStep.setClassNameFilter(createClassNameFilter(configuration));

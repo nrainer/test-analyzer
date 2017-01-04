@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
+import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
@@ -42,6 +43,9 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	 */
 	private String m_outputFormat;
 
+	/** Exclude wrapper types and String. */
+	private boolean m_excludeWrapperTypesAndString;
+
 	/** Set the result receiver. */
 	public void setResultReceiver(IResultReceiver resultReceiver) {
 		m_resultReceiver = resultReceiver;
@@ -57,12 +61,23 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 		m_outputFormat = outputFormat;
 	}
 
+	/** {@link #m_excludeWrapperTypesAndString} */
+	public void setExcludeWrapperAndString(boolean excludeWrapperTypesAndString) {
+		m_excludeWrapperTypesAndString = excludeWrapperTypesAndString;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	protected void runInternal(Configuration configuration, ProcessExecution processExecution)
 			throws ExecutionException, ReflectiveOperationException {
 
 		Map<String, Integer> returnTypeClassNameOccurrences = computeReturnTypeClassNameOccurrences(configuration);
+
+		if (m_excludeWrapperTypesAndString) {
+			returnTypeClassNameOccurrences.remove(String.class.getName());
+			returnTypeClassNameOccurrences.entrySet()
+					.removeIf(entry -> JavaConstants.WRAPPER_TYPE_CLASS_NAMES.contains(entry.getKey()));
+		}
 
 		int countTypes = returnTypeClassNameOccurrences.size();
 		int countTypeUsages = returnTypeClassNameOccurrences.values().stream().mapToInt(Number::intValue).sum();
@@ -94,6 +109,11 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 		double ratioSupportedTypeUsages = 1 - (countUnsupportedTypeUsages / (double) countTypeUsages);
 
 		m_resultReceiver.append("// NON-PRIMITIVE TYPE SUMMARY");
+
+		if (m_excludeWrapperTypesAndString) {
+			m_resultReceiver.append("// (NOTE: Wrapper types and String are not considered.)");
+		}
+
 		m_resultReceiver.append("// Total types: " + countTypes);
 		m_resultReceiver.append("// Total unsupported types: " + countUnsupportedTypes);
 		m_resultReceiver.append("// Ratio supported types: " + ratioSupportedTypes);
@@ -110,7 +130,7 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	protected String getSupportedTypeUsageTargetInfo(double targetRatio, int countTypeUsages,
 			int countUnsupportedTypeUsages, double ratioSupportedTypeUsages) {
 		if (ratioSupportedTypeUsages >= targetRatio) {
-			m_resultReceiver.append("// Supported type usage of " + (targetRatio * 100) + "% reached.");
+			return "// Supported type usage of " + (targetRatio * 100) + "% reached.";
 		}
 		int countMissingTypeUsages = (int) Math.ceil(countTypeUsages * targetRatio)
 				- (countTypeUsages - countUnsupportedTypeUsages);
