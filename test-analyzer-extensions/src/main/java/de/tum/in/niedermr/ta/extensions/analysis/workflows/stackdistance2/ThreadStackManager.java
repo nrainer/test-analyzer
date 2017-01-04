@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.StackDistanceAnalysisWorkflow;
 import de.tum.in.niedermr.ta.extensions.threads.IModifiedThreadClass;
 import de.tum.in.niedermr.ta.extensions.threads.IThreadListener;
 import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
@@ -64,7 +65,8 @@ public class ThreadStackManager implements IThreadListener {
 		}
 
 		throw new IllegalStateException(
-				"It appears that the original java.lang.Thread class is used instead of the modified one!");
+				"It appears that the original java.lang.Thread class is used instead of the modified one! Either put the modified Thread class into the endorsed folder or use "
+						+ StackDistanceAnalysisWorkflow.class.getName());
 	}
 
 	/** {@link #m_stopClassName} */
