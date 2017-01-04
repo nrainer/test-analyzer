@@ -60,6 +60,10 @@ public class CommonReturnValueFactoryTest extends AbstractInstancesReturnValueFa
 		obj = m_factory.get(MethodIdentifier.EMPTY.get(), "java.lang.Integer[]");
 		assertNotNull(obj);
 		assertTrue(obj instanceof Integer[]);
+
+		obj = m_factory.get(MethodIdentifier.EMPTY.get(), Class.class.getName());
+		assertNotNull(obj);
+		assertTrue(obj instanceof Class);
 	}
 
 	/** Test. */

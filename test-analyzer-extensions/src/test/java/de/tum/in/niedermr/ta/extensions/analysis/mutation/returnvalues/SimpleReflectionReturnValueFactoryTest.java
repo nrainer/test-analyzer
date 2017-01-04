@@ -31,6 +31,14 @@ public class SimpleReflectionReturnValueFactoryTest extends AbstractInstancesRet
 
 	/** Test. */
 	@Test
+	public void testCreateEnumArray() {
+		Object obj = m_factory.get(MethodIdentifier.EMPTY.get(), TestAbortReason.class.getName() + "[]");
+		assertNotNull(obj);
+		assertTrue(obj.getClass().isArray());
+	}
+
+	/** Test. */
+	@Test
 	public void testEnumValue() {
 		Object obj = m_factory.get(MethodIdentifier.EMPTY.get(), TestAbortReason.class.getName());
 		assertNotNull(obj);
