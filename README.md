@@ -10,3 +10,6 @@ mvn eclipse:eclipse -DdownloadSources=true
 
 # Main class
 `de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart`
+
+# Sample configuration
+`/test-analyzer-runner/sample/sample-configuration.config`
