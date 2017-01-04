@@ -23,7 +23,7 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 	@Override
 	public boolean supports(MethodIdentifier methodIdentifier, String returnType) {
 		try {
-			getRecursiveWithException(methodIdentifier, returnType);
+			createRecursiveWithException(methodIdentifier, returnType);
 			return true;
 		} catch (NoSuchElementException ex) {
 			return false;
@@ -32,11 +32,13 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 		}
 	}
 
-	/** {@inheritDoc} */
+	/**
+	 * {@inheritDoc} <b>DO NOT CHANGE THE METHOD SIGNATURE: Method is invoked from mutated code.</b>
+	 */
 	@Override
 	public final Object get(String identifierAsString, String returnType) {
 		try {
-			return getRecursiveWithException(MethodIdentifier.parse(identifierAsString), returnType);
+			return createRecursiveWithException(MethodIdentifier.parse(identifierAsString), returnType);
 		} catch (Throwable t) {
 			// should not happen because this method gets only invoked if the supports method returns true
 			LOGGER.error("Return null because instance creation failed unexpectedly", t);
@@ -44,24 +46,26 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 		}
 	}
 
-	protected final Object getRecursiveWithException(MethodIdentifier methodIdentifier, String returnType)
+	/** Create an instance using {@link #createWithException(MethodIdentifier, String)} or use the fallback factory. */
+	protected final Object createRecursiveWithException(MethodIdentifier methodIdentifier, String returnType)
 			throws Throwable, NoSuchElementException {
 		try {
-			return getWithException(methodIdentifier, returnType);
+			return createWithException(methodIdentifier, returnType);
 		} catch (Throwable t) {
 			if (m_fallbackFactory.isPresent()) {
-				return m_fallbackFactory.get().getRecursiveWithException(methodIdentifier, returnType);
+				return m_fallbackFactory.get().createRecursiveWithException(methodIdentifier, returnType);
 			}
 
 			throw t;
 		}
 	}
 
+	/** Create an instance or throw a NoSuchElementException if the class is not supported. */
+	protected abstract Object createWithException(MethodIdentifier methodIdentifier, String returnType)
+			throws Throwable, NoSuchElementException;
+
 	/** Get a fallback factory in case this factory does not support the given type. */
 	protected Optional<AbstractReturnValueFactory> getConfiguredFallbackFactory() {
 		return Optional.empty();
 	}
-
-	protected abstract Object getWithException(MethodIdentifier methodIdentifier, String returnType)
-			throws NoSuchElementException;
 }

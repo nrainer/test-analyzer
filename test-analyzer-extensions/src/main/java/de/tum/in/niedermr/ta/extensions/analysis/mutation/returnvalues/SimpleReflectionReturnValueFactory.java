@@ -33,7 +33,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 	/** {@inheritDoc} */
 	@Override
-	public Object getWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
+	public Object createWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
 		try {
 			if (isBlacklistedType(returnType)) {
 				throw new NoSuchElementException("Blacklisted: " + returnType);

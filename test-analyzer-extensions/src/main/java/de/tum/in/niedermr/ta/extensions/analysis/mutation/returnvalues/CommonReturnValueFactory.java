@@ -44,7 +44,7 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 
 	/** {@inheritDoc} */
 	@Override
-	public Object getWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
+	public Object createWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
 		if (returnType.endsWith(JavaConstants.ARRAY_BRACKETS)) {
 			if (returnType.startsWith(PCKG_JAVA_LANG)) {
 				return createJavaLangArray(returnType);

@@ -46,7 +46,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 		public static final ValidFactory1 INSTANCE = new ValidFactory1();
 
 		@Override
-		public Object getWithException(MethodIdentifier methodIdentifier, String returnType)
+		public Object createWithException(MethodIdentifier methodIdentifier, String returnType)
 				throws NoSuchElementException {
 			return null;
 		}
@@ -57,7 +57,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 	 */
 	private static class InvalidFactory1 extends AbstractReturnValueFactory {
 		@Override
-		public Object getWithException(MethodIdentifier methodIdentifier, String returnType)
+		public Object createWithException(MethodIdentifier methodIdentifier, String returnType)
 				throws NoSuchElementException {
 			return null;
 		}
@@ -70,7 +70,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 		private final InvalidFactory2 INSTANCE = new InvalidFactory2();
 
 		@Override
-		public Object getWithException(MethodIdentifier methodIdentifier, String returnType)
+		public Object createWithException(MethodIdentifier methodIdentifier, String returnType)
 				throws NoSuchElementException {
 			return null;
 		}
@@ -83,7 +83,7 @@ public class AbstractFactoryReturnValueGeneratorTest {
 		public static final IReturnValueFactory INSTANCE = new InvalidFactory3();
 
 		@Override
-		public Object getWithException(MethodIdentifier methodIdentifier, String returnType)
+		public Object createWithException(MethodIdentifier methodIdentifier, String returnType)
 				throws NoSuchElementException {
 			return null;
 		}
