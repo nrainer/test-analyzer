@@ -53,10 +53,10 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactories", "");
 
 	/**
-	 * <code>extension.methodsignature.returnvalue.outputFormat</code>: LIST or CODE
+	 * <code>extension.methodsignature.returnvalue.outputFormat</code>: LIST, COUNT or CODE
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_OUTPUT_FORMAT = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.outputFormat", "");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.outputFormat", "LIST");
 
 	/** Result file name. */
 	private static final String RESULT_FILE_NAME = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "return-type-list"

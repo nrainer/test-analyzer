@@ -1,20 +1,24 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
-import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
+import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.ReturnTypeCollectorWorkflow;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.ReturnTypeRetrieverOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -31,7 +35,11 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** Filter for the class names. */
 	private Optional<Predicate<String>> m_classNameFilter;
 
-	/** Result output format. LIST or CODE. */
+	/**
+	 * Result output format.
+	 * 
+	 * @see ReturnTypeCollectorWorkflow#CONFIGURATION_KEY_OUTPUT_FORMAT
+	 */
 	private String m_outputFormat;
 
 	/** Set the result receiver. */
@@ -53,41 +61,105 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	@Override
 	protected void runInternal(Configuration configuration, ProcessExecution processExecution)
 			throws ExecutionException, ReflectiveOperationException {
-		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 
-		Set<String> returnTypeClassNameSet = new HashSet<>();
+		Map<String, Integer> returnTypeClassNameOccurrences = computeReturnTypeClassNameOccurrences(configuration);
 
-		for (String sourceJarFileName : configuration.getCodePathToMutate().getElements()) {
-			returnTypeClassNameSet.addAll(getNonPrimitiveReturnTypes(configuration, testCollector, sourceJarFileName));
-		}
+		int countTypes = returnTypeClassNameOccurrences.size();
+		int countTypeUsages = returnTypeClassNameOccurrences.values().stream().mapToInt(Number::intValue).sum();
 
 		if (m_classNameFilter.isPresent()) {
-			returnTypeClassNameSet.removeIf(m_classNameFilter.get());
+			returnTypeClassNameOccurrences.entrySet().removeIf(entry -> m_classNameFilter.get().test(entry.getKey()));
 		}
 
+		int countUnsupportedTypes = returnTypeClassNameOccurrences.size();
+		int countUnsupportedTypeUsages = returnTypeClassNameOccurrences.values().stream().mapToInt(Number::intValue)
+				.sum();
+
+		appendStatistics(countTypes, countTypeUsages, countUnsupportedTypes, countUnsupportedTypeUsages);
+
 		List<String> returnTypeClassNameList = new ArrayList<>();
-		returnTypeClassNameList.addAll(returnTypeClassNameSet);
+		returnTypeClassNameList.addAll(returnTypeClassNameOccurrences.keySet());
 		Collections.sort(returnTypeClassNameList);
 
 		for (String returnTypeCls : returnTypeClassNameList) {
-			m_resultReceiver.append(format(returnTypeCls));
+			m_resultReceiver.append(format(returnTypeCls, returnTypeClassNameOccurrences));
 		}
 
 		m_resultReceiver.markResultAsComplete();
 	}
 
+	protected void appendStatistics(int countTypes, int countTypeUsages, int countUnsupportedTypes,
+			int countUnsupportedTypeUsages) {
+		double ratioSupportedTypes = 1 - (countUnsupportedTypes / (double) countTypes);
+		double ratioSupportedTypeUsages = 1 - (countUnsupportedTypeUsages / (double) countTypeUsages);
+
+		m_resultReceiver.append("// NON-PRIMITIVE TYPE SUMMARY");
+		m_resultReceiver.append("// Total types: " + countTypes);
+		m_resultReceiver.append("// Total unsupported types: " + countUnsupportedTypes);
+		m_resultReceiver.append("// Ratio supported types: " + ratioSupportedTypes);
+		m_resultReceiver.append("// Total type usages: " + countTypeUsages);
+		m_resultReceiver.append("// Total unsupported type usages: " + countUnsupportedTypeUsages);
+		m_resultReceiver.append("// Ratio supported type usages: " + ratioSupportedTypeUsages);
+		m_resultReceiver.append(getSupportedTypeUsageTargetInfo(0.9, countTypeUsages, countUnsupportedTypeUsages,
+				ratioSupportedTypeUsages));
+		m_resultReceiver.append(getSupportedTypeUsageTargetInfo(0.8, countTypeUsages, countUnsupportedTypeUsages,
+				ratioSupportedTypeUsages));
+		m_resultReceiver.append("");
+	}
+
+	protected String getSupportedTypeUsageTargetInfo(double targetRatio, int countTypeUsages,
+			int countUnsupportedTypeUsages, double ratioSupportedTypeUsages) {
+		if (ratioSupportedTypeUsages >= targetRatio) {
+			m_resultReceiver.append("// Supported type usage of " + (targetRatio * 100) + "% reached.");
+		}
+		int countMissingTypeUsages = (int) Math.ceil(countTypeUsages * targetRatio)
+				- (countTypeUsages - countUnsupportedTypeUsages);
+
+		return "// Reduce unsupported type usages by at least " + countMissingTypeUsages + " to reach "
+				+ (targetRatio * 100) + "% support ratio.";
+	}
+
+	protected Map<String, Integer> computeReturnTypeClassNameOccurrences(Configuration configuration)
+			throws ReflectiveOperationException {
+		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
+
+		Map<String, Integer> aggregatedReturnTypeClassNameOccurrences = new HashMap<>();
+
+		for (String sourceJarFileName : configuration.getCodePathToMutate().getElements()) {
+			Map<String, Long> nonPrimitiveReturnTypes = getNonPrimitiveReturnTypes(configuration, testCollector,
+					sourceJarFileName);
+
+			for (Entry<String, Long> returnTypeWithOccurrence : nonPrimitiveReturnTypes.entrySet()) {
+				int oldCountValue = aggregatedReturnTypeClassNameOccurrences
+						.getOrDefault(returnTypeWithOccurrence.getKey(), 0);
+				aggregatedReturnTypeClassNameOccurrences.put(returnTypeWithOccurrence.getKey(),
+						oldCountValue + returnTypeWithOccurrence.getValue().intValue());
+			}
+		}
+
+		return aggregatedReturnTypeClassNameOccurrences;
+	}
+
 	/** Format an output entry. */
-	private String format(String returnTypeCls) {
+	private String format(String returnTypeCls, Map<String, Integer> returnTypeClassNameOccurrences) {
 		if (m_outputFormat.equals("CODE")) {
 			return String.format("case \"%s\":%s return new %s();", returnTypeCls, CommonConstants.NEW_LINE,
 					returnTypeCls);
+		} else if (m_outputFormat.equals("COUNT")) {
+			return String.format("%s (%s)", returnTypeCls, returnTypeClassNameOccurrences.get(returnTypeCls));
+		} else if (m_outputFormat.equals("LIST")) {
+			return returnTypeCls;
 		}
 
-		return returnTypeCls;
+		return "Unknown output format: " + m_outputFormat;
 	}
 
-	/** Get data about the method access modifier. */
-	protected Collection<String> getNonPrimitiveReturnTypes(Configuration configuration, ITestCollector testCollector,
+	/**
+	 * Get data about the method access modifier.
+	 * 
+	 * @return map with the class names and the number of occurrences
+	 */
+	protected Map<String, Long> getNonPrimitiveReturnTypes(Configuration configuration, ITestCollector testCollector,
 			String sourceJarFileName) throws ExecutionException {
 		JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(sourceJarFileName,
 				configuration.getOperateFaultTolerant().getValue());
@@ -95,7 +167,9 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 
 		try {
 			iterator.execute(operation);
-			return operation.getMethodReturnTypes().values();
+			Map<MethodIdentifier, String> returnTypeByMethodId = operation.getMethodReturnTypes();
+			return returnTypeByMethodId.values().stream()
+					.collect(Collectors.groupingBy(Function.identity(), Collectors.counting()));
 		} catch (IteratorException e) {
 			throw new ExecutionException(getExecutionId(), e);
 		}
