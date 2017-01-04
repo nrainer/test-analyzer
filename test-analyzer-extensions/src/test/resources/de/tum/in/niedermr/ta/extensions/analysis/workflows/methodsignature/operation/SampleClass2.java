@@ -31,4 +31,8 @@ public class SampleClass2 {
 		m_array3 = array3;
 		m_array4 = array4;
 	}
+
+	public static SampleClass2 getInstance() {
+		return new SampleClass2(1, "2", 3.0);
+	}
 }

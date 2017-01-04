@@ -2,6 +2,8 @@ package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.NoSuchElementException;
@@ -65,7 +67,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		return Class.forName(cleanedClassName);
 	}
 
-	protected Object createInstance(Class<?> cls) throws ReflectiveOperationException {
+	protected static Object createInstance(Class<?> cls) throws ReflectiveOperationException {
 		Constructor<?>[] publicConstructors = cls.getConstructors();
 
 		for (Constructor<?> constructor : publicConstructors) {
@@ -80,7 +82,22 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 			}
 		}
 
-		throw new NoSuchElementException("No supported constructor exists: " + cls);
+		try {
+			return tryFindInstanceCreationMethod(cls);
+		} catch (NoSuchElementException e) {
+			throw new NoSuchElementException("No supported constructor or public static method exists: " + cls);
+		}
+	}
+
+	protected static Object tryFindInstanceCreationMethod(Class<?> cls) throws ReflectiveOperationException {
+		for (Method method : cls.getDeclaredMethods()) {
+			if (Modifier.isStatic(method.getModifiers()) && Modifier.isPublic(method.getModifiers())
+					&& method.getParameterCount() == 0 && method.getReturnType() == cls) {
+				return method.invoke(null);
+			}
+		}
+
+		throw new NoSuchElementException();
 	}
 
 	protected static Object createInstanceWithSimpleParameters(Constructor<?> constructor)
@@ -128,7 +145,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		return constructor.newInstance(parameterValues);
 	}
 
-	private boolean areAllPrimitiveTypeOrStringParameters(Constructor<?> constructor) {
+	private static boolean areAllPrimitiveTypeOrStringParameters(Constructor<?> constructor) {
 		for (Class<?> parameterType : constructor.getParameterTypes()) {
 			if (!parameterType.isPrimitive() && !parameterType.isArray() && !parameterType.isEnum()
 					&& !SUPPORTED_CONSTRUCTOR_PARAMETER_TYPES.contains(parameterType)) {

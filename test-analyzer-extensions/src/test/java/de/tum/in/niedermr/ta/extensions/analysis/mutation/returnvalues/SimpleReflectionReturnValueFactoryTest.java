@@ -51,6 +51,14 @@ public class SimpleReflectionReturnValueFactoryTest extends AbstractInstancesRet
 
 	/** Test. */
 	@Test
+	public void testTryFindInstanceCreationMethod() throws ReflectiveOperationException {
+		Object obj = SimpleReflectionReturnValueFactory.tryFindInstanceCreationMethod(SampleClass2.class);
+		assertNotNull(obj);
+		assertTrue(obj instanceof SampleClass2);
+	}
+
+	/** Test. */
+	@Test
 	public void testParameterlessConstructor() {
 		Object obj = m_factory.get(MethodIdentifier.EMPTY.get(),
 				SimpleReflectionReturnValueFactoryTest.class.getName());
