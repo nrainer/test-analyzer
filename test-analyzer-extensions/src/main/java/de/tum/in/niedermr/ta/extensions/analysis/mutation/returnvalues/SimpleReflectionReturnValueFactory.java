@@ -157,7 +157,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 	 *            may contain array brackets
 	 */
 	protected boolean isBlacklistedType(String className) {
-		if (String.class.getName().equals(className)) {
+		if (String.class.getName().equals(className) || JavaConstants.WRAPPER_TYPE_CLASS_NAMES.contains(className)) {
 			// already handled by the simple return value generator classes
 			return true;
 		}
