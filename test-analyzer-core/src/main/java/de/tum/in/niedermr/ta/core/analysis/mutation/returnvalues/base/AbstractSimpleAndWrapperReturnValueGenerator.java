@@ -1,12 +1,10 @@
 package de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
+import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
@@ -15,21 +13,6 @@ public abstract class AbstractSimpleAndWrapperReturnValueGenerator extends Abstr
 
 	/** <code>java.lang</code> package name */
 	private static final String JAVA_LANG_PACKAGE_NAME = "java.lang";
-
-	/** Class names of wrapper types. */
-	private static final Set<String> WRAPPER_TYPE_CLASS_NAMES = new HashSet<>();
-
-	/** Static initializer. */
-	static {
-		WRAPPER_TYPE_CLASS_NAMES.add(Boolean.class.getName());
-		WRAPPER_TYPE_CLASS_NAMES.add(Byte.class.getName());
-		WRAPPER_TYPE_CLASS_NAMES.add(Short.class.getName());
-		WRAPPER_TYPE_CLASS_NAMES.add(Integer.class.getName());
-		WRAPPER_TYPE_CLASS_NAMES.add(Character.class.getName());
-		WRAPPER_TYPE_CLASS_NAMES.add(Long.class.getName());
-		WRAPPER_TYPE_CLASS_NAMES.add(Float.class.getName());
-		WRAPPER_TYPE_CLASS_NAMES.add(Double.class.getName());
-	}
 
 	/** Return value generator for simple values. */
 	private final AbstractSimpleReturnValueGenerator m_returnValueGeneratorForSimpleValues;
@@ -48,7 +31,7 @@ public abstract class AbstractSimpleAndWrapperReturnValueGenerator extends Abstr
 
 		String className = type.getClassName();
 
-		if (WRAPPER_TYPE_CLASS_NAMES.contains(className)) {
+		if (JavaConstants.WRAPPER_TYPE_CLASS_NAMES.contains(className)) {
 			handleJavaLangObjectReturn(mv, className);
 		}
 	}
@@ -141,6 +124,7 @@ public abstract class AbstractSimpleAndWrapperReturnValueGenerator extends Abstr
 		}
 
 		String className = returnType.getClassName();
-		return className.startsWith(JAVA_LANG_PACKAGE_NAME) && WRAPPER_TYPE_CLASS_NAMES.contains(className);
+		return className.startsWith(JAVA_LANG_PACKAGE_NAME)
+				&& JavaConstants.WRAPPER_TYPE_CLASS_NAMES.contains(className);
 	}
 }
