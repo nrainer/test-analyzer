@@ -3,6 +3,9 @@ package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.lang.reflect.Constructor;
 
 import org.junit.Test;
 
@@ -47,5 +50,17 @@ public class SimpleReflectionReturnValueFactoryTest {
 		Object obj = FACTORY.get(MethodIdentifier.EMPTY.get(), SampleClass2.class.getName());
 		assertNotNull(obj);
 		assertTrue(obj instanceof SampleClass2);
+	}
+
+	/** Test. */
+	@Test
+	public void testCreateInstanceWithSimpleParameters() {
+		for (Constructor<?> constructor : SampleClass2.class.getConstructors()) {
+			try {
+				SimpleReflectionReturnValueFactory.createInstanceWithSimpleParameters(constructor);
+			} catch (ReflectiveOperationException e) {
+				fail("Instance creation with constructor " + constructor + " failed: " + e.getMessage());
+			}
+		}
 	}
 }

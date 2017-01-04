@@ -2,7 +2,11 @@ package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueFactory;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
@@ -19,6 +23,13 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 	/** Instance. */
 	public static final SimpleReflectionReturnValueFactory INSTANCE = new SimpleReflectionReturnValueFactory();
+
+	/**
+	 * {@link #createInstanceWithSimpleParameters(Constructor)} supports primitive types, arrays and this set of classes
+	 * as parameter types.
+	 */
+	private static final Set<Class<?>> SUPPORTED_CONSTRUCTOR_PARAMETER_TYPES = new HashSet<>(
+			Arrays.asList(Object.class, String.class, Optional.class));
 
 	/** {@inheritDoc} */
 	@Override
@@ -64,10 +75,10 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 			}
 		}
 
-		throw new NoSuchElementException("No public parameterless constructor exists: " + cls);
+		throw new NoSuchElementException("No supported constructor exists: " + cls);
 	}
 
-	protected Object createInstanceWithSimpleParameters(Constructor<?> constructor)
+	protected static Object createInstanceWithSimpleParameters(Constructor<?> constructor)
 			throws ReflectiveOperationException {
 		Class<?>[] parameterTypes = constructor.getParameterTypes();
 		Object[] parameterValues = new Object[parameterTypes.length];
@@ -76,8 +87,14 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 			Class<?> parameterType = parameterTypes[i];
 			Object parameterValue;
 
-			if (parameterType == String.class) {
+			if (parameterType.isArray()) {
+				parameterValue = Array.newInstance(parameterType.getComponentType(), 0);
+			} else if (parameterType == String.class) {
 				parameterValue = "";
+			} else if (parameterType == Object.class) {
+				parameterValue = new Object();
+			} else if (parameterType == Optional.class) {
+				parameterValue = Optional.empty();
 			} else if (parameterType == boolean.class) {
 				parameterValue = true;
 			} else if (parameterType == char.class) {
@@ -106,7 +123,8 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 	private boolean areAllPrimitiveTypeOrStringParameters(Constructor<?> constructor) {
 		for (Class<?> parameterType : constructor.getParameterTypes()) {
-			if (!parameterType.isPrimitive() && parameterType != String.class) {
+			if (!parameterType.isPrimitive() && !parameterType.isArray()
+					&& !SUPPORTED_CONSTRUCTOR_PARAMETER_TYPES.contains(parameterType)) {
 				return false;
 			}
 		}
