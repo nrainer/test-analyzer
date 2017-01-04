@@ -119,54 +119,14 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 	}
 
 	private Object createJavaLang(String returnType) throws NoSuchElementException {
-		Object result;
-
-		result = tryCreateJavaLangWrapper(returnType);
-
-		if (result != null) {
-			return result;
-		}
-
-		result = tryCreateJavaLangNonWrapper(returnType);
-
-		if (result != null) {
-			return result;
-		}
-
-		throw new NoSuchElementException();
-	}
-
-	protected Object tryCreateJavaLangWrapper(String returnType) throws NoSuchElementException {
-		switch (returnType) {
-		case "java.lang.Boolean":
-			return Boolean.valueOf(false);
-		case "java.lang.Character":
-			return new Character((char) 0);
-		case "java.lang.Byte":
-			return Byte.valueOf((byte) 0);
-		case "java.lang.Short":
-			return Short.valueOf((short) 0);
-		case "java.lang.Number":
-		case "java.lang.Integer":
-			return Integer.valueOf(0);
-		case "java.lang.Long":
-			return Long.valueOf(0);
-		case "java.lang.Float":
-			return Float.valueOf(0);
-		case "java.lang.Double":
-			return Double.valueOf(0);
-		default:
-			return null;
-		}
-	}
-
-	private Object tryCreateJavaLangNonWrapper(String returnType) throws NoSuchElementException {
-		// Note that java.lang.String is handled by the simple return value
-		// generators.
+		// Note that wrapper classes and String are explicitly not supported because they are handled by the simple
+		// return value generators.
 
 		switch (returnType) {
 		case "java.lang.Object":
 			return new Object();
+		case "java.lang.Number":
+			return Integer.valueOf(0);
 		case "java.lang.Class":
 			return Object.class;
 		case "java.lang.Comparable":
@@ -187,7 +147,7 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		case "java.lang.StackTraceElement":
 			return new Exception().getStackTrace()[0];
 		default:
-			return null;
+			throw new NoSuchElementException();
 		}
 	}
 

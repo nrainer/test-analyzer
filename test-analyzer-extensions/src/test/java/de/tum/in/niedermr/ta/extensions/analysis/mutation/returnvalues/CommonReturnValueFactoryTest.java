@@ -86,10 +86,20 @@ public class CommonReturnValueFactoryTest {
 		FACTORY.getWithException(MethodIdentifier.EMPTY, NOT_SUPPORTED_CLASS);
 	}
 
-	/** Test. */
+	/**
+	 * Test: String class should not be supported because it is already handled by the simple return value generators
+	 */
 	@Test(expected = NoSuchElementException.class)
 	public void factoryShouldNotSupportStringClass() {
-		// the String class should not be supported because it is already handled by the simple return value generators
 		FACTORY.getWithException(MethodIdentifier.EMPTY, String.class.getName());
+	}
+
+	/**
+	 * Test: wrapper classes should not be supported because they are already handled by the simple return value
+	 * generators
+	 */
+	@Test(expected = NoSuchElementException.class)
+	public void factoryShouldNotSupportWrapperClass() {
+		FACTORY.getWithException(MethodIdentifier.EMPTY, Double.class.getName());
 	}
 }
