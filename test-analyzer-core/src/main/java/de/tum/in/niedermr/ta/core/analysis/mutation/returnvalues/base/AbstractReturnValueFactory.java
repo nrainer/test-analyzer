@@ -50,7 +50,7 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 			return getWithException(methodIdentifier, returnType);
 		} catch (Throwable t) {
 			if (m_fallbackFactory.isPresent()) {
-				return m_fallbackFactory.get().getWithException(methodIdentifier, returnType);
+				return m_fallbackFactory.get().getRecursiveWithException(methodIdentifier, returnType);
 			}
 
 			throw t;
