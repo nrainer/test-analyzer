@@ -87,7 +87,7 @@ public class DynamicConfigurationValuesManager {
 	/** Get the value by filling it into the provided property. */
 	public <T extends IConfigurationProperty<?>> T getValueAsProperty(DynamicConfigurationKey key, T propertyToFill)
 			throws ConfigurationException {
-		String stringValue = getStringValue(key, null);
+		String stringValue = getStringValue(key);
 
 		if (stringValue == null) {
 			propertyToFill.setDefault();
