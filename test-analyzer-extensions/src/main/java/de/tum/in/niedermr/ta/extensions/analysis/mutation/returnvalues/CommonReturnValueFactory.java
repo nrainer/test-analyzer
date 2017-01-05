@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Locale;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Stack;
@@ -44,7 +45,7 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 
 	/** {@inheritDoc} */
 	@Override
-	public Object createWithException(MethodIdentifier methodIdentifier, String returnType) throws NoSuchElementException {
+	public Object createWithException(MethodIdentifier methodIdentifier, String returnType) throws Throwable {
 		if (returnType.endsWith(JavaConstants.ARRAY_BRACKETS)) {
 			if (returnType.startsWith(PCKG_JAVA_LANG)) {
 				return createJavaLangArray(returnType);
@@ -69,8 +70,6 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		switch (returnType) {
 		case "java.lang.Object[]":
 			return new Object[0];
-		case "java.lang.Object[][]":
-			return new Object[0][];
 		case "java.lang.String[]":
 			return new String[0];
 		case "java.lang.Boolean[]":
@@ -99,12 +98,16 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		switch (returnType) {
 		case "int[]":
 			return new int[0];
+		case "int[][]":
+			return new int[0][];
 		case "byte[]":
 			return new byte[0];
 		case "char[]":
 			return new char[0];
 		case "double[]":
 			return new double[0];
+		case "double[][]":
+			return new double[0][];
 		case "boolean[]":
 			return new boolean[0];
 		case "float[]":
@@ -192,10 +195,12 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		case "java.util.Map":
 		case "java.util.HashMap":
 			return new HashMap<>();
+		case "java.util.Map$Entry":
+			Map<String, Object> map = new HashMap<>();
+			map.put("", new Object());
+			return map.entrySet().iterator().next();
 		case "java.util.SortedMap":
 			return new TreeMap<>();
-		case "java.util.Optional":
-			return Optional.empty();
 		default:
 			return null;
 		}
@@ -203,6 +208,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 
 	private Object tryCreateJavaUtilNonIterable(String returnType) throws NoSuchElementException {
 		switch (returnType) {
+		case "java.util.Optional":
+			return Optional.empty();
 		case "java.util.Date":
 			return new Date(0);
 		case "java.util.Comparator":
@@ -215,6 +222,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return Pattern.compile(".");
 		case "java.util.concurrent.ThreadPoolExecutor":
 			return new java.util.concurrent.ScheduledThreadPoolExecutor(1);
+		case "java.util.Formatter":
+			return new java.util.Formatter();
 		default:
 			return null;
 		}
@@ -246,12 +255,17 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		}
 	}
 
-	private Object createOther(String returnType) throws NoSuchElementException {
+	private Object createOther(String returnType) throws Throwable {
 		switch (returnType) {
 		case "java.net.InetAddress":
 			return java.net.InetAddress.getLoopbackAddress();
+		case "java.net.URL":
+			return new java.net.URL("http://www.google.com");
 		case "java.nio.charset.Charset":
 			return java.nio.charset.Charset.defaultCharset();
+		case "java.text.Format":
+		case "java.text.NumberFormat":
+			return java.text.NumberFormat.getInstance();
 		default:
 			throw new NoSuchElementException();
 		}
