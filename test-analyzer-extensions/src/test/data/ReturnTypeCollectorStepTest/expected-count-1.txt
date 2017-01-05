@@ -1,0 +1,17 @@
+// NON-PRIMITIVE TYPE SUMMARY
+// Total types: 7
+// Total unsupported types: 7
+// Ratio supported types: 0.0
+// Total type usages: 96
+// Total unsupported type usages: 96
+// Ratio supported type usages: 0.0
+// Reduce unsupported type usages by at least 87 to reach 90.0% support ratio.
+// Reduce unsupported type usages by at least 77 to reach 80.0% support ratio.
+
+java.io.Serializable (23)
+java.lang.Double (5)
+java.lang.Long (33)
+java.lang.Object (6)
+java.lang.String (10)
+java.util.function.Function (11)
+java.util.regex.Pattern (8)

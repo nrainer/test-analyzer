@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,6 @@ import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
-import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.ReturnTypeCollectorWorkflow;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.ReturnTypeRetrieverOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -34,14 +34,14 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	private IResultReceiver m_resultReceiver;
 
 	/** Filter for the class names. */
-	private Optional<Predicate<String>> m_classNameFilter;
+	private Optional<Predicate<String>> m_classNameFilter = Optional.empty();
 
 	/**
 	 * Result output format.
 	 * 
 	 * @see ReturnTypeCollectorWorkflow#CONFIGURATION_KEY_OUTPUT_FORMAT
 	 */
-	private String m_outputFormat;
+	private String m_outputFormat = "LIST";
 
 	/** Exclude wrapper types and String. */
 	private boolean m_excludeWrapperTypesAndString;
@@ -78,9 +78,13 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	@Override
 	protected void runInternal(Configuration configuration, ProcessExecution processExecution)
 			throws ExecutionException, ReflectiveOperationException {
+		Map<String, Integer> returnTypeClassNameOccurrences = retrieveAndAggregateReturnTypeClassNameOccurrences(
+				configuration);
+		filterOccurrencesAndCreateOutput(returnTypeClassNameOccurrences);
+	}
 
-		Map<String, Integer> returnTypeClassNameOccurrences = computeReturnTypeClassNameOccurrences(configuration);
-
+	/** Filter the occurrences and create the output. */
+	protected void filterOccurrencesAndCreateOutput(Map<String, Integer> returnTypeClassNameOccurrences) {
 		if (m_excludeWrapperTypesAndString) {
 			returnTypeClassNameOccurrences.remove(String.class.getName());
 			returnTypeClassNameOccurrences.entrySet()
@@ -111,7 +115,7 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 		m_resultReceiver.markResultAsComplete();
 	}
 
-	protected List<String> getTypeListOrderedByName(Map<String, Integer> returnTypeClassNameOccurrences) {
+	protected static List<String> getTypeListOrderedByName(Map<String, Integer> returnTypeClassNameOccurrences) {
 		List<String> returnTypeClassNameList = new ArrayList<>();
 		returnTypeClassNameList.addAll(returnTypeClassNameOccurrences.keySet());
 		Collections.sort(returnTypeClassNameList);
@@ -154,7 +158,7 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 				+ (targetRatio * 100) + "% support ratio.";
 	}
 
-	protected Map<String, Integer> computeReturnTypeClassNameOccurrences(Configuration configuration)
+	protected Map<String, Integer> retrieveAndAggregateReturnTypeClassNameOccurrences(Configuration configuration)
 			throws ReflectiveOperationException {
 		ITestCollector testCollector = TestRunnerUtil.getAppropriateTestCollector(configuration, true);
 
@@ -176,17 +180,18 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	}
 
 	/** Format an output entry. */
-	private String format(String returnTypeCls, Map<String, Integer> returnTypeClassNameOccurrences) {
+	private List<String> format(String returnTypeCls, Map<String, Integer> returnTypeClassNameOccurrences) {
 		if (m_outputFormat.equals("CODE")) {
-			return String.format("case \"%s\":%s return new %s();", returnTypeCls, CommonConstants.NEW_LINE,
-					returnTypeCls);
+			return Arrays.asList(String.format("case \"%s\":", returnTypeCls),
+					String.format(" return new %s();", returnTypeCls));
 		} else if (m_outputFormat.equals("COUNT")) {
-			return String.format("%s (%s)", returnTypeCls, returnTypeClassNameOccurrences.get(returnTypeCls));
+			return Arrays
+					.asList(String.format("%s (%s)", returnTypeCls, returnTypeClassNameOccurrences.get(returnTypeCls)));
 		} else if (m_outputFormat.equals("LIST")) {
-			return returnTypeCls;
+			return Arrays.asList(returnTypeCls);
 		}
 
-		return "Unknown output format: " + m_outputFormat;
+		throw new IllegalArgumentException("Unknown output format: " + m_outputFormat);
 	}
 
 	/**

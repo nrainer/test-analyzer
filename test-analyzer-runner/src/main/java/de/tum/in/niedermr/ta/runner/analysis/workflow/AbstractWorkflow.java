@@ -47,12 +47,18 @@ public abstract class AbstractWorkflow implements IWorkflow {
 
 	protected <T extends IExecutionStep> T createAndInitializeExecutionStep(Class<T> executionStepClass)
 			throws ExecutionException {
+		return createAndInitializeExecutionStep(m_context, executionStepClass);
+	}
+
+	/** Create an initialize an execution step. */
+	public static <T extends IExecutionStep> T createAndInitializeExecutionStep(ExecutionContext context,
+			Class<T> executionStepClass) throws ExecutionException {
 		try {
 			T executionStep = executionStepClass.newInstance();
-			executionStep.initialize(m_context);
+			executionStep.initialize(context);
 			return executionStep;
 		} catch (Exception e) {
-			throw new ExecutionException(m_context.getExecutionId(), e);
+			throw new ExecutionException(context.getExecutionId(), e);
 		}
 	}
 }

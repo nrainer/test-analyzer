@@ -38,11 +38,18 @@ public class InMemoryResultReceiver implements IResultReceiver {
 		// NOP
 	}
 
+	/** Get the result. */
 	public List<String> getResult() {
 		return m_result;
 	}
 
+	/** Check if the result is empty. */
 	public boolean isEmpty() {
 		return m_result.isEmpty();
+	}
+
+	/** Reset. */
+	public void reset() {
+		m_result.clear();
 	}
 }

@@ -1,0 +1,12 @@
+// NON-PRIMITIVE TYPE SUMMARY
+// (NOTE: Wrapper types and String are not considered.)
+// Total types: 4
+// Total unsupported types: 1
+// Ratio supported types: 0.75
+// Total type usages: 48
+// Total unsupported type usages: 11
+// Ratio supported type usages: 0.7708333333333334
+// Reduce unsupported type usages by at least 7 to reach 90.0% support ratio.
+// Reduce unsupported type usages by at least 2 to reach 80.0% support ratio.
+
+java.util.function.Function (11)
