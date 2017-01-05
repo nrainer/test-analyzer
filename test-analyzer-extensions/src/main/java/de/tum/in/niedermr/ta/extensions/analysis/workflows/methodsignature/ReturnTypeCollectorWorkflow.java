@@ -13,6 +13,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues.CommonReturnValueFactory;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps.ReturnTypeCollectorStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
@@ -53,7 +54,8 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 	 * factories.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXISTING_FACTORY_NAMES = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactories", "");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactories",
+					CommonReturnValueFactory.class.getName());
 
 	/**
 	 * <code>extension.methodsignature.returnvalue.excludeWrapperAndString</code>: Whether wrapper types and String
