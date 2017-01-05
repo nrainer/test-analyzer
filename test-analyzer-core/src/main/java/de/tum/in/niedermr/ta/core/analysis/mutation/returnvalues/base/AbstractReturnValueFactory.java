@@ -23,8 +23,7 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 	@Override
 	public boolean supports(MethodIdentifier methodIdentifier, String returnType) {
 		try {
-			createRecursiveWithException(methodIdentifier, returnType);
-			return true;
+			return createRecursiveWithException(methodIdentifier, returnType) != null;
 		} catch (NoSuchElementException ex) {
 			return false;
 		} catch (Throwable t) {
