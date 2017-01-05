@@ -133,11 +133,25 @@ public class ThreadStackManager implements IThreadListener {
 	 * @param startClassName
 	 *            start counting after this class (this class excluded)
 	 */
-	private int computeStackHeightOnCurrentThreadOnly(String startClassName) {
-		LOGGER.debug("Start class name is: " + startClassName);
-		LOGGER.debug("Stop class name is: " + m_stopClassName);
-
+	protected int computeStackHeightOnCurrentThreadOnly(String startClassName) {
 		StackTraceElement[] stackTrace = new Exception().getStackTrace();
+		return computeStackHeightOfStackTrace(startClassName, m_stopClassName, stackTrace,
+				m_stackCountIgnoreClassNamePrefixes);
+	}
+
+	/**
+	 * Compute the height of the stack trace.
+	 * 
+	 * @param startClassName
+	 *            start counting after this class (this class excluded)
+	 * @param stopClassName
+	 *            stop counting when this class is reached (this class is not counted)
+	 */
+	protected static int computeStackHeightOfStackTrace(String startClassName, String stopClassName,
+			StackTraceElement[] stackTrace, String[] ignoredClassNamePrefixes) {
+		LOGGER.debug("Start class name is: " + startClassName);
+		LOGGER.debug("Stop class name is: " + stopClassName);
+
 		int count = 0;
 		boolean startClassReached = false;
 		boolean startClassCompleted = false;
@@ -167,12 +181,12 @@ public class ThreadStackManager implements IThreadListener {
 				continue;
 			}
 
-			if (m_stopClassName.equals(stackElementClassName)) {
+			if (stopClassName.equals(stackElementClassName)) {
 				LOGGER.debug("Abort counting at element: " + stackTraceElementString);
 				break;
 			}
 
-			if (isCountIgnoredClass(stackElementClassName)) {
+			if (isCountIgnoredClass(stackElementClassName, ignoredClassNamePrefixes)) {
 				LOGGER.debug("Skipping ignored element: " + stackTraceElementString);
 				continue;
 			}
@@ -186,8 +200,8 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/** Check if the class should not be counted. */
-	private boolean isCountIgnoredClass(String stackElementClassName) {
-		for (String classNamePrefix : m_stackCountIgnoreClassNamePrefixes) {
+	private static boolean isCountIgnoredClass(String stackElementClassName, String[] ignoredClassNamePrefixes) {
+		for (String classNamePrefix : ignoredClassNamePrefixes) {
 			if (stackElementClassName.startsWith(classNamePrefix)) {
 				return true;
 			}

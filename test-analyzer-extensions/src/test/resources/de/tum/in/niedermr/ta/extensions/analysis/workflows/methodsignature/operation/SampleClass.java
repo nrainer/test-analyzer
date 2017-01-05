@@ -33,4 +33,8 @@ public class SampleClass {
 	public void voidMethod() {
 		// NOP
 	}
+
+	public int compute() {
+		return getInt() + getInteger();
+	}
 }
