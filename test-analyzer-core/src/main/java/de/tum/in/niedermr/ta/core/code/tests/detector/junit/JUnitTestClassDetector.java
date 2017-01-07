@@ -29,9 +29,9 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 			return JUnitClassTypeResult.TEST_CLASS_JUNIT_3;
 		} else if (isJUnit4TestClass(cn)) {
 			return JUnitClassTypeResult.TEST_CLASS_JUNIT_4;
-		} else {
-			return ClassType.NO_TEST_CLASS;
 		}
+
+		return ClassType.NO_TEST_CLASS;
 	}
 
 	private boolean isJUnit3TestClass(ClassNode cn) {

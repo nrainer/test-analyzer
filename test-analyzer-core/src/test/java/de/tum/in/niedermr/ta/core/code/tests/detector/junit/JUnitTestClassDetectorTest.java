@@ -110,4 +110,14 @@ public class JUnitTestClassDetectorTest {
 		assertTrue(s_detector.analyzeIsTestcase(methodNodeA.get(), JUnitClassTypeResult.TEST_CLASS_JUNIT_4));
 		assertFalse(s_detector.analyzeIsTestcase(methodNodeIgnored.get(), JUnitClassTypeResult.TEST_CLASS_JUNIT_4));
 	}
+
+	/** Test. */
+	@Test
+	public void testInnerClassInTestClass() throws IOException {
+		ClassNode cn = BytecodeUtility.getAcceptedClassNode(TestClassWithInnerClass.class);
+		assertEquals(JUnitClassTypeResult.TEST_CLASS_JUNIT_4, s_detector.analyzeIsTestClass(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(TestClassWithInnerClass.InnerClassInTestClass.class);
+		assertEquals(ClassType.INNER_CLASS_IN_TEST_OR_IGNORED_CLASS, s_detector.analyzeIsTestClass(cn));
+	}
 }

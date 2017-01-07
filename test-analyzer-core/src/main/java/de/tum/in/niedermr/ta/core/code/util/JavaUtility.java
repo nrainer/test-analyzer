@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.core.code.util;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.tree.ClassNode;
@@ -42,7 +44,8 @@ public class JavaUtility {
 	}
 
 	/**
-	 * Converts a class name to a class path and adds the file extension '.class'.
+	 * Converts a class name to a class path and adds the file extension
+	 * '.class'.
 	 */
 	public static String toClassPathWithEnding(String className) {
 		return ensureClassFileEnding(getClassPath(className));
@@ -60,6 +63,19 @@ public class JavaUtility {
 	 */
 	public static String toClassPathWithoutEnding(Class<?> cls) {
 		return toClassPathWithoutEnding(cls.getName());
+	}
+
+	public static Optional<Class<?>> getOuterClassNoEx(ClassNode classNode) {
+		try {
+			Class<?> cls = getClassFromNode(classNode);
+			return Optional.ofNullable(cls.getEnclosingClass());
+		} catch (ClassNotFoundException e) {
+			return Optional.empty();
+		}
+	}
+
+	private static Class<?> getClassFromNode(ClassNode classNode) throws ClassNotFoundException {
+		return Class.forName(toClassName(classNode.name));
 	}
 
 	private static String getClassPath(String className) {
@@ -82,7 +98,7 @@ public class JavaUtility {
 	}
 
 	public static boolean inheritsClass(ClassNode cn, Class<?> superClassToBeDetected) throws ClassNotFoundException {
-		return inheritsClass(Class.forName(toClassName(cn.name)), superClassToBeDetected);
+		return inheritsClass(getClassFromNode(cn), superClassToBeDetected);
 	}
 
 	public static boolean inheritsClassNoEx(ClassNode cn, Class<?> superClassToBeDetected) {

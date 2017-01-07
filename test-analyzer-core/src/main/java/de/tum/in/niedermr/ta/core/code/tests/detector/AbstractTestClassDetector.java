@@ -1,13 +1,16 @@
 package de.tum.in.niedermr.ta.core.code.tests.detector;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.LinkedList;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 
 public abstract class AbstractTestClassDetector implements ITestClassDetector {
@@ -50,6 +53,10 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 			return ClassType.IGNORED_ABSTRACT_TEST_CLASS;
 		}
 
+		if (!classType.isTestClass() && isInnerClassInTestOrIgnoredClass(cn)) {
+			return ClassType.INNER_CLASS_IN_TEST_OR_IGNORED_CLASS;
+		}
+
 		return classType;
 	}
 
@@ -78,6 +85,31 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 		}
 
 		// include patterns are defined but no pattern matched
+		return false;
+	}
+
+	/**
+	 * Check if the class node is an inner class and an outer class is a test
+	 * class.
+	 */
+	private boolean isInnerClassInTestOrIgnoredClass(ClassNode cn) {
+		Optional<Class<?>> outerClass = JavaUtility.getOuterClassNoEx(cn);
+
+		if (!outerClass.isPresent()) {
+			return false;
+		}
+
+		try {
+			ClassNode outerClassNode = BytecodeUtility.getAcceptedClassNode(outerClass.get());
+
+			ClassType classType = analyzeIsTestClass(outerClassNode);
+			if (classType.isTestClass() || !classType.isSourceClass()) {
+				return true;
+			}
+		} catch (IOException e) {
+			// ignore
+		}
+
 		return false;
 	}
 }

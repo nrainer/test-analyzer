@@ -9,6 +9,9 @@ public class ClassType {
 	/** Ignored test class (due to include / exclude patterns). */
 	public static final ClassType IGNORED_TEST_CLASS = new ClassType(false, false);
 
+	/** (Non-test) class in a test or an ignored class. */
+	public static final ClassType INNER_CLASS_IN_TEST_OR_IGNORED_CLASS = new ClassType(false, false);
+
 	/**
 	 * Abstract test class detected by a test class detector configured to
 	 * ignore these.
