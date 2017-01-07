@@ -457,11 +457,12 @@
       "Path": {
         "project": "test-analyzer",
         "path": "",
-        "hiddenInWidgetTitle": true
+        "hiddenInWidgetTitle": true,
+        "isArchitecture": false
       },
       "Trend": {
         "type": "timespan",
-        "value": 30
+        "value": 180
       },
       "Zooming": false,
       "Hide Y-Axes": false,

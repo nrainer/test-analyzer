@@ -6,43 +6,10 @@
     <descriptorJSON><![CDATA[{
   "widgets": [
     {
-      "widget-id": "tga-treemap",
-      "position": {
-        "x": 0,
-        "y": 0,
-        "width": 12,
-        "height": 5
-      },
-      "Title": "Test Gaps",
-      "Path": {
-        "project": "test-analyzer",
-        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
-        "hiddenInWidgetTitle": true
-      },
-      "Baseline": {
-        "type": "date",
-        "value": 1459461600000
-      },
-      "End date": {
-        "type": "timespan",
-        "value": 0
-      },
-      "Execution only": false,
-      "Coverage Sources": {
-        "selectedCoverageSources": [],
-        "useAll": true
-      },
-      "Outline depth": 0,
-      "Outline color": [
-        "rgb(0, 0, 0)"
-      ],
-      "Cross-annotate execution": []
-    },
-    {
       "widget-id": "treemap",
       "position": {
         "x": 0,
-        "y": 5,
+        "y": 10,
         "width": 4,
         "height": 4
       },
@@ -69,7 +36,7 @@
       "widget-id": "treemap",
       "position": {
         "x": 4,
-        "y": 5,
+        "y": 10,
         "width": 4,
         "height": 4
       },
@@ -96,7 +63,7 @@
       "widget-id": "treemap",
       "position": {
         "x": 8,
-        "y": 5,
+        "y": 10,
         "width": 4,
         "height": 4
       },
@@ -123,15 +90,16 @@
       "widget-id": "metrics-trend-chart",
       "position": {
         "x": 0,
-        "y": 9,
+        "y": 14,
         "width": 12,
-        "height": 3
+        "height": 4
       },
       "Title": "Unit Test Line Coverage",
       "Path": {
         "project": "test-analyzer",
         "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
-        "hiddenInWidgetTitle": true
+        "hiddenInWidgetTitle": true,
+        "isArchitecture": true
       },
       "Trend": {
         "type": "timespan",
@@ -152,8 +120,80 @@
         "rgb(102, 102, 102)"
       ],
       "Stacked": false,
-      "Include 0": false,
-      "One scale": false
+      "Include 0": true,
+      "One scale": false,
+      "Show Thresholds": false,
+      "Metric Threshold Configuration": "Project Default"
+    },
+    {
+      "widget-id": "tga-treemap",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "width": 12,
+        "height": 5
+      },
+      "Title": "Test Gaps since Jan 2017",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
+        "hiddenInWidgetTitle": true,
+        "isArchitecture": true
+      },
+      "Baseline": {
+        "type": "date",
+        "value": 1483225200000
+      },
+      "End date": {
+        "type": "timespan",
+        "value": 0
+      },
+      "Execution only": false,
+      "Coverage Sources": {
+        "selectedCoverageSources": [],
+        "useAll": true
+      },
+      "Outline depth": 0,
+      "Outline color": [
+        "rgb(0, 0, 0)"
+      ],
+      "Cross-annotate execution": [],
+      "Issue id": ""
+    },
+    {
+      "widget-id": "tga-treemap",
+      "position": {
+        "x": 0,
+        "y": 5,
+        "width": 12,
+        "height": 5
+      },
+      "Title": "Test Gaps since Aug 2016",
+      "Path": {
+        "project": "test-analyzer",
+        "path": "-architectures-/teamscale/architecture/simple-app-and-test.architecture/application/-src-",
+        "hiddenInWidgetTitle": true,
+        "isArchitecture": true
+      },
+      "Baseline": {
+        "type": "date",
+        "value": 1470002400000
+      },
+      "End date": {
+        "type": "timespan",
+        "value": 0
+      },
+      "Execution only": false,
+      "Coverage Sources": {
+        "selectedCoverageSources": [],
+        "useAll": true
+      },
+      "Outline depth": 0,
+      "Outline color": [
+        "rgb(0, 0, 0)"
+      ],
+      "Cross-annotate execution": [],
+      "Issue id": ""
     }
   ]
 }]]></descriptorJSON>

@@ -29,7 +29,7 @@
           </entry>
           <entry>
             <string>Excluded file names</string>
-            <string>**/package-info.java,**/test-analyzer-test-int-data/**,**/src/test/resources/**,**/test-analyzer-core/utilities/**</string>
+            <string>**/package-info.java,**/test-analyzer-test-int-data/**,**/src/test/resources/**,**/test-analyzer-core/utilities/**,**/test-analyzer-runner/utilities/**</string>
           </entry>
           <entry>
             <string>Enable branch analysis</string>
