@@ -11,6 +11,7 @@ import de.tum.in.niedermr.ta.core.code.util.Identification;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 
 public abstract class AbstractTestClassDetector implements ITestClassDetector {
+
 	protected final static boolean IGNORE_IGNORED_TEST_CASES = true;
 
 	private final boolean m_ignoreAbstractClasses;
