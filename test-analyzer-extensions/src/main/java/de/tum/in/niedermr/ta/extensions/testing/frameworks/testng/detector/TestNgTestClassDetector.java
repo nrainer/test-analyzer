@@ -9,38 +9,49 @@ import org.objectweb.asm.tree.MethodNode;
 import de.tum.in.niedermr.ta.core.code.tests.detector.AbstractTestClassDetector;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 
+/** Test class detector for the testNG framework. */
 public class TestNgTestClassDetector extends AbstractTestClassDetector {
 	private static final String TEST_ANNOTATION = "Lorg/testng/annotations/Test;";
 	private static final String TEST_ANNOTATION_VALUE_ENABLED = "enabled";
 
+	/** Constructor. */
 	public TestNgTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
 			String[] testClassExcludes) {
 		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
 	}
 
+	/** {@inheritDoc} */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected ClassType isTestClassInternal(ClassNode cn) {
-		if (isTestNgTestClass(cn)) {
-			return ClassType.TEST_CLASS;
-		} else {
-			return ClassType.NO_TEST_CLASS;
-		}
-	}
+		int countTestMethods = 0;
+		int countDisabledTests = 0;
 
-	@Override
-	public boolean analyzeIsTestcase(MethodNode methodNode, ClassType testClassType) {
-		return testClassType.isTestClass() && isTestNgTestMethod(methodNode);
-	}
-
-	@SuppressWarnings("unchecked")
-	private boolean isTestNgTestClass(ClassNode cn) {
 		for (MethodNode method : (List<MethodNode>) cn.methods) {
 			if (isTestNgTestMethod(method)) {
-				return true;
+				countTestMethods++;
+
+				if (isDisabledTestcase(method)) {
+					countDisabledTests++;
+				}
 			}
 		}
 
-		return false;
+		if (countTestMethods == 0) {
+			return ClassType.NO_TEST_CLASS;
+		}
+
+		if (countTestMethods == countDisabledTests) {
+			return ClassType.IGNORED_TEST_CLASS;
+		}
+
+		return ClassType.TEST_CLASS;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public boolean analyzeIsTestcase(MethodNode methodNode, ClassType testClassType) {
+		return testClassType.isTestClass() && isTestNgTestMethod(methodNode) && !isDisabledTestcase(methodNode);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -51,27 +62,31 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 
 		for (AnnotationNode annotation : (List<AnnotationNode>) method.visibleAnnotations) {
 			if (annotation.desc.contains(TEST_ANNOTATION)) {
-				if (!isDisabledTest(annotation.values)) {
-					return true;
-				}
+				return true;
 			}
 		}
 
 		return false;
 	}
 
-	/**
-	 * @param annotationValues
-	 *            Alternating sequence of name and value.
-	 */
-	private boolean isDisabledTest(List<Object> annotationValues) {
-		if (annotationValues == null) {
+	@SuppressWarnings("unchecked")
+	private boolean isDisabledTestcase(MethodNode method) {
+		List<Object> testAnnotationValues = null;
+
+		for (AnnotationNode annotation : (List<AnnotationNode>) method.visibleAnnotations) {
+			if (annotation.desc.contains(TEST_ANNOTATION)) {
+				testAnnotationValues = annotation.values;
+			}
+		}
+
+		if (testAnnotationValues == null) {
+			// may also be null if the test annotation is present
 			return false;
 		}
 
 		boolean previousWasEnabledName = false;
 
-		for (Object x : annotationValues) {
+		for (Object x : testAnnotationValues) {
 			if (previousWasEnabledName) {
 				return x.equals(Boolean.TRUE);
 			} else if (x.equals(TEST_ANNOTATION_VALUE_ENABLED)) {
