@@ -24,11 +24,7 @@ public class AssertionCounterOperation extends AbstractTestAwareCodeAnalyzeOpera
 		this.m_methodVisitor = new AssertionCounterMethodVisitor(assertionInformation);
 	}
 
-	@Override
-	protected void analyzeSourceClass(ClassNode cn, String originalClassPath) {
-		// NOP
-	}
-
+	/** {@inheritDoc} */
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType) {

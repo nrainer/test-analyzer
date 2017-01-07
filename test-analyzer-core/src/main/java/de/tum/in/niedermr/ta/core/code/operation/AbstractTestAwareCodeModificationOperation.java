@@ -33,9 +33,31 @@ public abstract class AbstractTestAwareCodeModificationOperation extends Abstrac
 		}
 	}
 
-	protected abstract void modifySourceClass(ClassReader cr, ClassWriter cw);
+	/**
+	 * Modify a source class.
+	 * 
+	 * @param classReader
+	 *            class reader
+	 * @param classWriter
+	 *            class writer
+	 */
+	protected void modifySourceClass(ClassReader classReader, ClassWriter classWriter) {
+		classReader.accept(new NoModificationClassVisitor(Opcodes.ASM5, classWriter), 0);
+	}
 
-	protected abstract void modifyTestClass(ClassReader cr, ClassWriter cw, ClassType classType);
+	/**
+	 * Modify a test class.
+	 * 
+	 * @param classReader
+	 *            class reader
+	 * @param classWriter
+	 *            class writer
+	 * @param classType
+	 *            type of the class
+	 */
+	protected void modifyTestClass(ClassReader classReader, ClassWriter classWriter, ClassType classType) {
+		classReader.accept(new NoModificationClassVisitor(Opcodes.ASM5, classWriter), 0);
+	}
 
 	/**
 	 * Modify an ignored test class.

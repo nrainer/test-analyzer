@@ -32,9 +32,31 @@ public abstract class AbstractTestAwareCodeAnalyzeOperation extends AbstractTest
 		}
 	}
 
-	protected abstract void analyzeSourceClass(ClassNode cn, String originalClassPath);
+	/**
+	 * Analyze a source class.
+	 * 
+	 * @param classNode
+	 *            class node
+	 * @param originalClassPath
+	 *            path
+	 */
+	protected void analyzeSourceClass(ClassNode classNode, String originalClassPath) {
+		// NOP
+	}
 
-	protected abstract void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType);
+	/**
+	 * Analyze a test class.
+	 * 
+	 * @param classNode
+	 *            class node
+	 * @param originalClassPath
+	 *            path
+	 * @param classType
+	 *            type of the class
+	 */
+	protected void analyzeTestClass(ClassNode classNode, String originalClassPath, ClassType classType) {
+		// NOP
+	}
 
 	/**
 	 * Analyze an ignored test class.

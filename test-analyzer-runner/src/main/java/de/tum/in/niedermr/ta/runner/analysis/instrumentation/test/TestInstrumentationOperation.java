@@ -7,7 +7,6 @@ import java.util.Set;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
@@ -15,7 +14,6 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
-import de.tum.in.niedermr.ta.core.code.visitor.NoModificationClassVisitor;
 import de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.bytecode.TestModeClassVisitor;
 
 public class TestInstrumentationOperation extends AbstractTestAwareCodeModificationOperation {
@@ -23,12 +21,6 @@ public class TestInstrumentationOperation extends AbstractTestAwareCodeModificat
 	/** Constructor. */
 	public TestInstrumentationOperation(ITestClassDetector detector) {
 		super(detector);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void modifySourceClass(ClassReader cr, ClassWriter cw) {
-		cr.accept(new NoModificationClassVisitor(Opcodes.ASM5, cw), 0);
 	}
 
 	/** {@inheritDoc} */

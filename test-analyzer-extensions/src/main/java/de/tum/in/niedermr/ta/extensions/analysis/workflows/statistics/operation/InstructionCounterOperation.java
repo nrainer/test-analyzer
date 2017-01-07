@@ -26,6 +26,7 @@ public class InstructionCounterOperation<T extends Identifier> extends AbstractT
 		this.m_mode = mode;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void analyzeSourceClass(ClassNode cn, String originalClassPath) {
 		if (m_mode == Mode.METHOD) {
@@ -33,6 +34,7 @@ public class InstructionCounterOperation<T extends Identifier> extends AbstractT
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType classType) {
 		if (m_mode == Mode.TESTCASE) {

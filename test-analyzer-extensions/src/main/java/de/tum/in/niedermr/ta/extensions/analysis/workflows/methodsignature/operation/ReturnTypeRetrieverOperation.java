@@ -10,7 +10,6 @@ import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeAnalyzeOperation;
-import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
@@ -65,12 +64,6 @@ public class ReturnTypeRetrieverOperation extends AbstractTestAwareCodeAnalyzeOp
 		}
 
 		return true;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType) {
-		// NOP
 	}
 
 	/** @see #m_methodReturnTypes */

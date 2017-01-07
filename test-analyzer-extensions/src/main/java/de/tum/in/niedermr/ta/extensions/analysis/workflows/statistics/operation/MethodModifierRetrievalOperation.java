@@ -10,7 +10,6 @@ import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.operation.AbstractTestAwareCodeAnalyzeOperation;
-import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
@@ -30,12 +29,6 @@ public class MethodModifierRetrievalOperation extends AbstractTestAwareCodeAnaly
 	@Override
 	protected void analyzeSourceClass(ClassNode cn, String originalClassPath) {
 		analyzeMethods(cn);
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType) {
-		// NOP
 	}
 
 	@SuppressWarnings("unchecked")
