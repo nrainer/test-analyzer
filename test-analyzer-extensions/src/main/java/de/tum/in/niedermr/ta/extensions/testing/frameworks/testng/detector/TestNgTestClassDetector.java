@@ -88,7 +88,7 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 
 		for (Object x : testAnnotationValues) {
 			if (previousWasEnabledName) {
-				return x.equals(Boolean.TRUE);
+				return Boolean.FALSE.equals(x);
 			} else if (x.equals(TEST_ANNOTATION_VALUE_ENABLED)) {
 				previousWasEnabledName = true;
 			}
