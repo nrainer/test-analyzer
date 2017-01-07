@@ -12,7 +12,7 @@ public class JUnitClassTypeResult extends ClassType {
 	private final boolean m_isSuite;
 
 	private JUnitClassTypeResult(int jUnitVersion, boolean isSuite) {
-		super(true);
+		super(true, false);
 		this.m_jUnitVersion = jUnitVersion;
 		this.m_isSuite = isSuite;
 	}

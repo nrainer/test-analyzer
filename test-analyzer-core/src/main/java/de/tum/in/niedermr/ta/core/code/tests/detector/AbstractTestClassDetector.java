@@ -40,12 +40,12 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 	public final ClassType analyzeIsTestClass(ClassNode cn) {
 		if (isIncludedClass(cn.name)) {
 			if (m_ignoreAbstractClasses && BytecodeUtility.isAbstractClass(cn)) {
-				return ClassType.IGNORED_ABSTRACT_CLASS;
+				return ClassType.IGNORED_ABSTRACT_TEST_CLASS;
 			} else {
 				return isTestClassInternal(cn);
 			}
 		} else {
-			return ClassType.IGNORED_CLASS;
+			return ClassType.IGNORED_TEST_CLASS;
 		}
 	}
 
