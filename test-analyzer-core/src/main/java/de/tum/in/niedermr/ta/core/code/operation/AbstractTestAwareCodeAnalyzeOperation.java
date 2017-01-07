@@ -25,12 +25,28 @@ public abstract class AbstractTestAwareCodeAnalyzeOperation extends AbstractTest
 
 		if (classType.isTestClass()) {
 			analyzeTestClass(cn, originalClassPath, classType);
-		} else {
+		} else if (classType.isSourceClass()) {
 			analyzeSourceClass(cn, originalClassPath);
+		} else {
+			analyzeIgnoredTestClass(cn, originalClassPath, classType);
 		}
 	}
 
 	protected abstract void analyzeSourceClass(ClassNode cn, String originalClassPath);
 
 	protected abstract void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType);
+
+	/**
+	 * Analyze an ignored test class.
+	 * 
+	 * @param classNode
+	 *            class node
+	 * @param originalClassPath
+	 *            path
+	 * @param classType
+	 *            type of the class
+	 */
+	protected void analyzeIgnoredTestClass(ClassNode classNode, String originalClassPath, ClassType classType) {
+		// NOP
+	}
 }

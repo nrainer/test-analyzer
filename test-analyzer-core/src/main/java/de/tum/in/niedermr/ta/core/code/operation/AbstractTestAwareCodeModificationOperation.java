@@ -2,11 +2,15 @@ package de.tum.in.niedermr.ta.core.code.operation;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
+import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
+import de.tum.in.niedermr.ta.core.code.visitor.NoModificationClassVisitor;
 
-/** Base class for a code modification operation that is aware of test classes. */
+/**
+ * Base class for a code modification operation that is aware of test classes.
+ */
 public abstract class AbstractTestAwareCodeModificationOperation extends AbstractTestAwareCodeOperation
 		implements ICodeModificationOperation {
 
@@ -22,12 +26,28 @@ public abstract class AbstractTestAwareCodeModificationOperation extends Abstrac
 
 		if (classType.isTestClass()) {
 			modifyTestClass(cr, cw, classType);
-		} else {
+		} else if (classType.isSourceClass()) {
 			modifySourceClass(cr, cw);
+		} else {
+			modifyIgnoredTestClass(cr, cw, classType);
 		}
 	}
 
 	protected abstract void modifySourceClass(ClassReader cr, ClassWriter cw);
 
 	protected abstract void modifyTestClass(ClassReader cr, ClassWriter cw, ClassType classType);
+
+	/**
+	 * Modify an ignored test class.
+	 * 
+	 * @param classReader
+	 *            class reader
+	 * @param classWriter
+	 *            class writer
+	 * @param classType
+	 *            type of the class
+	 */
+	protected void modifyIgnoredTestClass(ClassReader classReader, ClassWriter classWriter, ClassType classType) {
+		classReader.accept(new NoModificationClassVisitor(Opcodes.ASM5, classWriter), 0);
+	}
 }
