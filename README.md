@@ -13,3 +13,19 @@ mvn eclipse:eclipse -DdownloadSources=true
 
 # Sample configuration
 `/test-analyzer-runner/sample/sample-configuration.config`
+
+(See also: configurations of the integration tests in: `/test-analyzer-test-int/src/test/data/integrationtest*/configuration`)
+
+# Data postprocessing
+SQL schema and procedures: `test-analyzer-runner/sql`
+
+(Required database: MySQL >= 5.7)
+
+## Setup
+1. Use the schema files in the specified order to create the schema
+2. Create the functions
+
+## Data import
+1. Import all result files
+2. Check the raw data
+3. Call the `Transfer` procedure with the execution id (procedure is specified in `perform_transfer.sql`)
