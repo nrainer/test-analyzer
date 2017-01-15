@@ -36,6 +36,11 @@ public abstract class AbstractFactoryReturnValueGenerator extends AbstractReturn
 		checkFactoryValidity(factoryClass);
 	}
 
+	/** {@link #m_factoryInstance} */
+	public IReturnValueFactory getFactoryInstance() {
+		return m_factoryInstance;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {

@@ -8,12 +8,12 @@ import java.util.function.Predicate;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.IReturnValueFactory;
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractFactoryReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues.CommonReturnValueFactory;
+import de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues.CommonInstancesReturnValueGenerator;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps.ReturnTypeCollectorStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
@@ -50,12 +50,12 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 					true);
 
 	/**
-	 * <code>extension.methodsignature.returnvalue.existingFactories</code>: Qualified class names of existing
-	 * factories.
+	 * <code>extension.methodsignature.returnvalue.existingFactories</code>: Qualified class names of existing factory
+	 * return value generators of type {@link AbstractFactoryReturnValueGenerator}.
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXISTING_FACTORY_NAMES = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactories",
-					CommonReturnValueFactory.class.getName());
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXISTING_FACTORY_GENERATOR_NAMES = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactoryGenerators",
+					CommonInstancesReturnValueGenerator.class.getName());
 
 	/**
 	 * <code>extension.methodsignature.returnvalue.excludeWrapperAndString</code>: Whether wrapper types and String
@@ -110,18 +110,20 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 	/** Create a class name filter based on the supported types of the existing factories. */
 	private Optional<Predicate<String>> createClassNameFilter(Configuration configuration) {
 		try {
-			FactoryProperty returnValueFactoryProperty = configuration.getDynamicValues()
-					.getValueAsProperty(CONFIGURATION_KEY_EXISTING_FACTORY_NAMES, new FactoryProperty());
+			FactoryGeneratorProperty returnValueFactoryGeneratorProperty = configuration.getDynamicValues()
+					.getValueAsProperty(CONFIGURATION_KEY_EXISTING_FACTORY_GENERATOR_NAMES,
+							new FactoryGeneratorProperty());
 
-			if (returnValueFactoryProperty.countElements() == 0) {
+			if (returnValueFactoryGeneratorProperty.countElements() == 0) {
 				return Optional.empty();
 			}
 
-			List<IReturnValueFactory> returnValueFactories = Arrays
-					.asList(returnValueFactoryProperty.createInstances());
+			List<AbstractFactoryReturnValueGenerator> returnValueFactories = Arrays
+					.asList(returnValueFactoryGeneratorProperty.createInstances());
 
 			Predicate<String> filter = className -> returnValueFactories.stream()
-					.anyMatch(factory -> factory.supports(MethodIdentifier.EMPTY, className));
+					.anyMatch(factoryGenerator -> factoryGenerator.getFactoryInstance().supports(MethodIdentifier.EMPTY,
+							className));
 			return Optional.of(filter);
 
 		} catch (ConfigurationException | ReflectiveOperationException e) {
@@ -140,19 +142,20 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 		return resultReceiver;
 	}
 
-	/** Property for {@link #CONFIGURATION_KEY_EXISTING_FACTORY_NAMES} */
-	private static class FactoryProperty extends AbstractMultiClassnameProperty<IReturnValueFactory> {
+	/** Property for {@link #CONFIGURATION_KEY_EXISTING_FACTORY_GENERATOR_NAMES} */
+	private static class FactoryGeneratorProperty
+			extends AbstractMultiClassnameProperty<AbstractFactoryReturnValueGenerator> {
 
 		/** {@inheritDoc} */
 		@Override
-		protected Class<IReturnValueFactory> getRequiredType() {
-			return IReturnValueFactory.class;
+		protected Class<AbstractFactoryReturnValueGenerator> getRequiredType() {
+			return AbstractFactoryReturnValueGenerator.class;
 		}
 
 		/** {@inheritDoc} */
 		@Override
 		public String getName() {
-			return CONFIGURATION_KEY_EXISTING_FACTORY_NAMES.getName();
+			return CONFIGURATION_KEY_EXISTING_FACTORY_GENERATOR_NAMES.getName();
 		}
 
 		/** {@inheritDoc} */
