@@ -121,6 +121,9 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 			List<AbstractFactoryReturnValueGenerator> returnValueFactories = Arrays
 					.asList(returnValueFactoryGeneratorProperty.createInstances());
 
+			LOGGER.info(
+					"Using factory return value generators: " + returnValueFactoryGeneratorProperty.getValueAsString());
+
 			Predicate<String> filter = className -> returnValueFactories.stream()
 					.anyMatch(factoryGenerator -> factoryGenerator.getFactoryInstance().supports(MethodIdentifier.EMPTY,
 							className));
