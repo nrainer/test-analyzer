@@ -95,6 +95,8 @@ public class DynamicConfigurationValuesManager {
 			propertyToFill.setValueUnsafe(stringValue);
 		}
 
+		propertyToFill.validate();
+
 		return propertyToFill;
 	}
 

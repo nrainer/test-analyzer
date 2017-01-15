@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMultiClassnameProperty;
+import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMultiStringProperty;
 
 /** Test {@link DynamicConfigurationValuesManager} */
 public class DynamicConfigurationValuesManagerTest {
@@ -60,7 +60,7 @@ public class DynamicConfigurationValuesManagerTest {
 				Long.class.getName() + CommonConstants.SEPARATOR_DEFAULT + Double.class.getName());
 		assertTrue(configurationExtension.isSet(CONFIGURATION_KEY_FOR_STRING_VALUE));
 
-		AbstractMultiClassnameProperty<Number> classnameProperty = new AbstractMultiClassnameProperty<Number>() {
+		AbstractMultiStringProperty classnameProperty = new AbstractMultiStringProperty() {
 			/** {@inheritDoc} */
 			@Override
 			public String getName() {
@@ -73,10 +73,9 @@ public class DynamicConfigurationValuesManagerTest {
 				return "";
 			}
 
-			/** {@inheritDoc} */
 			@Override
-			protected Class<Number> getRequiredType() {
-				return Number.class;
+			public String getSeparator() {
+				return CommonConstants.SEPARATOR_DEFAULT;
 			}
 		};
 
