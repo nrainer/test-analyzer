@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps;
 
+import java.security.CodeSource;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -179,14 +180,40 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 		if (m_outputFormat == OutputFormat.CODE) {
 			return Arrays.asList(String.format("case \"%s\":", returnTypeCls),
 					String.format(" return new %s();", returnTypeCls));
-		} else if (m_outputFormat == OutputFormat.COUNT) {
-			return Arrays
-					.asList(String.format("%s (%s)", returnTypeCls, returnTypeClassNameOccurrences.get(returnTypeCls)));
-		} else if (m_outputFormat == OutputFormat.LIST) {
+		}
+
+		if (m_outputFormat == OutputFormat.LIST) {
 			return Arrays.asList(returnTypeCls);
 		}
 
+		if (m_outputFormat == OutputFormat.LIST_WITH_COUNT) {
+			return Arrays
+					.asList(String.format("%s (%s)", returnTypeCls, returnTypeClassNameOccurrences.get(returnTypeCls)));
+		}
+
+		if (m_outputFormat == OutputFormat.LIST_WITH_ORIGIN_INFO) {
+			return Arrays.asList(String.format("%s (%s)", returnTypeCls, tryGetClassOrigin(returnTypeCls)));
+		}
+
 		throw new IllegalArgumentException("Unsupported output format: " + m_outputFormat);
+	}
+
+	/** Get the origin from where a class was loaded. */
+	private String tryGetClassOrigin(String className) {
+		try {
+			Class<?> cls = Class.forName(className);
+			CodeSource codeSource = cls.getProtectionDomain().getCodeSource();
+
+			if (codeSource != null) {
+				return codeSource.getLocation().toString();
+			}
+
+			return "#unknown#";
+		} catch (SecurityException e) {
+			return "#not allowed#";
+		} catch (Throwable t) {
+			return "#exception occurred#";
+		}
 	}
 
 	/**

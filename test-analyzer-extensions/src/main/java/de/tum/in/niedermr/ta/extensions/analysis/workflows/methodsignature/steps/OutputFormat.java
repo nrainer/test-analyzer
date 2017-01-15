@@ -6,7 +6,9 @@ public enum OutputFormat {
 	/** List of classes. */
 	LIST,
 	/** List of classes with occurrence information. */
-	COUNT,
+	LIST_WITH_COUNT,
+	/** List of classes with information from where a class was loaded. */
+	LIST_WITH_ORIGIN_INFO,
 	/** Switch-case code. */
 	CODE;
 
