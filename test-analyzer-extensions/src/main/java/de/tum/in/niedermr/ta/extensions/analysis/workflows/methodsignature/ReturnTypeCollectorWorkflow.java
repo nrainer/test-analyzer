@@ -14,6 +14,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues.CommonInstancesReturnValueGenerator;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps.OutputFormat;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps.ReturnTypeCollectorStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
@@ -74,10 +75,11 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 					1);
 
 	/**
-	 * <code>extension.methodsignature.returnvalue.outputFormat</code>: LIST, COUNT or CODE
+	 * <code>extension.methodsignature.returnvalue.outputFormat</code>: value of {@link OutputFormat}
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEY_OUTPUT_FORMAT = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.outputFormat", "LIST");
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_OUTPUT_FORMAT = DynamicConfigurationKey.create(
+			DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.outputFormat",
+			OutputFormat.getDefault().name());
 
 	/** Result file name. */
 	private static final String RESULT_FILE_NAME = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "return-type-list"
@@ -94,7 +96,8 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 		ReturnTypeCollectorStep collectorStep = createAndInitializeExecutionStep(ReturnTypeCollectorStep.class);
 		collectorStep.setResultReceiver(resultReceiver);
 
-		collectorStep.setOutputFormat(configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_OUTPUT_FORMAT));
+		collectorStep.setOutputFormat(
+				OutputFormat.valueOf(configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_OUTPUT_FORMAT)));
 		collectorStep.setExcludeWrapperAndString(
 				configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_EXCLUDE_WRAPPER_AND_STRING));
 		collectorStep.setMinTypeOccurrenceCount(

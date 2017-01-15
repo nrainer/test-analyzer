@@ -53,7 +53,7 @@ public class ReturnTypeCollectorStepTest {
 	/** Test. */
 	@Test
 	public void testFilterOccurrencesAndCreateOutputAsList() throws IOException {
-		m_executionStep.setOutputFormat("LIST");
+		m_executionStep.setOutputFormat(OutputFormat.LIST);
 		m_executionStep.filterOccurrencesAndCreateOutput(m_typeOccurrences);
 		assertEquals(m_resultReceiver.getResult(),
 				TextFileData.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-list.txt"));
@@ -62,7 +62,7 @@ public class ReturnTypeCollectorStepTest {
 	/** Test. */
 	@Test
 	public void testFilterOccurrencesAndCreateOutputAsCode() throws IOException {
-		m_executionStep.setOutputFormat("CODE");
+		m_executionStep.setOutputFormat(OutputFormat.CODE);
 		m_executionStep.filterOccurrencesAndCreateOutput(m_typeOccurrences);
 		assertEquals(m_resultReceiver.getResult(),
 				TextFileData.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-code.txt"));
@@ -72,7 +72,7 @@ public class ReturnTypeCollectorStepTest {
 	/** Test. */
 	@Test
 	public void testFilterOccurrencesAndCreateOutputAsCount1() throws IOException {
-		m_executionStep.setOutputFormat("COUNT");
+		m_executionStep.setOutputFormat(OutputFormat.COUNT);
 		m_executionStep.filterOccurrencesAndCreateOutput(m_typeOccurrences);
 		assertEquals(m_resultReceiver.getResult(),
 				TextFileData.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-count-1.txt"));
@@ -81,7 +81,7 @@ public class ReturnTypeCollectorStepTest {
 	/** Test. */
 	@Test
 	public void testFilterOccurrencesAndCreateOutputAsCount2() throws IOException {
-		m_executionStep.setOutputFormat("COUNT");
+		m_executionStep.setOutputFormat(OutputFormat.COUNT);
 		m_executionStep.setExcludeWrapperAndString(true);
 		m_executionStep.setMinTypeOccurrenceCount(5);
 		m_executionStep.setClassNameFilter(Optional.of(className -> !className.contains("Function")));

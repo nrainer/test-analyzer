@@ -19,7 +19,6 @@ import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.ReturnTypeCollectorWorkflow;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.ReturnTypeRetrieverOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -36,12 +35,8 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** Filter for the class names. */
 	private Optional<Predicate<String>> m_classNameFilter = Optional.empty();
 
-	/**
-	 * Result output format.
-	 * 
-	 * @see ReturnTypeCollectorWorkflow#CONFIGURATION_KEY_OUTPUT_FORMAT
-	 */
-	private String m_outputFormat = "LIST";
+	/** Result output format. */
+	private OutputFormat m_outputFormat = OutputFormat.getDefault();
 
 	/** Exclude wrapper types and String. */
 	private boolean m_excludeWrapperTypesAndString;
@@ -60,7 +55,7 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	}
 
 	/** {@link #m_outputFormat} */
-	public void setOutputFormat(String outputFormat) {
+	public void setOutputFormat(OutputFormat outputFormat) {
 		m_outputFormat = outputFormat;
 	}
 
@@ -181,17 +176,17 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 
 	/** Format an output entry. */
 	private List<String> format(String returnTypeCls, Map<String, Integer> returnTypeClassNameOccurrences) {
-		if (m_outputFormat.equals("CODE")) {
+		if (m_outputFormat == OutputFormat.CODE) {
 			return Arrays.asList(String.format("case \"%s\":", returnTypeCls),
 					String.format(" return new %s();", returnTypeCls));
-		} else if (m_outputFormat.equals("COUNT")) {
+		} else if (m_outputFormat == OutputFormat.COUNT) {
 			return Arrays
 					.asList(String.format("%s (%s)", returnTypeCls, returnTypeClassNameOccurrences.get(returnTypeCls)));
-		} else if (m_outputFormat.equals("LIST")) {
+		} else if (m_outputFormat == OutputFormat.LIST) {
 			return Arrays.asList(returnTypeCls);
 		}
 
-		throw new IllegalArgumentException("Unknown output format: " + m_outputFormat);
+		throw new IllegalArgumentException("Unsupported output format: " + m_outputFormat);
 	}
 
 	/**
