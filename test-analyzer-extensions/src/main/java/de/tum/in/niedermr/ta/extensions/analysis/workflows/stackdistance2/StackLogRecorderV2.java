@@ -36,6 +36,14 @@ public class StackLogRecorderV2 {
 	 * (This method is invoked by instrumented code.)
 	 */
 	public static synchronized void pushInvocation(String methodIdentifierString) {
+		if (s_threadStackManager == null) {
+			// the thread stack manager has not been initialized yet because the test execution has not started yet
+			// ignore the invocation
+			// this can happen if an instrumented method is invoked from a static initializer of a class (since a class
+			// may be loaded before the actual test execution)
+			return;
+		}
+
 		MethodIdentifier methodIdentifier = MethodIdentifier.parse(methodIdentifierString);
 		int currentStackDistance = s_threadStackManager.computeCurrentStackHeight(StackLogRecorderV2.class.getName());
 
