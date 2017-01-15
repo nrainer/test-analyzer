@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation;
 
+import java.util.List;
 import java.util.Optional;
 
 public class SampleClass2 {
@@ -9,6 +10,8 @@ public class SampleClass2 {
 	public double m_parameter3;
 	public Object m_parameter4;
 	public Optional<String> m_parameter5;
+	public String m_parameter6;
+	public List<String> m_parameter7;
 	public String[] m_array1;
 	public int[] m_array2;
 	public Object[] m_array3;
@@ -23,6 +26,11 @@ public class SampleClass2 {
 	public SampleClass2(Object parameter4, Optional<String> parameter5) {
 		m_parameter4 = parameter4;
 		m_parameter5 = parameter5;
+	}
+
+	public SampleClass2(String name, List<String> parameters) {
+		m_parameter6 = name;
+		m_parameter7 = parameters;
 	}
 
 	public SampleClass2(String[] array1, int[] array2, Object[] array3, Double[][] array4) {

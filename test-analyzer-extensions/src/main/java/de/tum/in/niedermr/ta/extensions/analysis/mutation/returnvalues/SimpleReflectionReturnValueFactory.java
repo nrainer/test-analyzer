@@ -4,8 +4,11 @@ import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Set;
@@ -31,7 +34,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 	 * as parameter types.
 	 */
 	private static final Set<Class<?>> SUPPORTED_CONSTRUCTOR_PARAMETER_TYPES = new HashSet<>(
-			Arrays.asList(Object.class, String.class, Optional.class));
+			Arrays.asList(Object.class, String.class, Optional.class, Collection.class, List.class, ArrayList.class));
 
 	/** {@inheritDoc} */
 	@Override
@@ -113,6 +116,9 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 				parameterValue = Array.newInstance(parameterType.getComponentType(), 0);
 			} else if (parameterType.isEnum()) {
 				parameterValue = getEnumInstance(parameterType);
+			} else if (parameterType == Collection.class || parameterType == List.class
+					|| parameterType == ArrayList.class) {
+				parameterValue = new ArrayList<>();
 			} else if (parameterType == String.class) {
 				parameterValue = "";
 			} else if (parameterType == Object.class) {
