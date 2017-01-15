@@ -1,9 +1,15 @@
 package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -16,8 +22,11 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Stack;
+import java.util.StringTokenizer;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.regex.Pattern;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueFactory;
@@ -149,6 +158,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return this.getClass().getClassLoader();
 		case "java.lang.StackTraceElement":
 			return new Exception().getStackTrace()[0];
+		case "java.lang.Enum":
+			return Enum.valueOf(java.math.RoundingMode.class, java.math.RoundingMode.CEILING.name());
 		default:
 			throw new NoSuchElementException();
 		}
@@ -201,6 +212,10 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return map.entrySet().iterator().next();
 		case "java.util.SortedMap":
 			return new TreeMap<>();
+		case "java.util.EnumSet":
+			return java.util.EnumSet.noneOf(java.math.RoundingMode.class);
+		case "java.util.Enumeration":
+			return new StringTokenizer("input");
 		default:
 			return null;
 		}
@@ -224,19 +239,34 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return new java.util.concurrent.ScheduledThreadPoolExecutor(1);
 		case "java.util.Formatter":
 			return new java.util.Formatter();
+		case "java.util.concurrent.Executor":
+		case "java.util.concurrent.ExecutorService":
+			return new ScheduledThreadPoolExecutor(5);
+		case "java.util.concurrent.Future":
+			return new FutureTask<Void>(new Thread(), null);
 		default:
 			return null;
 		}
 	}
 
-	private Object createJavaIO(String returnType) throws NoSuchElementException {
+	private Object createJavaIO(String returnType) throws NoSuchElementException, FileNotFoundException {
 		switch (returnType) {
 		case "java.io.File":
 			return new File("./files/textfile.txt");
 		case "java.io.Serializable":
-			return "";
+			return "abc";
 		case "java.io.Reader":
-			return new java.io.StringReader("a");
+		case "java.io.BufferedReader":
+			return new java.io.BufferedReader(new StringReader("abc"));
+		case "java.io.Writer":
+		case "java.io.PrintWriter":
+			return new PrintWriter("./a.txt");
+		case "java.io.InputStream":
+		case "java.io.ByteArrayInputStream.ByteArrayInputStream":
+			return new ByteArrayInputStream(new byte[0]);
+		case "java.io.OutputStream":
+		case "java.io.ByteArrayOutputStream.ByteArrayOutputStream":
+			return new ByteArrayOutputStream();
 		default:
 			throw new NoSuchElementException();
 		}
@@ -263,6 +293,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return new java.net.URL("http://www.google.com");
 		case "java.nio.charset.Charset":
 			return java.nio.charset.Charset.defaultCharset();
+		case "java.nio.file.Path":
+			return Paths.get(".", "a.txt");
 		case "java.text.Format":
 		case "java.text.NumberFormat":
 			return java.text.NumberFormat.getInstance();
