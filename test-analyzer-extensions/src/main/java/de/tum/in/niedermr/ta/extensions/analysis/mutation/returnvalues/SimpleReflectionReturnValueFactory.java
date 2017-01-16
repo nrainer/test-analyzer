@@ -120,7 +120,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 	}
 
 	/**
-	 * Create a simple parameter value for constructor parameters.
+	 * Create a simple parameter value.
 	 * 
 	 * @see #SUPPORTED_CONSTRUCTOR_PARAMETER_TYPES
 	 */
@@ -138,7 +138,16 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 			return new Object();
 		} else if (parameterType == Optional.class) {
 			return Optional.empty();
-		} else if (parameterType == boolean.class) {
+		} else if (parameterType.isPrimitive()) {
+			return createPrimitiveParameterValue(parameterType);
+		}
+
+		throw new IllegalStateException("Not a supported parameter type: " + parameterType);
+	}
+
+	/** Create a primitive parameter value. */
+	protected static Object createPrimitiveParameterValue(Class<?> parameterType) {
+		if (parameterType == boolean.class) {
 			return true;
 		} else if (parameterType == char.class) {
 			return ' ';
@@ -156,7 +165,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 			return 1.0;
 		}
 
-		throw new IllegalStateException("Not a supported parameter type: " + parameterType);
+		throw new IllegalStateException("Unexpected type: " + parameterType);
 	}
 
 	private static boolean areAllPrimitiveTypeOrStringParameters(Constructor<?> constructor) {
