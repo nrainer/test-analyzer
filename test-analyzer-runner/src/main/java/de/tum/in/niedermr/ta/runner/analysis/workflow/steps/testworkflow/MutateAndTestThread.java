@@ -49,7 +49,7 @@ class MutateAndTestThread extends Thread {
 	private final int m_threadIndex;
 	private final Configuration m_configuration;
 	private final ProcessExecution m_processExecution;
-	private final MethodProcessingStatistics m_statistics;
+	private final MethodMutationTestStateStatistics m_mutationTestStatistics;
 	private final Queue<TestInformation> m_methodsToMutateAndTestsToRun;
 	private final IReturnValueGenerator[] m_returnValueGenerators;
 	private final String m_suffixForFullExecutionId;
@@ -70,12 +70,12 @@ class MutateAndTestThread extends Thread {
 		// requires the configuration to be set
 		m_returnValueGenerators = createReturnValueGenerators();
 
-		m_statistics = new MethodProcessingStatistics();
+		m_mutationTestStatistics = new MethodMutationTestStateStatistics();
 	}
 
-	/** {@link #m_statistics} */
-	public MethodProcessingStatistics getStatistics() {
-		return m_statistics;
+	/** {@link #m_mutationTestStatistics} */
+	public MethodMutationTestStateStatistics getMutationTestStatistics() {
+		return m_mutationTestStatistics;
 	}
 
 	/** {@inheritDoc} */
@@ -91,61 +91,68 @@ class MutateAndTestThread extends Thread {
 			m_currentMethodUnderTest = tInformation.getMethodUnderTest();
 			m_currentTestcases = tInformation.getTestcases();
 
-			mutateAndTest();
-
-			m_statistics.incrementMethodCount();
+			mutateAndTestCurrentMethod();
 		}
 
-		LOGGER.info("THREAD FINISHED: T_" + m_threadIndex + " (" + m_statistics.toSummary() + ")");
+		LOGGER.info("THREAD FINISHED: T_" + m_threadIndex + " (" + m_mutationTestStatistics.toSummary() + ")");
 	}
 
-	protected void mutateAndTest() {
+	protected void mutateAndTestCurrentMethod() {
 		int retValGenIndex = 0;
+
+		MethodMutationTestState bestMethodState = MethodMutationTestState.UNKNOWN;
 
 		for (IReturnValueGenerator returnValueGen : m_returnValueGenerators) {
 			IFullExecutionId fullExecutionId = m_context.getExecutionId()
 					.createFullExecutionId(m_suffixForFullExecutionId + "_T" + m_threadIndex + "_C"
-							+ m_statistics.getMethodCount() + "_R" + retValGenIndex);
+							+ m_mutationTestStatistics.getMethodCount() + "_R" + retValGenIndex);
 
-			mutateAndTest(fullExecutionId, returnValueGen);
+			MethodMutationTestState methodStateWithCurrentRetValGen = mutateAndTestCurrentMethod(fullExecutionId,
+					returnValueGen);
+			bestMethodState = MethodMutationTestState.reduceToBestState(bestMethodState,
+					methodStateWithCurrentRetValGen);
 
 			retValGenIndex++;
 		}
+
+		m_mutationTestStatistics.addMethod(bestMethodState);
 	}
 
-	protected void mutateAndTest(IFullExecutionId fullExecutionId, IReturnValueGenerator returnValueGenerator) {
+	protected MethodMutationTestState mutateAndTestCurrentMethod(IFullExecutionId fullExecutionId,
+			IReturnValueGenerator returnValueGenerator) {
 		try {
-			mutateAndTestInternal(fullExecutionId, returnValueGenerator);
+			return mutateAndTestCurrentMethodInternal(fullExecutionId, returnValueGenerator);
 		} catch (TimeoutException ex) {
 			LOGGER.error("Mutate and test failed due to timeout (" + ex.getMessage() + "): "
 					+ m_currentMethodUnderTest.get());
 			handleAbortedTestExecution(returnValueGenerator, TestAbortReason.TEST_TIMEOUT);
-			m_statistics.incrementTimeoutCount();
+			return MethodMutationTestState.MUTATED_AND_TEST_TIMEOUT;
 		} catch (ProcessExecutionFailedException ex) {
 			LOGGER.error("Test execution did not complete: " + m_currentMethodUnderTest.get(), ex);
 			handleAbortedTestExecution(returnValueGenerator, TestAbortReason.TEST_DIED);
-			m_statistics.incrementErrorCount();
+			return MethodMutationTestState.MUTATION_OR_TEST_FAILED;
 		} catch (Exception ex) {
 			LOGGER.error("Mutate and test failed: " + m_currentMethodUnderTest.get(), ex);
-			m_statistics.incrementErrorCount();
+			return MethodMutationTestState.MUTATION_OR_TEST_FAILED;
 		}
 	}
 
-	private void mutateAndTestInternal(IFullExecutionId fullExecutionId, IReturnValueGenerator returnValueGenerator)
-			throws Exception {
-		LOGGER.info("Trying to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
+	private MethodMutationTestState mutateAndTestCurrentMethodInternal(IFullExecutionId fullExecutionId,
+			IReturnValueGenerator returnValueGenerator) throws Exception {
+		LOGGER.info("Request to mutate " + m_currentMethodUnderTest.get() + " with return type generator "
 				+ returnValueGenerator.getClass().getName());
 
-		boolean wasSuccessfullyMutated = MethodMutation.createJarWithMutatedMethod(m_currentMethodUnderTest,
+		boolean wasMutated = MethodMutation.createJarWithMutatedMethod(m_currentMethodUnderTest,
 				getFileInWorkingArea(Environment.getWithIndex(EnvironmentConstants.FILE_TEMP_JAR_X, m_threadIndex)),
 				returnValueGenerator, m_configuration.getMethodFilters().createInstances());
 
-		if (wasSuccessfullyMutated) {
-			handleSuccessfullyMutatedMethod(fullExecutionId, returnValueGenerator);
-		} else {
-			LOGGER.info("Skipped: " + m_currentMethodUnderTest.get());
-			m_statistics.incrementSkippedCount();
+		if (!wasMutated) {
+			LOGGER.info("Not mutated: " + m_currentMethodUnderTest.get());
+			return MethodMutationTestState.NOT_MUTATED;
 		}
+
+		handleSuccessfullyMutatedMethod(fullExecutionId, returnValueGenerator);
+		return MethodMutationTestState.MUTATED_AND_TESTED;
 	}
 
 	protected void handleSuccessfullyMutatedMethod(IFullExecutionId fullExecutionId,
@@ -160,7 +167,6 @@ class MutateAndTestThread extends Thread {
 
 		runTestsAndRecordResult(fullExecutionId, fileWithTestsToRun,
 				Environment.getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex), returnValueGenerator);
-		m_statistics.incrementSuccessfulCount();
 	}
 
 	protected void handleAbortedTestExecution(IReturnValueGenerator returnValueGenerator, TestAbortReason abortType) {

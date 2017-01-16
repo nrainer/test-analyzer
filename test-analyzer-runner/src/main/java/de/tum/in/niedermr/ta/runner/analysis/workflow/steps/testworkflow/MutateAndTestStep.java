@@ -49,7 +49,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 
 		List<MutateAndTestThread> threadList = createAndStartThreads(configuration, processExecution);
 
-		MethodProcessingStatistics aggregatedStatistics = new MethodProcessingStatistics();
+		MethodMutationTestStateStatistics aggregatedStatistics = new MethodMutationTestStateStatistics();
 
 		for (MutateAndTestThread workerThread : threadList) {
 			try {
@@ -58,7 +58,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 				throw new ExecutionException(getExecutionId(), e);
 			}
 
-			aggregatedStatistics.add(workerThread.getStatistics());
+			aggregatedStatistics.mergeWith(workerThread.getMutationTestStatistics());
 		}
 
 		if (m_aborted) {
