@@ -18,6 +18,7 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 import de.tum.in.niedermr.ta.runner.factory.FactoryUtil;
 
+/** Base class for an execution step. */
 public abstract class AbstractExecutionStep implements IExecutionStep, EnvironmentConstants {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(AbstractExecutionStep.class);
@@ -76,6 +77,11 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 
 	/** Get the description of this step. */
 	protected abstract String getDescription();
+
+	/** {@link #m_context} */
+	public ExecutionContext getContext() {
+		return m_context;
+	}
 
 	/** Get the execution id. */
 	protected final IExecutionId getExecutionId() {
