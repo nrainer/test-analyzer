@@ -103,6 +103,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		throw new NoSuchElementException();
 	}
 
+	/** Create an instance using reflection. */
 	protected static Object createInstanceWithSimpleParameters(Constructor<?> constructor)
 			throws ReflectiveOperationException {
 		Class<?>[] parameterTypes = constructor.getParameterTypes();
@@ -110,45 +111,52 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 		for (int i = 0; i < parameterTypes.length; i++) {
 			Class<?> parameterType = parameterTypes[i];
-			Object parameterValue;
-
-			if (parameterType.isArray()) {
-				parameterValue = Array.newInstance(parameterType.getComponentType(), 0);
-			} else if (parameterType.isEnum()) {
-				parameterValue = getEnumInstance(parameterType);
-			} else if (parameterType == Collection.class || parameterType == List.class
-					|| parameterType == ArrayList.class) {
-				parameterValue = new ArrayList<>();
-			} else if (parameterType == String.class) {
-				parameterValue = "";
-			} else if (parameterType == Object.class) {
-				parameterValue = new Object();
-			} else if (parameterType == Optional.class) {
-				parameterValue = Optional.empty();
-			} else if (parameterType == boolean.class) {
-				parameterValue = true;
-			} else if (parameterType == char.class) {
-				parameterValue = ' ';
-			} else if (parameterType == byte.class) {
-				parameterValue = (byte) 1;
-			} else if (parameterType == short.class) {
-				parameterValue = (short) 1;
-			} else if (parameterType == int.class) {
-				parameterValue = 1;
-			} else if (parameterType == long.class) {
-				parameterValue = 1L;
-			} else if (parameterType == float.class) {
-				parameterValue = (float) 1.0;
-			} else if (parameterType == double.class) {
-				parameterValue = 1.0;
-			} else {
-				throw new IllegalStateException("Not a supported parameter type: " + parameterType);
-			}
+			Object parameterValue = createSimpleParameterValue(parameterType);
 
 			parameterValues[i] = parameterValue;
 		}
 
 		return constructor.newInstance(parameterValues);
+	}
+
+	/**
+	 * Create a simple parameter value for constructor parameters.
+	 * 
+	 * @see #SUPPORTED_CONSTRUCTOR_PARAMETER_TYPES
+	 */
+	protected static Object createSimpleParameterValue(Class<?> parameterType) {
+		if (parameterType.isArray()) {
+			return Array.newInstance(parameterType.getComponentType(), 0);
+		} else if (parameterType.isEnum()) {
+			return getEnumInstance(parameterType);
+		} else if (parameterType == Collection.class || parameterType == List.class
+				|| parameterType == ArrayList.class) {
+			return new ArrayList<>();
+		} else if (parameterType == String.class) {
+			return "";
+		} else if (parameterType == Object.class) {
+			return new Object();
+		} else if (parameterType == Optional.class) {
+			return Optional.empty();
+		} else if (parameterType == boolean.class) {
+			return true;
+		} else if (parameterType == char.class) {
+			return ' ';
+		} else if (parameterType == byte.class) {
+			return (byte) 1;
+		} else if (parameterType == short.class) {
+			return (short) 1;
+		} else if (parameterType == int.class) {
+			return 1;
+		} else if (parameterType == long.class) {
+			return 1L;
+		} else if (parameterType == float.class) {
+			return (float) 1.0;
+		} else if (parameterType == double.class) {
+			return 1.0;
+		}
+
+		throw new IllegalStateException("Not a supported parameter type: " + parameterType);
 	}
 
 	private static boolean areAllPrimitiveTypeOrStringParameters(Constructor<?> constructor) {
