@@ -31,12 +31,21 @@ public class IntegrationTest5 extends AbstractIntegrationTest {
 				getFileOutputCollectedInformation());
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, getFileExpectedResultAsSql(), getFileOutputResultAsSql());
 
+		checkLogFile();
+	}
+
+	/** Check the log file. */
+	protected void checkLogFile() {
 		List<String> expectedLogFileTextChunks = new ArrayList<>();
 		expectedLogFileTextChunks
 				.add(TestcaseIdentifier.create("de.tum.in.ma.simpleproject.special.HasFailingTest", "failingTest").get()
 						+ " will be skipped!");
+		expectedLogFileTextChunks.add(
+				"Test execution did not complete: de.tum.in.ma.simpleproject.special.Special.returnFiveForTestNotToExit()");
+		expectedLogFileTextChunks.add(
+				"ALL THREADS FINISHED. 14 methods. 10 processed successfully. 2 skipped. 1 with timeout. 1 failed.");
 		// Lambda mutation is not supported
-		expectedLogFileTextChunks.add("Skipped: de.tum.in.ma.simpleproject.special.Java8.lambda$1");
+		expectedLogFileTextChunks.add("Not mutated: de.tum.in.ma.simpleproject.special.Java8.lambda$1");
 		assertLogFileContains(expectedLogFileTextChunks);
 	}
 }

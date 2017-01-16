@@ -43,6 +43,6 @@ public class IntegrationTest3 extends AbstractIntegrationTest {
 		assertTrue(executionInformationContent.contains(
 				"INSERT INTO Execution_Information (execution, date, project, configurationContent) VALUES ('TEST', CURRENT_DATE(), '?', '"));
 		assertTrue(executionInformationContent.contains(
-				"UPDATE Execution_Information SET notes = '12 methods. 6 processed successfully. 6 skipped. 0 with timeout. 0 failed.' WHERE execution = 'TEST';"));
+				"UPDATE Execution_Information SET notes = '6 methods. 6 processed successfully. 0 skipped. 0 with timeout. 0 failed.' WHERE execution = 'TEST';"));
 	}
 }
