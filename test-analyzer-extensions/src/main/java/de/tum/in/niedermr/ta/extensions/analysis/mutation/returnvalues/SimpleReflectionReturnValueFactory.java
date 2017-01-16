@@ -132,7 +132,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 			} else if (parameterType == byte.class) {
 				parameterValue = (byte) 1;
 			} else if (parameterType == short.class) {
-				parameterValue = 1;
+				parameterValue = (short) 1;
 			} else if (parameterType == int.class) {
 				parameterValue = 1;
 			} else if (parameterType == long.class) {
