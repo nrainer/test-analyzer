@@ -15,35 +15,45 @@ public class TestNgRunResult implements ITestRunResult {
 		this.m_listener = listener;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean successful() {
 		return getFailureCount() == 0;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isAssertionError() {
 		if (successful()) {
 			return false;
-		} else {
-			return getFirstException() instanceof AssertionError;
 		}
+
+		return getFirstException() instanceof AssertionError;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int getRunCount() {
 		return m_listener.getPassedTests().size() + getFailureCount() + m_listener.getSkippedTests().size();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int getFailureCount() {
 		return m_listener.getFailedTests().size();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Throwable getFirstException() {
-		return successful() ? null : m_listener.getFailedTests().get(0).getThrowable();
+		if (successful()) {
+			return null;
+		}
+
+		return m_listener.getFailedTests().get(0).getThrowable();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public List<? extends Throwable> getAllExceptions() {
 		List<Throwable> result = new LinkedList<>();

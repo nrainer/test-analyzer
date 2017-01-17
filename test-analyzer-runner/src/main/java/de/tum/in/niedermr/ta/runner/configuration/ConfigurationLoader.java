@@ -183,7 +183,12 @@ public class ConfigurationLoader implements FileSystemConstants {
 
 		for (int i = 0; i < result.length; i++) {
 			String value = propertyList.get(i).getValueAsString();
-			result[i] = (value.isEmpty() ? AbstractStringProperty.PLACEHOLDER_EMPTY : value);
+
+			if (value.isEmpty()) {
+				value = AbstractStringProperty.PLACEHOLDER_EMPTY;
+			}
+
+			result[i] = value;
 		}
 
 		return result;

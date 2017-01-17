@@ -178,7 +178,11 @@ abstract class AbstractConfigurationParser {
 	}
 
 	private String getValueOfLine(String[] lineParts) {
-		return lineParts.length > 1 ? lineParts[1].trim() : "";
+		if (lineParts.length <= 1) {
+			return "";
+		}
+
+		return lineParts[1].trim();
 	}
 
 	private void checkIfAlreadySet(IConfigurationProperty<?> property, String line) throws ConfigurationException {

@@ -7,8 +7,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.Identification;
 
 /**
- * Note that wrapper classes of primitive types are not supported. Void is also
- * not supported.
+ * Note that wrapper classes of primitive types are not supported. Void is also not supported.
  *
  */
 public abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnValueGenerator {
@@ -79,7 +78,10 @@ public abstract class AbstractSimpleReturnValueGenerator extends AbstractReturnV
 	/** {@inheritDoc} */
 	@Override
 	public boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {
-		return m_supportStringType ? Identification.isPrimitiveOrString(returnType)
-				: Identification.isPrimitive(returnType);
+		if (m_supportStringType) {
+			return Identification.isPrimitiveOrString(returnType);
+		}
+
+		return Identification.isPrimitive(returnType);
 	}
 }

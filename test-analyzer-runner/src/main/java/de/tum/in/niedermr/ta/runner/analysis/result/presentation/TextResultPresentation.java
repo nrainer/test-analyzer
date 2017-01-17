@@ -28,8 +28,12 @@ public class TextResultPresentation implements IResultPresentation {
 		sB.append("Return value generator: " + returnValueGenerator);
 		sB.append(CommonConstants.NEW_LINE);
 
-		sB.append("Result: " + (testResult.successful() ? "OK"
-				: (testResult.getFailureCount() + " of " + testResult.getRunCount() + " FAILED")));
+		sB.append("Result: ");
+		if (testResult.successful()) {
+			sB.append("OK");
+		} else {
+			sB.append(testResult.getFailureCount() + " of " + testResult.getRunCount() + " FAILED");
+		}
 		sB.append(CommonConstants.NEW_LINE);
 
 		for (Throwable ex : testResult.getAllExceptions()) {

@@ -33,7 +33,13 @@ public class TestModeMethodVisitor extends AbstractTryFinallyMethodVisitor imple
 	}
 
 	private void insertInstructionToSetMode(LoggingMode mode) {
-		String modeValue = (mode == LoggingMode.TESTING ? FIELD_NAME_TESTING : FIELD_NAME_FRAMING);
+		String modeValue;
+
+		if (mode == LoggingMode.TESTING) {
+			modeValue = FIELD_NAME_TESTING;
+		} else {
+			modeValue = FIELD_NAME_FRAMING;
+		}
 
 		visitFieldInsn(Opcodes.GETSTATIC, CP_LOGGING_MODE, modeValue, FIELD_DESC_LOGGING_MODE);
 		visitMethodInsn(INVOKESTATIC, CP_INVOCATION_LOGGER, METHOD_NAME_SET_MODE, METHOD_DESC_SET_MODE, false);

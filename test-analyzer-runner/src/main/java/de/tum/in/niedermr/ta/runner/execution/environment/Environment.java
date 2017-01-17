@@ -90,11 +90,15 @@ public class Environment implements EnvironmentConstants {
 		return sB.toString();
 	}
 
-	private static String getCanonicalPath(final String path) throws IOException {
-		File file = new File(getPathWithoutWildcard(path));
+	protected static String getCanonicalPath(String inputPath) throws IOException {
+		File file = new File(getPathWithoutWildcard(inputPath));
 
-		return file.getCanonicalPath()
-				+ (path.endsWith(CLASSPATH_WILDCARD) ? (PATH_SEPARATOR + CLASSPATH_WILDCARD) : "");
+		String resultPath = file.getCanonicalPath();
+
+		if (inputPath.endsWith(CLASSPATH_WILDCARD)) {
+			resultPath += PATH_SEPARATOR + CLASSPATH_WILDCARD;
+		}
+		return resultPath;
 	}
 
 	public static final String getPathWithoutWildcard(final String path) {

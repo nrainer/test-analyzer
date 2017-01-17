@@ -52,9 +52,14 @@ public final class FilterResult {
 	public String toString() {
 		if (isAccepted()) {
 			return "YES";
-		} else {
-			return "NO (" + getMethodFilter().getSimpleName()
-					+ (getRejectReason() != null ? (": " + getRejectReason()) : "") + ")";
 		}
+
+		String rejectReasonInfo = "";
+
+		if (getRejectReason() != null) {
+			rejectReasonInfo = ": " + getRejectReason();
+		}
+
+		return "NO (" + getMethodFilter().getSimpleName() + rejectReasonInfo + ")";
 	}
 }

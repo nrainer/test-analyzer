@@ -85,8 +85,13 @@ public final class MethodIdentifier implements Identifier {
 
 	public static MethodIdentifier parse(String methodIdentifier) {
 		String[] values = methodIdentifier.split(JavaConstants.RETURN_TYPE_SEPARATOR);
+		String returnType = UNKNOWN_RETURN_TYPE;
 
-		return new MethodIdentifier(values[0], values.length > 1 ? values[1] : UNKNOWN_RETURN_TYPE);
+		if (values.length > 1) {
+			returnType = values[1];
+		}
+
+		return new MethodIdentifier(values[0], returnType);
 	}
 
 	@Override

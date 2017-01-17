@@ -15,35 +15,44 @@ public class JUnitTestRunResult implements ITestRunResult {
 		this.m_jUnitResult = jUnitResult;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean successful() {
 		return m_jUnitResult.wasSuccessful();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public boolean isAssertionError() {
 		if (successful()) {
 			return false;
-		} else {
-			return getFirstException() instanceof java.lang.AssertionError;
 		}
+		return getFirstException() instanceof java.lang.AssertionError;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int getRunCount() {
 		return m_jUnitResult.getRunCount();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int getFailureCount() {
 		return m_jUnitResult.getFailureCount();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Throwable getFirstException() {
-		return successful() ? null : m_jUnitResult.getFailures().get(0).getException();
+		if (successful()) {
+			return null;
+		}
+
+		return m_jUnitResult.getFailures().get(0).getException();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public List<? extends Throwable> getAllExceptions() {
 		List<Throwable> result = new LinkedList<>();

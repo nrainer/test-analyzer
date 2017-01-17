@@ -11,19 +11,23 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 		setDefault();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public abstract String getName();
 
+	/** {@inheritDoc} */
 	@Override
 	public final T getValue() {
 		return m_value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void setValue(T value) {
 		this.m_value = value;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final void setValueUnsafe(String stringValue) throws ConfigurationException {
 		try {
@@ -37,21 +41,29 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 		}
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final String getValueAsString() {
-		return m_value == null ? "" : m_value.toString();
+		if (m_value == null) {
+			return "";
+		}
+
+		return m_value.toString();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void setDefault() {
 		setValue(getDefault());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public abstract String getDescription();
 
 	protected abstract T getDefault();
 
+	/** {@inheritDoc} */
 	@Override
 	public void validate() throws ConfigurationException {
 		// NOP
@@ -63,6 +75,7 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 	 */
 	protected abstract T parseValue(String valueToParse);
 
+	/** {@inheritDoc} */
 	@Override
 	public final String toString() {
 		return "[" + toString(getName(), getValue()) + "]";

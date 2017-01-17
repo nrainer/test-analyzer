@@ -15,7 +15,7 @@ import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 
 public abstract class AbstractTestClassDetector implements ITestClassDetector {
 
-	protected final static boolean IGNORE_IGNORED_TEST_CASES = true;
+	protected static final boolean IGNORE_IGNORED_TEST_CASES = true;
 
 	private final boolean m_ignoreAbstractClasses;
 	private final Collection<Pattern> m_testClassIncludePatterns;
@@ -89,8 +89,7 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 	}
 
 	/**
-	 * Check if the class node is an inner class and an outer class is a test
-	 * class.
+	 * Check if the class node is an inner class and an outer class is a test class.
 	 */
 	private boolean isInnerClassInTestOrIgnoredClass(ClassNode cn) {
 		Optional<Class<?>> outerClass = JavaUtility.getOuterClassNoEx(cn);

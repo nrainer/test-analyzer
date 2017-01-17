@@ -30,7 +30,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 	private static final String PREFIX_UNREGISTERED_ASSERT_METHODS_1 = "assert";
 	private static final String PREFIX_UNREGISTERED_ASSERT_METHODS_2 = "check";
 
-	private final static String[] KNOWN_FURTHER_ASSERTION_CLASS_NAMES = new String[] {
+	private static final String[] KNOWN_FURTHER_ASSERTION_CLASS_NAMES = new String[] {
 			"org.conqat.lib.commons.assertion.CCSMAssert", "org.conqat.lib.commons.assertion.CCSMPre",
 			"org.testng.asserts.Assertion", "org.apache.commons.math3.TestUtils", "ru.histone.utils.Assert",
 			"org.matheclipse.core.system.AbstractTestCase" };
