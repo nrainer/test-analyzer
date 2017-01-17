@@ -26,6 +26,11 @@ SQL schema and procedures: `test-analyzer-runner/sql`
 2. Use the files in `1_setup/2_procedures` to create the needed functions and procedures
 
 ## Data import
-1. Import all result files
+1. Import `execution_information.sql.txt" and subsequently all other result files
 2. Check the raw data
-3. Call the `Transfer` procedure with the execution id (procedure is specified in `perform_transfer.sql`)
+3. Transfer the raw data into structures optimized for analyses using the script `2_processing/transfer_script.sql`. It is necessary to specify the value of `@executionId`.
+4. Execute `CALL MaterializeViews()` to create / refresh materialized views (optional).
+
+### Other
+* Use `CALL RevertTransfer([executionId])` to revert a data transfer.
+* Use `CALL RemoveRawImport([executionId])` to remove the raw data after a transfer.
