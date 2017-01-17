@@ -1,11 +1,11 @@
 DROP PROCEDURE IF EXISTS Transfer;
-DROP PROCEDURE IF EXISTS UpdateMethodInfo;
-DROP PROCEDURE IF EXISTS UpdateTestcaseInfo;
+DROP PROCEDURE IF EXISTS _UpdateMethodInfo;
+DROP PROCEDURE IF EXISTS _UpdateTestcaseInfo;
 
 DELIMITER //
 
 /* Needed by procedure Transfer. */
-CREATE PROCEDURE UpdateMethodInfo (IN param_execution VARCHAR(5), IN param_sourceColumn VARCHAR(32), IN param_destColumn VARCHAR(32), IN param_valueName VARCHAR(32))
+CREATE PROCEDURE _UpdateMethodInfo (IN param_execution VARCHAR(5), IN param_sourceColumn VARCHAR(32), IN param_destColumn VARCHAR(32), IN param_valueName VARCHAR(32))
 BEGIN
 	SET @sql = 
 		"UPDATE Method_Info mi
@@ -28,7 +28,7 @@ BEGIN
 END //
 
 /* Needed by procedure Transfer. */
-CREATE PROCEDURE UpdateTestcaseInfo (IN param_execution VARCHAR(5), IN param_sourceColumn VARCHAR(32), IN param_destColumn VARCHAR(32), IN param_valueName VARCHAR(32))
+CREATE PROCEDURE _UpdateTestcaseInfo (IN param_execution VARCHAR(5), IN param_sourceColumn VARCHAR(32), IN param_destColumn VARCHAR(32), IN param_valueName VARCHAR(32))
 BEGIN
 	
 	SET @sql = 
@@ -151,28 +151,28 @@ SET ti.countCoveredMethods = (SELECT COUNT(ri.methodId) FROM Relation_Info ri WH
 WHERE ti.execution = @executionId;
 
 /* Enrich data with method information: bytecode instructions. */
-CALL UpdateMethodInfo(@executionId, 'intValue', 'bytecodeInstructionCount', 'instructions');
+CALL _UpdateMethodInfo(@executionId, 'intValue', 'bytecodeInstructionCount', 'instructions');
 
 /* Enrich data with method information: access modifier. */
-CALL UpdateMethodInfo(@executionId, 'stringValue', 'modifier', 'modifier');
+CALL _UpdateMethodInfo(@executionId, 'stringValue', 'modifier', 'modifier');
 
 /* Enrich data with method information: covered lines. */
-CALL UpdateMethodInfo(@executionId, 'intValue', 'lineCovered', 'cov_line_covered');
-CALL UpdateMethodInfo(@executionId, 'intValue', 'lineCount', 'cov_line_all');
+CALL _UpdateMethodInfo(@executionId, 'intValue', 'lineCovered', 'cov_line_covered');
+CALL _UpdateMethodInfo(@executionId, 'intValue', 'lineCount', 'cov_line_all');
 
 /* Enrich data with method information: covered instructions. */
-CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCovered', 'cov_instruction_covered');
-CALL UpdateMethodInfo(@executionId, 'intValue', 'instructionCount', 'cov_instruction_all');
+CALL _UpdateMethodInfo(@executionId, 'intValue', 'instructionCovered', 'cov_instruction_covered');
+CALL _UpdateMethodInfo(@executionId, 'intValue', 'instructionCount', 'cov_instruction_all');
 
 /* Enrich data with method information: covered branches. */
-CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCovered', 'cov_branch_covered');
-CALL UpdateMethodInfo(@executionId, 'intValue', 'branchCount', 'cov_branch_all');
+CALL _UpdateMethodInfo(@executionId, 'intValue', 'branchCovered', 'cov_branch_covered');
+CALL _UpdateMethodInfo(@executionId, 'intValue', 'branchCount', 'cov_branch_all');
 
 /* Enrich data with test information: instructions. */
-CALL UpdateTestcaseInfo(@executionId, 'intValue', 'instructions', 'instructions');
+CALL _UpdateTestcaseInfo(@executionId, 'intValue', 'instructions', 'instructions');
 
 /* Enrich data with test information: assertions. */
-CALL UpdateTestcaseInfo(@executionId, 'intValue', 'assertions', 'assertions');
+CALL _UpdateTestcaseInfo(@executionId, 'intValue', 'assertions', 'assertions');
 
 /* Mark the execution as processed. */
 UPDATE Execution_Information ei
