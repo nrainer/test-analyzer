@@ -66,7 +66,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			throw new ExecutionException(createFullExecutionId(), "Aborted");
 		} else {
 			String summary = aggregatedStatistics.toSummary() + " Duration of " + getClass().getSimpleName() + " was "
-					+ getDurationSinceStartInSec() + " sec.";
+					+ getDurationSinceStartInSec() + " sec. using " + threadList.size() + " threads.";
 			LOGGER.info("ALL THREADS FINISHED. " + summary);
 			writeSummaryToFile(configuration, summary);
 		}
