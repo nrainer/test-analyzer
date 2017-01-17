@@ -115,6 +115,7 @@ class MutateAndTestThread extends Thread {
 			retValGenIndex++;
 		}
 
+		LOGGER.info("Mutation state of method " + m_currentMethodUnderTest.get() + " is: " + bestMethodState);
 		m_mutationTestStatistics.addMethod(bestMethodState);
 	}
 
