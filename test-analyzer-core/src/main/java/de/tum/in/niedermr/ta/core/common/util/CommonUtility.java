@@ -21,7 +21,8 @@ public class CommonUtility {
 		return sB.toString();
 	}
 
-	public static long getDuration(long startTime) {
-		return (System.currentTimeMillis() - startTime) / 1000;
+	/** Get the duration in seconds. */
+	public static long getDuration(long startTimeInMs) {
+		return (System.currentTimeMillis() - startTimeInMs) / 1000;
 	}
 }

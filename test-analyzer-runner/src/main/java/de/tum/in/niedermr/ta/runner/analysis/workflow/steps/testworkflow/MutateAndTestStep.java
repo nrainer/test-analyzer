@@ -65,7 +65,8 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			LOGGER.warn("MANUALLY ABORTED.");
 			throw new ExecutionException(createFullExecutionId(), "Aborted");
 		} else {
-			String summary = aggregatedStatistics.toSummary();
+			String summary = aggregatedStatistics.toSummary() + " Duration of " + getClass().getSimpleName() + " was "
+					+ getDurationSinceStartInSec() + " sec.";
 			LOGGER.info("ALL THREADS FINISHED. " + summary);
 			writeSummaryToFile(configuration, summary);
 		}

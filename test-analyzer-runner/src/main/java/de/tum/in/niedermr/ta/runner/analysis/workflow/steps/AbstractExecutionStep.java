@@ -63,7 +63,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 
 			m_startTimeInMs = System.currentTimeMillis();
 			runInternal(m_configuration, m_processExecution);
-			long duration = getDurationSinceStartInMs();
+			long duration = getDurationSinceStartInSec();
 
 			LOGGER.info("COMPLETED: " + getDescription());
 			LOGGER.info("DURATION: " + duration + " seconds.");
@@ -96,7 +96,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	}
 
 	/** Get the duration in ms since the execution start. Return -1 if the step has not been started yet. */
-	protected final long getDurationSinceStartInMs() {
+	protected final long getDurationSinceStartInSec() {
 		if (m_startTimeInMs == -1) {
 			return -1;
 		}
