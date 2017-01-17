@@ -22,8 +22,8 @@ SQL schema and procedures: `test-analyzer-runner/sql`
 (Required database: MySQL >= 5.7)
 
 ## Setup
-1. Use the schema files in the specified order to create the schema
-2. Create the functions
+1. Use the files in `1_setup/1_schema` to create the schema
+2. Use the files in `1_setup/2_procedures` to create the needed functions and procedures
 
 ## Data import
 1. Import all result files
