@@ -21,7 +21,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
  */
 public class IntegrationTest7 extends AbstractIntegrationTest {
 	private static final String ANALYSIS_INFORMATION_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
-			+ "analysis-information" + FILE_EXTENSION_SQL_TXT;
+			+ "stack-distances" + FILE_EXTENSION_SQL_TXT;
 	private static final String CODE_STATISTICS_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
 			+ "code-statistics" + FILE_EXTENSION_SQL_TXT;
 	private static final String COVERAGE_DATA_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT

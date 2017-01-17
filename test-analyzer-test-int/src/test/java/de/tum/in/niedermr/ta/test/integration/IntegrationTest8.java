@@ -17,7 +17,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 @Ignore("This test is ignored because it runs only successfully if java.lang.Thread is replaced")
 public class IntegrationTest8 extends AbstractIntegrationTest {
 	private static final String ANALYSIS_INFORMATION_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
-			+ "analysis-information" + FILE_EXTENSION_SQL_TXT;
+			+ "stack-distances" + FILE_EXTENSION_SQL_TXT;
 
 	private File m_expectedStackAnalysisFile;
 	private File m_outputStackAnalysisFile;
