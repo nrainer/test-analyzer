@@ -29,6 +29,8 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	private Configuration m_configuration;
 	private ProcessExecution m_processExecution;
 
+	private long m_startTimeInMs = -1;
+
 	/** {@inheritDoc} */
 	@Override
 	public final void initialize(ExecutionContext context) throws ExecutionException {
@@ -59,9 +61,9 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		try {
 			LOGGER.info("START: " + getDescription());
 
-			long startTime = System.currentTimeMillis();
+			m_startTimeInMs = System.currentTimeMillis();
 			runInternal(m_configuration, m_processExecution);
-			long duration = CommonUtility.getDuration(startTime);
+			long duration = getDurationSinceStartInMs();
 
 			LOGGER.info("COMPLETED: " + getDescription());
 			LOGGER.info("DURATION: " + duration + " seconds.");
@@ -91,6 +93,15 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	/** Create the full execution id for this step. */
 	protected final IFullExecutionId createFullExecutionId() {
 		return getExecutionId().createFullExecutionId(getSuffixForFullExecutionId());
+	}
+
+	/** Get the duration in ms since the execution start. Return -1 if the step has not been started yet. */
+	protected final long getDurationSinceStartInMs() {
+		if (m_startTimeInMs == -1) {
+			return -1;
+		}
+
+		return CommonUtility.getDuration(m_startTimeInMs);
 	}
 
 	/** Get the step-specific suffix to create the full execution id. */
