@@ -101,7 +101,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 			return -1;
 		}
 
-		return CommonUtility.getDuration(m_startTimeInMs);
+		return CommonUtility.getDurationInSec(m_startTimeInMs);
 	}
 
 	/** Get the step-specific suffix to create the full execution id. */

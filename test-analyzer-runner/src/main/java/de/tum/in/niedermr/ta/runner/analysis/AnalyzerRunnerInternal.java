@@ -124,7 +124,7 @@ public class AnalyzerRunnerInternal {
 		workflow.start();
 
 		LOGGER.info("Workflow execution id was: '" + executionId.get() + "'");
-		LOGGER.info("Workflow duration was: " + CommonUtility.getDuration(startTime) + " seconds");
+		LOGGER.info("Workflow duration was: " + CommonUtility.getDurationInSec(startTime) + " seconds");
 		LOGGER.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
 	}
 

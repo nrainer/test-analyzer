@@ -22,7 +22,7 @@ public class CommonUtility {
 	}
 
 	/** Get the duration in seconds. */
-	public static long getDuration(long startTimeInMs) {
+	public static long getDurationInSec(long startTimeInMs) {
 		return (System.currentTimeMillis() - startTimeInMs) / 1000;
 	}
 }
