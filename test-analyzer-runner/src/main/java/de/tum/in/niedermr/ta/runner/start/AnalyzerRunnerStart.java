@@ -68,7 +68,7 @@ public class AnalyzerRunnerStart {
 		try {
 			configuration = ConfigurationLoader.getConfiguration(args);
 		} catch (FileNotFoundException e) {
-			print("Configuration file not found.");
+			LOGGER.error("Configuration file not found.");
 			return;
 		}
 
@@ -85,12 +85,12 @@ public class AnalyzerRunnerStart {
 		final String currentCanonicalPath = locationTestAnalyzer.getCanonicalPath();
 		final String workingFolder = configuration.getWorkingFolder().getValue();
 
-		print("Working folder is: " + workingFolder);
+		LOGGER.info("Working folder is: " + workingFolder);
 
 		if (configuration.getTestAnalyzerClasspath().isEmpty()) {
 			configuration.getTestAnalyzerClasspath().setValue(ClasspathUtility.getCurrentProgramClasspath());
 		} else {
-			print("Using the test analyzer classpath from the configuration!");
+			LOGGER.info("Using the test analyzer classpath from the configuration!");
 		}
 
 		copyConfigurationIntoWorkingFolder(
@@ -99,9 +99,9 @@ public class AnalyzerRunnerStart {
 
 		try {
 			startExecutionInNewProcess(configuration, executionId, currentCanonicalPath, workingFolder);
-			print("DONE.");
+			LOGGER.info("DONE.");
 		} catch (ExecutionException ex) {
-			print("ERROR. (" + ex.getMessage() + ")");
+			LOGGER.error("Execution failed: " + ex.getMessage());
 		}
 	}
 
@@ -173,9 +173,5 @@ public class AnalyzerRunnerStart {
 			throws IOException {
 		FileSystemUtils.ensureDirectoryExists(new File(file).getParentFile());
 		ConfigurationLoader.writeToFile(configuration, file);
-	}
-
-	private static void print(String value) {
-		System.out.println(value);
 	}
 }
