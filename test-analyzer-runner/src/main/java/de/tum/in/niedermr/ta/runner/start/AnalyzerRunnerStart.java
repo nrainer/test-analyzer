@@ -30,9 +30,9 @@ import de.tum.in.niedermr.ta.runner.factory.IFactory;
  * The process will be started in the working area which is specified in the configuration.<br/>
  */
 public class AnalyzerRunnerStart {
-	/** <code>advanced.executionId</code>: Force the use of a certain executionId. */
+	/** <code>advanced.executionId.value</code>: Force the use of a certain executionId. */
 	private static final DynamicConfigurationKey CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.ADVANCED, "executionId", null);
+			.create(DynamicConfigurationKeyNamespace.ADVANCED, "executionId.value", null);
 
 	/**
 	 * Main method.
