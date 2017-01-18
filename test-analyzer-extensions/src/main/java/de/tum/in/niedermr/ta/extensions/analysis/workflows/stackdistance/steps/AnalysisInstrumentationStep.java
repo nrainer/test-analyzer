@@ -1,7 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.logic.instrumentation.AnalysisInstrumentation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -39,7 +39,7 @@ public class AnalysisInstrumentationStep extends AbstractExecutionStep {
 		AnalysisInstrumentation analysisInstrumentation = new AnalysisInstrumentation(createFullExecutionId(),
 				m_recorderClass, operateFaultTolerant);
 		analysisInstrumentation.injectAnalysisStatements(configuration.getCodePathToMutate().getElements(),
-				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,
+				getFileInWorkingArea(ExtensionEnvironmentConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), testRunner,
 				configuration.getTestClassIncludes().getElements(), configuration.getTestClassExcludes().getElements());
 	}
 

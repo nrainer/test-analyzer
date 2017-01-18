@@ -1,6 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.AbstractInformationCollectorStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
@@ -27,14 +27,14 @@ public class AnalysisInformationCollectorStep extends AbstractInformationCollect
 	/** {@inheritDoc} */
 	@Override
 	protected String getFileWithResultsParameterValue() {
-		return getFileInWorkingArea(AnalysisConstants.FILE_OUTPUT_ANALYSIS_INFORMATION);
+		return getFileInWorkingArea(ExtensionEnvironmentConstants.FILE_OUTPUT_ANALYSIS_INFORMATION);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected String getSourceInstrumentedJarFilesClasspath(Configuration configuration) {
 		return Environment.getClasspathOfIndexedFiles(
-				getFileInWorkingArea(AnalysisConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), 0,
+				getFileInWorkingArea(ExtensionEnvironmentConstants.FILE_TEMP_JAR_ANALYSIS_INSTRUMENTED_SOURCE_X), 0,
 				configuration.getCodePathToMutate().countElements());
 	}
 
