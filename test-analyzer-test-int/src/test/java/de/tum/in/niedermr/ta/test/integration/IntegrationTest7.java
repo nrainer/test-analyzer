@@ -6,8 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.MultiFileResultReceiver;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 /**
  * Integration test with extensions involved.<br/>
@@ -20,26 +20,30 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
  * @see "configuration file in test data"
  */
 public class IntegrationTest7 extends AbstractIntegrationTest {
-	private static final String ANALYSIS_INFORMATION_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
-			+ "stack-distances" + FILE_EXTENSION_SQL_TXT;
-	private static final String CODE_STATISTICS_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
-			+ "code-statistics" + FILE_EXTENSION_SQL_TXT;
-	private static final String COVERAGE_DATA_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
-			+ "coverage-information" + FILE_EXTENSION_SQL_TXT;
-	private static final String RETURN_TYPE_LIST_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
-			+ "return-type-list" + FILE_EXTENSION_TXT;
-
+	/** Expected file. */
 	private File m_expectedStackAnalysisFile;
-	private File m_outputStackAnalysisFile;
+	/** Expected file. */
 	private File m_expectedCodeStatisticsFile;
-	private File m_outputCodeStatisticsFile;
+	/** Expected file. */
 	private File m_expectedReturnTypeListFile;
-	private File m_outputReturnTypeListFile;
+	/** Expected file. */
 	private File m_expectedCollectedInformationFile;
-	private File m_outputCollectedInformationFile;
+	/** Expected file. */
 	private File m_expectedResultFile;
-	private File m_outputResultFile;
+	/** Expected file. */
 	private File m_expectedParsedCoverageFile;
+
+	/** Actual output file. */
+	private File m_outputStackAnalysisFile;
+	/** Actual output file. */
+	private File m_outputCodeStatisticsFile;
+	/** Actual output file. */
+	private File m_outputReturnTypeListFile;
+	/** Actual output file. */
+	private File m_outputCollectedInformationFile;
+	/** Actual output file. */
+	private File m_outputResultFile;
+	/** Actual output file. */
 	private File m_outputParsedCoverageFile;
 
 	/** {@inheritDoc} */
@@ -58,12 +62,18 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 	}
 
 	private void initializeFiles() throws IOException {
-		m_expectedStackAnalysisFile = getExpectedFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
-		m_outputStackAnalysisFile = getOutputFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
-		m_expectedCodeStatisticsFile = getExpectedFile(getFileName(CODE_STATISTICS_OUTPUT));
-		m_outputCodeStatisticsFile = getOutputFile(getFileName(CODE_STATISTICS_OUTPUT));
-		m_expectedReturnTypeListFile = getExpectedFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
-		m_outputReturnTypeListFile = getOutputFile(getFileName(RETURN_TYPE_LIST_OUTPUT));
+		m_expectedStackAnalysisFile = getExpectedFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_STACK_DISTANCES_V1));
+		m_outputStackAnalysisFile = getOutputFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_STACK_DISTANCES_V1));
+		m_expectedCodeStatisticsFile = getExpectedFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_CODE_STATISTICS));
+		m_outputCodeStatisticsFile = getOutputFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_CODE_STATISTICS));
+		m_expectedReturnTypeListFile = getExpectedFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_METHOD_RETURN_TYPES));
+		m_outputReturnTypeListFile = getOutputFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_METHOD_RETURN_TYPES));
 		m_expectedCollectedInformationFile = new File(MultiFileResultReceiver.getFileName(
 				getFileExpectedCollectedInformationAsSql().getPath(), MultiFileResultReceiver.FIRST_INDEX));
 		m_outputCollectedInformationFile = new File(MultiFileResultReceiver
@@ -80,8 +90,10 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 				StandardCopyOption.REPLACE_EXISTING);
 		assertFilesExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFileInWorkingDirectory);
 
-		m_expectedParsedCoverageFile = getExpectedFile(getFileName(COVERAGE_DATA_OUTPUT));
-		m_outputParsedCoverageFile = getOutputFile(getFileName(COVERAGE_DATA_OUTPUT));
+		m_expectedParsedCoverageFile = getExpectedFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
+		m_outputParsedCoverageFile = getOutputFile(
+				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
 	}
 
 	private void checkResults() {

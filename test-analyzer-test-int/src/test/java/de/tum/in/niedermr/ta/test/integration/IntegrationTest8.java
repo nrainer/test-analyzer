@@ -5,8 +5,8 @@ import java.io.IOException;
 
 import org.junit.Ignore;
 
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
-import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 /**
  * Integration test with extensions involved.<br/>
@@ -16,8 +16,7 @@ import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
  */
 @Ignore("This test is ignored because it runs only successfully if java.lang.Thread is replaced")
 public class IntegrationTest8 extends AbstractIntegrationTest {
-	private static final String ANALYSIS_INFORMATION_OUTPUT = EnvironmentConstants.PATH_WORKING_AREA_RESULT
-			+ "stack-distances" + FILE_EXTENSION_SQL_TXT;
+	private static final String STACK_DISTANCES_V2_OUTPUT = ExtensionEnvironmentConstants.FILE_OUTPUT_STACK_DISTANCES_V2;
 
 	private File m_expectedStackAnalysisFile;
 	private File m_outputStackAnalysisFile;
@@ -36,8 +35,8 @@ public class IntegrationTest8 extends AbstractIntegrationTest {
 	}
 
 	private void initializeFiles() throws IOException {
-		m_expectedStackAnalysisFile = getExpectedFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
-		m_outputStackAnalysisFile = getOutputFile(getFileName(ANALYSIS_INFORMATION_OUTPUT));
+		m_expectedStackAnalysisFile = getExpectedFile(getFileName(STACK_DISTANCES_V2_OUTPUT));
+		m_outputStackAnalysisFile = getOutputFile(getFileName(STACK_DISTANCES_V2_OUTPUT));
 	}
 
 	private void checkResults() {
