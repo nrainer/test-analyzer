@@ -23,11 +23,11 @@ import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 public class DatabaseResultPresentation implements IResultPresentation {
 	/** Pattern to parse the execution id from the execution information. */
 	private static final String PATTERN_PARSE_ID_FROM_EXECUTION_INFORMATION = "INSERT INTO Execution_Information \\(execution, .*?\\) VALUES \\('([A-Z0-9]+)',";
-	public static final String SQL_INSERT_EXECUTION_INFORMATION = "INSERT INTO Execution_Information (execution, date, project, configurationContent) VALUES ('%s', CURRENT_DATE(), '?', '%s');";
-	public static final String SQL_UPDATE_EXECUTION_INFORMATION_WITH_NOTES = "UPDATE Execution_Information SET notes = '%s' WHERE execution = '%s';";
-	public static final String SQL_INSERT_METHOD_TEST_CASE_MAPPING = "INSERT INTO Collected_Information_Import (execution, method, testcase) VALUES ('%s', '%s', '%s');";
-	public static final String SQL_INSERT_TEST_RESULT = "INSERT INTO Test_Result_Import (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('%s', '%s', '%s', '%s', %s, %s, '%s');";
-	public static final String SQL_INSERT_TEST_ABORT = "INSERT INTO Test_Abort_Import (execution, method, retValGen, cause) VALUES ('%s', '%s', '%s', '%s');";
+	private static final String SQL_INSERT_EXECUTION_INFORMATION = "INSERT INTO Execution_Information (execution, date, project, configurationContent) VALUES ('%s', CURRENT_DATE(), '?', '%s');";
+	private static final String SQL_UPDATE_EXECUTION_INFORMATION_WITH_NOTES = "UPDATE Execution_Information SET notes = '%s' WHERE execution = '%s';";
+	private static final String SQL_INSERT_METHOD_TEST_CASE_MAPPING = "INSERT INTO Collected_Information_Import (execution, method, testcase) VALUES ('%s', '%s', '%s');";
+	private static final String SQL_INSERT_TEST_RESULT = "INSERT INTO Test_Result_Import (execution, testcase, method, retValGen, killed, assertErr, exception) VALUES ('%s', '%s', '%s', '%s', %s, %s, '%s');";
+	private static final String SQL_INSERT_TEST_ABORT = "INSERT INTO Test_Abort_Import (execution, method, retValGen, cause) VALUES ('%s', '%s', '%s', '%s');";
 
 	private IExecutionId m_executionId;
 

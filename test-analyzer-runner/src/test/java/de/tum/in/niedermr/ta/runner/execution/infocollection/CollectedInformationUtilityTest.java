@@ -15,13 +15,13 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceive
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
-import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 /** Test {@link CollectedInformationUtility}. */
-public class CollectedInformationUtilityTest implements CommonConstants {
+public class CollectedInformationUtilityTest {
 
 	/** Test. */
 	@Test
@@ -54,15 +54,15 @@ public class CollectedInformationUtilityTest implements CommonConstants {
 
 	/** Test. */
 	@Test
-	public void testToSQLStatements() {
+	public void testToSQLStatements() throws ReflectiveOperationException {
 		final IExecutionId executionId = ExecutionIdFactory.ID_FOR_TESTS;
 
-		String expected = String.format(DatabaseResultPresentation.SQL_INSERT_METHOD_TEST_CASE_MAPPING,
-				executionId.getShortId(), "de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()",
-				"de.tum.in.ma.project.example.UnitTest.stringCorrect()");
+		IResultPresentation resultPresentation = ResultPresentationUtil
+				.createResultPresentation(DatabaseResultPresentation.class.getName(), executionId);
 
-		IResultPresentation resultPresentation = new DatabaseResultPresentation();
-		resultPresentation.setExecutionId(executionId);
+		String expected = resultPresentation.formatMethodAndTestcaseMapping(
+				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()"),
+				TestcaseIdentifier.create("de.tum.in.ma.project.example.UnitTest", "stringCorrect"));
 
 		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 		CollectedInformationUtility.convertToMethodTestcaseMappingResult(getShortTestData(), resultPresentation,
@@ -79,8 +79,8 @@ public class CollectedInformationUtilityTest implements CommonConstants {
 
 		TestInformation testInformation = new TestInformation(
 				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()"));
-		testInformation.addTestcase(TestcaseIdentifier
-				.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "stringCorrect"));
+		testInformation
+				.addTestcase(TestcaseIdentifier.create("de.tum.in.ma.project.example.UnitTest", "stringCorrect"));
 		data.add(testInformation);
 
 		return data;
@@ -95,16 +95,13 @@ public class CollectedInformationUtilityTest implements CommonConstants {
 
 		testInformation = new TestInformation(
 				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.increment()"));
-		testInformation.addTestcase(
-				TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "even"));
-		testInformation.addTestcase(
-				TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "increment"));
+		testInformation.addTestcase(TestcaseIdentifier.create("de.tum.in.ma.project.example.UnitTest", "even"));
+		testInformation.addTestcase(TestcaseIdentifier.create("de.tum.in.ma.project.example.UnitTest", "increment"));
 		data.add(testInformation);
 
 		testInformation = new TestInformation(
 				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.isEven()"));
-		testInformation.addTestcase(
-				TestcaseIdentifier.parse("de.tum.in.ma.project.example.UnitTest" + SEPARATOR_DEFAULT + "even"));
+		testInformation.addTestcase(TestcaseIdentifier.create("de.tum.in.ma.project.example.UnitTest", "even"));
 		data.add(testInformation);
 
 		return data;
