@@ -1,6 +1,9 @@
 package de.tum.in.niedermr.ta.runner.analysis.result.presentation;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.TestAbortReason;
@@ -10,6 +13,7 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 /**
  * Result presentation that produces SQL statements.
@@ -17,6 +21,8 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
  * @see "schema.sql"
  */
 public class DatabaseResultPresentation implements IResultPresentation {
+	/** Pattern to parse the execution id from the execution information. */
+	private static final String PATTERN_PARSE_ID_FROM_EXECUTION_INFORMATION = "INSERT INTO Execution_Information \\(execution, .*?\\) VALUES \\('([A-Z0-9]+)',";
 	public static final String SQL_INSERT_EXECUTION_INFORMATION = "INSERT INTO Execution_Information (execution, date, project, configurationContent) VALUES ('%s', CURRENT_DATE(), '?', '%s');";
 	public static final String SQL_UPDATE_EXECUTION_INFORMATION_WITH_NOTES = "UPDATE Execution_Information SET notes = '%s' WHERE execution = '%s';";
 	public static final String SQL_INSERT_METHOD_TEST_CASE_MAPPING = "INSERT INTO Collected_Information_Import (execution, method, testcase) VALUES ('%s', '%s', '%s');";
@@ -99,5 +105,22 @@ public class DatabaseResultPresentation implements IResultPresentation {
 	@Override
 	public String getBlockCommentEnd() {
 		return "*/";
+	}
+
+	/** Try to parse the execution id from the content of the execution information result file. */
+	public static Optional<IExecutionId> tryParseExecutionIdFromExecutionInformation(
+			List<String> executionInformationFileContent) {
+		if (executionInformationFileContent.isEmpty()) {
+			return Optional.empty();
+		}
+
+		String firstLine = executionInformationFileContent.get(0);
+		Matcher matcher = Pattern.compile(PATTERN_PARSE_ID_FROM_EXECUTION_INFORMATION).matcher(firstLine);
+
+		if (matcher.find()) {
+			return Optional.of(ExecutionIdFactory.parseShortExecutionId(matcher.group(1)));
+		}
+
+		return Optional.empty();
 	}
 }
