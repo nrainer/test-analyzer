@@ -12,10 +12,10 @@ import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractFa
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
-import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues.CommonInstancesReturnValueGenerator;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps.OutputFormat;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.steps.ReturnTypeCollectorStep;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -24,7 +24,6 @@ import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfiguration
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractMultiClassnameProperty;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
-import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
@@ -80,10 +79,6 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_OUTPUT_FORMAT = DynamicConfigurationKey.create(
 			DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.outputFormat",
 			OutputFormat.getDefault().name());
-
-	/** Result file name. */
-	private static final String RESULT_FILE_NAME = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "return-type-list"
-			+ FileSystemConstants.FILE_EXTENSION_TXT;
 
 	/** {@inheritDoc} */
 	@Override
@@ -142,7 +137,8 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 	private IResultReceiver createResultReceiver(ExecutionContext context, Configuration configuration) {
 		boolean useMultipleOutputFiles = configuration.getDynamicValues()
 				.getBooleanValue(CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES);
-		String resultFileName = getFileInWorkingArea(context, RESULT_FILE_NAME);
+		String resultFileName = getFileInWorkingArea(context,
+				ExtensionEnvironmentConstants.FILE_OUTPUT_METHOD_RETURN_TYPES);
 		IResultReceiver resultReceiver = ResultReceiverFactory
 				.createFileResultReceiverWithDefaultSettings(useMultipleOutputFiles, resultFileName);
 		return resultReceiver;

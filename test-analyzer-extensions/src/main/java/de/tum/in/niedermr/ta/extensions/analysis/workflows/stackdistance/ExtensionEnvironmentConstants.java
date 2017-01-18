@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance;
 
+import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 
 /** Further constants needed in the extensions. */
@@ -13,4 +14,16 @@ public interface ExtensionEnvironmentConstants extends EnvironmentConstants {
 
 	/** Output file for the computed stack distances (workflow V2). */
 	String FILE_OUTPUT_STACK_DISTANCES_V2 = PATH_WORKING_AREA_RESULT + "stack-distances-v2" + FILE_EXTENSION_SQL_TXT;
+
+	/** Output file for the computed code statistics. */
+	String FILE_OUTPUT_CODE_STATISTICS = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics"
+			+ FileSystemConstants.FILE_EXTENSION_SQL_TXT;
+
+	/** Output file for the parsed coverage information. */
+	String FILE_OUTPUT_COVERAGE_INFORMATION = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "coverage-information"
+			+ FileSystemConstants.FILE_EXTENSION_SQL_TXT;
+
+	/** Output file for the retrieved method return types. */
+	String FILE_OUTPUT_METHOD_RETURN_TYPES = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "return-type-list"
+			+ FileSystemConstants.FILE_EXTENSION_TXT;
 }
