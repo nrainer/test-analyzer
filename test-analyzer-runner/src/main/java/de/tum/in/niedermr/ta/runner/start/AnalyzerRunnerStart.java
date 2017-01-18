@@ -3,13 +3,20 @@ package de.tum.in.niedermr.ta.runner.start;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -30,9 +37,20 @@ import de.tum.in.niedermr.ta.runner.factory.IFactory;
  * The process will be started in the working area which is specified in the configuration.<br/>
  */
 public class AnalyzerRunnerStart {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AnalyzerRunnerStart.class);
+
 	/** <code>advanced.executionId.value</code>: Force the use of a certain executionId. */
 	private static final DynamicConfigurationKey CONFIGURATION_KEY_USE_SPECIFIED_EXECUTION_ID = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.ADVANCED, "executionId.value", null);
+
+	/**
+	 * <code>advanced.executionId.reusePreviousId</code>: Use the id of the last execution if available (only working
+	 * with the database result presentation).
+	 */
+	private static final DynamicConfigurationKey CONFIGURATION_KEY_REUSE_PREVIOUS_EXECUTION_ID = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.ADVANCED, "executionId.reusePreviousId", false);
 
 	/**
 	 * Main method.
@@ -97,7 +115,37 @@ public class AnalyzerRunnerStart {
 			return ExecutionIdFactory.parseShortExecutionId(executionId.trim());
 		}
 
+		if (dynamicConfigurationValues.getBooleanValue(CONFIGURATION_KEY_REUSE_PREVIOUS_EXECUTION_ID)) {
+			Optional<IExecutionId> previousExecutionId = tryRetrievePreviousExecutionId(configuration);
+
+			if (previousExecutionId.isPresent()) {
+				LOGGER.info("Reusing previous execution id: " + previousExecutionId.get());
+				return previousExecutionId.get();
+			} else {
+				LOGGER.info("Retrieving last execution id failed. Using a new id.");
+			}
+		}
+
 		return ExecutionIdFactory.createNewShortExecutionId();
+	}
+
+	/** Try to retrieve the previous execution id from the last execution information result file. */
+	protected static Optional<IExecutionId> tryRetrievePreviousExecutionId(Configuration configuration) {
+		String pathToLastExecutionInformationFile = Environment.replaceWorkingFolder(
+				EnvironmentConstants.FILE_OUTPUT_EXECUTION_INFORMATION, configuration.getWorkingFolder().getValue());
+
+		if (!Files.exists(Paths.get(pathToLastExecutionInformationFile))) {
+			LOGGER.warn("Previous execution id cannot be retrieved because the file does not exist.");
+			return Optional.empty();
+		}
+
+		try {
+			return DatabaseResultPresentation.tryParseExecutionIdFromExecutionInformation(
+					TextFileData.readFromFile(pathToLastExecutionInformationFile));
+		} catch (IOException e) {
+			LOGGER.warn("Previous execution id cannot be retrieved.", e);
+			return Optional.empty();
+		}
 	}
 
 	/** Start the execution in a new process. */
