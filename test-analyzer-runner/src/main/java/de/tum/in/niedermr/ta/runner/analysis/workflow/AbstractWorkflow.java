@@ -42,6 +42,10 @@ public abstract class AbstractWorkflow implements IWorkflow {
 	 * Replaces {@link EnvironmentConstants#FOLDER_WORKING_AREA} with the current working area.
 	 */
 	public static String getFileInWorkingArea(ExecutionContext context, String fileName) {
+		if (fileName == null) {
+			throw new IllegalArgumentException("fileName is null");
+		}
+
 		return Environment.replaceWorkingFolder(fileName, context.getWorkingFolder());
 	}
 

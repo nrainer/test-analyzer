@@ -25,6 +25,7 @@ public class StackDistanceAnalysisWorkflow extends AbstractStackDistanceAnalysis
 	protected AnalysisInformationCollectorStep createAnalysisInformationCollectorStep() {
 		AnalysisInformationCollectorStep step = createAndInitializeExecutionStep(
 				AnalysisInformationCollectorStep.class);
+		step.setResultOutputFile(ExtensionEnvironmentConstants.FILE_OUTPUT_STACK_DISTANCES_V1);
 		step.setInformationCollectorLogicClass(AnalysisInformationCollectionLogicV1.class);
 		return step;
 	}

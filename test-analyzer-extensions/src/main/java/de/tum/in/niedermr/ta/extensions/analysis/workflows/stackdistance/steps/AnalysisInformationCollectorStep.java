@@ -12,6 +12,9 @@ public class AnalysisInformationCollectorStep extends AbstractInformationCollect
 	/** Information collection logic class. */
 	private Class<? extends IInformationCollectionLogic> m_informationCollectionLogicClass;
 
+	/** Result output file. */
+	private String m_resultOutputFile;
+
 	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
@@ -27,7 +30,7 @@ public class AnalysisInformationCollectorStep extends AbstractInformationCollect
 	/** {@inheritDoc} */
 	@Override
 	protected String getFileWithResultsParameterValue() {
-		return getFileInWorkingArea(ExtensionEnvironmentConstants.FILE_OUTPUT_ANALYSIS_INFORMATION);
+		return getFileInWorkingArea(m_resultOutputFile);
 	}
 
 	/** {@inheritDoc} */
@@ -42,6 +45,11 @@ public class AnalysisInformationCollectorStep extends AbstractInformationCollect
 	public void setInformationCollectorLogicClass(
 			Class<? extends IInformationCollectionLogic> informationCollectionLogicClass) {
 		m_informationCollectionLogicClass = informationCollectionLogicClass;
+	}
+
+	/** {@link #m_resultOutputFile} */
+	public void setResultOutputFile(String resultOutputFile) {
+		m_resultOutputFile = resultOutputFile;
 	}
 
 	/** {@inheritDoc} */
