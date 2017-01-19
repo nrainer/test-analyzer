@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="false" scope-include="" scope-exclude="">
+<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="false" finding-creation="violations_orphans" scope-include="" scope-exclude="">
   <component name="core.analysis" dim="140,40" pos="471,21">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.analysis.*" />
   </component>
@@ -49,9 +49,6 @@
   <component name="test.integration" dim="170,40" pos="951,541">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.test.integration.*" />
   </component>
-  <component name="test.sample" dim="120,40" pos="981,21" stereotype="public">
-    <code-mapping type="include" regex="de.tum.in.niedermr.ta.sample.*" />
-  </component>
   <allow source="core.analysis" target="core.execution" />
   <allow source="extensions.analysis" target="core.analysis" />
   <allow source="extensions.analysis" target="core.execution" />
@@ -99,6 +96,8 @@
   <allow source="runner.start" target="runner.execution" />
   <allow source="runner.start" target="runner.factory" />
   <allow source="runner.test" target="runner.configuration" />
+  <allow source="test.integration" target="core.analysis" />
+  <allow source="test.integration" target="extensions.analysis" />
   <allow source="test.integration" target="runner.configuration" />
   <allow source="test.integration" target="runner.execution" />
   <allow source="test.integration" target="runner.start" />

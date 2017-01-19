@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" scope-include="" scope-exclude="">
+<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" finding-creation="violations_orphans" scope-include="" scope-exclude="">
   <component name="Other tools" dim="210,40" pos="21,431">
     <code-mapping type="include" regex="test\-analyzer\-core/utilities/ClasspathHelp\.java" />
   </component>
@@ -31,15 +31,13 @@
   <allow source="test.analyzer.extensions test" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.core test" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.extensions app" />
-  <tolerate source="test.analyzer.extensions test" target="test.analyzer.runner app">
-    <dependency source="test-analyzer-extensions/src/test/java/de/tum/in/niedermr/ta/extensions/analysis/workflows/coverage/parser/JaCoCoXmlParserTest.java" target="test-analyzer-runner/src/main/java/de/tum/in/niedermr/ta/runner/execution/id/ExecutionIdFactory.java" />
-    <dependency source="test-analyzer-extensions/src/test/java/de/tum/in/niedermr/ta/extensions/analysis/result/presentation/ProjectCoverageSqlOutputBuilderTest.java" target="test-analyzer-runner/src/main/java/de/tum/in/niedermr/ta/runner/execution/id/ExecutionIdFactory.java" />
-  </tolerate>
+  <allow source="test.analyzer.extensions test" target="test.analyzer.runner app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.runner test" />
   <allow source="test.analyzer.runner app" target="test.analyzer.core app" />
   <allow source="test.analyzer.runner test" target="test.analyzer.core app" />
   <allow source="test.analyzer.runner test" target="test.analyzer.core test" />
   <allow source="test.analyzer.runner test" target="test.analyzer.runner app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.core app" />
+  <allow source="test.analyzer.test.int test" target="test.analyzer.extensions app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.runner app" />
 </conqat-architecture>
