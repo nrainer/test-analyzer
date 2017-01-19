@@ -53,7 +53,7 @@ public class MethodMutationTestStateStatistics {
 	/** Get the summary. */
 	public String toSummary() {
 		return m_methodCount + " methods. " + getMethodCount(MethodMutationTestState.MUTATED_AND_TESTED)
-				+ " processed successfully. " + getMethodCount(MethodMutationTestState.NOT_MUTATED) + " skipped. "
+				+ " processed successfully. " + getMethodCount(MethodMutationTestState.NOT_MUTATED) + " ignored. "
 				+ getMethodCount(MethodMutationTestState.MUTATED_AND_TEST_TIMEOUT) + " with timeout. "
 				+ getMethodCount(MethodMutationTestState.MUTATION_OR_TEST_FAILED) + " failed.";
 	}

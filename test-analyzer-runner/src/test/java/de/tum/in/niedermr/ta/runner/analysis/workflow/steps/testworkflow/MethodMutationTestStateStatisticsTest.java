@@ -22,7 +22,7 @@ public class MethodMutationTestStateStatisticsTest {
 		assertEquals(1, statistics.getMethodCount(MethodMutationTestState.NOT_MUTATED));
 		assertEquals(3, statistics.getMethodCount(MethodMutationTestState.MUTATED_AND_TESTED));
 
-		assertEquals("5 methods. 3 processed successfully. 1 skipped. 1 with timeout. 0 failed.",
+		assertEquals("5 methods. 3 processed successfully. 1 ignored. 1 with timeout. 0 failed.",
 				statistics.toSummary());
 
 		MethodMutationTestStateStatistics statistics2 = new MethodMutationTestStateStatistics();
@@ -33,7 +33,7 @@ public class MethodMutationTestStateStatisticsTest {
 		assertEquals(6, statistics.getMethodCount());
 		assertEquals(2, statistics.getMethodCount(MethodMutationTestState.NOT_MUTATED));
 		assertEquals(3, statistics.getMethodCount(MethodMutationTestState.MUTATED_AND_TESTED));
-		assertEquals("6 methods. 3 processed successfully. 2 skipped. 1 with timeout. 0 failed.",
+		assertEquals("6 methods. 3 processed successfully. 2 ignored. 1 with timeout. 0 failed.",
 				statistics.toSummary());
 	}
 }

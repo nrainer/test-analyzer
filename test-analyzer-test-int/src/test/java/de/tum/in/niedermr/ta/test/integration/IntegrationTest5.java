@@ -43,7 +43,7 @@ public class IntegrationTest5 extends AbstractIntegrationTest {
 		expectedLogFileTextChunks.add(
 				"Test execution did not complete: de.tum.in.ma.simpleproject.special.Special.returnFiveForTestNotToExit()");
 		expectedLogFileTextChunks.add(
-				"ALL THREADS FINISHED. 14 methods. 10 processed successfully. 2 skipped. 1 with timeout. 1 failed.");
+				"ALL THREADS FINISHED. 14 methods. 10 processed successfully. 2 ignored. 1 with timeout. 1 failed.");
 		// Lambda mutation is not supported
 		expectedLogFileTextChunks.add("Not mutated: de.tum.in.ma.simpleproject.special.Java8.lambda$1");
 		assertLogFileContains(expectedLogFileTextChunks);
