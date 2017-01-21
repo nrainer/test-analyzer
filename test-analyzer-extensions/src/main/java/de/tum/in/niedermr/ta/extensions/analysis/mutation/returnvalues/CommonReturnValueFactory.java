@@ -2,14 +2,12 @@ package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -30,6 +28,7 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.regex.Pattern;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueFactory;
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.UnwantedReturnTypeException;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
@@ -249,10 +248,12 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		}
 	}
 
-	private Object createJavaIO(String returnType) throws NoSuchElementException, FileNotFoundException {
+	private Object createJavaIO(String returnType)
+			throws NoSuchElementException, FileNotFoundException, UnwantedReturnTypeException {
 		switch (returnType) {
 		case "java.io.File":
-			return new File("./files/textfile.txt");
+			// too dangerous
+			throw new UnwantedReturnTypeException();
 		case "java.io.Serializable":
 			return "abc";
 		case "java.io.Reader":
@@ -294,7 +295,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		case "java.nio.charset.Charset":
 			return java.nio.charset.Charset.defaultCharset();
 		case "java.nio.file.Path":
-			return Paths.get(".", "a.txt");
+			// too dangerous
+			throw new UnwantedReturnTypeException();
 		case "java.text.Format":
 		case "java.text.NumberFormat":
 			return java.text.NumberFormat.getInstance();

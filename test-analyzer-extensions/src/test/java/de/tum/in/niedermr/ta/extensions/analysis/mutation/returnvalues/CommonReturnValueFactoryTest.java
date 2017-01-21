@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.math.BigInteger;
+import java.nio.file.Path;
 import java.util.List;
 
 import org.junit.Test;
@@ -44,10 +45,6 @@ public class CommonReturnValueFactoryTest extends AbstractInstancesReturnValueFa
 		obj = m_factory.get(MethodIdentifier.EMPTY.get(), JAVA_UTIL_LIST);
 		assertNotNull(obj);
 		assertTrue(obj instanceof List<?>);
-
-		obj = m_factory.get(MethodIdentifier.EMPTY.get(), "java.io.File");
-		assertNotNull(obj);
-		assertTrue(obj instanceof File);
 
 		obj = m_factory.get(MethodIdentifier.EMPTY.get(), "java.math.BigInteger");
 		assertNotNull(obj);
@@ -91,4 +88,12 @@ public class CommonReturnValueFactoryTest extends AbstractInstancesReturnValueFa
 	public void testUnsupportedClass() {
 		assertClassIsUnsupported(NOT_SUPPORTED_CLASS);
 	}
+
+	/** Test. */
+	@Test
+	public void testUnwantedClass() {
+		assertFalse(m_factory.supports(MethodIdentifier.EMPTY, File.class.getName()));
+		assertFalse(m_factory.supports(MethodIdentifier.EMPTY, Path.class.getName()));
+	}
+
 }
