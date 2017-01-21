@@ -32,14 +32,9 @@ public class ConfigurationManager implements FileSystemConstants {
 
 	private static boolean s_fastFail = false;
 
-	private static final String EMPTY_ROOT_PATH = "";
-
-	private final Configuration m_configuration;
-	private final String m_rootPath;
-
-	private ConfigurationManager(String rootPath) {
-		this.m_configuration = new Configuration();
-		this.m_rootPath = rootPath;
+	/** Constructor. */
+	private ConfigurationManager() {
+		// NOP
 	}
 
 	public static void setFastFail(boolean fastFail) {
@@ -50,19 +45,15 @@ public class ConfigurationManager implements FileSystemConstants {
 		return s_fastFail;
 	}
 
-	public static Configuration getConfiguration() throws ConfigurationException, FileNotFoundException {
+	public static Configuration loadConfiguration() throws ConfigurationException, FileNotFoundException {
 		try {
-			ConfigurationManager loader = new ConfigurationManager(".");
-
 			// don't close sc, because it will close System.in (and that can't be reopened)
 			@SuppressWarnings("resource")
 			Scanner sc = new Scanner(System.in);
 
 			System.out.println("Path to configuration file:");
 			String fileName = sc.nextLine();
-			loader.loadFromFile(fileName);
-
-			return loader.m_configuration;
+			return loadConfigurationFromFile(fileName, ".");
 		} catch (FileNotFoundException e) {
 			throw e;
 		} catch (Exception e) {
@@ -70,33 +61,26 @@ public class ConfigurationManager implements FileSystemConstants {
 		}
 	}
 
-	public static Configuration getConfigurationFromFile(String configurationFile)
+	public static Configuration loadConfigurationFromFile(String configurationFileName)
 			throws ConfigurationException, IOException {
-		return getConfigurationFromFile(configurationFile, EMPTY_ROOT_PATH);
+		return loadConfigurationFromFile(configurationFileName, "");
 	}
 
-	public static Configuration getConfigurationFromFile(String configurationFile, String rootPath)
+	public static Configuration loadConfigurationFromFile(String configurationFileName, String rootPath)
 			throws ConfigurationException, IOException {
-		ConfigurationManager loader = new ConfigurationManager(rootPath);
-		loader.loadFromFile(configurationFile);
+		LOGGER.info("Configuration from file ('" + configurationFileName + "' in '" + rootPath + "')");
 
-		return loader.m_configuration;
-	}
-
-	private void loadFromFile(String fileName) throws ConfigurationException, IOException {
-		LOGGER.info("Configuration from file ('" + fileName + "' in '" + this.m_rootPath + "')");
-
-		File configFile = new File(fileName);
+		File configFile = new File(configurationFileName);
 		String pathToConfiguration;
 
 		if (configFile.isAbsolute()) {
-			pathToConfiguration = fileName;
+			pathToConfiguration = configurationFileName;
 		} else {
-			pathToConfiguration = m_rootPath + fileName;
+			pathToConfiguration = rootPath + configurationFileName;
 		}
 
 		try {
-			ConfigurationParser.parseFromFile(pathToConfiguration, m_configuration);
+			return ConfigurationParser.parseFromFile(pathToConfiguration);
 		} catch (FileNotFoundException ex) {
 			LOGGER.info(
 					"Assumed absolute path to configuration file: " + new File(pathToConfiguration).getAbsolutePath());

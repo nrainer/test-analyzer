@@ -59,7 +59,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	private void loadConfiguration() throws ConfigurationException, IOException {
 		String configurationFileName = getSpecificFolderTestData() + FOLDER_CONFIGURATION + FILE_NAME_CONFIGURATION;
 
-		this.m_configuration = ConfigurationManager.getConfigurationFromFile(configurationFileName);
+		this.m_configuration = ConfigurationManager.loadConfigurationFromFile(configurationFileName);
 		this.m_configuration.getWorkingFolder().setValue(getSpecificFolderTestWorkingArea());
 	}
 

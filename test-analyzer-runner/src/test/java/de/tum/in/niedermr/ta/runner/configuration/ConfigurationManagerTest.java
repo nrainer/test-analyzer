@@ -36,7 +36,7 @@ public class ConfigurationManagerTest {
 				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.factor", null);
 		expected.getDynamicValues().setRawValue(extensionKeyForTuningFactor, "4");
 
-		Configuration result = ConfigurationManager.getConfigurationFromFile("testConfigurationFromFile.config",
+		Configuration result = ConfigurationManager.loadConfigurationFromFile("testConfigurationFromFile.config",
 				"./src/test/data/ConfigurationLoaderTest/");
 
 		assertConfigurationEquals(expected, result);

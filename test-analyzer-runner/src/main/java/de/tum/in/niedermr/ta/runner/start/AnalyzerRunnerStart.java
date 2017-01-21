@@ -66,7 +66,7 @@ public class AnalyzerRunnerStart {
 		Configuration configuration;
 
 		try {
-			configuration = ConfigurationManager.getConfiguration();
+			configuration = ConfigurationManager.loadConfiguration();
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Configuration file not found.");
 			return;

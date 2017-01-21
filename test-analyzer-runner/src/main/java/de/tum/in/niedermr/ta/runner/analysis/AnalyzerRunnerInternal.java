@@ -134,7 +134,7 @@ public class AnalyzerRunnerInternal {
 
 	private static Configuration loadAndValidateTheConfiguration(String configurationFileToUse)
 			throws ConfigurationException, IOException {
-		Configuration configuration = ConfigurationManager.getConfigurationFromFile(configurationFileToUse);
+		Configuration configuration = ConfigurationManager.loadConfigurationFromFile(configurationFileToUse);
 
 		final String classpathBefore = configuration.getClasspath().getValue();
 
