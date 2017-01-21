@@ -3,7 +3,6 @@ package de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.InvalidClassException;
 import java.util.Arrays;
 
@@ -37,9 +36,6 @@ public class CommonInstancesReturnValueGeneratorTest
 		expected = factory.get(MethodIdentifier.EMPTY.get(), StringBuilder.class.getName());
 		assertEquals(expected.toString(),
 				mutatedClass.getMethod("getStringBuilder").invoke(instanceOfMutatedClass).toString());
-
-		expected = factory.get(MethodIdentifier.EMPTY.get(), File.class.getName());
-		assertEquals(expected, mutatedClass.getMethod("getFile").invoke(instanceOfMutatedClass));
 
 		expected = factory.get(MethodIdentifier.EMPTY.get(), int.class.getName() + "[]");
 		assertTrue(Arrays.equals((int[]) expected,
