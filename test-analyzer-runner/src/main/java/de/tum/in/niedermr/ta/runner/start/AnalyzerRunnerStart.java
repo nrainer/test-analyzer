@@ -18,7 +18,7 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
-import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
+import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
@@ -66,7 +66,7 @@ public class AnalyzerRunnerStart {
 		Configuration configuration;
 
 		try {
-			configuration = ConfigurationLoader.getConfiguration(args);
+			configuration = ConfigurationManager.loadConfiguration();
 		} catch (FileNotFoundException e) {
 			LOGGER.error("Configuration file not found.");
 			return;
@@ -172,6 +172,6 @@ public class AnalyzerRunnerStart {
 	private static void copyConfigurationIntoWorkingFolder(String file, Configuration configuration)
 			throws IOException {
 		FileSystemUtils.ensureDirectoryExists(new File(file).getParentFile());
-		ConfigurationLoader.writeToFile(configuration, file);
+		ConfigurationManager.writeToFile(configuration, file);
 	}
 }

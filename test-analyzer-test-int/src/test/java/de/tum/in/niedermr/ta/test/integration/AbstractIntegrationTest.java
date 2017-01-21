@@ -21,7 +21,7 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
-import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
+import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
@@ -59,7 +59,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	private void loadConfiguration() throws ConfigurationException, IOException {
 		String configurationFileName = getSpecificFolderTestData() + FOLDER_CONFIGURATION + FILE_NAME_CONFIGURATION;
 
-		this.m_configuration = ConfigurationLoader.getConfigurationFromFile(configurationFileName);
+		this.m_configuration = ConfigurationManager.loadConfigurationFromFile(configurationFileName);
 		this.m_configuration.getWorkingFolder().setValue(getSpecificFolderTestWorkingArea());
 	}
 

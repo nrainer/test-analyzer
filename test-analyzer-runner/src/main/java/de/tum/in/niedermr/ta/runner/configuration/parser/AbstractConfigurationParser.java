@@ -14,24 +14,37 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
-import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
-abstract class AbstractConfigurationParser {
+abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(AbstractConfigurationParser.class);
 
-	private AbstractConfiguration m_configuration;
+	private static boolean s_fastFail = false;
+
+	private T m_configuration;
 	private ConfigurationPropertyMap m_propertyMap;
 	private Set<IConfigurationProperty<?>> m_processedPropertiesInCurrentFile;
 
-	protected AbstractConfigurationParser(AbstractConfiguration configuration) {
-		m_configuration = configuration;
-		this.m_propertyMap = new ConfigurationPropertyMap(configuration);
-		this.m_processedPropertiesInCurrentFile = new HashSet<>();
+	/** Constructor. */
+	protected AbstractConfigurationParser() {
+		m_configuration = createNewConfiguration();
+		m_propertyMap = new ConfigurationPropertyMap(m_configuration);
+		m_processedPropertiesInCurrentFile = new HashSet<>();
+	}
+
+	/** For test code only. */
+	public static void setFastFail(boolean fastFail) {
+		s_fastFail = fastFail;
+	}
+
+	protected abstract T createNewConfiguration();
+
+	protected T getConfiguration() {
+		return m_configuration;
 	}
 
 	protected void parse(String pathToConfigFile) throws IOException, ConfigurationException {
@@ -71,7 +84,7 @@ abstract class AbstractConfigurationParser {
 	}
 
 	private void handleParseLineException(String line) throws ConfigurationException {
-		if (ConfigurationLoader.isFastFail()) {
+		if (s_fastFail) {
 			throw new ConfigurationException("Invalid line: " + line);
 		} else {
 			LOGGER.warn("Skipping invalid log file line: " + line);
@@ -83,15 +96,15 @@ abstract class AbstractConfigurationParser {
 	}
 
 	private boolean isInheritLine(String line) {
-		return line.trim().startsWith(ConfigurationLoader.KEYWORD_EXTENDS + " ");
+		return line.trim().startsWith(IConfigurationTokens.KEYWORD_EXTENDS + " ");
 	}
 
 	/**
 	 * True, if the line is not empty or a comment.
 	 */
 	private boolean isLineWithContent(String line) {
-		return !(line.trim().isEmpty() || line.startsWith(ConfigurationLoader.COMMENT_START_SEQ_1)
-				|| line.startsWith(ConfigurationLoader.COMMENT_START_SEQ_2));
+		return !(line.trim().isEmpty() || line.startsWith(IConfigurationTokens.COMMENT_START_SEQ_1)
+				|| line.startsWith(IConfigurationTokens.COMMENT_START_SEQ_2));
 	}
 
 	private void parseLine(String line) throws ConfigurationException {
@@ -189,7 +202,7 @@ abstract class AbstractConfigurationParser {
 		if (m_processedPropertiesInCurrentFile.contains(property)) {
 			String msg = "Overwriting property which was already set: " + line;
 
-			if (ConfigurationLoader.isFastFail()) {
+			if (s_fastFail) {
 				throw new ConfigurationException(property, msg);
 			} else {
 				LOGGER.warn(msg);
@@ -201,7 +214,7 @@ abstract class AbstractConfigurationParser {
 			throws ConfigurationException {
 		try {
 			File currentConfigurationFile = new File(pathToCurrentConfiguration);
-			String pathToInheritedConfiguration = inheritLine.replace(ConfigurationLoader.KEYWORD_EXTENDS, "").trim();
+			String pathToInheritedConfiguration = inheritLine.replace(IConfigurationTokens.KEYWORD_EXTENDS, "").trim();
 
 			if (currentConfigurationFile.getParent() != null) {
 				pathToInheritedConfiguration = FileUtility.prefixFileNameIfNotAbsolute(pathToInheritedConfiguration,
@@ -221,7 +234,7 @@ abstract class AbstractConfigurationParser {
 
 	/** Line type used to separate the key and value in the configuration file. */
 	private enum LineType {
-		SET(ConfigurationLoader.KEY_VALUE_SEPARATOR_SET), APPEND(ConfigurationLoader.KEY_VALUE_SEPARATOR_APPEND);
+		SET(IConfigurationTokens.KEY_VALUE_SEPARATOR_SET), APPEND(IConfigurationTokens.KEY_VALUE_SEPARATOR_APPEND);
 
 		private final String m_separator;
 
