@@ -200,7 +200,7 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 
 	private void checkIfAlreadySet(IConfigurationProperty<?> property, String line) throws ConfigurationException {
 		if (m_processedPropertiesInCurrentFile.contains(property)) {
-			String msg = "Overwriting property which was already set: " + line;
+			String msg = "Replacing property value which was already set with: " + line;
 
 			if (s_fastFail) {
 				throw new ConfigurationException(property, msg);
