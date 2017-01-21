@@ -14,7 +14,6 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.parser.ConfigurationParser;
-import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 /**
@@ -108,24 +107,6 @@ public class ConfigurationManager implements FileSystemConstants {
 					"Assumed absolute path to configuration file: " + new File(pathToConfiguration).getAbsolutePath());
 			throw ex;
 		}
-	}
-
-	public static String[] toArgsArray(Configuration configuration) {
-		List<IConfigurationProperty<?>> propertyList = configuration.getAllPropertiesOrdered();
-
-		String[] result = new String[propertyList.size()];
-
-		for (int i = 0; i < result.length; i++) {
-			String value = propertyList.get(i).getValueAsString();
-
-			if (value.isEmpty()) {
-				value = AbstractStringProperty.PLACEHOLDER_EMPTY;
-			}
-
-			result[i] = value;
-		}
-
-		return result;
 	}
 
 	public static List<String> toFileLines(Configuration configuration, boolean includeDescriptionAsComment) {

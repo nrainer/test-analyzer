@@ -11,9 +11,9 @@ import org.junit.Test;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
-import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
+/** Test {@link ConfigurationManager}. */
 public class ConfigurationManagerTest {
 
 	/** After. */
@@ -40,22 +40,6 @@ public class ConfigurationManagerTest {
 				"./src/test/data/ConfigurationLoaderTest/");
 
 		assertConfigurationEquals(expected, result);
-	}
-
-	/** Test. */
-	@Test
-	public void testConfigurationToArgs() {
-		Configuration configuration = new Configuration();
-
-		List<IConfigurationProperty<?>> properties = configuration.getAllPropertiesOrdered();
-		String[] configArgs = ConfigurationManager.toArgsArray(configuration);
-
-		assertEquals(properties.size(), configArgs.length);
-
-		for (int i = 0; i < configArgs.length; i++) {
-			assertEquals(properties.get(i).getValueAsString(),
-					configArgs[i].replace(AbstractStringProperty.PLACEHOLDER_EMPTY, ""));
-		}
 	}
 
 	public static void assertConfigurationEquals(Configuration configuration1, Configuration configuration2) {
