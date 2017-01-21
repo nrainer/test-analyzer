@@ -14,7 +14,6 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
-import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
@@ -23,6 +22,8 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(AbstractConfigurationParser.class);
+
+	private static boolean s_fastFail = false;
 
 	private T m_configuration;
 	private ConfigurationPropertyMap m_propertyMap;
@@ -33,6 +34,11 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 		m_configuration = createNewConfiguration();
 		m_propertyMap = new ConfigurationPropertyMap(m_configuration);
 		m_processedPropertiesInCurrentFile = new HashSet<>();
+	}
+
+	/** For test code only. */
+	public static void setFastFail(boolean fastFail) {
+		s_fastFail = fastFail;
 	}
 
 	protected abstract T createNewConfiguration();
@@ -78,7 +84,7 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 	}
 
 	private void handleParseLineException(String line) throws ConfigurationException {
-		if (ConfigurationManager.isFastFail()) {
+		if (s_fastFail) {
 			throw new ConfigurationException("Invalid line: " + line);
 		} else {
 			LOGGER.warn("Skipping invalid log file line: " + line);
@@ -196,7 +202,7 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 		if (m_processedPropertiesInCurrentFile.contains(property)) {
 			String msg = "Overwriting property which was already set: " + line;
 
-			if (ConfigurationManager.isFastFail()) {
+			if (s_fastFail) {
 				throw new ConfigurationException(property, msg);
 			} else {
 				LOGGER.warn(msg);

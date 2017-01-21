@@ -5,7 +5,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -15,12 +14,6 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 
 /** Test {@link ConfigurationManager}. */
 public class ConfigurationManagerTest {
-
-	/** After. */
-	@After
-	public void after() {
-		ConfigurationManager.setFastFail(false);
-	}
 
 	/** Test. */
 	@Test

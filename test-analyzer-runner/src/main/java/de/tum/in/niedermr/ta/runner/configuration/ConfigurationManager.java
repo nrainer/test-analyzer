@@ -30,19 +30,9 @@ public class ConfigurationManager implements FileSystemConstants {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(ConfigurationManager.class);
 
-	private static boolean s_fastFail = false;
-
 	/** Constructor. */
 	private ConfigurationManager() {
 		// NOP
-	}
-
-	public static void setFastFail(boolean fastFail) {
-		s_fastFail = fastFail;
-	}
-
-	public static boolean isFastFail() {
-		return s_fastFail;
 	}
 
 	public static Configuration loadConfiguration() throws ConfigurationException, FileNotFoundException {

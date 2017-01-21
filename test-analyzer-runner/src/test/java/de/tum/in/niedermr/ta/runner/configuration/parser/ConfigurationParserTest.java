@@ -22,9 +22,11 @@ public class ConfigurationParserTest {
 	private static final DynamicConfigurationKey DYNAMIC_PROPERTY_1 = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "data.compress", false);
 
+	/** After. */
 	@After
 	public void after() {
-		ConfigurationManager.setFastFail(false);
+		// reset
+		AbstractConfigurationParser.setFastFail(false);
 	}
 
 	/** Test. */
@@ -49,7 +51,7 @@ public class ConfigurationParserTest {
 	/** Test. */
 	@Test(expected = ConfigurationException.class)
 	public void testParse2() throws IOException, ConfigurationException {
-		ConfigurationManager.setFastFail(true);
+		AbstractConfigurationParser.setFastFail(true);
 
 		Configuration stub = new Configuration();
 
