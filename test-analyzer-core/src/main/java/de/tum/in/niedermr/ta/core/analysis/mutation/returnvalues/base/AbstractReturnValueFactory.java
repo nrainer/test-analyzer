@@ -77,6 +77,9 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 			throws Throwable, NoSuchElementException {
 		try {
 			return createWithException(methodIdentifier, returnType);
+		} catch (UnwantedReturnTypeException e) {
+			// do not delegate to the fallback factory
+			throw new NoSuchElementException();
 		} catch (Throwable t) {
 			if (m_fallbackFactory.isPresent()) {
 				return m_fallbackFactory.get().createRecursiveWithException(methodIdentifier, returnType);
