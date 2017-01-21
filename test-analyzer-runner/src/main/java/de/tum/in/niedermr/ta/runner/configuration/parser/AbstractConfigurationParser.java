@@ -14,7 +14,7 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
 import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
-import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
+import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
@@ -71,7 +71,7 @@ abstract class AbstractConfigurationParser {
 	}
 
 	private void handleParseLineException(String line) throws ConfigurationException {
-		if (ConfigurationLoader.isFastFail()) {
+		if (ConfigurationManager.isFastFail()) {
 			throw new ConfigurationException("Invalid line: " + line);
 		} else {
 			LOGGER.warn("Skipping invalid log file line: " + line);
@@ -83,15 +83,15 @@ abstract class AbstractConfigurationParser {
 	}
 
 	private boolean isInheritLine(String line) {
-		return line.trim().startsWith(ConfigurationLoader.KEYWORD_EXTENDS + " ");
+		return line.trim().startsWith(ConfigurationManager.KEYWORD_EXTENDS + " ");
 	}
 
 	/**
 	 * True, if the line is not empty or a comment.
 	 */
 	private boolean isLineWithContent(String line) {
-		return !(line.trim().isEmpty() || line.startsWith(ConfigurationLoader.COMMENT_START_SEQ_1)
-				|| line.startsWith(ConfigurationLoader.COMMENT_START_SEQ_2));
+		return !(line.trim().isEmpty() || line.startsWith(ConfigurationManager.COMMENT_START_SEQ_1)
+				|| line.startsWith(ConfigurationManager.COMMENT_START_SEQ_2));
 	}
 
 	private void parseLine(String line) throws ConfigurationException {
@@ -189,7 +189,7 @@ abstract class AbstractConfigurationParser {
 		if (m_processedPropertiesInCurrentFile.contains(property)) {
 			String msg = "Overwriting property which was already set: " + line;
 
-			if (ConfigurationLoader.isFastFail()) {
+			if (ConfigurationManager.isFastFail()) {
 				throw new ConfigurationException(property, msg);
 			} else {
 				LOGGER.warn(msg);
@@ -201,7 +201,7 @@ abstract class AbstractConfigurationParser {
 			throws ConfigurationException {
 		try {
 			File currentConfigurationFile = new File(pathToCurrentConfiguration);
-			String pathToInheritedConfiguration = inheritLine.replace(ConfigurationLoader.KEYWORD_EXTENDS, "").trim();
+			String pathToInheritedConfiguration = inheritLine.replace(ConfigurationManager.KEYWORD_EXTENDS, "").trim();
 
 			if (currentConfigurationFile.getParent() != null) {
 				pathToInheritedConfiguration = FileUtility.prefixFileNameIfNotAbsolute(pathToInheritedConfiguration,
@@ -221,7 +221,7 @@ abstract class AbstractConfigurationParser {
 
 	/** Line type used to separate the key and value in the configuration file. */
 	private enum LineType {
-		SET(ConfigurationLoader.KEY_VALUE_SEPARATOR_SET), APPEND(ConfigurationLoader.KEY_VALUE_SEPARATOR_APPEND);
+		SET(ConfigurationManager.KEY_VALUE_SEPARATOR_SET), APPEND(ConfigurationManager.KEY_VALUE_SEPARATOR_APPEND);
 
 		private final String m_separator;
 

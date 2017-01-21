@@ -14,12 +14,12 @@ import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfiguration
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
-public class ConfigurationLoaderTest {
+public class ConfigurationManagerTest {
 
 	/** After. */
 	@After
 	public void after() {
-		ConfigurationLoader.setFastFail(false);
+		ConfigurationManager.setFastFail(false);
 	}
 
 	/** Test. */
@@ -36,7 +36,7 @@ public class ConfigurationLoaderTest {
 				.create(DynamicConfigurationKeyNamespace.EXTENSION, "tuning.speedup.factor", null);
 		expected.getDynamicValues().setRawValue(extensionKeyForTuningFactor, "4");
 
-		Configuration result = ConfigurationLoader.getConfigurationFromFile("testConfigurationFromFile.config",
+		Configuration result = ConfigurationManager.getConfigurationFromFile("testConfigurationFromFile.config",
 				"./src/test/data/ConfigurationLoaderTest/");
 
 		assertConfigurationEquals(expected, result);
@@ -48,7 +48,7 @@ public class ConfigurationLoaderTest {
 		Configuration configuration = new Configuration();
 
 		List<IConfigurationProperty<?>> properties = configuration.getAllPropertiesOrdered();
-		String[] configArgs = ConfigurationLoader.toArgsArray(configuration);
+		String[] configArgs = ConfigurationManager.toArgsArray(configuration);
 
 		assertEquals(properties.size(), configArgs.length);
 

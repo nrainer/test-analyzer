@@ -18,7 +18,7 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
-import de.tum.in.niedermr.ta.runner.configuration.ConfigurationLoader;
+import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
@@ -108,7 +108,7 @@ public class AnalyzerRunnerInternal {
 
 		String fileName = Environment.replaceWorkingFolder(EnvironmentConstants.FILE_OUTPUT_EXECUTION_INFORMATION,
 				RELATIVE_WORKING_FOLDER);
-		List<String> configurationLines = ConfigurationLoader.toFileLines(configuration, false);
+		List<String> configurationLines = ConfigurationManager.toFileLines(configuration, false);
 		List<String> formattedContent = Arrays
 				.asList(resultPresentation.formatExecutionInformation(configurationLines));
 		TextFileData.writeToFile(fileName, formattedContent);
@@ -134,7 +134,7 @@ public class AnalyzerRunnerInternal {
 
 	private static Configuration loadAndValidateTheConfiguration(String configurationFileToUse)
 			throws ConfigurationException, IOException {
-		Configuration configuration = ConfigurationLoader.getConfigurationFromFile(configurationFileToUse);
+		Configuration configuration = ConfigurationManager.getConfigurationFromFile(configurationFileToUse);
 
 		final String classpathBefore = configuration.getClasspath().getValue();
 

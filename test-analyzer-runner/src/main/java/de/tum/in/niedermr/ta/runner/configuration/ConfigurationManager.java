@@ -26,9 +26,9 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
  * by a space and the path to the configuration file to be inherited. The path is supposed to be relative to the current
  * configuration file.
  */
-public class ConfigurationLoader implements FileSystemConstants {
+public class ConfigurationManager implements FileSystemConstants {
 	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(ConfigurationLoader.class);
+	private static final Logger LOGGER = LogManager.getLogger(ConfigurationManager.class);
 
 	private static boolean s_fastFail = false;
 
@@ -43,7 +43,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 	private final Configuration m_configuration;
 	private final String m_rootPath;
 
-	private ConfigurationLoader(String rootPath) {
+	private ConfigurationManager(String rootPath) {
 		this.m_configuration = new Configuration();
 		this.m_rootPath = rootPath;
 	}
@@ -58,7 +58,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 
 	public static Configuration getConfiguration() throws ConfigurationException, FileNotFoundException {
 		try {
-			ConfigurationLoader loader = new ConfigurationLoader(".");
+			ConfigurationManager loader = new ConfigurationManager(".");
 
 			// don't close sc, because it will close System.in (and that can't be reopened)
 			@SuppressWarnings("resource")
@@ -83,7 +83,7 @@ public class ConfigurationLoader implements FileSystemConstants {
 
 	public static Configuration getConfigurationFromFile(String configurationFile, String rootPath)
 			throws ConfigurationException, IOException {
-		ConfigurationLoader loader = new ConfigurationLoader(rootPath);
+		ConfigurationManager loader = new ConfigurationManager(rootPath);
 		loader.loadFromFile(configurationFile);
 
 		return loader.m_configuration;
