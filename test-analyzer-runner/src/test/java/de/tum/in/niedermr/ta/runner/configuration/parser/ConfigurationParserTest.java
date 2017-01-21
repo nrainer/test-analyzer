@@ -27,6 +27,7 @@ public class ConfigurationParserTest {
 		ConfigurationManager.setFastFail(false);
 	}
 
+	/** Test. */
 	@Test
 	public void testParse1() throws IOException, ConfigurationException {
 		final Configuration expected = new Configuration();
@@ -37,16 +38,15 @@ public class ConfigurationParserTest {
 		expected.getWorkingFolder().setValue("E:/");
 		expected.getDynamicValues().setRawValue(DYNAMIC_PROPERTY_1, Boolean.TRUE.toString());
 
-		Configuration result = new Configuration();
-
-		TestConfigurationParser1 parser = new TestConfigurationParser1(result,
+		TestConfigurationParser1 parser = new TestConfigurationParser1(
 				ConfigurationManager.toFileLines(expected, false));
 
 		parser.parse();
 
-		ConfigurationManagerTest.assertConfigurationEquals(expected, result);
+		ConfigurationManagerTest.assertConfigurationEquals(expected, parser.getConfiguration());
 	}
 
+	/** Test. */
 	@Test(expected = ConfigurationException.class)
 	public void testParse2() throws IOException, ConfigurationException {
 		ConfigurationManager.setFastFail(true);
@@ -57,10 +57,11 @@ public class ConfigurationParserTest {
 		configLines.add(stub.getClasspath().getName() + IConfigurationTokens.KEY_VALUE_SEPARATOR_SET + "a.jar;");
 		configLines.add(stub.getClasspath().getName() + IConfigurationTokens.KEY_VALUE_SEPARATOR_SET + "b.jar;");
 
-		TestConfigurationParser1 parser = new TestConfigurationParser1(stub, configLines);
+		TestConfigurationParser1 parser = new TestConfigurationParser1(configLines);
 		parser.parse();
 	}
 
+	/** Test. */
 	@Test
 	public void testParseWithInheritance1() throws IOException, ConfigurationException {
 		final Configuration expected = new Configuration();
@@ -69,19 +70,17 @@ public class ConfigurationParserTest {
 		expected.getNumberOfThreads().setValue(4);
 		expected.getResultPresentation().setValue(ResultPresentationProperty.RESULT_PRESENTATION_TEXT);
 
-		Configuration result = new Configuration();
-
-		AbstractConfigurationParser parser = new TestConfigurationParser2(result, expected);
+		TestConfigurationParser2 parser = new TestConfigurationParser2(expected);
 		parser.parse("A");
 
-		ConfigurationManagerTest.assertConfigurationEquals(expected, result);
+		ConfigurationManagerTest.assertConfigurationEquals(expected, parser.getConfiguration());
 	}
 
+	/** Test. */
 	@Test(expected = ConfigurationException.class)
 	public void testParseWithInheritance2() throws IOException, ConfigurationException {
-		Configuration result = new Configuration();
-
-		AbstractConfigurationParser parser = new AbstractConfigurationParser(result) {
+		AbstractConfigurationParser<Configuration> parser = new AbstractConfigurationParser<Configuration>() {
+			/** {@inheritDoc} */
 			@Override
 			protected List<String> getFileContent(String pathToConfigFile) throws IOException {
 				if (pathToConfigFile.equals("A")) {
@@ -92,22 +91,34 @@ public class ConfigurationParserTest {
 					throw new FileNotFoundException();
 				}
 			}
+
+			/** {@inheritDoc} */
+			@Override
+			protected Configuration createNewConfiguration() {
+				return new Configuration();
+			}
 		};
 
 		parser.parse("A");
 	}
 
-	private static class TestConfigurationParser1 extends AbstractConfigurationParser {
+	private static class TestConfigurationParser1 extends AbstractConfigurationParser<Configuration> {
 		private final List<String> m_contentToReturn;
 
-		public TestConfigurationParser1(Configuration result, List<String> contentToReturn) {
-			super(result);
-			this.m_contentToReturn = contentToReturn;
+		public TestConfigurationParser1(List<String> contentToReturn) {
+			m_contentToReturn = contentToReturn;
 		}
 
+		/** {@inheritDoc} */
 		@Override
 		protected List<String> getFileContent(String pathToConfigFile) throws IOException {
 			return m_contentToReturn;
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		protected Configuration createNewConfiguration() {
+			return new Configuration();
 		}
 
 		public void parse() throws IOException, ConfigurationException {
@@ -115,15 +126,21 @@ public class ConfigurationParserTest {
 		}
 	}
 
-	private static class TestConfigurationParser2 extends AbstractConfigurationParser {
+	private static class TestConfigurationParser2 extends AbstractConfigurationParser<Configuration> {
 
 		private Configuration m_expected;
 
-		protected TestConfigurationParser2(Configuration result, Configuration expected) {
-			super(result);
+		protected TestConfigurationParser2(Configuration expected) {
 			m_expected = expected;
 		}
 
+		/** {@inheritDoc} */
+		@Override
+		protected Configuration createNewConfiguration() {
+			return new Configuration();
+		}
+
+		/** {@inheritDoc} */
 		@Override
 		protected List<String> getFileContent(String pathToConfigFile) throws IOException {
 			List<String> lines = new LinkedList<>();

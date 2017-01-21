@@ -13,28 +13,23 @@ import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionP
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 /** Parser for {@link Configuration}. */
-public class ConfigurationParser extends AbstractConfigurationParser {
+public class ConfigurationParser extends AbstractConfigurationParser<Configuration> {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(ConfigurationParser.class);
 
 	private IConfigurationMigration m_configurationMigration = null;
 
-	/** Constructor. */
-	protected ConfigurationParser(Configuration result) {
-		super(result);
-	}
-
 	public static Configuration parseFromFile(String pathToConfigFile) throws IOException, ConfigurationException {
-		Configuration configuration = new Configuration();
-		parseFromFile(pathToConfigFile, configuration);
-		return configuration;
+		ConfigurationParser parser = new ConfigurationParser();
+		parser.parse(pathToConfigFile);
+		return parser.getConfiguration();
 	}
 
-	public static void parseFromFile(String pathToConfigFile, Configuration result)
-			throws IOException, ConfigurationException {
-		ConfigurationParser parser = new ConfigurationParser(result);
-		parser.parse(pathToConfigFile);
+	/** {@inheritDoc} */
+	@Override
+	protected Configuration createNewConfiguration() {
+		return new Configuration();
 	}
 
 	/** {@inheritDoc} */

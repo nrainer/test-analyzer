@@ -20,18 +20,25 @@ import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfiguration
 import de.tum.in.niedermr.ta.runner.configuration.property.ConfigurationVersionProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
-abstract class AbstractConfigurationParser {
+abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(AbstractConfigurationParser.class);
 
-	private AbstractConfiguration m_configuration;
+	private T m_configuration;
 	private ConfigurationPropertyMap m_propertyMap;
 	private Set<IConfigurationProperty<?>> m_processedPropertiesInCurrentFile;
 
-	protected AbstractConfigurationParser(AbstractConfiguration configuration) {
-		m_configuration = configuration;
-		this.m_propertyMap = new ConfigurationPropertyMap(configuration);
-		this.m_processedPropertiesInCurrentFile = new HashSet<>();
+	/** Constructor. */
+	protected AbstractConfigurationParser() {
+		m_configuration = createNewConfiguration();
+		m_propertyMap = new ConfigurationPropertyMap(m_configuration);
+		m_processedPropertiesInCurrentFile = new HashSet<>();
+	}
+
+	protected abstract T createNewConfiguration();
+
+	protected T getConfiguration() {
+		return m_configuration;
 	}
 
 	protected void parse(String pathToConfigFile) throws IOException, ConfigurationException {
