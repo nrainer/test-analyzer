@@ -15,21 +15,14 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStr
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 public class ConfigurationLoaderTest {
+
+	/** After. */
 	@After
 	public void after() {
 		ConfigurationLoader.setFastFail(false);
 	}
 
-	@Test
-	public void testConfigurationFromArgs() throws ConfigurationException {
-		Configuration configuration1 = new Configuration();
-
-		String[] configArgs = ConfigurationLoader.toArgsArray(configuration1);
-
-		Configuration configuration2 = ConfigurationLoader.getConfigurationFromArgs(configArgs);
-		assertConfigurationEquals(configuration1, configuration2);
-	}
-
+	/** Test. */
 	@Test
 	public void testConfigurationFromFile() throws ConfigurationException, IOException {
 		Configuration expected = new Configuration();
@@ -49,6 +42,7 @@ public class ConfigurationLoaderTest {
 		assertConfigurationEquals(expected, result);
 	}
 
+	/** Test. */
 	@Test
 	public void testConfigurationToArgs() {
 		Configuration configuration = new Configuration();

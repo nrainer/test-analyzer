@@ -40,12 +40,10 @@ public class ConfigurationParser extends AbstractConfigurationParser {
 	/** {@inheritDoc} */
 	@Override
 	protected IConfigurationProperty<?> getPropertyByKey(String key0) {
-		String key;
+		String key = key0;
 
 		if (m_configurationMigration != null) {
-			key = m_configurationMigration.migrateKey(key0);
-		} else {
-			key = key0;
+			key = m_configurationMigration.migrateKey(key);
 		}
 
 		return super.getPropertyByKey(key);
@@ -56,9 +54,9 @@ public class ConfigurationParser extends AbstractConfigurationParser {
 	protected String adjustValue(IConfigurationProperty<?> property, String value) {
 		if (m_configurationMigration != null) {
 			return m_configurationMigration.migrateRawValue(property, value);
-		} else {
-			return super.adjustValue(property, value);
 		}
+
+		return super.adjustValue(property, value);
 	}
 
 	/** {@inheritDoc} */

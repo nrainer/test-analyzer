@@ -12,33 +12,19 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
-import de.tum.in.niedermr.ta.core.common.util.StringUtility;
-import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.parser.ConfigurationParser;
-import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractConfigurationProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.AbstractStringProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
-import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsReader;
 
 /**
- * Configurations can be loaded from the arguments, from the console or from a file.<br/>
+ * Load a configuration from a file.<br/>
  * <br/>
  * 
- * <b>Arguments:</b> All properties need to be specified and these need to be in the order of
- * {@link Configuration#getAllPropertiesOrdered()}.<br/>
- * <br/>
- * 
- * <b>Console:</b> The property values will be requested using System.in.<br/>
- * <br/>
- * 
- * <b>Configuration file:</b> The order is not relevant and not all properties need to be specified. If a property is
- * not specified, the default value will be used.<br/>
  * Comments can be specified using {@link COMMENT_START_SEQ_1} or {@link COMMENT_START_SEQ_2}.<br/>
- * A configuration file can extend another one. To do so, the first line must start with 'extends' followed by a space
- * and the path to the configuration file to be inherited. The path is supposed to be relative to the current
+ * A configuration file can extend another one. To do so, the first line must start with <code>extends</code> followed
+ * by a space and the path to the configuration file to be inherited. The path is supposed to be relative to the current
  * configuration file.
- *
  */
 public class ConfigurationLoader implements FileSystemConstants {
 	/** Logger. */
@@ -70,15 +56,17 @@ public class ConfigurationLoader implements FileSystemConstants {
 		return s_fastFail;
 	}
 
-	public static Configuration getConfiguration(String[] args) throws ConfigurationException, FileNotFoundException {
+	public static Configuration getConfiguration() throws ConfigurationException, FileNotFoundException {
 		try {
 			ConfigurationLoader loader = new ConfigurationLoader(".");
 
-			if (args.length != 0) {
-				loader.loadFromArgs(args);
-			} else {
-				loader.loadFromOtherSource();
-			}
+			// don't close sc, because it will close System.in (and that can't be reopened)
+			@SuppressWarnings("resource")
+			Scanner sc = new Scanner(System.in);
+
+			System.out.println("Path to configuration file:");
+			String fileName = sc.nextLine();
+			loader.loadFromFile(fileName);
 
 			return loader.m_configuration;
 		} catch (FileNotFoundException e) {
@@ -86,13 +74,6 @@ public class ConfigurationLoader implements FileSystemConstants {
 		} catch (Exception e) {
 			throw new ConfigurationException(e);
 		}
-	}
-
-	public static Configuration getConfigurationFromArgs(String[] args) throws ConfigurationException {
-		ConfigurationLoader loader = new ConfigurationLoader(EMPTY_ROOT_PATH);
-		loader.loadFromArgs(args);
-
-		return loader.m_configuration;
 	}
 
 	public static Configuration getConfigurationFromFile(String configurationFile)
@@ -108,63 +89,16 @@ public class ConfigurationLoader implements FileSystemConstants {
 		return loader.m_configuration;
 	}
 
-	private void loadFromArgs(String[] args) throws ConfigurationException {
-		LOGGER.info("Configuration from args");
-
-		ProgramArgsReader argsReader = new ProgramArgsReader(AnalyzerRunnerInternal.class, args);
-		int i = 0;
-
-		for (IConfigurationProperty<?> property : m_configuration.getAllPropertiesOrdered()) {
-			String stringValue = argsReader.getArgumentUnsafe(i);
-
-			if (StringUtility.isNullOrEmpty(stringValue)) {
-				stringValue = AbstractConfigurationProperty.PLACEHOLDER_DEFAULT;
-			}
-
-			property.setValueUnsafe(stringValue);
-			i++;
-		}
-	}
-
-	private void loadFromOtherSource() throws ConfigurationException, IOException {
-		// don't close sc, because it will close System.in (and that can't be reopened)
-		Scanner sc = new Scanner(System.in);
-
-		writeToConsole("Path to configuration file (leave it empty to load the information from the console):");
-		String input = sc.nextLine();
-
-		if (input.isEmpty()) {
-			loadFromConsole(sc);
-		} else {
-			loadFromFile(input);
-		}
-	}
-
-	private void loadFromConsole(Scanner scanner) throws ConfigurationException {
-		LOGGER.info("Configuration from console");
-
-		for (IConfigurationProperty<?> property : m_configuration.getAllPropertiesOrdered()) {
-			writeToConsole(property.getDescription());
-			System.out.print("Set value: ");
-			property.setValueUnsafe(scanner.nextLine());
-		}
-	}
-
-	private void loadFromFile(String fileName) throws IOException, ConfigurationException {
+	private void loadFromFile(String fileName) throws ConfigurationException, IOException {
 		LOGGER.info("Configuration from file ('" + fileName + "' in '" + this.m_rootPath + "')");
 
+		File configFile = new File(fileName);
 		String pathToConfiguration;
 
-		if (fileName.charAt(0) == '@') {
-			pathToConfiguration = this.m_rootPath + fileName.substring(1) + FILE_EXTENSION_CONFIG;
+		if (configFile.isAbsolute()) {
+			pathToConfiguration = fileName;
 		} else {
-			File configFile = new File(fileName);
-
-			if (configFile.isAbsolute()) {
-				pathToConfiguration = fileName;
-			} else {
-				pathToConfiguration = this.m_rootPath + fileName;
-			}
+			pathToConfiguration = m_rootPath + fileName;
 		}
 
 		try {
@@ -214,9 +148,5 @@ public class ConfigurationLoader implements FileSystemConstants {
 
 	public static void writeToFile(Configuration configuration, String file) throws IOException {
 		TextFileData.writeToFile(file, toFileLines(configuration, false));
-	}
-
-	private static void writeToConsole(String output) {
-		System.out.println(output);
 	}
 }
