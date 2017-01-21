@@ -83,15 +83,15 @@ abstract class AbstractConfigurationParser {
 	}
 
 	private boolean isInheritLine(String line) {
-		return line.trim().startsWith(ConfigurationManager.KEYWORD_EXTENDS + " ");
+		return line.trim().startsWith(IConfigurationTokens.KEYWORD_EXTENDS + " ");
 	}
 
 	/**
 	 * True, if the line is not empty or a comment.
 	 */
 	private boolean isLineWithContent(String line) {
-		return !(line.trim().isEmpty() || line.startsWith(ConfigurationManager.COMMENT_START_SEQ_1)
-				|| line.startsWith(ConfigurationManager.COMMENT_START_SEQ_2));
+		return !(line.trim().isEmpty() || line.startsWith(IConfigurationTokens.COMMENT_START_SEQ_1)
+				|| line.startsWith(IConfigurationTokens.COMMENT_START_SEQ_2));
 	}
 
 	private void parseLine(String line) throws ConfigurationException {
@@ -201,7 +201,7 @@ abstract class AbstractConfigurationParser {
 			throws ConfigurationException {
 		try {
 			File currentConfigurationFile = new File(pathToCurrentConfiguration);
-			String pathToInheritedConfiguration = inheritLine.replace(ConfigurationManager.KEYWORD_EXTENDS, "").trim();
+			String pathToInheritedConfiguration = inheritLine.replace(IConfigurationTokens.KEYWORD_EXTENDS, "").trim();
 
 			if (currentConfigurationFile.getParent() != null) {
 				pathToInheritedConfiguration = FileUtility.prefixFileNameIfNotAbsolute(pathToInheritedConfiguration,
@@ -221,7 +221,7 @@ abstract class AbstractConfigurationParser {
 
 	/** Line type used to separate the key and value in the configuration file. */
 	private enum LineType {
-		SET(ConfigurationManager.KEY_VALUE_SEPARATOR_SET), APPEND(ConfigurationManager.KEY_VALUE_SEPARATOR_APPEND);
+		SET(IConfigurationTokens.KEY_VALUE_SEPARATOR_SET), APPEND(IConfigurationTokens.KEY_VALUE_SEPARATOR_APPEND);
 
 		private final String m_separator;
 
