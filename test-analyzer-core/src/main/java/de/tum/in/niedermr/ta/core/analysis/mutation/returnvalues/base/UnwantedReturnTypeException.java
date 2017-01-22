@@ -8,4 +8,14 @@ public class UnwantedReturnTypeException extends Exception {
 
 	/** Serial version UID. */
 	private static final long serialVersionUID = 1L;
+
+	/** Constructor. */
+	public UnwantedReturnTypeException() {
+		// NOP
+	}
+
+	/** Constructor. */
+	public UnwantedReturnTypeException(String message) {
+		super(message);
+	}
 }

@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueFactory;
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.UnwantedReturnTypeException;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
@@ -39,10 +40,10 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 	/** {@inheritDoc} */
 	@Override
 	public Object createWithException(MethodIdentifier methodIdentifier, String returnType)
-			throws NoSuchElementException {
+			throws NoSuchElementException, UnwantedReturnTypeException {
 		try {
 			if (isBlacklistedType(returnType)) {
-				throw new NoSuchElementException("Blacklisted: " + returnType);
+				throw new UnwantedReturnTypeException("Blacklisted: " + returnType);
 			}
 
 			Class<?> cls = resolveClass(returnType);
