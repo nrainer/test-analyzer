@@ -159,6 +159,8 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 			return new Exception().getStackTrace()[0];
 		case "java.lang.Enum":
 			return Enum.valueOf(java.math.RoundingMode.class, java.math.RoundingMode.CEILING.name());
+		case "java.lang.Runnable":
+			return new Thread();
 		default:
 			throw new NoSuchElementException();
 		}
@@ -266,6 +268,7 @@ public class CommonReturnValueFactory extends AbstractReturnValueFactory {
 		case "java.io.ByteArrayInputStream.ByteArrayInputStream":
 			return new ByteArrayInputStream(new byte[0]);
 		case "java.io.OutputStream":
+		case "java.io.PrintStream":
 		case "java.io.ByteArrayOutputStream.ByteArrayOutputStream":
 			return new ByteArrayOutputStream();
 		default:
