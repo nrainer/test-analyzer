@@ -45,7 +45,7 @@ public class DynamicConfigurationValuesManagerTest {
 		List<String> configurationExtensionLines = configurationExtension.toStringLines();
 		assertEquals(2, configurationExtensionLines.size());
 		assertTrue(configurationExtensionLines.contains(
-				DynamicConfigurationKeyNamespace.EXTENSION.getKeyPrefix() + "analysis.nesting.enabled" + " = true"));
+				DynamicConfigurationKeyNamespace.EXTENSION.getKeyPrefix() + "analysis.nesting.enabled" + "=true"));
 
 		configurationExtension.removeEntry(CONFIGURATION_KEY_FOR_STRING_VALUE);
 		assertFalse(configurationExtension.isSet(CONFIGURATION_KEY_FOR_STRING_VALUE));
