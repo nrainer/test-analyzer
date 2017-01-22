@@ -149,8 +149,10 @@ public class ThreadStackManager implements IThreadListener {
 	 */
 	protected static int computeStackHeightOfStackTrace(String startClassName, String stopClassName,
 			StackTraceElement[] stackTrace, String[] ignoredClassNamePrefixes) {
-		LOGGER.debug("Start class name is: " + startClassName);
-		LOGGER.debug("Stop class name is: " + stopClassName);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Start class name is: " + startClassName);
+			LOGGER.debug("Stop class name is: " + stopClassName);
+		}
 
 		int count = 0;
 		boolean startClassReached = false;
@@ -164,11 +166,15 @@ public class ThreadStackManager implements IThreadListener {
 				boolean inStartClass = startClassName.equals(stackElementClassName);
 
 				if (startClassReached && inStartClass) {
-					LOGGER.debug("Ignoring element in start class: " + stackTraceElementString);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Ignoring element in start class: " + stackTraceElementString);
+					}
 				}
 				if (!startClassReached && inStartClass) {
 					// start class reached -> start counting when the start class is left
-					LOGGER.debug("Start class reached: " + stackTraceElementString);
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Start class reached: " + stackTraceElementString);
+					}
 					startClassReached = true;
 				}
 				if (startClassReached && !inStartClass) {
@@ -182,20 +188,29 @@ public class ThreadStackManager implements IThreadListener {
 			}
 
 			if (stopClassName.equals(stackElementClassName)) {
-				LOGGER.debug("Abort counting at element: " + stackTraceElementString);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Abort counting at element: " + stackTraceElementString);
+				}
 				break;
 			}
 
 			if (isCountIgnoredClass(stackElementClassName, ignoredClassNamePrefixes)) {
-				LOGGER.debug("Skipping ignored element: " + stackTraceElementString);
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("Skipping ignored element: " + stackTraceElementString);
+				}
 				continue;
 			}
 
 			count++;
-			LOGGER.debug("Counted element: " + stackTraceElementString);
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug("Counted element: " + stackTraceElementString);
+			}
 		}
 
-		LOGGER.debug("Stack height is: " + count);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("Stack height is: " + count);
+		}
+
 		return count;
 	}
 
