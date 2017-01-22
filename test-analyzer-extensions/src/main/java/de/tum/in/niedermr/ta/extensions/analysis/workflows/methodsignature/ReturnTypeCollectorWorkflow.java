@@ -50,8 +50,8 @@ public class ReturnTypeCollectorWorkflow extends AbstractWorkflow {
 					true);
 
 	/**
-	 * <code>extension.methodsignature.returnvalue.existingFactories</code>: Qualified class names of existing factory
-	 * return value generators of type {@link AbstractFactoryReturnValueGenerator}.
+	 * <code>extension.methodsignature.returnvalue.existingFactoryGenerators</code>: Qualified class names of existing
+	 * factory return value generators of type {@link AbstractFactoryReturnValueGenerator}.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_EXISTING_FACTORY_GENERATOR_NAMES = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "methodsignature.returnvalue.existingFactoryGenerators",
