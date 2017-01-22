@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.runner.configuration.property.templates;
 
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.parser.IConfigurationTokens;
 
 public abstract class AbstractConfigurationProperty<T> implements IConfigurationProperty<T> {
 	public static final String PLACEHOLDER_DEFAULT = "@DEFAULT";
@@ -82,6 +83,6 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 	}
 
 	public static String toString(String name, Object value) {
-		return name + " = " + value;
+		return name + IConfigurationTokens.KEY_VALUE_SEPARATOR_SET + value;
 	}
 }
