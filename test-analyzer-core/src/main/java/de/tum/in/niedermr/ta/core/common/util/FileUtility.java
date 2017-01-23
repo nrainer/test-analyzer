@@ -17,15 +17,20 @@ public class FileUtility implements FileSystemConstants {
 
 		if (file.isAbsolute()) {
 			return fileName;
-		} else {
-			String result = fileName;
-
-			if (result.startsWith(PATH_SEPARATOR)) {
-				result = result.substring(1);
-			}
-
-			return prefix + result;
 		}
+		String result = fileName;
+
+		if (result.startsWith(PATH_SEPARATOR)) {
+			result = result.substring(1);
+		}
+
+		return prefix + result;
+	}
+
+	/** Return true if the path ends with a path separator. */
+	public static boolean endsWithPathSeparator(String path) {
+		return path.endsWith(FileSystemConstants.PATH_SEPARATOR)
+				|| path.endsWith(FileSystemConstants.PATH_SEPARATOR_ALTERNATIVE);
 	}
 
 	/** Ensure that the path ends with a path separator. Returns the empty string if the path is null or empty. */
@@ -34,8 +39,7 @@ public class FileUtility implements FileSystemConstants {
 			return "";
 		}
 
-		if (path.endsWith(FileSystemConstants.PATH_SEPARATOR)
-				|| path.endsWith(FileSystemConstants.PATH_SEPARATOR_ALTERNATIVE)) {
+		if (endsWithPathSeparator(path)) {
 			return path;
 		}
 

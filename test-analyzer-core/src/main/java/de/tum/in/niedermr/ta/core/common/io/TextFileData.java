@@ -6,8 +6,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
@@ -21,7 +21,8 @@ public class TextFileData {
 		writeToFileInternal(fileName, true, lines);
 	}
 
-	private static void writeToFileInternal(String fileName, boolean append, Collection<String> lines) throws IOException {
+	private static void writeToFileInternal(String fileName, boolean append, Collection<String> lines)
+			throws IOException {
 		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, append));
 
 		try {
@@ -34,7 +35,7 @@ public class TextFileData {
 	}
 
 	public static List<String> readFromFile(String fileName) throws IOException {
-		List<String> result = new LinkedList<>();
+		List<String> result = new ArrayList<>();
 
 		BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
@@ -51,7 +52,8 @@ public class TextFileData {
 		return result;
 	}
 
-	public static void mergeFiles(String resultFile, String inputFileWithIndexParam, int numberOfInputFiles) throws IOException {
+	public static void mergeFiles(String resultFile, String inputFileWithIndexParam, int numberOfInputFiles)
+			throws IOException {
 		String[] inputFiles = new String[numberOfInputFiles];
 
 		for (int i = 0; i < numberOfInputFiles; i++) {

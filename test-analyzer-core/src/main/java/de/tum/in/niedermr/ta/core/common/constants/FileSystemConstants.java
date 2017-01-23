@@ -21,11 +21,20 @@ public interface FileSystemConstants {
 	public static final String CLASSPATH_SEPARATOR_LINUX = ":";
 	public static final String CLASSPATH_WILDCARD = "*";
 
-	public static final String FILE_EXTENSION_CLASS = ".class";
-	public static final String FILE_EXTENSION_JAR = ".jar";
-	public static final String FILE_EXTENSION_CONFIG = ".config";
-	public static final String FILE_EXTENSION_SQL = ".sql";
-	public static final String FILE_EXTENSION_TXT = ".txt";
-	public static final String FILE_EXTENSION_XML = ".xml";
+	/** File extension separator. */
+	public static final String FILE_EXTENSION_SEPARATOR = ".";
+	/** {@value} */
+	public static final String FILE_EXTENSION_CLASS = FILE_EXTENSION_SEPARATOR + "class";
+	/** {@value} */
+	public static final String FILE_EXTENSION_JAR = FILE_EXTENSION_SEPARATOR + "jar";
+	/** {@value} */
+	public static final String FILE_EXTENSION_CONFIG = FILE_EXTENSION_SEPARATOR + "config";
+	/** {@value} */
+	public static final String FILE_EXTENSION_SQL = FILE_EXTENSION_SEPARATOR + "sql";
+	/** {@value} */
+	public static final String FILE_EXTENSION_TXT = FILE_EXTENSION_SEPARATOR + "txt";
+	/** {@value} */
+	public static final String FILE_EXTENSION_XML = FILE_EXTENSION_SEPARATOR + "xml";
+	/** {@value} */
 	public static final String FILE_EXTENSION_SQL_TXT = FILE_EXTENSION_SQL + FILE_EXTENSION_TXT;
 }

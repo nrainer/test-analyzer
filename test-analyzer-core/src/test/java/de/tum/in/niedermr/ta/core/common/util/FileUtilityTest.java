@@ -1,6 +1,8 @@
 package de.tum.in.niedermr.ta.core.common.util;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
@@ -39,5 +41,13 @@ public class FileUtilityTest {
 		assertEquals("./src" + pathSeparator, FileUtility.ensurePathEndsWithPathSeparator("./src", pathSeparator));
 		assertEquals("./src" + pathSeparator,
 				FileUtility.ensurePathEndsWithPathSeparator("./src" + pathSeparator, pathSeparator));
+	}
+
+	/** Test. */
+	@Test
+	public void testEndsWithPathSeparator() {
+		assertTrue(FileUtility.endsWithPathSeparator("F:/"));
+		assertTrue(FileUtility.endsWithPathSeparator("F:\\"));
+		assertFalse(FileUtility.endsWithPathSeparator("F:/folder/element"));
 	}
 }
