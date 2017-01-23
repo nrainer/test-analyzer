@@ -150,6 +150,7 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 
 	protected void executeAllTestcases(Map<Class<?>, Set<String>> testClassesWithTestcases)
 			throws ReflectiveOperationException {
+		int countUnmodifiedSuccessful = 0;
 		int countUnmodifiedFailed = 0;
 
 		for (Entry<Class<?>, Set<String>> entry : testClassesWithTestcases.entrySet()) {
@@ -162,11 +163,15 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 			for (String testcase : testcasesOfCurrentClass) {
 				boolean testSuccessful = processTestcase(testClass, testcase);
 
-				if (!testSuccessful) {
+				if (testSuccessful) {
+					countUnmodifiedSuccessful++;
+				} else {
 					countUnmodifiedFailed++;
 				}
 			}
 		}
+
+		LOGGER.info("Executed " + countUnmodifiedSuccessful + " successful test cases on the unmodified jar.");
 
 		if (countUnmodifiedFailed > 0) {
 			LOGGER.info("Skipped " + countUnmodifiedFailed + " testcases which failed on the unmodified jar.");
