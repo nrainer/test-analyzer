@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.AnalyzerRunnerInternal;
@@ -141,7 +141,7 @@ public class AnalyzerRunnerStart {
 
 		try {
 			return DatabaseResultPresentation.tryParseExecutionIdFromExecutionInformation(
-					TextFileData.readFromFile(pathToLastExecutionInformationFile));
+					TextFileUtility.readFromFile(pathToLastExecutionInformationFile));
 		} catch (IOException e) {
 			LOGGER.warn("Previous execution id cannot be retrieved.", e);
 			return Optional.empty();

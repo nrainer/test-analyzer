@@ -8,7 +8,7 @@ import java.util.List;
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.common.TestUtility;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
@@ -22,7 +22,7 @@ public class ProjectCoverageSqlOutputBuilderTest {
 		builder.addSourceFolder("src/main/java", 204, 33);
 		builder.addSourceFolder("src/test/java", 14, 0);
 
-		List<String> expectedOutput = TextFileData
+		List<String> expectedOutput = TextFileUtility
 				.readFromFile(TestUtility.getTestFolder(getClass()) + "expected.sql.txt");
 		assertEquals(expectedOutput, builder.complete());
 	}

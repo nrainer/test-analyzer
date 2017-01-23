@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 /** Test {@link JaCoCoXmlParser}. */
@@ -24,7 +24,7 @@ public class JaCoCoXmlParserTest {
 		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 
 		jaCoCoXmlParser.parse(coverageXmlInputFile, resultReceiver);
-		List<String> expectedOutput = TextFileData
+		List<String> expectedOutput = TextFileUtility
 				.readFromFile(TestUtility.getTestFolder(getClass()) + "expected.sql.txt");
 		assertEquals(expectedOutput, resultReceiver.getResult());
 	}

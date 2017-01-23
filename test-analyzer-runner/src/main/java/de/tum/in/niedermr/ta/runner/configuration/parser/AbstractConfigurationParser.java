@@ -11,7 +11,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.AbstractConfiguration;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -92,7 +92,7 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 	}
 
 	protected List<String> getFileContent(String pathToConfigFile) throws IOException {
-		return TextFileData.readFromFile(pathToConfigFile);
+		return TextFileUtility.readFromFile(pathToConfigFile);
 	}
 
 	private boolean isInheritLine(String line) {

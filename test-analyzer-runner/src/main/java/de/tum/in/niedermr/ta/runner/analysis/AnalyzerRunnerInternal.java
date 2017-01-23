@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
@@ -111,7 +111,7 @@ public class AnalyzerRunnerInternal {
 		List<String> configurationLines = ConfigurationManager.toFileLines(configuration, false);
 		List<String> formattedContent = Arrays
 				.asList(resultPresentation.formatExecutionInformation(configurationLines));
-		TextFileData.writeToFile(fileName, formattedContent);
+		TextFileUtility.writeToFile(fileName, formattedContent);
 	}
 
 	/** Execute the given workflow. */

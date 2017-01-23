@@ -15,7 +15,7 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.execution.TestExecutionContext;
 
@@ -56,7 +56,7 @@ public class ReturnTypeCollectorStepTest {
 		m_executionStep.setOutputFormat(OutputFormat.LIST);
 		m_executionStep.filterOccurrencesAndCreateOutput(m_typeOccurrences);
 		assertEquals(m_resultReceiver.getResult(),
-				TextFileData.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-list.txt"));
+				TextFileUtility.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-list.txt"));
 	}
 
 	/** Test. */
@@ -65,7 +65,7 @@ public class ReturnTypeCollectorStepTest {
 		m_executionStep.setOutputFormat(OutputFormat.CODE);
 		m_executionStep.filterOccurrencesAndCreateOutput(m_typeOccurrences);
 		assertEquals(m_resultReceiver.getResult(),
-				TextFileData.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-code.txt"));
+				TextFileUtility.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-code.txt"));
 
 	}
 
@@ -75,7 +75,7 @@ public class ReturnTypeCollectorStepTest {
 		m_executionStep.setOutputFormat(OutputFormat.LIST_WITH_COUNT);
 		m_executionStep.filterOccurrencesAndCreateOutput(m_typeOccurrences);
 		assertEquals(m_resultReceiver.getResult(),
-				TextFileData.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-count-1.txt"));
+				TextFileUtility.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-count-1.txt"));
 	}
 
 	/** Test. */
@@ -87,6 +87,6 @@ public class ReturnTypeCollectorStepTest {
 		m_executionStep.setClassNameFilter(Optional.of(className -> !className.contains("Function")));
 		m_executionStep.filterOccurrencesAndCreateOutput(m_typeOccurrences);
 		assertEquals(m_resultReceiver.getResult(),
-				TextFileData.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-count-2.txt"));
+				TextFileUtility.readFromFile(TestUtility.getTestFolder(getClass()) + "expected-count-2.txt"));
 	}
 }

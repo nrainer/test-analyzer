@@ -14,8 +14,9 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.common.TestUtility;
 
-public class TextFileDataTest {
-	private static final String TEST_FOLDER = TestUtility.getTestFolder(TextFileDataTest.class);
+/** Test {@link TextFileUtility}. */
+public class TextFileUtilityTest {
+	private static final String TEST_FOLDER = TestUtility.getTestFolder(TextFileUtilityTest.class);
 	private static final String FILE_TEST_READ = TEST_FOLDER + "text.txt";
 	private static final String FILE_TEST_WRITE = TEST_FOLDER + "text_write.txt";
 	private static final String FILE_TEST_OVERWRITE = TEST_FOLDER + "text_overwrite.txt";
@@ -35,7 +36,7 @@ public class TextFileDataTest {
 
 	@Test
 	public void testReadFromFile() throws IOException {
-		List<String> readLines = TextFileData.readFromFile(FILE_TEST_READ);
+		List<String> readLines = TextFileUtility.readFromFile(FILE_TEST_READ);
 
 		assertEquals(3, readLines.size());
 
@@ -50,11 +51,11 @@ public class TextFileDataTest {
 		linesToWrite.add("A");
 		linesToWrite.add("B");
 
-		TextFileData.writeToFile(FILE_TEST_WRITE, linesToWrite);
+		TextFileUtility.writeToFile(FILE_TEST_WRITE, linesToWrite);
 
 		assertTrue(new File(FILE_TEST_WRITE).exists());
 
-		List<String> readLines = TextFileData.readFromFile(FILE_TEST_WRITE);
+		List<String> readLines = TextFileUtility.readFromFile(FILE_TEST_WRITE);
 
 		assertEquals(2, readLines.size());
 
@@ -68,14 +69,14 @@ public class TextFileDataTest {
 		List<String> linesToWrite1 = new LinkedList<>();
 		linesToWrite1.add("D");
 
-		TextFileData.writeToFile(FILE_TEST_OVERWRITE, linesToWrite1);
+		TextFileUtility.writeToFile(FILE_TEST_OVERWRITE, linesToWrite1);
 
 		List<String> linesToWrite2 = new LinkedList<>();
 		linesToWrite2.add("E");
 
-		TextFileData.writeToFile(FILE_TEST_OVERWRITE, linesToWrite2);
+		TextFileUtility.writeToFile(FILE_TEST_OVERWRITE, linesToWrite2);
 
-		List<String> readLines = TextFileData.readFromFile(FILE_TEST_OVERWRITE);
+		List<String> readLines = TextFileUtility.readFromFile(FILE_TEST_OVERWRITE);
 
 		assertEquals(1, readLines.size());
 		assertEquals(readLines.get(0), linesToWrite2.get(0));
@@ -87,15 +88,15 @@ public class TextFileDataTest {
 		linesToWrite.add("G");
 		linesToWrite.add("H");
 
-		TextFileData.writeToFile(FILE_TEST_APPEND, linesToWrite);
+		TextFileUtility.writeToFile(FILE_TEST_APPEND, linesToWrite);
 
 		List<String> linesToAppend = new LinkedList<>();
 		linesToAppend.add("I");
 		linesToAppend.add("J");
 
-		TextFileData.appendToFile(FILE_TEST_APPEND, linesToAppend);
+		TextFileUtility.appendToFile(FILE_TEST_APPEND, linesToAppend);
 
-		List<String> readLines = TextFileData.readFromFile(FILE_TEST_APPEND);
+		List<String> readLines = TextFileUtility.readFromFile(FILE_TEST_APPEND);
 
 		assertEquals(4, readLines.size());
 
@@ -109,19 +110,19 @@ public class TextFileDataTest {
 		linesToWrite1.add("X1");
 		linesToWrite1.add("X2");
 
-		TextFileData.writeToFile(FILE_TEST_MERGE_SRC_1, linesToWrite1);
+		TextFileUtility.writeToFile(FILE_TEST_MERGE_SRC_1, linesToWrite1);
 
 		List<String> linesToWrite2 = new LinkedList<>();
 		linesToWrite2.add("Y1");
 		linesToWrite2.add("Y2");
 
-		TextFileData.writeToFile(FILE_TEST_MERGE_SRC_2, linesToWrite2);
+		TextFileUtility.writeToFile(FILE_TEST_MERGE_SRC_2, linesToWrite2);
 
-		TextFileData.mergeFiles(FILE_TEST_MERGE_DEST, FILE_TEST_MERGE_SRC_X, 2);
+		TextFileUtility.mergeFiles(FILE_TEST_MERGE_DEST, FILE_TEST_MERGE_SRC_X, 2);
 
 		assertTrue(new File(FILE_TEST_MERGE_DEST).exists());
 
-		List<String> readLines = TextFileData.readFromFile(FILE_TEST_MERGE_DEST);
+		List<String> readLines = TextFileUtility.readFromFile(FILE_TEST_MERGE_DEST);
 
 		assertEquals(readLines.get(0), linesToWrite1.get(0));
 		assertEquals(readLines.get(2), linesToWrite2.get(0));

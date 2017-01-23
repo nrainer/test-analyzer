@@ -8,7 +8,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 
 /** Test {@link FileResultReceiver}. */
 public class MultiFileResultReceiverTest extends AbstractFileResultReceiverTest {
@@ -38,8 +38,8 @@ public class MultiFileResultReceiverTest extends AbstractFileResultReceiverTest 
 
 		receiver.markResultAsComplete();
 
-		assertEquals(6, TextFileData.readFromFile(receiver.getFileName(1)).size());
-		assertEquals(1, TextFileData.readFromFile(receiver.getFileName(2)).size());
+		assertEquals(6, TextFileUtility.readFromFile(receiver.getFileName(1)).size());
+		assertEquals(1, TextFileUtility.readFromFile(receiver.getFileName(2)).size());
 	}
 
 	/** Test. */

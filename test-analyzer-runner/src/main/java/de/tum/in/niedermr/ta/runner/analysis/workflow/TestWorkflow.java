@@ -8,7 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.CleanupStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow.FinalizeResultStep;
@@ -148,7 +148,7 @@ public class TestWorkflow extends AbstractWorkflow {
 
 	protected ConcurrentLinkedQueue<TestInformation> loadCollectedInformation(String fileWithCollectedInformation)
 			throws ExecutionException, IOException {
-		List<String> rawData = TextFileData.readFromFile(fileWithCollectedInformation);
+		List<String> rawData = TextFileUtility.readFromFile(fileWithCollectedInformation);
 
 		ConcurrentLinkedQueue<TestInformation> testInformation = new ConcurrentLinkedQueue<>();
 		testInformation.addAll(CollectedInformationUtility.parseMethodTestcaseText(rawData));

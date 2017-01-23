@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 
 /** Receiver that appends the result to a file. */
 public class FileResultReceiver implements IResultReceiver {
@@ -91,7 +91,7 @@ public class FileResultReceiver implements IResultReceiver {
 		}
 
 		try {
-			TextFileData.appendToFile(m_fileName, m_resultBuffer);
+			TextFileUtility.appendToFile(m_fileName, m_resultBuffer);
 		} catch (IOException e) {
 			throw new IllegalStateException("Result flushing failed", e);
 		}
@@ -101,7 +101,7 @@ public class FileResultReceiver implements IResultReceiver {
 
 	protected void resetFile() {
 		try {
-			TextFileData.writeToFile(m_fileName, new ArrayList<>());
+			TextFileUtility.writeToFile(m_fileName, new ArrayList<>());
 		} catch (IOException e) {
 			throw new IllegalStateException("File reset failed");
 		}

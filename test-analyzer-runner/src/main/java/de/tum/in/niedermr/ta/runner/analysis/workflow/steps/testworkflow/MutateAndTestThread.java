@@ -18,7 +18,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.TestRun;
 import de.tum.in.niedermr.ta.runner.analysis.mutation.MethodMutation;
@@ -162,7 +162,7 @@ class MutateAndTestThread extends Thread {
 
 		String fileWithTestsToRun = Environment.getWithIndex(EnvironmentConstants.FILE_TEMP_TESTS_TO_RUN_X,
 				m_threadIndex);
-		TextFileData.writeToFile(getFileInWorkingArea(fileWithTestsToRun), testcasesToStringList());
+		TextFileUtility.writeToFile(getFileInWorkingArea(fileWithTestsToRun), testcasesToStringList());
 
 		LOGGER.info("Testing " + m_currentMethodUnderTest.get() + " with " + m_currentTestcases.size() + " testcases.");
 
@@ -180,7 +180,7 @@ class MutateAndTestThread extends Thread {
 
 			String fileWithResults = getFileInWorkingArea(
 					Environment.getWithIndex(EnvironmentConstants.FILE_TEMP_RESULT_X, m_threadIndex));
-			TextFileData.appendToFile(fileWithResults, Arrays.asList(testAbortInformation));
+			TextFileUtility.appendToFile(fileWithResults, Arrays.asList(testAbortInformation));
 
 		} catch (ReflectiveOperationException | IOException e) {
 			LOGGER.error("handleAbortedTestExecution", e);

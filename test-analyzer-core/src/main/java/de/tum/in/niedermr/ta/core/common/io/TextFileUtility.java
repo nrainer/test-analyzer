@@ -12,7 +12,9 @@ import java.util.List;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 
-public class TextFileData {
+/** Utility to read and write from text files. */
+public class TextFileUtility {
+
 	public static void writeToFile(String fileName, Collection<String> lines) throws IOException {
 		writeToFileInternal(fileName, false, lines);
 	}

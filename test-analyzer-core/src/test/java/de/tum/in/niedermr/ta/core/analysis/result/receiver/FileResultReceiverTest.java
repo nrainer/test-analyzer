@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 
 /** Test {@link FileResultReceiver}. */
 public class FileResultReceiverTest extends AbstractFileResultReceiverTest {
@@ -27,19 +27,19 @@ public class FileResultReceiverTest extends AbstractFileResultReceiverTest {
 
 		receiver.append(Arrays.asList("5", "6"));
 		assertTrue(receiver.isResultBufferEmpty());
-		assertEquals(6, TextFileData.readFromFile(OUTPUT_FILE_NAME).size());
+		assertEquals(6, TextFileUtility.readFromFile(OUTPUT_FILE_NAME).size());
 
 		receiver.append("7");
 		assertFalse(receiver.isResultBufferEmpty());
 
 		receiver.flush();
 		assertTrue(receiver.isResultBufferEmpty());
-		assertEquals(7, TextFileData.readFromFile(OUTPUT_FILE_NAME).size());
+		assertEquals(7, TextFileUtility.readFromFile(OUTPUT_FILE_NAME).size());
 
 		// writes to the same file and resets the file at the beginning
 		FileResultReceiver receiver2 = new FileResultReceiver(OUTPUT_FILE_NAME, true, 5);
 		receiver2.append("X");
 		receiver2.flush();
-		assertEquals(1, TextFileData.readFromFile(OUTPUT_FILE_NAME).size());
+		assertEquals(1, TextFileUtility.readFromFile(OUTPUT_FILE_NAME).size());
 	}
 }

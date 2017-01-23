@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
@@ -203,7 +203,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 
 	protected List<String> getContent(File file) {
 		try {
-			return TextFileData.readFromFile(file.getPath());
+			return TextFileUtility.readFromFile(file.getPath());
 		} catch (IOException ex) {
 			fail("IOException when reading " + file.getAbsolutePath());
 			return new LinkedList<>();

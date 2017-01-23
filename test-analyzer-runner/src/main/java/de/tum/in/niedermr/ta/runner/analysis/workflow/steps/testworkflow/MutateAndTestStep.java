@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.TestWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -81,7 +81,7 @@ public class MutateAndTestStep extends AbstractExecutionStep {
 			IResultPresentation resultPresentation = configuration.getResultPresentation()
 					.createInstance(getExecutionId());
 			String sqlStatement = resultPresentation.formatExecutionSummary(summary);
-			TextFileData.appendToFile(getFileInWorkingArea(FILE_OUTPUT_EXECUTION_INFORMATION),
+			TextFileUtility.appendToFile(getFileInWorkingArea(FILE_OUTPUT_EXECUTION_INFORMATION),
 					Arrays.asList(sqlStatement));
 		} catch (ReflectiveOperationException | IOException e) {
 			LOGGER.error("When writing the summary to the file", e);

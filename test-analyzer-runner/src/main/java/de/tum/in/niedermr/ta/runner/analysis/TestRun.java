@@ -13,7 +13,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.ResultPresentationUtil;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsKey;
@@ -78,7 +78,7 @@ public class TestRun {
 			List<String> result = runTestsFromFile(executionId, testRunner, fileWithTestsToRun, resultPresentation,
 					mutatedMethod, usedReturnValueGenerator);
 
-			TextFileData.appendToFile(fileWithResults, result);
+			TextFileUtility.appendToFile(fileWithResults, result);
 
 			System.exit(0);
 		} catch (Throwable t) {
@@ -94,7 +94,7 @@ public class TestRun {
 	private static List<String> runTestsFromFile(IFullExecutionId executionId, ITestRunner testRunner,
 			String fileWithTestsToRun, IResultPresentation resultPresentation, MethodIdentifier methodUnderTest,
 			String usedReturnValueGenerator) throws IOException, ReflectiveOperationException {
-		List<TestcaseIdentifier> allTestsToRun = parseTestcasesToRun(TextFileData.readFromFile(fileWithTestsToRun));
+		List<TestcaseIdentifier> allTestsToRun = parseTestcasesToRun(TextFileUtility.readFromFile(fileWithTestsToRun));
 		List<String> result = new LinkedList<>();
 
 		for (TestcaseIdentifier testcase : allTestsToRun) {

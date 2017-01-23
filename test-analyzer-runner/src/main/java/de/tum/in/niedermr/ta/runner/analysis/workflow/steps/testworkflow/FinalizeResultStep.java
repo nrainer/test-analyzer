@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.runner.analysis.workflow.steps.testworkflow;
 import java.io.File;
 import java.io.IOException;
 
-import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -37,7 +37,7 @@ public class FinalizeResultStep extends AbstractExecutionStep {
 
 	/** Merge the partial result files. */
 	private void mergeResultFiles(Configuration configuration, final String destinationFilePath) throws IOException {
-		TextFileData.mergeFiles(destinationFilePath, getFileInWorkingArea(FILE_TEMP_RESULT_X),
+		TextFileUtility.mergeFiles(destinationFilePath, getFileInWorkingArea(FILE_TEMP_RESULT_X),
 				configuration.getNumberOfThreads().getValue());
 	}
 
