@@ -72,9 +72,10 @@ public class ConfigurationManager implements FileSystemConstants {
 	 */
 	public static Configuration loadConfigurationFromFile(String configurationPath, String rootPath)
 			throws ConfigurationException, IOException {
-		LOGGER.info("Configuration from file ('" + configurationPath + "' in '" + rootPath + "')");
+		LOGGER.debug("Configuration from file ('" + configurationPath + "' in '" + rootPath + "')");
 
 		String adjustedConfigurationPath = resolveAdjustedConfigurationPath(configurationPath, rootPath);
+		LOGGER.info("Configuration from file: " + adjustedConfigurationPath);
 
 		try {
 			return ConfigurationParser.parseFromFile(adjustedConfigurationPath);
@@ -98,7 +99,7 @@ public class ConfigurationManager implements FileSystemConstants {
 			adjustedConfigurationPath = rootPath + adjustedConfigurationPath;
 		}
 
-		if (FileUtility.endsWithPathSeparator(adjustedConfigurationPath)) {
+		if (FileUtility.endsWithPathSeparator(adjustedConfigurationPath) || configurationFile.isDirectory()) {
 			// path denotes a folder
 			adjustedConfigurationPath = FileUtility.ensurePathEndsWithPathSeparator(adjustedConfigurationPath,
 					FileSystemConstants.PATH_SEPARATOR) + DEFAULT_CONFIGURATION_FILE_NAME;
