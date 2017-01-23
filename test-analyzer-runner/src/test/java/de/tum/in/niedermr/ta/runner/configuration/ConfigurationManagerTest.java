@@ -49,4 +49,19 @@ public class ConfigurationManagerTest {
 		assertEquals(configuration1.getDynamicValues().toStringLines(),
 				configuration2.getDynamicValues().toStringLines());
 	}
+
+	/** Test. */
+	@Test
+	public void testResolveAbsoluteConfigurationPath() {
+		assertEquals("F:/file.config", ConfigurationManager.resolveAdjustedConfigurationPath("file.config", "F:/"));
+		assertEquals("F:/analyses/file.config",
+				ConfigurationManager.resolveAdjustedConfigurationPath("F:/analyses/file.config", "F:/"));
+		assertEquals("./file.config", ConfigurationManager.resolveAdjustedConfigurationPath("file.config", "./"));
+		assertEquals("F:/analyses/project1/analysis.config",
+				ConfigurationManager.resolveAdjustedConfigurationPath("F:/analyses/project1/", "."));
+		assertEquals("F:/analyses/project1/configuration.config",
+				ConfigurationManager.resolveAdjustedConfigurationPath("F:/analyses/project1/configuration", "."));
+		assertEquals("F:/analyses/project1/configuration.config", ConfigurationManager
+				.resolveAdjustedConfigurationPath("F:/analyses/project1/configuration.config", "."));
+	}
 }

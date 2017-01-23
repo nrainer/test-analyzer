@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileData;
+import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.parser.ConfigurationParser;
 import de.tum.in.niedermr.ta.runner.configuration.parser.IConfigurationTokens;
@@ -29,6 +30,11 @@ import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurat
 public class ConfigurationManager implements FileSystemConstants {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(ConfigurationManager.class);
+
+	/** Default configuration file name ending. */
+	private static final String DEFAULT_CONFIGURATION_FILE_ENDING = ".config";
+	/** Default configuration file name. */
+	private static final String DEFAULT_CONFIGURATION_FILE_NAME = "analysis" + DEFAULT_CONFIGURATION_FILE_ENDING;
 
 	/** Constructor. */
 	private ConfigurationManager() {
@@ -56,26 +62,54 @@ public class ConfigurationManager implements FileSystemConstants {
 		return loadConfigurationFromFile(configurationFileName, "");
 	}
 
-	public static Configuration loadConfigurationFromFile(String configurationFileName, String rootPath)
+	/**
+	 * Load the configuration from a file.
+	 * 
+	 * @param configurationPath
+	 *            path to the configuration file
+	 * @param rootPath
+	 *            path which will be added as prefix to the configuration path if it is not absolute
+	 */
+	public static Configuration loadConfigurationFromFile(String configurationPath, String rootPath)
 			throws ConfigurationException, IOException {
-		LOGGER.info("Configuration from file ('" + configurationFileName + "' in '" + rootPath + "')");
+		LOGGER.info("Configuration from file ('" + configurationPath + "' in '" + rootPath + "')");
 
-		File configFile = new File(configurationFileName);
-		String pathToConfiguration;
-
-		if (configFile.isAbsolute()) {
-			pathToConfiguration = configurationFileName;
-		} else {
-			pathToConfiguration = rootPath + configurationFileName;
-		}
+		String adjustedConfigurationPath = resolveAdjustedConfigurationPath(configurationPath, rootPath);
 
 		try {
-			return ConfigurationParser.parseFromFile(pathToConfiguration);
+			return ConfigurationParser.parseFromFile(adjustedConfigurationPath);
 		} catch (FileNotFoundException ex) {
-			LOGGER.info(
-					"Assumed absolute path to configuration file: " + new File(pathToConfiguration).getAbsolutePath());
+			LOGGER.info("Assumed absolute path to configuration file: "
+					+ new File(adjustedConfigurationPath).getAbsolutePath());
 			throw ex;
 		}
+	}
+
+	/**
+	 * Resolve the adjusted path to the configuration. <br/>
+	 * Completes incomplete paths: if the path is a folder <code>analysis.config</code> will be appended, if the path
+	 * has no file ending <code>.config</code> will be appended.
+	 */
+	protected static String resolveAdjustedConfigurationPath(String configurationPath, String rootPath) {
+		File configurationFile = new File(configurationPath);
+		String adjustedConfigurationPath = configurationPath;
+
+		if (!configurationFile.isAbsolute()) {
+			adjustedConfigurationPath = rootPath + adjustedConfigurationPath;
+		}
+
+		if (FileUtility.endsWithPathSeparator(adjustedConfigurationPath)) {
+			// path denotes a folder
+			adjustedConfigurationPath = FileUtility.ensurePathEndsWithPathSeparator(adjustedConfigurationPath,
+					FileSystemConstants.PATH_SEPARATOR) + DEFAULT_CONFIGURATION_FILE_NAME;
+		}
+
+		if (!adjustedConfigurationPath.contains(FileSystemConstants.FILE_EXTENSION_SEPARATOR)) {
+			// path does not contain a file ending
+			adjustedConfigurationPath += DEFAULT_CONFIGURATION_FILE_ENDING;
+		}
+
+		return adjustedConfigurationPath;
 	}
 
 	public static List<String> toFileLines(Configuration configuration, boolean includeDescriptionAsComment) {
