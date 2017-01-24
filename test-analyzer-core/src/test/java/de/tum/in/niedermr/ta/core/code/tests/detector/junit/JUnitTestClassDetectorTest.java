@@ -17,6 +17,7 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.AbstractJUnit4TestClass;
 import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.JUnit3TestClass;
 import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.JUnit4TestClass;
+import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.JUnit4TestClassInheritingTestCase;
 import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.NoTestClass1;
 import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitTestClassDetectorTestData.NoTestClass2;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
@@ -27,6 +28,7 @@ public class JUnitTestClassDetectorTest {
 	private static final String[] EMPTY_PATTERN_STRINGS = new String[0];
 	private static JUnitTestClassDetector s_detector;
 
+	/** Set up. */
 	@BeforeClass
 	public static void setUp() {
 		s_detector = new JUnitTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS);
@@ -42,6 +44,10 @@ public class JUnitTestClassDetectorTest {
 
 		cn = BytecodeUtility.getAcceptedClassNode(JUnit3TestClass.class);
 		assertEquals(JUnitClassTypeResult.TEST_CLASS_JUNIT_3, s_detector.analyzeIsTestClass(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(JUnit4TestClassInheritingTestCase.class);
+		assertEquals("JUnit 4 should be preferred over JUnit 3", JUnitClassTypeResult.TEST_CLASS_JUNIT_4,
+				s_detector.analyzeIsTestClass(cn));
 
 		cn = BytecodeUtility.getAcceptedClassNode(NoTestClass1.class);
 		assertEquals(ClassType.NO_TEST_CLASS, s_detector.analyzeIsTestClass(cn));

@@ -25,10 +25,12 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 	/** {@inheritDoc} */
 	@Override
 	protected ClassType isTestClassInternal(ClassNode cn) {
+		if (isJUnit4TestClass(cn)) {
+			return JUnitClassTypeResult.TEST_CLASS_JUNIT_4;
+		}
+
 		if (isJUnit3TestClass(cn)) {
 			return JUnitClassTypeResult.TEST_CLASS_JUNIT_3;
-		} else if (isJUnit4TestClass(cn)) {
-			return JUnitClassTypeResult.TEST_CLASS_JUNIT_4;
 		}
 
 		return ClassType.NO_TEST_CLASS;

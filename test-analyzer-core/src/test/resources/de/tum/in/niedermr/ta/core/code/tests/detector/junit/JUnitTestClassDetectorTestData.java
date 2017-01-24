@@ -31,6 +31,13 @@ public class JUnitTestClassDetectorTestData {
 		}
 	}
 
+	static class JUnit4TestClassInheritingTestCase extends TestCase {
+		@Test
+		public void testA() {
+			// NOP
+		}
+	}
+
 	static abstract class AbstractJUnit4TestClass {
 		@Test
 		public void a() {
