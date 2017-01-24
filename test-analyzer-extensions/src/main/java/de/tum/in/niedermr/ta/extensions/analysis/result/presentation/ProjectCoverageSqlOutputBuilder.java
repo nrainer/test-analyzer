@@ -8,13 +8,16 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLev
 
 /** SQL output builder for the aggregated project coverage. */
 public class ProjectCoverageSqlOutputBuilder {
+
 	/** Parts of source folder names that are presumably irrelevant. */
-	private static final String[] IRRELEVANT_SOURCE_FOLDER_NAME_PARTS = { "test", "tst", "external", "jmh" };
+	private static final String[] IRRELEVANT_SOURCE_FOLDER_NAME_PARTS = { "test", "tst", "external", "jmh",
+			"generated" };
 
 	private final List<String> m_result;
 	private final IExecutionId m_executionId;
 	private boolean m_completed = false;
 
+	/** Constructor. */
 	public ProjectCoverageSqlOutputBuilder(IExecutionId executionId, ECoverageLevel coverageLevel) {
 		m_executionId = executionId;
 		m_result = new ArrayList<>();
