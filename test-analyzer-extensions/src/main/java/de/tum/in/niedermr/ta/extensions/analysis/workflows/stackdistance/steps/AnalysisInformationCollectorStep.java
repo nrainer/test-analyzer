@@ -1,6 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps;
 
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.ExtensionEnvironmentConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.AbstractInformationCollectorStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;

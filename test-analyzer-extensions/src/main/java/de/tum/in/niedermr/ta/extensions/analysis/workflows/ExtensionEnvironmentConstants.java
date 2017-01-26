@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;

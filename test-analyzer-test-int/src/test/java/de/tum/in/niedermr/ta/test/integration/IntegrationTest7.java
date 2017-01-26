@@ -6,7 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.MultiFileResultReceiver;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.ExtensionEnvironmentConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
