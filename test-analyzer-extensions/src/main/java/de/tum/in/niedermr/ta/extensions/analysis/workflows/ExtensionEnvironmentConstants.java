@@ -15,6 +15,9 @@ public interface ExtensionEnvironmentConstants extends EnvironmentConstants {
 	/** Output file for the computed stack distances (workflow V2). */
 	String FILE_OUTPUT_STACK_DISTANCES_V2 = PATH_WORKING_AREA_RESULT + "stack-distances-v2" + FILE_EXTENSION_SQL_TXT;
 
+	/** Output file for the computed stack distances (workflow V3). */
+	String FILE_OUTPUT_STACK_DISTANCES_V3 = PATH_WORKING_AREA_RESULT + "stack-distances-v3" + FILE_EXTENSION_SQL_TXT;
+
 	/** Output file for the computed code statistics. */
 	String FILE_OUTPUT_CODE_STATISTICS = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "code-statistics"
 			+ FileSystemConstants.FILE_EXTENSION_SQL_TXT;

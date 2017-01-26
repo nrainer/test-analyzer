@@ -35,8 +35,13 @@ public class AnalysisInformationCollectionLogicV2 extends AbstractAnalysisInform
 
 		ThreadNotifier.INSTANCE.registerListener(stackManager);
 		LOGGER.info("Registered StackManager at the ThreadNotifier.");
+		execSetThreadStackManagerAndVerify(stackManager);
+		LOGGER.info("ThreadStackManager is set and verified.");
+	}
+
+	/** Set the {@link ThreadStackManager} and verify it. */
+	protected void execSetThreadStackManagerAndVerify(ThreadStackManager stackManager) {
 		StackLogRecorderV2.setThreadStackManagerAndVerify(stackManager);
-		LOGGER.info("ThreadStackManager ist set and verified.");
 	}
 
 	/** {@inheritDoc} */
