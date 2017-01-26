@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v1.logic.recorder;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v1.logic.recording;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -11,7 +11,6 @@ import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.logic.collection.StackLogDataManager;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v1.logic.recording.StackLogRecorderV1;
 
 /** Test {@link StackLogRecorderV1}. */
 public class StackLogRecorderV1Test {
