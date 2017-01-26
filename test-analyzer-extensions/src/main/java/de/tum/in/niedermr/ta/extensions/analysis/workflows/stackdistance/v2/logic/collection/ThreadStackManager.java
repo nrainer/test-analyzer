@@ -112,7 +112,7 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/** Get the stored stack height of the given thread. */
-	private int getStackHeightOfThread(String threadName) {
+	public synchronized int getStackHeightOfThread(String threadName) {
 		Integer threadCreatorStackHeight = m_stackHeightAtStartByThreadName.get(threadName);
 
 		if (threadCreatorStackHeight != null) {

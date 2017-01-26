@@ -24,12 +24,13 @@ public class AnalysisInformationCollectionLogicV2 extends AbstractAnalysisInform
 	private static final String[] STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES = new String[] { "org.junit.",
 			"sun.reflect." };
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		super.execBeforeExecutingAllTests(testClassesWithTestcases);
 		ThreadStackManager stackManager = new ThreadStackManager();
 
-		// useful for JUnit tests with specified timeouts
+		// useful for JUnit tests with timeout annotation
 		stackManager.setStackCountIgnoreClassNamesPrefixes(STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES);
 
 		ThreadNotifier.INSTANCE.registerListener(stackManager);
