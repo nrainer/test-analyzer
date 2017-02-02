@@ -79,7 +79,26 @@ CREATE VIEW V_Tested_Methods_Info_Agg AS
 		vtmi.avgNumberOfCoveredMethodsOfAnyTestcase
     FROM V_Tested_Methods_Info vtmi
     WHERE vtmi.isToBeExcluded = 0;
-    
+
+CREATE VIEW V_Tested_Method_Return_Types AS
+	SELECT
+		mi.execution,
+		mi.methodId,
+        CASE WHEN rvg.retValGen LIKE '%.VoidReturnValueGenerator' THEN 'void'
+        WHEN rvg.retValGen LIKE '%.SimpleAndWrapperReturnValueGenerator%' THEN 'primitive'
+        ELSE 'object' END AS returnType
+	FROM Method_Info mi
+    LEFT OUTER JOIN Test_Result_Info tri
+    ON mi.execution = tri.execution
+    AND mi.methodId = tri.methodId
+    LEFT OUTER JOIN Method_Test_Abort_Info mtai
+    ON mi.execution = mtai.execution
+    AND mi.methodId = mtai.methodId
+    LEFT OUTER JOIN RetValGen_Info rvg
+    ON mi.execution = rvg.execution
+    AND coalesce(tri.retValGenId, mtai.retValGenId) = rvg.retValGenId
+    GROUP BY mi.execution, mi.methodId;
+
 CREATE VIEW V_Method_Classification AS
 	SELECT
 		vtmia.execution,

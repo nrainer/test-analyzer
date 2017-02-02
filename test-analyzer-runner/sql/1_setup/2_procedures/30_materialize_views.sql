@@ -8,12 +8,16 @@ DROP TABLE IF EXISTS MV_Project_Results;
 DROP TABLE IF EXISTS MV_Project_Overview;
 DROP TABLE IF EXISTS MV_Tested_Methods_Info;
 DROP TABLE IF EXISTS MV_Tested_Methods_Info_Agg;
+DROP TABLE IF EXISTS MV_Tested_Method_Return_Types;
 
 CREATE TABLE MV_Tested_Methods_Info_Agg AS SELECT * FROM V_Tested_Methods_Info_Agg;
+CREATE TABLE MV_Tested_Method_Return_Types AS SELECT * FROM V_Tested_Method_Return_Types;
 CREATE TABLE MV_Project_Overview AS SELECT * FROM V_Project_Overview;
 
 CREATE INDEX mv_tmia_1 ON MV_Tested_Methods_Info_Agg(execution);
 CREATE INDEX mv_tmia_2 ON MV_Tested_Methods_Info_Agg(methodId);
+CREATE INDEX mv_tmrt_1 ON MV_Tested_Method_Return_Types(execution);
+CREATE INDEX mv_tmrt_2 ON MV_Tested_Method_Return_Types(methodId);
 
 CREATE TABLE MV_Project_Results AS
 	SELECT
