@@ -5,8 +5,10 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.util.List;
 
+import org.junit.Assume;
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
@@ -53,6 +55,8 @@ public class ConfigurationManagerTest {
 	/** Test. */
 	@Test
 	public void testResolveAbsoluteConfigurationPath() {
+		Assume.assumeTrue(CommonUtility.isRunningOnWindows());
+
 		assertEquals("F:/file.config", ConfigurationManager.resolveAdjustedConfigurationPath("file.config", "F:/"));
 		assertEquals("F:/analyses/file.config",
 				ConfigurationManager.resolveAdjustedConfigurationPath("F:/analyses/file.config", "F:/"));

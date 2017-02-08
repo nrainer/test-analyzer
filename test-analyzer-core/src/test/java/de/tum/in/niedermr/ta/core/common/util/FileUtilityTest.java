@@ -10,6 +10,8 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
 /** Test {@link FileUtility}. */
 public class FileUtilityTest {
+
+	/** Test. */
 	@Test
 	public void testPrefixFileNameIfNotAbsolute() {
 		final String prefix = "./";
@@ -21,14 +23,18 @@ public class FileUtilityTest {
 		fileName = "./a.jar";
 		assertEquals(prefix + fileName, FileUtility.prefixFileNameIfNotAbsolute(fileName, prefix));
 
-		fileName = "E:/a.jar";
-		assertEquals(fileName, FileUtility.prefixFileNameIfNotAbsolute(fileName, prefix));
-
 		fileName = "/E:/a.jar";
 		assertEquals(fileName, FileUtility.prefixFileNameIfNotAbsolute(fileName, prefix));
 
-		fileName = "E:\\a.jar";
-		assertEquals(fileName, FileUtility.prefixFileNameIfNotAbsolute(fileName, prefix));
+		if (CommonUtility.isRunningOnWindows()) {
+			// further tests for Windows only
+
+			fileName = "E:/a.jar";
+			assertEquals(fileName, FileUtility.prefixFileNameIfNotAbsolute(fileName, prefix));
+
+			fileName = "E:\\a.jar";
+			assertEquals(fileName, FileUtility.prefixFileNameIfNotAbsolute(fileName, prefix));
+		}
 	}
 
 	/** Test. */

@@ -25,4 +25,9 @@ public class CommonUtility {
 	public static long getDurationInSec(long startTimeInMs) {
 		return (System.currentTimeMillis() - startTimeInMs) / 1000;
 	}
+
+	/** Check if the tests are running on Windows. */
+	public static boolean isRunningOnWindows() {
+		return System.getProperty("os.name").toLowerCase().contains("win");
+	}
 }

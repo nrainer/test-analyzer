@@ -37,4 +37,13 @@ public class ClasspathUtility {
 			return classpath + ";/lib";
 		}
 	}
+
+	/** Get the OS dependent classpath separator. */
+	public static String getClasspathSeparator() {
+		if (CommonUtility.isRunningOnWindows()) {
+			return FileSystemConstants.CLASSPATH_SEPARATOR_WINDOWS;
+		}
+
+		return FileSystemConstants.CLASSPATH_SEPARATOR_LINUX;
+	}
 }

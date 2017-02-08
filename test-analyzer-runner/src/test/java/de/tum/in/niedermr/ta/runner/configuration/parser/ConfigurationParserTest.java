@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManagerTest;
@@ -34,10 +35,11 @@ public class ConfigurationParserTest {
 	public void testParse1() throws IOException, ConfigurationException {
 		final Configuration expected = new Configuration();
 		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
-		expected.getClasspath().setValue("a.jar;b.jar;");
+		expected.getClasspath().setValue("a.jar" + ClasspathUtility.getClasspathSeparator() + "b.jar"
+				+ ClasspathUtility.getClasspathSeparator());
 		expected.getOperateFaultTolerant().setValue(true);
 		expected.getRemoveTempData().setValue(false);
-		expected.getWorkingFolder().setValue("E:/");
+		expected.getWorkingFolder().setValue("/E:/");
 		expected.getDynamicValues().setRawValue(DYNAMIC_PROPERTY_1, Boolean.TRUE.toString());
 
 		TestConfigurationParser1 parser = new TestConfigurationParser1(
@@ -68,7 +70,8 @@ public class ConfigurationParserTest {
 	public void testParseWithInheritance1() throws IOException, ConfigurationException {
 		final Configuration expected = new Configuration();
 		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
-		expected.getClasspath().setValue("a.jar;b.jar;");
+		expected.getClasspath().setValue("a.jar" + ClasspathUtility.getClasspathSeparator() + "b.jar"
+				+ ClasspathUtility.getClasspathSeparator());
 		expected.getNumberOfThreads().setValue(4);
 		expected.getResultPresentation().setValue(ResultPresentationProperty.RESULT_PRESENTATION_TEXT);
 
