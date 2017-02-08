@@ -10,22 +10,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tum.in.ma.simpleproject.core.Calculation;
-
-public class CalculationDefaultTests
-{
+public class CalculationDefaultTests {
 	private Calculation calc;
 
 	@Before
-	public void setUp()
-	{
-		this.calc = new Calculation();
+	public void setUp() {
+		this.calc = new Calculation(0);
 	}
 
 	@Test
-	public void constructor()
-	{
-		Calculation c2 = new Calculation();
+	public void constructor() {
+		Calculation c2 = new Calculation(0);
 
 		assertEquals(0, c2.getResult());
 
@@ -35,8 +30,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void positive()
-	{
+	public void positive() {
 		assertEquals(0, calc.getResult());
 		assertTrue(calc.isPositive());
 
@@ -54,8 +48,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void even()
-	{
+	public void even() {
 		Calculation c = new Calculation(7);
 
 		assertFalse(c.isEven());
@@ -66,8 +59,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void add0()
-	{
+	public void add0() {
 		assertEquals(0, calc.getResult());
 
 		calc.add(0);
@@ -76,8 +68,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void add5()
-	{
+	public void add5() {
 		assertEquals(0, calc.getResult());
 
 		calc.add(5);
@@ -86,8 +77,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void mult1()
-	{
+	public void mult1() {
 		calc.add(1);
 
 		assertEquals(1, calc.getResult());
@@ -98,8 +88,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void mult2()
-	{
+	public void mult2() {
 		calc.add(1);
 
 		calc.mult(0);
@@ -108,8 +97,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void mult3()
-	{
+	public void mult3() {
 		calc.add(7);
 
 		calc.mult(-2);
@@ -118,8 +106,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void intArray()
-	{
+	public void intArray() {
 		int[] result = calc.getResultAsArray();
 
 		assertNotNull(result);
@@ -128,8 +115,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void increment()
-	{
+	public void increment() {
 		assertEquals(0, calc.getResult());
 
 		calc.increment();
@@ -138,8 +124,7 @@ public class CalculationDefaultTests
 	}
 
 	@Test
-	public void clear()
-	{
+	public void clear() {
 		assertEquals(0, calc.getResult());
 
 		calc.add(5);
@@ -150,30 +135,27 @@ public class CalculationDefaultTests
 
 		assertEquals(0, calc.getResult());
 	}
-	
+
 	@Test
-	public void sub()
-	{
+	public void sub() {
 		calc.add(5);
 		calc.sub(6);
-		
+
 		assertEquals(-1, calc.getResult());
 	}
-	
+
 	@Test
-	public void resultAsList()
-	{
+	public void resultAsList() {
 		calc.add(0);
 		List<Integer> result = calc.getResultAsList();
-		
+
 		assertNotNull(result);
 		assertFalse(result.isEmpty());
 		assertEquals(new Integer(0), result.get(0));
 	}
-	
+
 	@Test
-	public void comparable()
-	{
+	public void comparable() {
 		assertEquals(0, calc.getComparable().compareTo(calc));
 	}
 }

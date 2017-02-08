@@ -45,10 +45,12 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	private final String m_systemTestName;
 	private boolean m_wasSuccessful;
 
+	/** Constructor. */
 	public AbstractIntegrationTest() {
-		this.m_systemTestName = this.getClass().getSimpleName().toLowerCase();
+		m_systemTestName = this.getClass().getSimpleName().toLowerCase();
 	}
 
+	/** Before each test. */
 	@Before
 	public void beforeTest() throws IOException, ConfigurationException {
 		FileSystemUtils.ensureDirectoryExists(new File(getSpecificFolderTestWorkingArea()));
@@ -59,12 +61,13 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	private void loadConfiguration() throws ConfigurationException, IOException {
 		String configurationFileName = getSpecificFolderTestData() + FOLDER_CONFIGURATION + FILE_NAME_CONFIGURATION;
 
-		this.m_configuration = ConfigurationManager.loadConfigurationFromFile(configurationFileName);
-		this.m_configuration.getWorkingFolder().setValue(getSpecificFolderTestWorkingArea());
+		m_configuration = ConfigurationManager.loadConfigurationFromFile(configurationFileName);
+		m_configuration.getWorkingFolder().setValue(getSpecificFolderTestWorkingArea());
 	}
 
+	/** Integration test. */
 	@Test(timeout = 60000)
-	public void testSystem() throws ConfigurationException, IOException {
+	public void testIntegration() throws ConfigurationException, IOException {
 		try {
 			executeTestLogic();
 			m_wasSuccessful = true;
@@ -74,8 +77,10 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		}
 	}
 
+	/** Execute the test logic. */
 	protected abstract void executeTestLogic() throws ConfigurationException, IOException;
 
+	/** After each test. */
 	@After
 	public void afterTest() {
 		if (IntegrationTestConstants.DELETE_OUTPUT_AT_TEAR_DOWN_IF_SUCCESSFUL && m_wasSuccessful) {
