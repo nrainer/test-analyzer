@@ -188,7 +188,7 @@ Testcase: de.tum.in.ma.simpleproject.core.CalculationStringTests.parse()
 Mutated method: de.tum.in.ma.simpleproject.core.Calculation.parse(java.lang.String)
 Return value generator: de.tum.in.niedermr.ta.extensions.analysis.mutation.returnvalues.CommonInstancesReturnValueGenerator
 Result: 1 of 1 FAILED
-Exception: java.lang.AssertionError: expected:<3> but was:<0>
+Exception: java.lang.AssertionError: expected:<3> but was:<1>
 .
 Testcase: de.tum.in.ma.simpleproject.core.CalculationDefaultTests.intArray()
 Mutated method: de.tum.in.ma.simpleproject.core.Calculation.getResultAsArray()

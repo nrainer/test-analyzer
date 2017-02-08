@@ -6,8 +6,6 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tum.in.ma.simpleproject.core.Calculation;
-
 public class CalculationStringTests
 {
 	private Calculation calc;
@@ -15,7 +13,7 @@ public class CalculationStringTests
 	@Before
 	public void setUp()
 	{
-		this.calc = new Calculation();
+		this.calc = new Calculation(0);
 	}
 
 	@Test

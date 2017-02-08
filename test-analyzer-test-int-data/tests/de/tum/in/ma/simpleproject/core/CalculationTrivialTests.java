@@ -4,13 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import de.tum.in.ma.simpleproject.core.Calculation;
-
-public class CalculationTrivialTests
-{
+public class CalculationTrivialTests {
 	@Test
-	public void emptyAtBeginning()
-	{
-		assertEquals(0, new Calculation().getResult());
+	public void emptyAtBeginning() {
+		assertEquals(0, new Calculation(0).getResult());
 	}
 }
