@@ -6,31 +6,26 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.Before;
 import org.junit.Test;
 
-public class CalculationStringTests
-{
+public class CalculationStringTests {
 	private Calculation calc;
 
 	@Before
-	public void setUp()
-	{
+	public void setUp() {
 		this.calc = new Calculation(0);
 	}
 
 	@Test
-	public void stringReturnNotNull()
-	{
+	public void stringReturnNotNull() {
 		assertNotNull(calc.getResultAsString());
 	}
 
 	@Test
-	public void stringCorrect()
-	{
+	public void stringCorrect() {
 		assertEquals(String.valueOf(calc.getResult()), calc.getResultAsString());
 	}
-	
+
 	@Test
-	public void parse()
-	{
+	public void parse() {
 		assertEquals(3, Calculation.parse("3").getResult());
 		assertEquals(4, Calculation.parse("   4 ").getResult());
 	}

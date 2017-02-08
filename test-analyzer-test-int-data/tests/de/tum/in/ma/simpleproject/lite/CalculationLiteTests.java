@@ -7,29 +7,23 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 
-import de.tum.in.ma.simpleproject.lite.CalculationLite;
-
-public class CalculationLiteTests
-{
+public class CalculationLiteTests {
 	private CalculationLite calcLite;
 
 	@Before
-	public void setUp()
-	{
+	public void setUp() {
 		this.calcLite = new CalculationLite();
 	}
 
 	@Test
-	public void emptyAtBeginning()
-	{
+	public void emptyAtBeginning() {
 		assertEquals(0, calcLite.getResult());
 	}
 
 	@Test
-	public void even()
-	{
+	public void even() {
 		CalculationLite c = new CalculationLite();
-		
+
 		c.add(7);
 
 		assertFalse(c.isEven());
@@ -40,8 +34,7 @@ public class CalculationLiteTests
 	}
 
 	@Test
-	public void add0()
-	{
+	public void add0() {
 		assertEquals(0, calcLite.getResult());
 
 		calcLite.add(0);
@@ -50,8 +43,7 @@ public class CalculationLiteTests
 	}
 
 	@Test
-	public void add5()
-	{
+	public void add5() {
 		assertEquals(0, calcLite.getResult());
 
 		calcLite.add(5);
@@ -60,8 +52,7 @@ public class CalculationLiteTests
 	}
 
 	@Test
-	public void increment()
-	{
+	public void increment() {
 		assertEquals(0, calcLite.getResult());
 
 		calcLite.increment();
@@ -70,8 +61,7 @@ public class CalculationLiteTests
 	}
 
 	@Test
-	public void stringCorrect()
-	{
+	public void stringCorrect() {
 		assertEquals(String.valueOf(calcLite.getResult()), calcLite.getResultAsString());
 	}
 }

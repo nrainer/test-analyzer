@@ -12,37 +12,31 @@ import org.junit.Test;
  * Goal: only methods invoked from the test method are supposed to be logged.
  *
  */
-public class SetUpAndTearDownTests
-{
+public class SetUpAndTearDownTests {
 	private static final SpecialTest2Object obj = new SpecialTest2Object();
-	
+
 	@BeforeClass
-	public static void beforeClass()
-	{
+	public static void beforeClass() {
 		obj.callBeforeClass();
 	}
-	
+
 	@Before
-	public void before()
-	{
+	public void before() {
 		obj.callBefore();
 	}
-	
+
 	@Test
-	public void testBeforeAndAfterDontInstrument()
-	{
+	public void testBeforeAndAfterDontInstrument() {
 		assertEquals(5, obj.callTest());
 	}
-	
+
 	@After
-	public void after()
-	{
+	public void after() {
 		obj.callAfter();
 	}
-	
+
 	@AfterClass
-	public static void afterClass()
-	{
+	public static void afterClass() {
 		obj.callAfterClass();
 	}
 }

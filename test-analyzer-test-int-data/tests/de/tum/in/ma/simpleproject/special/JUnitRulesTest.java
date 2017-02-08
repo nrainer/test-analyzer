@@ -9,40 +9,35 @@ import org.junit.runner.Description;
 import org.junit.runners.model.Statement;
 
 public class JUnitRulesTest {
-	
+
 	private static final SpecialTest2Object testObject = new SpecialTest2Object();
-	
+
 	@Rule
 	public MyRule myRule = new MyRule();
-	
-	public class MyRule implements TestRule
-	{
+
+	public class MyRule implements TestRule {
 		@Override
-		public Statement apply(Statement base, Description description)
-		{
+		public Statement apply(Statement base, Description description) {
 			return new MyStatement(base);
 		}
 	}
 
-	public class MyStatement extends Statement
-	{
+	public class MyStatement extends Statement {
 		private final Statement base;
 
-		public MyStatement(Statement base)
-		{
+		public MyStatement(Statement base) {
 			this.base = base;
 		}
 
 		@Override
-		public void evaluate() throws Throwable
-		{
-			//must not be marked as covered
-			
+		public void evaluate() throws Throwable {
+			// must not be marked as covered
+
 			testObject.callBefore();
-			
+
 			base.evaluate();
 
-			//must not be marked as covered
+			// must not be marked as covered
 			testObject.callAfter();
 		}
 	}

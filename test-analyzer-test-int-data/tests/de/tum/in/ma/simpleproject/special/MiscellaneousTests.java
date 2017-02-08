@@ -6,59 +6,46 @@ import static org.junit.Assert.assertNotNull;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class MiscellaneousTests
-{
+public class MiscellaneousTests {
 	private static Special special;
-	
+
 	@BeforeClass
-	public static void setUp()
-	{
+	public static void setUp() {
 		special = new Special();
 	}
-	
+
 	@Test(expected = IllegalArgumentException.class)
-	public void testNoReturnStatement()
-	{
+	public void testNoReturnStatement() {
 		special.noReturnStatement();
 	}
-	
+
 	@Test
-	public void testSyntheticBride()
-	{
+	public void testSyntheticBride() {
 		assertEquals(5, special.compareTo(5));
 		assertEquals(8, special.compareTo(8));
 	}
-	
+
 	@Test
-	public void testTryCatchBlock()
-	{
+	public void testTryCatchBlock() {
 		assertEquals(4, special.tryCatchBlock("4"));
 		assertEquals(Integer.MAX_VALUE, special.tryCatchBlock("x"));
 	}
-	
+
 	@Test
-	public void testWithTryCatchBlock()
-	{
-		try
-		{
-			try
-			{
+	public void testWithTryCatchBlock() {
+		try {
+			try {
 				special.noReturnStatement();
-			}
-			catch (Exception ex)
-			{
+			} catch (Exception ex) {
 				throw ex;
 			}
-		}
-		catch (Exception ex)
-		{
+		} catch (Exception ex) {
 			assertNotNull(ex);
 		}
 	}
-	
+
 	@Test
-	public void testStaticMethod()
-	{
+	public void testStaticMethod() {
 		assertEquals(2, Special.staticMethod());
 	}
 }

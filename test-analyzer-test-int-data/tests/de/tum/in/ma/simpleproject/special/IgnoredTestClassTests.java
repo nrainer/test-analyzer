@@ -6,11 +6,9 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 @Ignore
-public class IgnoredTestClassTests
-{
+public class IgnoredTestClassTests {
 	@Test
-	public void testInIgnoredClass()
-	{
+	public void testInIgnoredClass() {
 		assertEquals(5, new Special().add(0, 5, 0));
 	}
 }
