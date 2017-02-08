@@ -73,15 +73,21 @@
 				<version>2.18.1</version>
 				<executions>
 					<execution>
+						<id>integration-test</id>
 						<goals>
 							<goal>integration-test</goal>
-							<goal>verify</goal>
 						</goals>
 						<configuration>
 							<includes>
 								<include>${test.integration.pattern}</include>
 							</includes>
 						</configuration>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
