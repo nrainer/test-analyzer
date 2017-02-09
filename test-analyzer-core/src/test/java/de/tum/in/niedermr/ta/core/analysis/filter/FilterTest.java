@@ -19,7 +19,10 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.sample.SampleClass;
 import de.tum.in.niedermr.ta.sample.SampleClassExtended;
 
+/** Test filters: */
 public class FilterTest {
+
+	/** Test. */
 	@Test
 	public void testSetterGetterFilter1() throws Exception {
 		IMethodFilter filter = new SetterGetterFilter();
@@ -35,6 +38,7 @@ public class FilterTest {
 		assertTrue(analyze(filter, className, "getXAndY", "()D"));
 	}
 
+	/** Test. */
 	@Test
 	public void testSetterGetterFilter2() throws Exception {
 		IMethodFilter filter = new SetterGetterFilter();
@@ -57,6 +61,7 @@ public class FilterTest {
 		assertTrue(analyze(filter, className, "getCalculation", "()J"));
 	}
 
+	/** Test. */
 	@Test
 	public void testNonEmptyFilter() throws Exception {
 		final String className = SampleClass.class.getName();
@@ -83,6 +88,7 @@ public class FilterTest {
 		assertTrue(analyze(filter, className, "returnTrue", "()Z", methodNode));
 	}
 
+	/** Test. */
 	@Test
 	public void testHashcodeMethodFilter() throws Exception {
 		final String className = SampleClass.class.getName();
@@ -92,6 +98,7 @@ public class FilterTest {
 		assertTrue(analyze(filter, className, "toString", "()Ljava/lang/String;"));
 	}
 
+	/** Test. */
 	@Test
 	public void testConstructorFilter() throws Exception {
 		final String className = SampleClass.class.getName();
@@ -100,6 +107,7 @@ public class FilterTest {
 		assertFalse(analyze(filter, className, BytecodeConstants.NAME_CONSTRUCTOR, "()V"));
 	}
 
+	/** Test. */
 	@Test
 	public void testMethodNameFilter() throws Exception {
 		final String className = SampleClass.class.getName();
