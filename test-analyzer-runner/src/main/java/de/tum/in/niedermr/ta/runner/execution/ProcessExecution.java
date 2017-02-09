@@ -2,7 +2,7 @@ package de.tum.in.niedermr.ta.runner.execution;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,8 +28,6 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 
 	private static final String WRAPPED_EMPTY_PATTERN = "!EMPTY!";
 	private static final boolean LOG_SYS_ERR_OF_PROCESS = true;
-	private static final String COMMAND_JAVA = "java";
-	private static final String PARAM_CLASSPATH = "-classpath";
 
 	public static final int NO_TIMEOUT = 0;
 
@@ -70,7 +68,7 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 	public ExecutionResult execute(IExecutionId executionId, int timeout, String mainClassName, String classpath,
 			String[] arguments) throws ExecutionException {
 		try {
-			List<String> command = createProcessCommand(mainClassName, classpath, arguments);
+			List<String> command = createProcessCommand(mainClassName, classpath, arguments).complete();
 
 			ProcessBuilder processBuilder = new ProcessBuilder(command);
 			processBuilder.directory(new File(m_directory));
@@ -101,20 +99,14 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 	}
 
 	/** Create the command for the process execution. */
-	private List<String> createProcessCommand(String mainClassName, String classpath, String[] arguments)
+	protected JavaProcessCommandBuilder createProcessCommand(String mainClassName, String classpath, String[] arguments)
 			throws IOException {
-		List<String> command = new LinkedList<>();
-
-		command.add(COMMAND_JAVA);
-		command.add(PARAM_CLASSPATH);
-		command.add(Environment.makeClasspathCanonical(
+		JavaProcessCommandBuilder builder = new JavaProcessCommandBuilder();
+		builder.setMainClassName(mainClassName);
+		builder.setClassPath(Environment.makeClasspathCanonical(
 				Environment.replaceFolders(classpath, m_programFolderForClasspath, m_workingFolderForClasspath)));
-		command.add(mainClassName);
-
-		for (String arg : arguments) {
-			command.add(CommonConstants.QUOTATION_MARK + arg + CommonConstants.QUOTATION_MARK);
-		}
-		return command;
+		builder.addProgramArguments(Arrays.asList(arguments));
+		return builder;
 	}
 
 	public static String wrapPattern(String pattern) {

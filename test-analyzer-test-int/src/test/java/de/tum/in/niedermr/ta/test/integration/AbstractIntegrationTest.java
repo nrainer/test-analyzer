@@ -6,11 +6,15 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.conqat.lib.commons.filesystem.FileSystemUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -23,14 +27,24 @@ import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationValuesManager;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
+import de.tum.in.niedermr.ta.runner.factory.DefaultFactory;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
+import de.tum.in.niedermr.ta.test.integration.jacoco.DefaultFactoryWithJaCoCoRecording;
+import de.tum.in.niedermr.ta.test.integration.jacoco.ProcessExecutionWithJaCoCo;
 
 /** Base class for integration tests. */
 public abstract class AbstractIntegrationTest implements IntegrationTestConstants, FileSystemConstants {
 
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AbstractIntegrationTest.class);
+
 	private static final String TEST_WORKING_AREA = "./src/test/temp/";
 	private static final String TEST_DATA_FOLDER = "./src/test/data/";
+	private static final String TEST_COVERAGE_FOLDER = "./src/test/coverage/";
 	private static final String TEST_DATA_COMMON_FOLDER = TEST_DATA_FOLDER + "common/";
 	private static final String TEST_WORKING_AREA_TO_ROOT = "../../../";
 
@@ -56,6 +70,7 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		FileSystemUtils.ensureDirectoryExists(new File(getSpecificFolderTestWorkingArea()));
 
 		loadConfiguration();
+		setUpJaCoCoIfAvailable();
 	}
 
 	private void loadConfiguration() throws ConfigurationException, IOException {
@@ -63,6 +78,48 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 
 		m_configuration = ConfigurationManager.loadConfigurationFromFile(configurationFileName);
 		m_configuration.getWorkingFolder().setValue(getSpecificFolderTestWorkingArea());
+	}
+
+	private void setUpJaCoCoIfAvailable() throws IOException {
+		DynamicConfigurationValuesManager dynamicConfigurationValues = m_configuration.getDynamicValues();
+
+		if (!dynamicConfigurationValues
+				.getBooleanValue(ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_ENABLED)) {
+			// no coverage recording
+			return;
+		}
+
+		if (!USE_JACOCO_IF_CONFIGURED) {
+			LOGGER.warn(
+					"JaCoCo is globally deactivated. Coverage will not be recorded unlike specified in the configuration.");
+			return;
+		}
+
+		if (!DefaultFactory.class.getName().equals(m_configuration.getFactoryClass().getValue())) {
+			throw new IllegalArgumentException("No custom factory must be used if code coverage shall be recorded.");
+		}
+
+		// replace the default factory with a modified one
+		m_configuration.getFactoryClass().setValue(DefaultFactoryWithJaCoCoRecording.class);
+
+		if (!Files.exists(Paths.get(dynamicConfigurationValues
+				.getStringValue(ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_AGENT)))) {
+			dynamicConfigurationValues.setRawValue(ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_ENABLED,
+					Boolean.FALSE.toString());
+			LOGGER.warn("No coverage recording because the path to the JaCoCo agent is not valid.");
+			return;
+		}
+
+		String outputFilePath = dynamicConfigurationValues
+				.getStringValue(ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT_FOLDER);
+
+		if (outputFilePath.isEmpty()) {
+			File outputFile = new File(getSpecificFolderTestCoverage());
+			FileSystemUtils.ensureDirectoryExists(outputFile);
+			dynamicConfigurationValues.setRawValue(
+					ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT_FOLDER,
+					outputFile.getAbsolutePath());
+		}
 	}
 
 	/** Integration test. */
@@ -92,8 +149,12 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		}
 	}
 
-	protected void executeTestAnalyzerWithConfiguration() throws ConfigurationException, IOException {
-		AnalyzerRunnerStart.execute(getConfiguration());
+	protected void executeTestAnalyzerWithConfiguration() throws ConfigurationException, ExecutionException {
+		try {
+			AnalyzerRunnerStart.execute(getConfiguration());
+		} catch (IOException | ReflectiveOperationException e) {
+			throw new ExecutionException(ExecutionIdFactory.ID_FOR_TESTS, e);
+		}
 	}
 
 	protected void assertFilesExists(String errorMsg, File... files) {
@@ -138,6 +199,10 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 
 	protected String getSpecificFolderTestData() {
 		return TEST_DATA_FOLDER + m_systemTestName + PATH_SEPARATOR;
+	}
+
+	protected String getSpecificFolderTestCoverage() {
+		return TEST_COVERAGE_FOLDER + m_systemTestName + PATH_SEPARATOR;
 	}
 
 	protected String getCommonFolderTestData() {

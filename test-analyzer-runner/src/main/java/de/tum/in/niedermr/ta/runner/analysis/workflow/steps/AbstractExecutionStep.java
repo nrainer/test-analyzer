@@ -37,7 +37,8 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		this.m_context = context;
 		this.m_configuration = context.getConfiguration();
 		this.m_processExecution = FactoryUtil.createFactory(context.getConfiguration()).createNewProcessExecution(
-				context.getWorkingFolder(), context.getProgramPath(), context.getWorkingFolder());
+				context.getConfiguration(), context.getWorkingFolder(), context.getProgramPath(),
+				context.getWorkingFolder());
 		execInitialized(context);
 		m_initialized = true;
 	}
