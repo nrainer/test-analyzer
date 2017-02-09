@@ -28,9 +28,6 @@
   <component name="runner.configuration" dim="170,40" pos="211,541">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.configuration.*" />
   </component>
-  <component name="runner.constants" dim="150,40" pos="1181,301" stereotype="public">
-    <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.constants.*" />
-  </component>
   <component name="runner.execution" dim="190,40" pos="661,401">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.execution.*" />
   </component>
@@ -100,5 +97,6 @@
   <allow source="test.integration" target="extensions.analysis" />
   <allow source="test.integration" target="runner.configuration" />
   <allow source="test.integration" target="runner.execution" />
+  <allow source="test.integration" target="runner.factory" />
   <allow source="test.integration" target="runner.start" />
 </conqat-architecture>
