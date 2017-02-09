@@ -2,6 +2,8 @@ package de.tum.in.niedermr.ta.test.integration.jacoco;
 
 import java.io.IOException;
 
+import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
@@ -24,17 +26,17 @@ public class ProcessExecutionWithJaCoCo extends ProcessExecution {
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "integrationTest.jacoco.agent", "");
 
 	/**
-	 * <code>extension.integrationTest.jacoco.output</code>: Coverage output file.
+	 * <code>extension.integrationTest.jacoco.output.folder</code>: Coverage output folder.
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "integrationTest.jacoco.output", "");
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT_FOLDER = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "integrationTest.jacoco.output.folder", "");
 
 	/** Configuration. */
 	private final Configuration m_configuration;
 	/** Path to the JaCoCo agent. */
 	private String m_jaCoCoAgentPath;
 	/** Path to the JaCoCo output. */
-	private String m_jaCoCoOutputPath;
+	private String m_jaCoCoOutputFolder;
 
 	/** Constructor. */
 	public ProcessExecutionWithJaCoCo(Configuration configuration, String executionDirectory,
@@ -42,7 +44,8 @@ public class ProcessExecutionWithJaCoCo extends ProcessExecution {
 		super(executionDirectory, programFolderForClasspath, workingFolderForClasspath);
 		m_configuration = configuration;
 		m_jaCoCoAgentPath = m_configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_PATH_TO_JACOCO_AGENT);
-		m_jaCoCoOutputPath = m_configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT);
+		m_jaCoCoOutputFolder = m_configuration.getDynamicValues()
+				.getStringValue(CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT_FOLDER);
 	}
 
 	/** {@inheritDoc} */
@@ -50,7 +53,9 @@ public class ProcessExecutionWithJaCoCo extends ProcessExecution {
 	protected JavaProcessCommandBuilder createProcessCommand(String mainClassName, String classpath, String[] arguments)
 			throws IOException {
 		JavaProcessCommandBuilder command = super.createProcessCommand(mainClassName, classpath, arguments);
-		command.addJavaArgument("-javaagent:" + m_jaCoCoAgentPath + "=destfile=" + m_jaCoCoOutputPath);
+		String outputFile = FileUtility.ensurePathEndsWithPathSeparator(m_jaCoCoOutputFolder,
+				FileSystemConstants.PATH_SEPARATOR) + "coverage.exec";
+		command.addJavaArgument("-javaagent:" + m_jaCoCoAgentPath + "=destfile=" + outputFile);
 		return command;
 	}
 

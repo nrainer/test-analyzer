@@ -103,12 +103,13 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		}
 
 		String outputFilePath = dynamicConfigurationValues
-				.getStringValue(ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT);
+				.getStringValue(ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT_FOLDER);
 
 		if (outputFilePath.isEmpty()) {
-			File outputFile = new File(getSpecificFolderTestCoverage() + "coverage.exec");
-			FileSystemUtils.ensureDirectoryExists(outputFile.getParentFile());
-			dynamicConfigurationValues.setRawValue(ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT,
+			File outputFile = new File(getSpecificFolderTestCoverage());
+			FileSystemUtils.ensureDirectoryExists(outputFile);
+			dynamicConfigurationValues.setRawValue(
+					ProcessExecutionWithJaCoCo.CONFIGURATION_KEY_PATH_TO_JACOCO_OUTPUT_FOLDER,
 					outputFile.getAbsolutePath());
 		}
 	}
