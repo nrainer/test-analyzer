@@ -99,7 +99,7 @@ public class ProcessExecution implements IRequiresFactoryCreation {
 	}
 
 	/** Create the command for the process execution. */
-	private JavaProcessCommandBuilder createProcessCommand(String mainClassName, String classpath, String[] arguments)
+	protected JavaProcessCommandBuilder createProcessCommand(String mainClassName, String classpath, String[] arguments)
 			throws IOException {
 		JavaProcessCommandBuilder builder = new JavaProcessCommandBuilder();
 		builder.setMainClassName(mainClassName);
