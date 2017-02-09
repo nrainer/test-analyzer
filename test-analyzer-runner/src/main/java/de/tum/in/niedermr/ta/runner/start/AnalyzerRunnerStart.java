@@ -154,7 +154,7 @@ public class AnalyzerRunnerStart {
 		// use the default factory in this case because another factory may not
 		// be on the classpath yet (until AnalyzerRunnerInternal is started)
 		IFactory defaultFactory = FactoryUtil.createDefaultFactory();
-		ProcessExecution processExecution = defaultFactory.createNewProcessExecution(workingFolder,
+		ProcessExecution processExecution = defaultFactory.createNewProcessExecution(configuration, workingFolder,
 				currentCanonicalPath, workingFolder);
 
 		final String classpath = configuration.getTestAnalyzerClasspath().getValue() + FileSystemConstants.CP_SEP

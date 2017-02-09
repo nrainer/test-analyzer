@@ -17,8 +17,8 @@ public class DefaultFactory implements IFactory {
 
 	/** {@inheritDoc} */
 	@Override
-	public ProcessExecution createNewProcessExecution(String executionDirectory, String programFolderForClasspath,
-			String workingFolderForClasspath) {
+	public ProcessExecution createNewProcessExecution(Configuration configuration, String executionDirectory,
+			String programFolderForClasspath, String workingFolderForClasspath) {
 		return new ProcessExecution(executionDirectory, programFolderForClasspath, workingFolderForClasspath);
 	}
 }

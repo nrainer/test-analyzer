@@ -7,8 +7,7 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 
 /**
  * Factory to create instances. <br/>
- * Note that the factory is only be used in processes that are aware of the
- * {@link Configuration}.
+ * Note that the factory is only be used in processes that are aware of the {@link Configuration}.
  */
 public interface IFactory {
 
@@ -17,6 +16,6 @@ public interface IFactory {
 			String programPath, String workingFolder);
 
 	/** Create an instance of {@link ProcessExecution}. */
-	ProcessExecution createNewProcessExecution(String executionDirectory, String programFolderForClasspath,
-			String workingFolderForClasspath);
+	ProcessExecution createNewProcessExecution(Configuration configuration, String executionDirectory,
+			String programFolderForClasspath, String workingFolderForClasspath);
 }
