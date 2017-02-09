@@ -79,10 +79,22 @@ public abstract class AbstractConfigurationProperty<T> implements IConfiguration
 	/** {@inheritDoc} */
 	@Override
 	public final String toString() {
-		return "[" + toString(getName(), getValue()) + "]";
+		return toString(getName(), getValueAsString(), false);
 	}
 
-	public static String toString(String name, Object value) {
-		return name + IConfigurationTokens.KEY_VALUE_SEPARATOR_SET + value;
+	/** {@inheritDoc} */
+	@Override
+	public final String toParseableString() {
+		return toString(getName(), getValueAsString(), true);
+	}
+
+	public static String toString(String name, Object value, boolean parseable) {
+		String line = name + IConfigurationTokens.KEY_VALUE_SEPARATOR_SET + value;
+
+		if (parseable) {
+			return line;
+		}
+
+		return "[" + line + "]";
 	}
 }

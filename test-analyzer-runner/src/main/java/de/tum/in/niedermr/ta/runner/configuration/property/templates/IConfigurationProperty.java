@@ -19,4 +19,6 @@ public interface IConfigurationProperty<T> {
 	String getDescription();
 
 	void validate() throws ConfigurationException;
+
+	String toParseableString();
 }

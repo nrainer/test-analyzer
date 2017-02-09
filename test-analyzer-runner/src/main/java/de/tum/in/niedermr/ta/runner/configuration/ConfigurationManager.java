@@ -123,10 +123,10 @@ public class ConfigurationManager implements FileSystemConstants {
 				result.add(IConfigurationTokens.COMMENT_START_SEQ_1 + " " + property.getDescription());
 			}
 
-			result.add(property.getName() + IConfigurationTokens.KEY_VALUE_SEPARATOR_SET + property.getValueAsString());
+			result.add(property.toParseableString());
 		}
 
-		result.addAll(configuration.getDynamicValues().toStringLines());
+		result.addAll(configuration.getDynamicValues().toFileLines());
 
 		return result;
 	}

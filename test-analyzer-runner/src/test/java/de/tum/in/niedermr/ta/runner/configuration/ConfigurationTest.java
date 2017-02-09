@@ -74,7 +74,7 @@ public class ConfigurationTest {
 		configuration.getDynamicValues().setRawValue(configurationKey, "F4");
 
 		String multiLineString = configuration.toMultiLineString();
-		assertTrue(multiLineString.contains("[numberOfThreads=1]"));
-		assertTrue(multiLineString.contains("extension.algorithm=F4"));
+		assertTrue(multiLineString.contains("[numberOfThreads=4]"));
+		assertTrue(multiLineString.contains("[extension.algorithm=F4]"));
 	}
 }

@@ -106,18 +106,26 @@ public class DynamicConfigurationValuesManager {
 		return toStringLines().toString();
 	}
 
-	private String toString(Entry<DynamicConfigurationKey, String> entry) {
+	private String toString(Entry<DynamicConfigurationKey, String> entry, boolean parseable) {
 		String propertyName = entry.getKey().getName();
-		return AbstractConfigurationProperty.toString(propertyName, entry.getValue());
+		return AbstractConfigurationProperty.toString(propertyName, entry.getValue(), parseable);
 	}
 
 	public List<String> toStringLines() {
+		return toLines(false);
+	}
+
+	public List<String> toFileLines() {
+		return toLines(true);
+	}
+
+	private List<String> toLines(boolean parseable) {
 		List<String> list = new ArrayList<>();
 
 		SortedMap<DynamicConfigurationKey, String> sortedMap = new TreeMap<>(m_dataMap);
 
 		for (Entry<DynamicConfigurationKey, String> entry : sortedMap.entrySet()) {
-			list.add(toString(entry));
+			list.add(toString(entry, parseable));
 		}
 
 		return list;
