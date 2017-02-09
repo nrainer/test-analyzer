@@ -16,8 +16,8 @@ public class JavaProcessCommandBuilder {
 
 	private String m_mainClassName;
 	private String m_classPath;
-	private List<String> m_javaArguments = new ArrayList<>();
-	private List<String> m_programArguments = new ArrayList<>();
+	private final List<String> m_javaArguments = new ArrayList<>();
+	private final List<String> m_programArguments = new ArrayList<>();
 
 	/** {@link #m_mainClassName} */
 	public void setMainClassName(String mainClassName) {
