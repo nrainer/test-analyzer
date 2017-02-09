@@ -89,6 +89,12 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 			return;
 		}
 
+		if (!USE_JACOCO_IF_CONFIGURED) {
+			LOGGER.warn(
+					"JaCoCo is globally deactivated. Coverage will not be recorded unlike specified in the configuration.");
+			return;
+		}
+
 		if (!DefaultFactory.class.getName().equals(m_configuration.getFactoryClass().getValue())) {
 			throw new IllegalArgumentException("No custom factory must be used if code coverage shall be recorded.");
 		}

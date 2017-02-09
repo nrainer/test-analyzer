@@ -1,7 +1,11 @@
 package de.tum.in.niedermr.ta.test.integration;
 
+/** Constants for integration tests. */
 public interface IntegrationTestConstants {
 	public static final boolean DELETE_OUTPUT_AT_TEAR_DOWN_IF_SUCCESSFUL = true;
+
+	/** Whether JaCoCo should be used if it is configured in the configuration. */
+	public static final boolean USE_JACOCO_IF_CONFIGURED = true;
 
 	public static final String MSG_NOT_EQUAL_RESULT = "Result not equal";
 	public static final String MSG_NOT_EQUAL_COLLECTED_INFORMATION = "Collected information not equal";
