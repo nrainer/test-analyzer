@@ -29,6 +29,8 @@ import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationValuesManager;
 import de.tum.in.niedermr.ta.runner.execution.environment.EnvironmentConstants;
+import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 import de.tum.in.niedermr.ta.runner.factory.DefaultFactory;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 import de.tum.in.niedermr.ta.test.integration.jacoco.DefaultFactoryWithJaCoCoRecording;
@@ -141,8 +143,12 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		}
 	}
 
-	protected void executeTestAnalyzerWithConfiguration() throws ConfigurationException, IOException {
-		AnalyzerRunnerStart.execute(getConfiguration());
+	protected void executeTestAnalyzerWithConfiguration() throws ConfigurationException, ExecutionException {
+		try {
+			AnalyzerRunnerStart.execute(getConfiguration());
+		} catch (IOException | ReflectiveOperationException e) {
+			throw new ExecutionException(ExecutionIdFactory.ID_FOR_TESTS, e);
+		}
 	}
 
 	protected void assertFilesExists(String errorMsg, File... files) {

@@ -62,7 +62,7 @@ public class AnalyzerRunnerStart {
 	 *            as specified in {@link Configuration} (If no arguments are specified, the values will be requested
 	 *            using System.in.)
 	 */
-	public static void main(String[] args) throws ConfigurationException, IOException {
+	public static void main(String[] args) throws ConfigurationException, IOException, ReflectiveOperationException {
 		Configuration configuration;
 
 		try {
@@ -75,11 +75,12 @@ public class AnalyzerRunnerStart {
 		execute(configuration);
 	}
 
-	public static void execute(Configuration configuration) throws IOException {
+	public static void execute(Configuration configuration) throws IOException, ReflectiveOperationException {
 		execute(configuration, new File(FileSystemConstants.CURRENT_FOLDER));
 	}
 
-	public static void execute(Configuration configuration, File locationTestAnalyzer) throws IOException {
+	public static void execute(Configuration configuration, File locationTestAnalyzer)
+			throws IOException, ReflectiveOperationException {
 		IExecutionId executionId = createExecutionId(configuration);
 
 		final String currentCanonicalPath = locationTestAnalyzer.getCanonicalPath();
@@ -150,10 +151,9 @@ public class AnalyzerRunnerStart {
 
 	/** Start the execution in a new process. */
 	private static void startExecutionInNewProcess(Configuration configuration, IExecutionId executionId,
-			final String currentCanonicalPath, final String workingFolder) throws IOException {
-		// use the default factory in this case because another factory may not
-		// be on the classpath yet (until AnalyzerRunnerInternal is started)
-		IFactory defaultFactory = FactoryUtil.createDefaultFactory();
+			final String currentCanonicalPath, final String workingFolder)
+			throws IOException, ReflectiveOperationException {
+		IFactory defaultFactory = FactoryUtil.tryCreateFactoryOrUseDefault(configuration);
 		ProcessExecution processExecution = defaultFactory.createNewProcessExecution(configuration, workingFolder,
 				currentCanonicalPath, workingFolder);
 
