@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -118,13 +119,14 @@ public class AnalyzerRunnerInternal {
 	private static void executeWorkflow(IExecutionId executionId, String programPath, Configuration configuration,
 			IWorkflow workFlow) {
 		LOGGER.info("WORKFLOW " + workFlow.getName() + " START (" + new Date() + ")");
-		long startTime = System.currentTimeMillis();
+		long startTime = System.nanoTime();
 
 		IWorkflow workflow = initializeWorkflow(executionId, workFlow, configuration, programPath);
 		workflow.start();
 
 		LOGGER.info("Workflow execution id was: '" + executionId.get() + "'");
-		LOGGER.info("Workflow duration was: " + CommonUtility.getDurationInSec(startTime) + " seconds");
+		LOGGER.info("Workflow duration was: " + CommonUtility.getDurationInSec(startTime, TimeUnit.NANOSECONDS)
+				+ " seconds");
 		LOGGER.info("WORKFLOW " + workFlow.getName() + " END (" + new Date() + ")");
 	}
 

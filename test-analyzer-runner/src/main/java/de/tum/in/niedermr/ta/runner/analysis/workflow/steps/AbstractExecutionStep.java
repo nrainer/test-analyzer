@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.runner.analysis.workflow.steps;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -29,7 +30,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 	private Configuration m_configuration;
 	private ProcessExecution m_processExecution;
 
-	private long m_startTimeInMs = -1;
+	private long m_startTimeInNanos = -1;
 
 	/** {@inheritDoc} */
 	@Override
@@ -62,7 +63,7 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 		try {
 			LOGGER.info("START: " + getDescription());
 
-			m_startTimeInMs = System.currentTimeMillis();
+			m_startTimeInNanos = System.nanoTime();
 			runInternal(m_configuration, m_processExecution);
 			long duration = getDurationSinceStartInSec();
 
@@ -98,11 +99,11 @@ public abstract class AbstractExecutionStep implements IExecutionStep, Environme
 
 	/** Get the duration in ms since the execution start. Return -1 if the step has not been started yet. */
 	protected final long getDurationSinceStartInSec() {
-		if (m_startTimeInMs == -1) {
+		if (m_startTimeInNanos == -1) {
 			return -1;
 		}
 
-		return CommonUtility.getDurationInSec(m_startTimeInMs);
+		return CommonUtility.getDurationInSec(m_startTimeInNanos, TimeUnit.NANOSECONDS);
 	}
 
 	/** Get the step-specific suffix to create the full execution id. */

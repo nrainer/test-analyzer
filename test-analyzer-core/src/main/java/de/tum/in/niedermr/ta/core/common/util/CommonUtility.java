@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.core.common.util;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class CommonUtility {
 	public static String createRandomId(int length) {
@@ -22,8 +23,14 @@ public class CommonUtility {
 	}
 
 	/** Get the duration in seconds. */
-	public static long getDurationInSec(long startTimeInMs) {
-		return (System.currentTimeMillis() - startTimeInMs) / 1000;
+	public static long getDurationInSec(long startTime, TimeUnit inputTimeUnit) {
+		long endTime = inputTimeUnit.convert(System.nanoTime(), TimeUnit.NANOSECONDS);
+
+		if (endTime - startTime < 0) {
+			throw new IllegalStateException("endTime < startTime");
+		}
+
+		return TimeUnit.SECONDS.convert(endTime - startTime, inputTimeUnit);
 	}
 
 	/** Check if the tests are running on Windows. */
