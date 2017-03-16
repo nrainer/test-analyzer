@@ -6,6 +6,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
 
 /** Result presentation for extensions. */
 public interface IResultPresentationExtended extends IResultPresentation {
