@@ -1,32 +1,20 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
 
-import static org.junit.Assert.assertEquals;
-
-import java.io.File;
-import java.util.List;
-
-import org.junit.Test;
-
-import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
-import de.tum.in.niedermr.ta.core.common.TestUtility;
-import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractContentParserTest;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.IContentParser;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 /** Test {@link JaCoCoXmlParser}. */
-public class JaCoCoXmlParserTest {
+public class JaCoCoXmlParserTest extends AbstractContentParserTest {
 
-	@Test
-	public void testParser() throws Exception {
-		IContentParser jaCoCoXmlParser = new JaCoCoXmlParser(ExecutionIdFactory.ID_FOR_TESTS);
-		jaCoCoXmlParser.initialize();
+	/** Constructor. */
+	public JaCoCoXmlParserTest() {
+		super("coverage.xml", "expected.sql.txt");
+	}
 
-		File coverageXmlInputFile = new File(TestUtility.getTestFolder(getClass()) + "coverage.xml");
-		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
-
-		jaCoCoXmlParser.parse(coverageXmlInputFile, resultReceiver);
-		List<String> expectedOutput = TextFileUtility
-				.readFromFile(TestUtility.getTestFolder(getClass()) + "expected.sql.txt");
-		assertEquals(expectedOutput, resultReceiver.getResult());
+	/** {@inheritDoc} */
+	@Override
+	protected IContentParser createParser() {
+		return new JaCoCoXmlParser(ExecutionIdFactory.ID_FOR_TESTS);
 	}
 }
