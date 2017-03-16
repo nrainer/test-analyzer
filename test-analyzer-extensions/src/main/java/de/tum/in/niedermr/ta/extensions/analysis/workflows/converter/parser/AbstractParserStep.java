@@ -1,10 +1,10 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser;
 
 import java.io.File;
 import java.util.Objects;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.ContentParserException;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -35,7 +35,15 @@ public abstract class AbstractParserStep extends AbstractExecutionStep {
 	}
 
 	/** Parse the data from the file and write the result to the result receiver. */
-	protected abstract void parse(File inputFile, IResultReceiver resultReceiver) throws ContentParserException;
+	protected void parse(File inputFile, IResultReceiver resultReceiver) throws ContentParserException {
+		IContentParser coverageParser = createParser(getExecutionId());
+		coverageParser.initialize();
+		coverageParser.parse(inputFile, resultReceiver);
+		resultReceiver.markResultAsComplete();
+	}
+
+	/** Create an instance of the parser. */
+	protected abstract IContentParser createParser(IExecutionId executionId);
 
 	/** {@link #m_inputFileName} */
 	public void setInputFileName(String coverageFileName) {

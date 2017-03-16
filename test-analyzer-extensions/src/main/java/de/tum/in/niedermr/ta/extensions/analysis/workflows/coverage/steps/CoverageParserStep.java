@@ -1,10 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps;
 
-import java.io.File;
-
-import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.AbstractParserStep;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.ContentParserException;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractParserStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.IContentParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoXmlParser;
 
@@ -19,16 +16,13 @@ public class CoverageParserStep extends AbstractParserStep {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void parse(File inputFile, IResultReceiver resultReceiver) throws ContentParserException {
-		IContentParser coverageParser = new JaCoCoXmlParser(getExecutionId());
-		coverageParser.initialize();
-		coverageParser.parse(inputFile, resultReceiver);
-		resultReceiver.markResultAsComplete();
+	protected String getDescription() {
+		return "Parse coverage files";
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected String getDescription() {
-		return "Parse coverage files";
+	protected IContentParser createParser(IExecutionId executionId) {
+		return new JaCoCoXmlParser(executionId);
 	}
 }
