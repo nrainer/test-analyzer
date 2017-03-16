@@ -1,21 +1,18 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
-import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.AbstractConverterWorkflow;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps.CoverageParserStep;
-import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
-import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
-import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /**
  * Parser for coverage information. Currently, only coverage in form of XML from JaCoCo is supported.
  */
-public class CoverageParserWorkflow extends AbstractWorkflow {
+public class CoverageParserWorkflow extends AbstractConverterWorkflow {
 
 	/** Default name of the coverage file. */
 	private static final String DEFAULT_COVERAGE_FILE_NAME = "coverage.xml";
@@ -32,21 +29,29 @@ public class CoverageParserWorkflow extends AbstractWorkflow {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
-		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
-		prepareStep.start();
+	protected DynamicConfigurationKey getConfigurationKeyForMultipleOutputFileUsage() {
+		return CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES;
+	}
 
-		boolean useMultipleOutputFiles = configuration.getDynamicValues()
-				.getBooleanValue(CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES);
-		String resultFileName = getFileInWorkingArea(context,
-				ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION);
-		IResultReceiver coverageResultReceiver = ResultReceiverFactory
-				.createFileResultReceiverWithDefaultSettings(useMultipleOutputFiles, resultFileName);
+	/** {@inheritDoc} */
+	@Override
+	protected DynamicConfigurationKey getConfigurationKeyForInputFile() {
+		return CONFIGURATION_KEY_COVERAGE_FILE;
+	}
 
+	/** {@inheritDoc} */
+	@Override
+	protected String getOutputFile() {
+		return ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void convert(ExecutionContext context, Configuration configuration, String inputFileName,
+			IResultReceiver resultReceiver) {
 		CoverageParserStep parseCoverageStep = createAndInitializeExecutionStep(CoverageParserStep.class);
-		String coverageFileName = configuration.getDynamicValues().getStringValue(CONFIGURATION_KEY_COVERAGE_FILE);
-		parseCoverageStep.setCoverageFileName(coverageFileName);
-		parseCoverageStep.setCoverageResultReceiver(coverageResultReceiver);
+		parseCoverageStep.setCoverageFileName(inputFileName);
+		parseCoverageStep.setCoverageResultReceiver(resultReceiver);
 		parseCoverageStep.start();
 	}
 }
