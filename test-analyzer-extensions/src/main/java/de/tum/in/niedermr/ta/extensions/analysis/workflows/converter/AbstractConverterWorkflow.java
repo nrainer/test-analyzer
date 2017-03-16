@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractParserStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.common.PrepareWorkingFolderStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -26,13 +27,26 @@ public abstract class AbstractConverterWorkflow extends AbstractWorkflow {
 
 		String inputFileName = configuration.getDynamicValues().getStringValue(getConfigurationKeyForInputFile());
 
-		convert(context, configuration, inputFileName, resultReceiver);
+		convert(context, inputFileName, resultReceiver);
 	}
 
 	/** Prepare the working folder. */
 	protected void prepareWorkingFolder() {
 		PrepareWorkingFolderStep prepareStep = createAndInitializeExecutionStep(PrepareWorkingFolderStep.class);
 		prepareStep.start();
+	}
+
+	/**
+	 * Convert the data from the input file and write it into the result receiver.
+	 * 
+	 * @param context
+	 *            of the execution
+	 */
+	protected void convert(ExecutionContext context, String inputFileName, IResultReceiver resultReceiver) {
+		AbstractParserStep parseCoverageStep = createAndInitializeExecutionStep(getParserStep());
+		parseCoverageStep.setInputFileName(inputFileName);
+		parseCoverageStep.setResultReceiver(resultReceiver);
+		parseCoverageStep.start();
 	}
 
 	/** Get the configuration key for whether to use multiple output files. */
@@ -44,7 +58,6 @@ public abstract class AbstractConverterWorkflow extends AbstractWorkflow {
 	/** Get the output file constant from {@link ExtensionEnvironmentConstants}. */
 	protected abstract String getOutputFile();
 
-	/** Convert the data from the input file and write it into the result receiver. */
-	protected abstract void convert(ExecutionContext context, Configuration configuration, String inputFileName,
-			IResultReceiver resultReceiver);
+	/** Get the parser step. */
+	protected abstract Class<? extends AbstractParserStep> getParserStep();
 }

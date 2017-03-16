@@ -1,13 +1,11 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage;
 
-import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.AbstractConverterWorkflow;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractParserStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps.CoverageParserStep;
-import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
-import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 
 /**
  * Parser for coverage information. Currently, only coverage in form of XML from JaCoCo is supported.
@@ -47,11 +45,7 @@ public class CoverageParserWorkflow extends AbstractConverterWorkflow {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void convert(ExecutionContext context, Configuration configuration, String inputFileName,
-			IResultReceiver resultReceiver) {
-		CoverageParserStep parseCoverageStep = createAndInitializeExecutionStep(CoverageParserStep.class);
-		parseCoverageStep.setInputFileName(inputFileName);
-		parseCoverageStep.setResultReceiver(resultReceiver);
-		parseCoverageStep.start();
+	protected Class<? extends AbstractParserStep> getParserStep() {
+		return CoverageParserStep.class;
 	}
 }
