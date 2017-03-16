@@ -10,6 +10,7 @@ import org.junit.Test;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
 import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.IContentParser;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 /** Test {@link JaCoCoXmlParser}. */
@@ -17,7 +18,7 @@ public class JaCoCoXmlParserTest {
 
 	@Test
 	public void testParser() throws Exception {
-		ICoverageParser jaCoCoXmlParser = new JaCoCoXmlParser(ExecutionIdFactory.ID_FOR_TESTS);
+		IContentParser jaCoCoXmlParser = new JaCoCoXmlParser(ExecutionIdFactory.ID_FOR_TESTS);
 		jaCoCoXmlParser.initialize();
 
 		File coverageXmlInputFile = new File(TestUtility.getTestFolder(getClass()) + "coverage.xml");

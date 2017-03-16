@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +21,8 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
 
-/** Abstract XML coverage parser. */
-public abstract class AbstractXmlCoverageParser implements ICoverageParser {
+/** Abstract XML content parser. */
+public abstract class AbstractXmlContentParser implements IContentParser {
 
 	private final String m_xmlSchemaName;
 	private final IResultPresentationExtended m_resultPresentation;
@@ -30,33 +30,33 @@ public abstract class AbstractXmlCoverageParser implements ICoverageParser {
 	private XPath m_xPath;
 
 	/** Constructor. */
-	public AbstractXmlCoverageParser(String xmlSchemaName, IExecutionId executionId) {
+	public AbstractXmlContentParser(String xmlSchemaName, IExecutionId executionId) {
 		m_xmlSchemaName = xmlSchemaName;
 		m_resultPresentation = IResultPresentationExtended.create(executionId);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void initialize() throws CoverageParserException {
+	public void initialize() throws ContentParserException {
 		try {
 			m_documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-			m_documentBuilder.setEntityResolver(new CoverageReportEntityResolver());
+			m_documentBuilder.setEntityResolver(new NoSchemaReportEntityResolver());
 
 			XPathFactory xPathFactory = XPathFactory.newInstance();
 			m_xPath = xPathFactory.newXPath();
 		} catch (ParserConfigurationException e) {
-			throw new CoverageParserException("Parser initialization failed", e);
+			throw new ContentParserException("Parser initialization failed", e);
 		}
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void parse(File inputFile, IResultReceiver resultReceiver) throws CoverageParserException {
+	public void parse(File inputFile, IResultReceiver resultReceiver) throws ContentParserException {
 		try {
 			Document document = m_documentBuilder.parse(inputFile);
 			parse(document, resultReceiver);
 		} catch (SAXException | IOException | XPathExpressionException e) {
-			throw new CoverageParserException("Parser exception", e);
+			throw new ContentParserException("Parser exception", e);
 		}
 	}
 
@@ -70,7 +70,7 @@ public abstract class AbstractXmlCoverageParser implements ICoverageParser {
 		return m_resultPresentation;
 	}
 
-	private class CoverageReportEntityResolver implements EntityResolver {
+	private class NoSchemaReportEntityResolver implements EntityResolver {
 
 		/** {@inheritDoc} */
 		@Override

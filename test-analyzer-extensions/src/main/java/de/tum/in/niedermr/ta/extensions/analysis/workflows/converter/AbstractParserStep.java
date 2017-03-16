@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Objects;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.CoverageParserException;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.ContentParserException;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
@@ -29,13 +29,13 @@ public abstract class AbstractParserStep extends AbstractExecutionStep {
 
 		try {
 			parse(new File(m_inputFileName), m_resultReceiver);
-		} catch (CoverageParserException e) {
+		} catch (ContentParserException e) {
 			throw new ExecutionException(getExecutionId(), e);
 		}
 	}
 
 	/** Parse the data from the file and write the result to the result receiver. */
-	protected abstract void parse(File inputFile, IResultReceiver resultReceiver) throws CoverageParserException;
+	protected abstract void parse(File inputFile, IResultReceiver resultReceiver) throws ContentParserException;
 
 	/** {@link #m_inputFileName} */
 	public void setInputFileName(String coverageFileName) {
