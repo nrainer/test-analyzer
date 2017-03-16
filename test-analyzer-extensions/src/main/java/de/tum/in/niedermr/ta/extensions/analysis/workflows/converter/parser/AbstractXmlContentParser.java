@@ -8,11 +8,14 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.EntityResolver;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -63,14 +66,27 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 
 	protected abstract void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException;
 
-	protected XPathExpression compileXPath(String expression) throws XPathExpressionException {
+	/** Compile an XPath expression. */
+	protected final XPathExpression compileXPath(String expression) throws XPathExpressionException {
 		return m_xPath.compile(expression);
 	}
 
-	protected IResultPresentationExtended getResultPresentation() {
+	/** Get the extended result presentation. */
+	protected final IResultPresentationExtended getResultPresentation() {
 		return m_resultPresentation;
 	}
 
+	/** Evaluate an expression on a node to a String value. */
+	protected final String evaluateStringValue(Node node, XPathExpression expression) throws XPathExpressionException {
+		return (String) expression.evaluate(node, XPathConstants.STRING);
+	}
+
+	/** Evaluate an expression on a node to a node list. */
+	protected final NodeList evaluateNodeList(Node node, XPathExpression expression) throws XPathExpressionException {
+		return (NodeList) expression.evaluate(node, XPathConstants.NODESET);
+	}
+
+	/** Entity resolver which does not require a schema. */
 	private class NoSchemaReportEntityResolver implements EntityResolver {
 
 		/** {@inheritDoc} */

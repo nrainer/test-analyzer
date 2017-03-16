@@ -168,12 +168,4 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 			throw new IllegalArgumentException("Unknown counter type: " + counterType);
 		}
 	}
-
-	private String evaluateStringValue(Node node, XPathExpression expression) throws XPathExpressionException {
-		return (String) expression.evaluate(node, XPathConstants.STRING);
-	}
-
-	private NodeList evaluateNodeList(Node node, XPathExpression expression) throws XPathExpressionException {
-		return (NodeList) expression.evaluate(node, XPathConstants.NODESET);
-	}
 }
