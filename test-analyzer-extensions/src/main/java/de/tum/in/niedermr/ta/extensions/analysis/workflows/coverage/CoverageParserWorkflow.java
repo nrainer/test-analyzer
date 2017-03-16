@@ -50,8 +50,8 @@ public class CoverageParserWorkflow extends AbstractConverterWorkflow {
 	protected void convert(ExecutionContext context, Configuration configuration, String inputFileName,
 			IResultReceiver resultReceiver) {
 		CoverageParserStep parseCoverageStep = createAndInitializeExecutionStep(CoverageParserStep.class);
-		parseCoverageStep.setCoverageFileName(inputFileName);
-		parseCoverageStep.setCoverageResultReceiver(resultReceiver);
+		parseCoverageStep.setInputFileName(inputFileName);
+		parseCoverageStep.setResultReceiver(resultReceiver);
 		parseCoverageStep.start();
 	}
 }
