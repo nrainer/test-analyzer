@@ -55,6 +55,7 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		try {
 			Document document = m_documentBuilder.parse(inputFile);
 			parse(document, resultReceiver);
+			resultReceiver.markResultAsComplete();
 		} catch (SAXException | IOException | XPathExpressionException e) {
 			throw new ContentParserException("Parser exception", e);
 		}

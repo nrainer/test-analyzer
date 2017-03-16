@@ -12,15 +12,14 @@ public interface IResultReceiver {
 	void append(List<String> lines);
 
 	/**
-	 * Mark the result as partially complete allowing to split the results at
-	 * this point.
+	 * Mark the result as partially complete allowing to split the results at this point.
 	 */
 	void markResultAsPartiallyComplete();
 
 	/**
 	 * Mark the result as complete.<br/>
-	 * It is important to eventually invoke this method (otherwise the result
-	 * might not get flushed)!
+	 * It is important to eventually invoke this method (otherwise the result might not get flushed)! (May be invoked
+	 * multiple times.)
 	 */
 	void markResultAsComplete();
 }
