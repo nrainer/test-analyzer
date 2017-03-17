@@ -32,6 +32,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 	private File m_expectedResultFile;
 	/** Expected file. */
 	private File m_expectedParsedCoverageFile;
+	/** Expected file. */
+	private File m_expectedPitDataFile;
 
 	/** Actual output file. */
 	private File m_outputStackAnalysisFile;
@@ -45,6 +47,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 	private File m_outputResultFile;
 	/** Actual output file. */
 	private File m_outputParsedCoverageFile;
+	/** Actual output file. */
+	private File m_outputConvertedPitFile;
 
 	/** {@inheritDoc} */
 	@Override
@@ -84,11 +88,14 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 				MultiFileResultReceiver.FIRST_INDEX));
 
 		copyFileIntoWorkingDirectory("other/coverage.xml", "coverage.xml");
-
 		m_expectedParsedCoverageFile = getExpectedFile(
 				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
 		m_outputParsedCoverageFile = getOutputFile(
 				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
+
+		copyFileIntoWorkingDirectory("other/mutations.xml", "mutations.xml");
+		m_expectedPitDataFile = getExpectedFile(getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_PIT_DATA));
+		m_outputConvertedPitFile = getOutputFile(getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_PIT_DATA));
 	}
 
 	private void copyFileIntoWorkingDirectory(String originalFilePath, String fileNameInWorkingDirectory)
@@ -119,5 +126,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 
 		assertFilesExists(MSG_OUTPUT_MISSING, m_outputResultFile);
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedResultFile, m_outputResultFile);
+
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputConvertedPitFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedPitDataFile, m_outputConvertedPitFile);
 	}
 }
