@@ -72,10 +72,9 @@ public class PitResultParser extends AbstractXmlContentParser {
 	private void parseMutationNode(Node mutationNode, IResultReceiver resultReceiver) throws XPathExpressionException {
 		MutationSqlOutputBuilder mutationSqlOutputBuilder = getResultPresentation().createMutationSqlOutputBuilder();
 		mutationSqlOutputBuilder.setMutationStatus(evaluateStringValue(mutationNode, m_mutationStatusAttributeXPath));
-		mutationSqlOutputBuilder.setMutatedClass(evaluateStringValue(mutationNode, m_mutatedClassNodeXPath));
-		mutationSqlOutputBuilder.setMutatedMethod(evaluateStringValue(mutationNode, m_mutatedMethodNodeXPath));
-		mutationSqlOutputBuilder
-				.setMutatedMethodTypeSignature(evaluateStringValue(mutationNode, m_methodTypeSignatureNodeXPath));
+		mutationSqlOutputBuilder.setMutatedMethod(evaluateStringValue(mutationNode, m_mutatedClassNodeXPath),
+				evaluateStringValue(mutationNode, m_mutatedMethodNodeXPath),
+				evaluateStringValue(mutationNode, m_methodTypeSignatureNodeXPath));
 		mutationSqlOutputBuilder.setMutatorName(evaluateStringValue(mutationNode, m_mutatorNameNodeXPath));
 		mutationSqlOutputBuilder.setKillingTestSignature(evaluateStringValue(mutationNode, m_killingTestNodeXPath));
 		mutationSqlOutputBuilder.setMutationDescription(evaluateStringValue(mutationNode, m_descriptionNodeXPath));

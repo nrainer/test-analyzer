@@ -1,5 +1,11 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result;
 
+import java.util.Optional;
+
+import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
+import de.tum.in.niedermr.ta.core.common.util.StringUtility;
+import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.PitOutputConverterWorkflow;
 
 /** Output builder for {@link PitOutputConverterWorkflow}. */
@@ -7,51 +13,43 @@ public class MutationSqlOutputBuilder {
 
 	/** HTML encoded name of the constructor. */
 	private static final String CONSTRUCTOR_ENCODED_METHOD_NAME = "&#60;init&#62;";
-	/** Actual name of the constructor. */
-	private static final String CONSTRUCTOR_METHOD_NAME = "<init>";
 
 	/** SQL insert statement. */
-	private static final String SQL_INSERT_STATEMENT = "INSERT INTO Pit_Mutation_Result "
-			+ "(mutationStatus, mutatedClass, mutatedMethod, mutatedMethodTypeSignature, mutatorName, killingTestSignature, mutationDescription) "
+	private static final String SQL_INSERT_STATEMENT = "INSERT INTO Pit_Mutation_Result_Import "
+			+ "(execution, mutatedMethod, mutationStatus, killingTestcase, mutatorName, mutationDescription) "
 			+ "VALUES (%s);";
+
+	/** Execution id. */
+	private IExecutionId m_executionId;
 
 	/** Mutation status. */
 	private String m_mutationStatus;
-	/** Mutated class. */
-	private String m_mutatedClass;
 	/** Mutated method. */
-	private String m_mutatedMethod;
-	/** Types of the parameters and return type of the mutated method (byte-code style). */
-	private String m_mutatedMethodTypeSignature;
+	private MethodIdentifier m_mutatedMethod;
 	/** Name of the mutator. */
 	private String m_mutatorName;
-	/** Name of the test case that first killed the method. */
-	private String m_killingTestSignature;
+	/** Identifier of the test case that first killed the method. */
+	private Optional<TestcaseIdentifier> m_killingTestcase;
 	/** Description of the mutation. */
 	private String m_mutationDescription;
+
+	/** Constructor. */
+	public MutationSqlOutputBuilder(IExecutionId executionId) {
+		m_executionId = executionId;
+	}
 
 	/** {@link m_mutationStatus} */
 	public void setMutationStatus(String mutationStatus) {
 		m_mutationStatus = mutationStatus;
 	}
 
-	/** {@link m_mutatedClass} */
-	public void setMutatedClass(String mutatedClass) {
-		m_mutatedClass = mutatedClass;
-	}
-
 	/** {@link m_mutatedMethod} */
-	public void setMutatedMethod(String mutatedMethod) {
-		if (CONSTRUCTOR_ENCODED_METHOD_NAME.equals(mutatedMethod)) {
-			m_mutatedMethod = CONSTRUCTOR_METHOD_NAME;
-		} else {
-			m_mutatedMethod = mutatedMethod;
+	public void setMutatedMethod(String mutatedClassName, String mutatedMethodName, String mutatedMethodTypeSignature) {
+		if (CONSTRUCTOR_ENCODED_METHOD_NAME.equals(mutatedMethodName)) {
+			mutatedMethodName = MethodIdentifier.CONSTRUCTOR_NAME;
 		}
-	}
 
-	/** {@link m_mutatedMethodTypeSignature} */
-	public void setMutatedMethodTypeSignature(String mutatedMethodTypeSignature) {
-		m_mutatedMethodTypeSignature = mutatedMethodTypeSignature;
+		m_mutatedMethod = MethodIdentifier.create(mutatedClassName, mutatedMethodName, mutatedMethodTypeSignature);
 	}
 
 	/** {@link m_mutatorName} */
@@ -61,7 +59,11 @@ public class MutationSqlOutputBuilder {
 
 	/** {@link m_killingTestSignature} */
 	public void setKillingTestSignature(String killingTestSignature) {
-		m_killingTestSignature = killingTestSignature;
+		if (StringUtility.isNullOrEmpty(killingTestSignature)) {
+			m_killingTestcase = Optional.empty();
+		} else {
+			m_killingTestcase = Optional.of(TestcaseIdentifier.createFromJavaName(killingTestSignature));
+		}
 	}
 
 	/** {@link m_mutatorDescription} */
@@ -72,17 +74,15 @@ public class MutationSqlOutputBuilder {
 	/** Complete. */
 	public String complete() {
 		StringBuilder builder = new StringBuilder();
+		builder.append(asSqlString(m_executionId.getShortId()));
+		builder.append(", ");
+		builder.append(asSqlString(m_mutatedMethod.get()));
+		builder.append(", ");
 		builder.append(asSqlString(m_mutationStatus));
 		builder.append(", ");
-		builder.append(asSqlString(m_mutatedClass));
-		builder.append(", ");
-		builder.append(asSqlString(m_mutatedMethod));
-		builder.append(", ");
-		builder.append(asSqlString(m_mutatedMethodTypeSignature));
+		builder.append(m_killingTestcase.map(identifier -> asSqlString(identifier.get())).orElse("NULL"));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutatorName));
-		builder.append(", ");
-		builder.append(asSqlString(m_killingTestSignature));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationDescription));
 
@@ -90,7 +90,7 @@ public class MutationSqlOutputBuilder {
 	}
 
 	/** Wrap a string value in quotation marks. */
-	private String asSqlString(String value) {
+	private static String asSqlString(String value) {
 		return "'" + value + "'";
 	}
 }
