@@ -64,6 +64,7 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		}
 	}
 
+	/** Parse. */
 	protected abstract void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException;
 
 	/** Compile an XPath expression. */

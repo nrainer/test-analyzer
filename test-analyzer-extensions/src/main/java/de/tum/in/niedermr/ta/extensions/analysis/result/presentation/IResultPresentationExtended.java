@@ -4,6 +4,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentati
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result.MutationSqlOutputBuilder;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
@@ -34,4 +35,6 @@ public interface IResultPresentationExtended extends IResultPresentation {
 			int coverageValue, ECoverageValueType valueType);
 
 	ProjectCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel);
+
+	MutationSqlOutputBuilder createMutationSqlOutputBuilder();
 }
