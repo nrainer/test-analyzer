@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.core.common.io;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,19 +37,18 @@ public class TextFileUtility {
 		}
 	}
 
+	/** Read a list of lines from a file. */
 	public static List<String> readFromFile(String fileName) throws IOException {
 		List<String> result = new ArrayList<>();
 
-		BufferedReader reader = new BufferedReader(new FileReader(fileName));
-
-		try {
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
 			String line;
 
 			while ((line = reader.readLine()) != null) {
 				result.add(line);
 			}
-		} finally {
-			reader.close();
+		} catch (FileNotFoundException e) {
+			throw new FileNotFoundException(new File(fileName).getAbsolutePath());
 		}
 
 		return result;
