@@ -104,12 +104,13 @@ CREATE TABLE Pit_Mutation_Result_Import
 	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
 	mutatedMethod VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
-	mutationStatus VARCHAR(32) NOT NULL COLLATE UTF8_BIN,
+	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED'),
 	killingTestcase VARCHAR(1024) COLLATE UTF8_BIN,
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
 	mutationDescription VARCHAR(1024) COLLATE UTF8_BIN,
     methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatedMethod)) VIRTUAL,
-    testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(killingTestcase)) VIRTUAL
+    testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(killingTestcase)) VIRTUAL,
+    isConstructor TINYINT(1) GENERATED ALWAYS AS (mutatedMethod LIKE '%<init>(%)') VIRTUAL
 );
 
 CREATE INDEX idx_ei_1 ON Execution_Information(execution);
