@@ -1,6 +1,8 @@
 package de.tum.in.niedermr.ta.core.code.identifier;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
@@ -29,6 +31,7 @@ public class MethodIdentifierTest {
 	private static final String EXPECTED_IDENTIFIER_WITH_RETURN_TYPE = EXPECTED_IDENTIFIER_STRING
 			+ JavaConstants.RETURN_TYPE_SEPARATOR + EXPECTED_RETURN_TYPE_STRING;
 
+	/** Test. */
 	@Test
 	public void testCreate1() {
 		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME,
@@ -39,6 +42,7 @@ public class MethodIdentifierTest {
 		assertEquals(EXPECTED_RETURN_TYPE_STRING, identifier.getOnlyReturnType());
 	}
 
+	/** Test. */
 	@Test
 	public void testCreate2() {
 		MethodIdentifier identifier1 = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME,
@@ -68,11 +72,13 @@ public class MethodIdentifierTest {
 		assertEquals(identifier1, identifier2);
 	}
 
+	/** Test. */
 	@Test(expected = Exception.class)
 	public void testCreateWithWrongDescriptor() {
 		MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME, "(text.String)V");
 	}
 
+	/** Test. */
 	@Test
 	public void testParse1() {
 		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME,
@@ -84,6 +90,7 @@ public class MethodIdentifierTest {
 				MethodIdentifier.parse(identifier.getWithReturnType()).getWithReturnType());
 	}
 
+	/** Test. */
 	@Test
 	public void testParse2() {
 		MethodIdentifier expected = MethodIdentifier.create(SAMPLE_CLASS_NAME, SAMPLE_METHOD_NAME, SAMPLE_DESCRIPTOR_1);
@@ -94,6 +101,7 @@ public class MethodIdentifierTest {
 		assertEquals(expected.get() + JavaConstants.RETURN_TYPE_SEPARATOR + "?", identifier2.getWithReturnType());
 	}
 
+	/** Test. */
 	@Test
 	public void testEquals() {
 		MethodIdentifier identifier1 = MethodIdentifier.parse(
@@ -105,6 +113,7 @@ public class MethodIdentifierTest {
 		assertEquals(identifier1, identifier2);
 	}
 
+	/** Test. */
 	@Test
 	public void testGetOnlyClassName1() {
 		MethodIdentifier identifier;
@@ -122,11 +131,13 @@ public class MethodIdentifierTest {
 		assertEquals(SAMPLE_CLASS_NAME, identifier.getOnlyClassName());
 	}
 
+	/** Test. */
 	@Test(expected = IllegalStateException.class)
 	public void testGetOnlyClassName2() {
 		MethodIdentifier.EMPTY.getOnlyClassName();
 	}
 
+	/** Test. */
 	@Test
 	public void testGetOnlyMethodName() {
 		MethodIdentifier identifier;
@@ -140,10 +151,24 @@ public class MethodIdentifierTest {
 		assertEquals(SAMPLE_METHOD_NAME, identifier.getOnlyMethodName());
 	}
 
+	/** Test. */
 	@Test
 	public void testCreateLambdaMethodName() {
 		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, "lambda$0", SAMPLE_DESCRIPTOR_2);
 		assertEquals(SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + "lambda$0" + SAMPLE_ARGUMENTS_3,
 				identifier.get());
+	}
+
+	/** Test. */
+	@Test
+	public void testIsConstructor() {
+		assertFalse(MethodIdentifier.EMPTY.isConstructor());
+
+		assertFalse(MethodIdentifier.parse(
+				SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + SAMPLE_METHOD_NAME + SAMPLE_ARGUMENTS_2)
+				.isConstructor());
+
+		assertTrue(MethodIdentifier.parse(SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR
+				+ MethodIdentifier.CONSTRUCTOR_NAME + SAMPLE_ARGUMENTS_2).isConstructor());
 	}
 }

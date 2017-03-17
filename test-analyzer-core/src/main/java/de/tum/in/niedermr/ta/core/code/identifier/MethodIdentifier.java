@@ -10,6 +10,7 @@ import de.tum.in.niedermr.ta.core.code.util.Identification;
 /** Identifier for Java methods. */
 public final class MethodIdentifier implements Identifier {
 	private static final String UNKNOWN_RETURN_TYPE = "?";
+	public static final String CONSTRUCTOR_NAME = "<init>";
 	public static final MethodIdentifier EMPTY = new MethodIdentifier("*", UNKNOWN_RETURN_TYPE);
 
 	private final String m_identifier;
@@ -94,6 +95,7 @@ public final class MethodIdentifier implements Identifier {
 		return new MethodIdentifier(values[0], returnType);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public final String get() {
 		return m_identifier;
@@ -146,6 +148,7 @@ public final class MethodIdentifier implements Identifier {
 		return s;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public int hashCode() {
 		return m_identifier.hashCode();
@@ -179,8 +182,15 @@ public final class MethodIdentifier implements Identifier {
 		return JavaConstants.ARGUMENTS_BEGIN + arguments + JavaConstants.ARGUMENTS_END;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public String toString() {
 		return get();
+	}
+
+	/** Check if the method identifier refers to a constructor. */
+	public boolean isConstructor() {
+		return m_identifier
+				.contains(JavaConstants.CLASS_METHOD_SEPARATOR + CONSTRUCTOR_NAME + JavaConstants.ARGUMENTS_BEGIN);
 	}
 }
