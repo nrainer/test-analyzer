@@ -83,17 +83,21 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 		m_outputResultFile = new File(MultiFileResultReceiver.getFileName(getFileOutputResultAsSql().getPath(),
 				MultiFileResultReceiver.FIRST_INDEX));
 
-		File inputCoverageXmlFile = getFileInSpecificTestDataFolder("other/coverage.xml");
-		File inputCoverageXmlFileInWorkingDirectory = getFileInWorkingDirectory("coverage.xml");
-		assertFilesExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFile);
-		Files.copy(inputCoverageXmlFile.toPath(), inputCoverageXmlFileInWorkingDirectory.toPath(),
-				StandardCopyOption.REPLACE_EXISTING);
-		assertFilesExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFileInWorkingDirectory);
+		copyFileIntoWorkingDirectory("other/coverage.xml", "coverage.xml");
 
 		m_expectedParsedCoverageFile = getExpectedFile(
 				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
 		m_outputParsedCoverageFile = getOutputFile(
 				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
+	}
+
+	private void copyFileIntoWorkingDirectory(String originalFilePath, String fileNameInWorkingDirectory)
+			throws IOException {
+		File originalFile = getFileInSpecificTestDataFolder(originalFilePath);
+		File targetFile = getFileInWorkingDirectory(fileNameInWorkingDirectory);
+		assertFilesExists(MSG_TEST_DATA_MISSING, originalFile);
+		Files.copy(originalFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		assertFilesExists(MSG_TEST_DATA_MISSING, targetFile);
 	}
 
 	private void checkResults() {
