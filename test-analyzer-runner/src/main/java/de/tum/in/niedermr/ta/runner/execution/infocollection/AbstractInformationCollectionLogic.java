@@ -107,7 +107,7 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 		executeAllTestcases(testClassesWithTestcases);
 
 		if (testClassExcludes.length > 0) {
-			LOGGER.info("Skipped excluded test classes.");
+			LOGGER.info(testClassExcludes.length + " test class excludes were specified.");
 		}
 
 		execAllTestsExecuted(testClassesWithTestcases);
