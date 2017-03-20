@@ -1,6 +1,7 @@
 DROP VIEW IF EXISTS V_Project_Overview;
 DROP VIEW IF EXISTS V_Project_Overview_Sub;
 DROP VIEW IF EXISTS V_Method_Classification;
+DROP VIEW IF EXISTS V_Tested_Method_Return_Types;
 DROP VIEW IF EXISTS V_Tested_Methods_Info_Agg;
 DROP VIEW IF EXISTS V_Tested_Methods_Info;
 DROP VIEW IF EXISTS V_Name_Mapping;
