@@ -73,6 +73,29 @@ ON t.execution = rvg.execution
 AND t.retValGen = rvg.retValGen
 WHERE t.execution = @executionId;
 
+/* Create an entry for each entry in Pit_Mutation_Result_Import. */
+INSERT INTO Pit_Mutation_Info
+(importedMutationId, execution, mutatedMethod, mutatorName, mutationStatus, killingTestcase, methodId, testcaseId)
+SELECT 
+	pmr.id,
+	pmr.execution,
+	pmr.mutatedMethod,
+	pmr.mutatorName,
+	pmr.mutationStatus,
+	pmr.killingTestcase,
+	mi.methodId,
+	ti.testcaseId
+FROM Pit_Mutation_Result_Import pmr
+LEFT OUTER JOIN Method_Info mi
+ON pmr.execution = mi.execution
+AND pmr.methodHash = mi.methodHash
+AND pmr.mutatedMethod = mi.method
+INNER JOIN Testcase_Info ti
+ON pmr.execution = ti.execution
+AND pmr.testcaseHash = ti.testcaseHash
+AND pmr.killingTestcase = ti.testcase
+WHERE pmr.execution = @executionId;
+
 /* Enrich data with stack information. */
 UPDATE Relation_Info ri
 INNER JOIN V_Name_Mapping mapping
