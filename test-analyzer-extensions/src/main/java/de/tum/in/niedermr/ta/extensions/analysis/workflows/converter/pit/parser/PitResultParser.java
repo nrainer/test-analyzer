@@ -3,6 +3,8 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -14,6 +16,9 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result.
 
 /** Coverage parser for JaCoCo XML files. */
 public class PitResultParser extends AbstractXmlContentParser {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(PitResultParser.class);
 
 	/** Mutation node. */
 	private XPathExpression m_mutationNodeXPath;
@@ -65,6 +70,10 @@ public class PitResultParser extends AbstractXmlContentParser {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			parseMutationNode(nodeList.item(i), resultReceiver);
 			resultReceiver.markResultAsPartiallyComplete();
+
+			if (i % 1000 == 0) {
+				LOGGER.info("Parsed mutation node number " + i + ".");
+			}
 		}
 	}
 
