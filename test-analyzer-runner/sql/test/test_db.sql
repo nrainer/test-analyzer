@@ -1,3 +1,8 @@
+/* ==========  MANUAL PREPARATION    ========== */
+/*
+ * Create a procedure named 'Transfer' with the logic from "2_processing/transfer_script.sql" and executionId as input parameter.
+ */
+
 /* ==========  BEGIN PREPARATION     ========== */
 
 DROP PROCEDURE IF EXISTS AssertEquals;
