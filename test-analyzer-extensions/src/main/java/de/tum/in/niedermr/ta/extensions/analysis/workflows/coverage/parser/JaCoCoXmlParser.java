@@ -78,6 +78,9 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 
+			// performance tuning (does not influence indices in the NodeList)
+			node.getParentNode().removeChild(node);
+
 			String sourceFolderName = evaluateStringValue(node, folderNameAttributeXPath);
 			int countCovered = Integer.parseInt(evaluateStringValue(node, folderCountCoveredAttributeXPath));
 			int countNotCovered = Integer.parseInt(evaluateStringValue(node, folderCountMissedAttributeXPath));
@@ -93,6 +96,11 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		NodeList classNodes = evaluateNodeList(document, allClassesXPath);
 
 		for (int i = 0; i < classNodes.getLength(); i++) {
+			Node classNode = classNodes.item(i);
+
+			// performance tuning (does not influence indices in the NodeList)
+			classNode.getParentNode().removeChild(classNode);
+
 			parseClassNode(classNodes.item(i), resultReceiver);
 		}
 	}
@@ -103,8 +111,14 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 
 		String className = JavaUtility.toClassName(evaluateStringValue(classNode, classNameAttributeXPath));
 		NodeList methodNodes = evaluateNodeList(classNode, methodsOfClassXPath);
+
 		for (int i = 0; i < methodNodes.getLength(); i++) {
-			parseMethodNode(className, methodNodes.item(i), resultReceiver);
+			Node methodNode = methodNodes.item(i);
+
+			// performance tuning (does not influence indices in the NodeList)
+			methodNode.getParentNode().removeChild(methodNode);
+
+			parseMethodNode(className, methodNode, resultReceiver);
 		}
 
 		LOGGER.info("Parsed coverage of methods of class: " + className);
