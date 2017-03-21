@@ -16,25 +16,25 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 /** Utility to read and write from text files. */
 public class TextFileUtility {
 
+	/** Write the lines to a file. Overwrites an existing file. */
 	public static void writeToFile(String fileName, Collection<String> lines) throws IOException {
 		writeToFileInternal(fileName, false, lines);
 	}
 
+	/** Write the lines to a file. Appends the lines if the file is not empty. */
 	public static void appendToFile(String fileName, Collection<String> lines) throws IOException {
 		writeToFileInternal(fileName, true, lines);
 	}
 
 	private static void writeToFileInternal(String fileName, boolean append, Collection<String> lines)
 			throws IOException {
-		BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, append));
-
-		try {
-			for (String l : lines) {
-				writer.write(l + CommonConstants.NEW_LINE);
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, append))) {
+			for (String line : lines) {
+				writer.write(line);
+				writer.write(CommonConstants.NEW_LINE);
 			}
-		} finally {
-			writer.close();
 		}
+
 	}
 
 	/** Read a list of lines from a file. */

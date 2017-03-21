@@ -18,14 +18,14 @@ public class FileResultReceiver implements IResultReceiver {
 	/** Buffer size in lines. */
 	private final int m_bufferSize;
 
+	/** Result buffer. */
 	private final List<String> m_resultBuffer;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param overwriteExisting
-	 *            if true, the file will be reset, otherwise the new content
-	 *            will be appended
+	 *            if true, the file will be reset, otherwise the new content will be appended
 	 */
 	public FileResultReceiver(String fileName, boolean overwriteExisting) {
 		this(fileName, overwriteExisting, DEFAULT_BUFFER_SIZE);
@@ -99,7 +99,8 @@ public class FileResultReceiver implements IResultReceiver {
 		m_resultBuffer.clear();
 	}
 
-	protected void resetFile() {
+	/** Clear the content of a file. */
+	protected synchronized void resetFile() {
 		try {
 			TextFileUtility.writeToFile(m_fileName, new ArrayList<>());
 		} catch (IOException e) {
