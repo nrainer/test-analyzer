@@ -75,7 +75,7 @@ WHERE t.execution = @executionId;
 
 /* Create an entry for each entry in Pit_Mutation_Result_Import. */
 INSERT INTO Pit_Mutation_Info
-(importedMutationId, execution, mutatedMethod, mutatorName, mutationStatus, killingTestcase, methodId, testcaseId)
+(importedMutationId, execution, mutatedMethod, mutatorName, mutationStatus, killingTestcase, methodId, killingTestcaseId)
 SELECT 
 	pmr.id,
 	pmr.execution,
@@ -92,7 +92,7 @@ AND pmr.methodHash = mi.methodHash
 AND pmr.mutatedMethod = mi.method
 LEFT OUTER JOIN Testcase_Info ti
 ON pmr.execution = ti.execution
-AND pmr.testcaseHash = ti.testcaseHash
+AND pmr.killingTestcaseHash = ti.testcaseHash
 AND pmr.killingTestcase = ti.testcase
 WHERE pmr.execution = @executionId;
 
