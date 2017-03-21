@@ -22,8 +22,6 @@ public class PitResultParser extends AbstractXmlContentParser {
 
 	/** Mutation node. */
 	private XPathExpression m_mutationNodeXPath;
-	/** Status attribute of mutation node. */
-	private XPathExpression m_mutationStatusAttributeXPath;
 	/** Class node of mutation node. */
 	private XPathExpression m_mutatedClassNodeXPath;
 	/** Method node of mutation node. */
@@ -54,7 +52,6 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** Parse a single mutation node. */
 	private void initializeXPathExpressions() throws XPathExpressionException {
 		m_mutationNodeXPath = compileXPath("mutations/mutation");
-		m_mutationStatusAttributeXPath = compileXPath("@status");
 		m_mutatedClassNodeXPath = compileXPath("./mutatedClass");
 		m_mutatedMethodNodeXPath = compileXPath("./mutatedMethod");
 		m_methodTypeSignatureNodeXPath = compileXPath("./methodDescription");
@@ -80,7 +77,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** Parse a single mutation node. */
 	private void parseMutationNode(Node mutationNode, IResultReceiver resultReceiver) throws XPathExpressionException {
 		MutationSqlOutputBuilder mutationSqlOutputBuilder = getResultPresentation().createMutationSqlOutputBuilder();
-		mutationSqlOutputBuilder.setMutationStatus(evaluateStringValue(mutationNode, m_mutationStatusAttributeXPath));
+		mutationSqlOutputBuilder.setMutationStatus(evaluateAttributeValue(mutationNode, "status"));
 		mutationSqlOutputBuilder.setMutatedMethod(evaluateStringValue(mutationNode, m_mutatedClassNodeXPath),
 				evaluateStringValue(mutationNode, m_mutatedMethodNodeXPath),
 				evaluateStringValue(mutationNode, m_methodTypeSignatureNodeXPath));

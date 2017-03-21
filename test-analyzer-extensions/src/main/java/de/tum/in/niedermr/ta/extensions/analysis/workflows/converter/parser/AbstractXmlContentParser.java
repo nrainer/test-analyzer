@@ -78,13 +78,24 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	}
 
 	/** Evaluate an expression on a node to a String value. */
-	protected final String evaluateStringValue(Node node, XPathExpression expression) throws XPathExpressionException {
+	protected static String evaluateStringValue(Node node, XPathExpression expression) throws XPathExpressionException {
 		return (String) expression.evaluate(node, XPathConstants.STRING);
 	}
 
 	/** Evaluate an expression on a node to a node list. */
-	protected final NodeList evaluateNodeList(Node node, XPathExpression expression) throws XPathExpressionException {
+	protected static NodeList evaluateNodeList(Node node, XPathExpression expression) throws XPathExpressionException {
 		return (NodeList) expression.evaluate(node, XPathConstants.NODESET);
+	}
+
+	/** Evaluate the value of a node attribute. */
+	protected static String evaluateAttributeValue(Node node, String attributeName) {
+		Node attributeNode = node.getAttributes().getNamedItem(attributeName);
+
+		if (attributeNode == null) {
+			return null;
+		}
+
+		return attributeNode.getNodeValue();
 	}
 
 	/** Entity resolver which does not require a schema. */
