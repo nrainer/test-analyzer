@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.test.integration;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -173,7 +172,10 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 			outputContent = new HashSet<>(outputContent);
 		}
 
-		assertEquals(errorMsg, expectedContent, outputContent);
+		if (!expectedContent.equals(outputContent)) {
+			fail("File content does not match the expected content: " + fileWithOutputContent.getName()
+					+ " (orderIsRelevant=" + orderIsRelevant + "; message=" + errorMsg + ")");
+		}
 	}
 
 	protected void assertLogFileContains(List<String> expectedText) {
