@@ -99,10 +99,10 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		for (int i = 0; i < classNodes.getLength(); i++) {
 			Node classNode = classNodes.item(i);
 
+			parseClassNode(classNode, resultReceiver);
+
 			// performance tuning (does not influence indices in the NodeList)
 			classNode.getParentNode().removeChild(classNode);
-
-			parseClassNode(classNodes.item(i), resultReceiver);
 		}
 	}
 
@@ -116,10 +116,10 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		for (int i = 0; i < methodNodes.getLength(); i++) {
 			Node methodNode = methodNodes.item(i);
 
+			parseMethodNode(className, methodNode, resultReceiver);
+
 			// performance tuning (does not influence indices in the NodeList)
 			methodNode.getParentNode().removeChild(methodNode);
-
-			parseMethodNode(className, methodNode, resultReceiver);
 		}
 
 		LOGGER.info("Parsed coverage of methods of class: " + className);
