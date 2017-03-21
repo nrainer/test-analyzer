@@ -3,6 +3,9 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser;
 import java.io.File;
 import java.util.Objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -13,6 +16,9 @@ import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /** Abstract parser step. */
 public abstract class AbstractParserStep extends AbstractExecutionStep {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(AbstractParserStep.class);
 
 	/** File to be parsed. */
 	private String m_inputFileName;
@@ -28,7 +34,9 @@ public abstract class AbstractParserStep extends AbstractExecutionStep {
 		Objects.requireNonNull(m_resultReceiver);
 
 		try {
-			parse(new File(m_inputFileName), m_resultReceiver);
+			File inputFile = new File(m_inputFileName);
+			LOGGER.info("File to parse is: " + inputFile.getAbsolutePath());
+			parse(inputFile, m_resultReceiver);
 		} catch (ContentParserException e) {
 			throw new ExecutionException(getExecutionId(), e);
 		}
