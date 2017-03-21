@@ -15,12 +15,13 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
-import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.ProjectCoverageSqlOutputBuilder;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractXmlContentParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
 
 /** Coverage parser for JaCoCo XML files. */
-public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
+public class JaCoCoXmlParser extends AbstractXmlContentParser {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JaCoCoXmlParser.class);
@@ -181,13 +182,5 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		default:
 			throw new IllegalArgumentException("Unknown counter type: " + counterType);
 		}
-	}
-
-	private String evaluateStringValue(Node node, XPathExpression expression) throws XPathExpressionException {
-		return (String) expression.evaluate(node, XPathConstants.STRING);
-	}
-
-	private NodeList evaluateNodeList(Node node, XPathExpression expression) throws XPathExpressionException {
-		return (NodeList) expression.evaluate(node, XPathConstants.NODESET);
 	}
 }

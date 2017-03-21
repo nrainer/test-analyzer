@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.result.presentation;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,6 +10,7 @@ import org.junit.Test;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
 import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 /** Test {@link ProjectCoverageSqlOutputBuilder}. */

@@ -1,3 +1,5 @@
+DROP VIEW IF EXISTS V_Pit_Mutation_Info_With_Distance;
+DROP VIEW IF EXISTS V_Pit_Mutation_Info_Agg;
 DROP VIEW IF EXISTS V_Project_Overview;
 DROP VIEW IF EXISTS V_Project_Overview_Sub;
 DROP VIEW IF EXISTS V_Method_Classification;
@@ -185,3 +187,39 @@ CREATE VIEW V_Project_Overview AS
 	INNER JOIN V_Project_Overview_Sub pos
 	ON e.execution = pos.execution
 	ORDER BY e.testType, e.project;
+	
+CREATE VIEW V_Pit_Mutation_Info_Agg AS
+	SELECT 
+		pmi.execution,
+	    pmi.mutatedMethodHash,
+	    pmi.mutatedMethod,
+	    pmi.mutatorNameHash,
+	    pmi.mutatorName,
+	    pmi.methodId,
+	    MAX(pmi.isDetected) AS detected
+	FROM Pit_Mutation_Info pmi
+	WHERE pmi.isDetectable = 1
+	GROUP BY
+		pmi.execution,
+	    pmi.mutatedMethodHash,
+	    pmi.mutatedMethod,
+	    pmi.mutatorNameHash,
+	    pmi.mutatorName;
+	    
+CREATE VIEW V_Pit_Mutation_Info_With_Distance AS
+	SELECT 
+		vpmia.execution,
+	    vpmia.methodId,
+	    vpmia.mutatorNameHash,
+	    vpmia.mutatorName,
+	    vpmia.detected,
+	    MIN(ri.minStackDistance) AS minStackDistance
+	FROM V_Pit_Mutation_Info_Agg vpmia
+	INNER JOIN Relation_Info ri
+	ON vpmia.execution = ri.execution
+	AND vpmia.methodId = ri.methodId
+	GROUP BY
+		vpmia.execution,
+	    vpmia.methodId,
+		vpmia.mutatorNameHash,
+	    vpmia.mutatorName;

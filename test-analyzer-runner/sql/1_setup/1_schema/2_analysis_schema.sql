@@ -5,6 +5,7 @@
 -- DROP TABLE IF EXISTS Relation_Info;
 -- DROP TABLE IF EXISTS Testcase_Info;
 -- DROP TABLE IF EXISTS Method_Info;
+-- DROP TABLE IF EXISTS Pit_Mutation_Info;
 
 CREATE TABLE Method_Info
 (
@@ -87,6 +88,24 @@ CREATE TABLE Method_Classification_Info
   isToBeExcluded TINYINT(1) NOT NULL DEFAULT 0
 );
 
+-- multiple entries for the same method with the same mutator are possible (mutations in different lines)
+CREATE TABLE Pit_Mutation_Info
+(
+	importedMutationId INT(11) NOT NULL PRIMARY KEY REFERENCES Pit_Mutation_Result_Import(id),
+	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
+	mutatedMethod VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
+	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
+	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR') NOT NULL,
+	killingTestcase VARCHAR(1024) COLLATE UTF8_BIN,
+	methodId INT(11) REFERENCES Method_Info(methodId),
+	killingTestcaseId INT(11) REFERENCES Testcase_Info(testcaseId),
+    isConstructor TINYINT(1) GENERATED ALWAYS AS (mutatedMethod LIKE '%<init>(%)') VIRTUAL,
+    isDetectable TINYINT(1) GENERATED ALWAYS AS (mutationStatus <> 'NO_COVERAGE') VIRTUAL,
+    isDetected TINYINT(1) GENERATED ALWAYS AS (mutationStatus IN ('KILLED', 'TIMED_OUT', 'MEMORY_ERROR')) VIRTUAL,
+    mutatedMethodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatedMethod)) VIRTUAL,
+    mutatorNameHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatorName)) VIRTUAL
+);
+
 CREATE INDEX idx_aly_mi_1 ON Method_Info(execution, methodHash);
 CREATE INDEX idx_aly_mi_2 ON Method_Info(classificationId);
 CREATE INDEX idx_aly_ti_1 ON Testcase_Info(execution, testcaseHash);
@@ -95,6 +114,8 @@ CREATE INDEX idx_aly_ri_2 ON Relation_Info(testcaseId);
 CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution, retValGenHash);
 CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution, methodId, testcaseId);
 CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(testcaseId);
+CREATE INDEX idx_aly_pmi_1 ON Pit_Mutation_Info(execution, methodId);
+CREATE INDEX idx_aly_pmi_2 ON Pit_Mutation_Info(execution, killingTestcaseId);
 
 ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId, testcaseId);
 ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, methodId, testcaseId, retValGenId);

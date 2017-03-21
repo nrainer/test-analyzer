@@ -26,6 +26,9 @@ WHERE execution = @executionId;
 DELETE FROM Stack_Info_Import
 WHERE execution = @executionId;
 
+DELETE FROM Pit_Mutation_Result_Import
+WHERE execution = @executionId;
+
 DELETE FROM Execution_Information
 WHERE execution = @executionId;
 

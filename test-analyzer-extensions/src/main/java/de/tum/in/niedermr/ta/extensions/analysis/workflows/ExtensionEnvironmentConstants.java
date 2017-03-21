@@ -29,4 +29,8 @@ public interface ExtensionEnvironmentConstants extends EnvironmentConstants {
 	/** Output file for the retrieved method return types. */
 	String FILE_OUTPUT_METHOD_RETURN_TYPES = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "return-type-list"
 			+ FileSystemConstants.FILE_EXTENSION_TXT;
+
+	/** Output file for the converter PIT data. */
+	String FILE_OUTPUT_PIT_DATA = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "pit-data"
+			+ FileSystemConstants.FILE_EXTENSION_SQL_TXT;
 }

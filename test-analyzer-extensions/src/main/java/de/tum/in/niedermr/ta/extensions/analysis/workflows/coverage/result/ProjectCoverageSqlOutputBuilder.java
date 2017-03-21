@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.result.presentation;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result;
 
 import java.util.ArrayList;
 import java.util.List;

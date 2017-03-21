@@ -32,6 +32,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 	private File m_expectedResultFile;
 	/** Expected file. */
 	private File m_expectedParsedCoverageFile;
+	/** Expected file. */
+	private File m_expectedPitDataFile;
 
 	/** Actual output file. */
 	private File m_outputStackAnalysisFile;
@@ -45,6 +47,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 	private File m_outputResultFile;
 	/** Actual output file. */
 	private File m_outputParsedCoverageFile;
+	/** Actual output file. */
+	private File m_outputConvertedPitFile;
 
 	/** {@inheritDoc} */
 	@Override
@@ -83,17 +87,24 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 		m_outputResultFile = new File(MultiFileResultReceiver.getFileName(getFileOutputResultAsSql().getPath(),
 				MultiFileResultReceiver.FIRST_INDEX));
 
-		File inputCoverageXmlFile = getFileInSpecificTestDataFolder("other/coverage.xml");
-		File inputCoverageXmlFileInWorkingDirectory = getFileInWorkingDirectory("coverage.xml");
-		assertFilesExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFile);
-		Files.copy(inputCoverageXmlFile.toPath(), inputCoverageXmlFileInWorkingDirectory.toPath(),
-				StandardCopyOption.REPLACE_EXISTING);
-		assertFilesExists(MSG_TEST_DATA_MISSING, inputCoverageXmlFileInWorkingDirectory);
-
+		copyFileIntoWorkingDirectory("other/coverage.xml", "coverage.xml");
 		m_expectedParsedCoverageFile = getExpectedFile(
 				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
 		m_outputParsedCoverageFile = getOutputFile(
 				getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_COVERAGE_INFORMATION));
+
+		copyFileIntoWorkingDirectory("other/mutations.xml", "mutations.xml");
+		m_expectedPitDataFile = getExpectedFile(getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_PIT_DATA));
+		m_outputConvertedPitFile = getOutputFile(getFileName(ExtensionEnvironmentConstants.FILE_OUTPUT_PIT_DATA));
+	}
+
+	private void copyFileIntoWorkingDirectory(String originalFilePath, String fileNameInWorkingDirectory)
+			throws IOException {
+		File originalFile = getFileInSpecificTestDataFolder(originalFilePath);
+		File targetFile = getFileInWorkingDirectory(fileNameInWorkingDirectory);
+		assertFilesExists(MSG_TEST_DATA_MISSING, originalFile);
+		Files.copy(originalFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		assertFilesExists(MSG_TEST_DATA_MISSING, targetFile);
 	}
 
 	private void checkResults() {
@@ -115,5 +126,8 @@ public class IntegrationTest7 extends AbstractIntegrationTest {
 
 		assertFilesExists(MSG_OUTPUT_MISSING, m_outputResultFile);
 		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedResultFile, m_outputResultFile);
+
+		assertFilesExists(MSG_OUTPUT_MISSING, m_outputConvertedPitFile);
+		assertFileContentEqual(MSG_NOT_EQUAL_RESULT, false, m_expectedPitDataFile, m_outputConvertedPitFile);
 	}
 }
