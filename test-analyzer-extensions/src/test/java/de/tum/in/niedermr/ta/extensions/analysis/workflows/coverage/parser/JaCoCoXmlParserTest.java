@@ -15,6 +15,7 @@ import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 /** Test {@link JaCoCoXmlParser}. */
 public class JaCoCoXmlParserTest {
 
+	/** Test. */
 	@Test
 	public void testParser() throws Exception {
 		ICoverageParser jaCoCoXmlParser = new JaCoCoXmlParser(ExecutionIdFactory.ID_FOR_TESTS);

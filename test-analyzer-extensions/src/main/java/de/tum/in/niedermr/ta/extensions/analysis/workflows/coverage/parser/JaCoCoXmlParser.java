@@ -78,13 +78,14 @@ public class JaCoCoXmlParser extends AbstractXmlCoverageParser {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node node = nodeList.item(i);
 
-			// performance tuning (does not influence indices in the NodeList)
-			node.getParentNode().removeChild(node);
-
 			String sourceFolderName = evaluateStringValue(node, folderNameAttributeXPath);
 			int countCovered = Integer.parseInt(evaluateStringValue(node, folderCountCoveredAttributeXPath));
 			int countNotCovered = Integer.parseInt(evaluateStringValue(node, folderCountMissedAttributeXPath));
 			sqlOutputBuilder.addSourceFolder(sourceFolderName, countCovered, countNotCovered);
+
+			// performance tuning (does not influence indices in the NodeList) must be applied at the end here (because
+			// folderNameAttributeXPath accesses a parent attribute)
+			node.getParentNode().removeChild(node);
 		}
 
 		resultReceiver.append(sqlOutputBuilder.complete());
