@@ -26,6 +26,9 @@ WHERE execution = @executionId;
 DELETE FROM RetValGen_Info
 WHERE execution = @executionId;
 
+DELETE FROM Pit_Mutation_Info
+WHERE execution = @executionId;
+
 UPDATE Execution_Information ei
 SET ei.processed = 0
 WHERE ei.execution = @executionId;
