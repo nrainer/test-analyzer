@@ -88,13 +88,14 @@ CREATE TABLE Method_Classification_Info
   isToBeExcluded TINYINT(1) NOT NULL DEFAULT 0
 );
 
+-- multiple entries for the same method with the same mutator are possible (mutations in different lines)
 CREATE TABLE Pit_Mutation_Info
 (
 	importedMutationId INT(11) NOT NULL PRIMARY KEY REFERENCES Pit_Mutation_Result_Import(id),
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	mutatedMethod VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
-	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED') NOT NULL,
+	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR') NOT NULL,
 	killingTestcase VARCHAR(1024) COLLATE UTF8_BIN,
 	methodId INT(11) REFERENCES Method_Info(methodId),
 	testcaseId INT(11) REFERENCES Testcase_Info(testcaseId),
@@ -118,7 +119,6 @@ ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId
 ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, methodId, testcaseId, retValGenId);
 ALTER TABLE Method_Test_Abort_Info ADD CONSTRAINT uc_aly_mai_1 UNIQUE (execution, methodId, retValGenId);
 ALTER TABLE Method_Classification_Info ADD CONSTRAINT uc_aly_mci_1 UNIQUE (name);
-ALTER TABLE Pit_Mutation_Info ADD CONSTRAINT uc_aly_pmi_1 UNIQUE (execution, mutatedMethodHash, mutatorNameHash);
 
 -- Note that CHECK clauses are ignored by MySQL.
 ALTER TABLE Method_Info ADD CONSTRAINT cstr_mi_1 CHECK (lineCoverage IS NULL OR (lineCoverage >= 0 AND lineCoverage <= 1));

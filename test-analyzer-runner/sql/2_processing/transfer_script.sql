@@ -90,7 +90,7 @@ LEFT OUTER JOIN Method_Info mi
 ON pmr.execution = mi.execution
 AND pmr.methodHash = mi.methodHash
 AND pmr.mutatedMethod = mi.method
-INNER JOIN Testcase_Info ti
+LEFT OUTER JOIN Testcase_Info ti
 ON pmr.execution = ti.execution
 AND pmr.testcaseHash = ti.testcaseHash
 AND pmr.killingTestcase = ti.testcase
