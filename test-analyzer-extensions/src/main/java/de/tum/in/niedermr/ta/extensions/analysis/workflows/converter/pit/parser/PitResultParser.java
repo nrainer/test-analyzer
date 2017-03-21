@@ -65,7 +65,13 @@ public class PitResultParser extends AbstractXmlContentParser {
 		NodeList nodeList = evaluateNodeList(document, m_mutationNodeXPath);
 
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			parseMutationNode(nodeList.item(i), resultReceiver);
+			Node currentNode = nodeList.item(i);
+
+			// remove the current node from the parent node to improve the performance; this does not influence the
+			// indices in the NodeList
+			currentNode.getParentNode().removeChild(currentNode);
+
+			parseMutationNode(currentNode, resultReceiver);
 			resultReceiver.markResultAsPartiallyComplete();
 
 			if (i % 1000 == 0) {
