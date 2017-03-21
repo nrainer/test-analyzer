@@ -1,6 +1,8 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
 
@@ -42,7 +44,9 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	@Override
 	public void initialize() throws ContentParserException {
 		try {
-			m_documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+			DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+			configureDocumentBuilderFactory(documentBuilderFactory);
+			m_documentBuilder = documentBuilderFactory.newDocumentBuilder();
 			m_documentBuilder.setEntityResolver(new NoSchemaReportEntityResolver());
 
 			XPathFactory xPathFactory = XPathFactory.newInstance();
@@ -56,7 +60,8 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	@Override
 	public void parse(File inputFile, IResultReceiver resultReceiver) throws ContentParserException {
 		try {
-			Document document = m_documentBuilder.parse(inputFile);
+			BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(inputFile));
+			Document document = m_documentBuilder.parse(inputStream);
 			parse(document, resultReceiver);
 			resultReceiver.markResultAsComplete();
 		} catch (SAXException | IOException | XPathExpressionException e) {
@@ -66,6 +71,13 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 
 	/** Parse. */
 	protected abstract void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException;
+
+	/** Configure the document builder factory. */
+	protected void configureDocumentBuilderFactory(DocumentBuilderFactory documentBuilderFactory)
+			throws ParserConfigurationException {
+		documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
+		documentBuilderFactory.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+	}
 
 	/** Compile an XPath expression. */
 	protected final XPathExpression compileXPath(String expression) throws XPathExpressionException {
