@@ -80,7 +80,8 @@ public class MutationSqlOutputBuilder {
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationStatus));
 		builder.append(", ");
-		builder.append(m_killingTestcase.map(identifier -> asSqlString(identifier.get())).orElse("NULL"));
+		builder.append(
+				m_killingTestcase.map(identifier -> asSqlString(identifier.toMethodIdentifier().get())).orElse("NULL"));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutatorName));
 		builder.append(", ");
