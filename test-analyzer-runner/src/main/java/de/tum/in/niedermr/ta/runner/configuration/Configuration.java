@@ -59,6 +59,7 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	private final NumberOfThreadsProperty m_numberOfThreads;
 	private final RemoveTempDataProperty m_removeTempData;
 
+	/** Constructor. */
 	public Configuration() {
 		super(CURRENT_VERSION);
 		m_testAnalyzerClasspath = new TestAnalyzerClasspathProperty();

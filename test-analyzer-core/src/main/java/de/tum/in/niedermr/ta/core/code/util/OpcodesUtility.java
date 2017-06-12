@@ -4,6 +4,12 @@ import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 
 public class OpcodesUtility {
+
+	/** Constructor. */
+	private OpcodesUtility() {
+		// NOP
+	}
+
 	public static boolean isMethodExitOpcode(int opcode) {
 		return isXRETURN(opcode) || opcode == Opcodes.ATHROW;
 	}
