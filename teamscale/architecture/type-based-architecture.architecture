@@ -18,6 +18,9 @@
   <component name="extensions.testing" dim="190,40" pos="801,621">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.extensions.testing.*" />
   </component>
+  <component name="extensions.threads" dim="170,40" pos="301,621">
+    <code-mapping type="include" regex="de\.tum\.in\.niedermr\.ta\.extensions\.threads\..*" />
+  </component>
   <component name="other" dim="120,40" pos="21,21">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.Core" />
     <code-mapping type="include" regex="ClasspathHelp" />
@@ -47,8 +50,10 @@
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.test.integration.*" />
   </component>
   <allow source="core.analysis" target="core.execution" />
+  <allow source="core.analysis" target="runner.analysis" />
   <allow source="extensions.analysis" target="core.analysis" />
   <allow source="extensions.analysis" target="core.execution" />
+  <allow source="extensions.analysis" target="extensions.threads" />
   <allow source="extensions.analysis" target="runner.analysis" />
   <allow source="extensions.analysis" target="runner.configuration" />
   <allow source="extensions.analysis" target="runner.execution" />
@@ -95,6 +100,7 @@
   <allow source="runner.test" target="runner.configuration" />
   <allow source="test.integration" target="core.analysis" />
   <allow source="test.integration" target="extensions.analysis" />
+  <allow source="test.integration" target="extensions.threads" />
   <allow source="test.integration" target="runner.configuration" />
   <allow source="test.integration" target="runner.execution" />
   <allow source="test.integration" target="runner.factory" />
