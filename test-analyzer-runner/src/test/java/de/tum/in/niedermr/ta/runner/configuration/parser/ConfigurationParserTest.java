@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.After;
 import org.junit.Test;
 
+import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.configuration.ConfigurationManager;
@@ -32,7 +33,7 @@ public class ConfigurationParserTest {
 
 	/** Test. */
 	@Test
-	public void testParse1() throws IOException, ConfigurationException {
+	public void testParse() throws IOException, ConfigurationException {
 		final Configuration expected = new Configuration();
 		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
 		expected.getClasspath().setValue("a.jar" + ClasspathUtility.getClasspathSeparator() + "b.jar"
@@ -51,8 +52,44 @@ public class ConfigurationParserTest {
 	}
 
 	/** Test. */
+	@Test
+	public void testParseWithMigration() throws IOException, ConfigurationException {
+		Configuration configurationWithOldVersion = new Configuration();
+		configurationWithOldVersion.getConfigurationVersion().setValue(1);
+		configurationWithOldVersion.getCodePathToTest().setValue("x.jar");
+
+		List<String> fileLinesOfOldConfiguration = ConfigurationManager.toFileLines(configurationWithOldVersion, false);
+
+		for (int i = 0; i < fileLinesOfOldConfiguration.size(); i++) {
+			final String currentLine = fileLinesOfOldConfiguration.get(i);
+
+			if (currentLine.startsWith(configurationWithOldVersion.getCodePathToTest().getName())) {
+				// change the key to the name in V1 -> migration required
+				fileLinesOfOldConfiguration.set(i, currentLine
+						.replace(configurationWithOldVersion.getCodePathToTest().getName(), "jarsWithTestsToRun"));
+			}
+
+			if (currentLine.startsWith(configurationWithOldVersion.getReturnValueGenerators().getName())) {
+				// change the key and value to the name in V1 -> migration required
+				fileLinesOfOldConfiguration.set(i,
+						currentLine.replace(configurationWithOldVersion.getReturnValueGenerators().getName(),
+								"returnValueGeneratorNames").replace(VoidReturnValueGenerator.class.getName(),
+										"de.tum.in.ma.logic.mutation.returnValues.VoidReturnValueGenerator"));
+			}
+		}
+
+		Configuration expected = new Configuration();
+		expected.getConfigurationVersion().setConfigurationVersionOfProgram();
+		expected.getCodePathToTest().setValue("x.jar");
+
+		TestConfigurationParser1 parser = new TestConfigurationParser1(fileLinesOfOldConfiguration);
+		parser.parse();
+		ConfigurationManagerTest.assertConfigurationEquals(expected, parser.getConfiguration());
+	}
+
+	/** Test. */
 	@Test(expected = ConfigurationException.class)
-	public void testParse2() throws IOException, ConfigurationException {
+	public void testParseWithException() throws IOException, ConfigurationException {
 		AbstractConfigurationParser.setFastFail(true);
 
 		Configuration stub = new Configuration();
@@ -107,7 +144,7 @@ public class ConfigurationParserTest {
 		parser.parse("A");
 	}
 
-	private static class TestConfigurationParser1 extends AbstractConfigurationParser<Configuration> {
+	private static class TestConfigurationParser1 extends ConfigurationParser {
 		private final List<String> m_contentToReturn;
 
 		public TestConfigurationParser1(List<String> contentToReturn) {

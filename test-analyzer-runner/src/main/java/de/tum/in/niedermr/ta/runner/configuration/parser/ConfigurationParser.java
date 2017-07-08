@@ -18,6 +18,7 @@ public class ConfigurationParser extends AbstractConfigurationParser<Configurati
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(ConfigurationParser.class);
 
+	/** (Chained) migration steps for the configuration. */
 	private IConfigurationMigration m_configurationMigration = null;
 
 	public static Configuration parseFromFile(String pathToConfigFile) throws IOException, ConfigurationException {
