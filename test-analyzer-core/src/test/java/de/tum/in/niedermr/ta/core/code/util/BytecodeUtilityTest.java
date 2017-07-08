@@ -17,7 +17,10 @@ import org.objectweb.asm.tree.MethodNode;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.sample.SampleClass;
 
+/** Test {@link BytecodeUtility}. */
 public class BytecodeUtilityTest {
+
+	/** Test. */
 	@Test
 	public void testGetAcceptedClassNode1() throws IOException {
 		Class<?> cls = String.class;
@@ -26,6 +29,7 @@ public class BytecodeUtilityTest {
 				BytecodeUtility.getAcceptedClassNode(cls).name);
 	}
 
+	/** Test. */
 	@Test
 	public void testGetAcceptedClassNode2() throws IOException {
 		String className = String.class.getName();
@@ -34,6 +38,7 @@ public class BytecodeUtilityTest {
 				BytecodeUtility.getAcceptedClassNode(className).name);
 	}
 
+	/** Test. */
 	@Test
 	public void testIsAbstractClass() throws ClassNotFoundException, IOException {
 		ClassNode cn;
@@ -45,6 +50,7 @@ public class BytecodeUtilityTest {
 		assertTrue(BytecodeUtility.isAbstractClass(cn));
 	}
 
+	/** Test. */
 	@SuppressWarnings("unchecked")
 	@Test
 	public void testCountMethodInstructions() throws ClassNotFoundException, IOException {
@@ -75,5 +81,23 @@ public class BytecodeUtilityTest {
 		}
 
 		assertEquals(expected.size(), countChecks);
+	}
+
+	/** Test. */
+	@Test
+	public void testMethodFlags() throws IOException {
+		ClassNode cn = BytecodeUtility.getAcceptedClassNode(SampleClass.class);
+
+		@SuppressWarnings("unchecked")
+		List<MethodNode> methods = cn.methods;
+
+		MethodNode constructorMethodNode = methods.stream().filter(method -> "<init>".equals(method.name)).findAny()
+				.get();
+		assertTrue(BytecodeUtility.isConstructor(constructorMethodNode));
+
+		MethodNode publicGetterMethodNode = methods.stream().filter(method -> "getX".equals(method.name)).findAny()
+				.get();
+		assertTrue(BytecodeUtility.isPublicMethod(publicGetterMethodNode));
+		assertFalse(BytecodeUtility.isConstructor(publicGetterMethodNode));
 	}
 }
