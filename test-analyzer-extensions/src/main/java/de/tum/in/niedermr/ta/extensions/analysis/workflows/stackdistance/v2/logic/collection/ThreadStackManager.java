@@ -26,7 +26,7 @@ public class ThreadStackManager implements IThreadListener {
 	/** Map that contains for a thread its stack height from the program start. */
 	private final Map<String, Integer> m_stackHeightAtStartByThreadName = new HashMap<>();
 
-	/** Stop class from where to stop counting the stacks. Occurences of this class will be excluded. */
+	/** Stop class from where to stop counting the stacks. Occurrences of this class will be excluded. */
 	private String m_stopClassName;
 
 	/**

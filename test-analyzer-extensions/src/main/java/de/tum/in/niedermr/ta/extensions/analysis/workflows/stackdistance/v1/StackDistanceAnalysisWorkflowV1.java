@@ -6,11 +6,11 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.steps.AnalysisInstrumentationStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v1.logic.collection.AnalysisInformationCollectionLogicV1;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v1.logic.recording.StackLogRecorderV1;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.StackDistanceAnalysisWorkflowV2;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v3.StackDistanceAnalysisWorkflowV3;
 
 /**
  * Computes the minimum and maximum distance on the call stack between test case and method. <br/>
- * <b>Deprecated: {@link StackDistanceAnalysisWorkflowV2} should be used instead.</b> V2 produces valid results for
+ * <b>Deprecated: {@link StackDistanceAnalysisWorkflowV3} should be used instead.</b> V2 produces valid results for
  * multi-threaded code. Note that V2 requires to replace the {@link Thread} class.
  */
 public class StackDistanceAnalysisWorkflowV1 extends AbstractStackDistanceAnalysisWorkflow {

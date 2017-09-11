@@ -19,8 +19,7 @@ import de.tum.in.niedermr.ta.extensions.threads.IModifiedThreadClass;
  * The modified <code>java.lang.Thread</code> class must:
  * <li>implement {@link IModifiedThreadClass}</li>
  * <li>invoke <code>ThreadNotifier.INSTANCE.sendThreadStartedEvent(this);</code> in {@link Thread#start()} (directly
- * before invoking <code>start0()</code>)</li>
- * 
+ * before invoking <code>start0()</code>)</li> Moreover, this version can be slow.
  */
 public class StackDistanceAnalysisWorkflowV2 extends AbstractStackDistanceAnalysisWorkflow {
 
