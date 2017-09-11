@@ -21,6 +21,7 @@ public class StackLogDataManager {
 
 	/** Reset the counters. */
 	private static synchronized void resetLog() {
+		s_currentTestCaseIdentifier = null;
 		s_invocationsMinDistance.clear();
 		s_invocationsMaxDistance.clear();
 		s_invocationsCount.clear();
@@ -29,8 +30,7 @@ public class StackLogDataManager {
 	/** Record a visited method: Update the minimal and maximal stack distance and the invocation count. */
 	public static synchronized void visitMethodInvocation(MethodIdentifier methodIdentifier, int stackDistance) {
 		// count the invocations
-		s_invocationsCount.putIfAbsent(methodIdentifier, 0);
-		s_invocationsCount.put(methodIdentifier, 1 + s_invocationsCount.get(methodIdentifier));
+		s_invocationsCount.put(methodIdentifier, 1 + s_invocationsCount.getOrDefault(methodIdentifier, 0));
 
 		// update the minimal stack distance
 		Integer minStackDistance = s_invocationsMinDistance.get(methodIdentifier);
