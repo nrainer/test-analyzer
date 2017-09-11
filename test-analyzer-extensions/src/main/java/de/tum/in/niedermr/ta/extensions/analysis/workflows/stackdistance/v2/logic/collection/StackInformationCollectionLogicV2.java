@@ -1,45 +1,17 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.collection;
 
-import java.util.Map;
-import java.util.Set;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.logic.collection.AbstractStackInformationCollectionLogic;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.logic.collection.AbstractThreadAwareStackInformationCollectionLogic;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.recording.StackLogRecorderV2;
-import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
 
 /**
  * Logic to collect information about the test cases and methods under test.<br/>
  * Parameterless constructor required.
  */
-public class StackInformationCollectionLogicV2 extends AbstractStackInformationCollectionLogic {
-
-	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(StackInformationCollectionLogicV2.class);
-
-	/** Prefixes of class names that should not be counted when computing the stack distance. */
-	private static final String[] STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES = new String[] { "org.junit.",
-			"sun.reflect." };
+public class StackInformationCollectionLogicV2 extends AbstractThreadAwareStackInformationCollectionLogic {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
-		super.execBeforeExecutingAllTests(testClassesWithTestcases);
-		ThreadStackManager stackManager = new ThreadStackManager();
-
-		// useful for JUnit tests with timeout annotation
-		stackManager.setStackCountIgnoreClassNamesPrefixes(STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES);
-
-		ThreadNotifier.INSTANCE.registerListener(stackManager);
-		LOGGER.info("Registered StackManager at the ThreadNotifier.");
-		execSetThreadStackManagerAndVerify(stackManager);
-		LOGGER.info("ThreadStackManager is set and verified.");
-	}
-
-	/** Set the {@link ThreadStackManager} and verify it. */
 	protected void execSetThreadStackManagerAndVerify(ThreadStackManager stackManager) {
 		StackLogRecorderV2.setThreadStackManagerAndVerify(stackManager);
 	}
