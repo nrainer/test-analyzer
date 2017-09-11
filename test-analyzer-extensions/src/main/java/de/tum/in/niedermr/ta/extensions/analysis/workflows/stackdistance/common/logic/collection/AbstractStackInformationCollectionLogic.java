@@ -13,7 +13,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPres
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
 /** Logic to collect information about the test cases and methods under test. */
-public abstract class AbstractAnalysisInformationCollectionLogic extends AbstractInformationCollectionLogic {
+public abstract class AbstractStackInformationCollectionLogic extends AbstractInformationCollectionLogic {
 
 	private IResultPresentationExtended m_resultPresentation;
 	private IResultReceiver m_resultReceiver;

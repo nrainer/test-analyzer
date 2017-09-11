@@ -5,7 +5,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.steps.AnalysisInformationCollectorStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.steps.AnalysisInstrumentationStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v1.StackDistanceAnalysisWorkflowV1;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.collection.AnalysisInformationCollectionLogicV2;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.collection.StackInformationCollectionLogicV2;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.recording.StackLogRecorderV2;
 import de.tum.in.niedermr.ta.extensions.threads.IModifiedThreadClass;
 
@@ -37,7 +37,7 @@ public class StackDistanceAnalysisWorkflowV2 extends AbstractStackDistanceAnalys
 		AnalysisInformationCollectorStep step = createAndInitializeExecutionStep(
 				AnalysisInformationCollectorStep.class);
 		step.setResultOutputFile(ExtensionEnvironmentConstants.FILE_OUTPUT_STACK_DISTANCES_V2);
-		step.setInformationCollectorLogicClass(AnalysisInformationCollectionLogicV2.class);
+		step.setInformationCollectorLogicClass(StackInformationCollectionLogicV2.class);
 		return step;
 	}
 }

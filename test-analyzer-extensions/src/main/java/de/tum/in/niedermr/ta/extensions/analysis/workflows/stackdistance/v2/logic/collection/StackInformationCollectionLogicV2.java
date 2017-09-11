@@ -7,7 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.logic.collection.AbstractAnalysisInformationCollectionLogic;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.common.logic.collection.AbstractStackInformationCollectionLogic;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.recording.StackLogRecorderV2;
 import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
 
@@ -15,10 +15,10 @@ import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
  * Logic to collect information about the test cases and methods under test.<br/>
  * Parameterless constructor required.
  */
-public class AnalysisInformationCollectionLogicV2 extends AbstractAnalysisInformationCollectionLogic {
+public class StackInformationCollectionLogicV2 extends AbstractStackInformationCollectionLogic {
 
 	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(AnalysisInformationCollectionLogicV2.class);
+	private static final Logger LOGGER = LogManager.getLogger(StackInformationCollectionLogicV2.class);
 
 	/** Prefixes of class names that should not be counted when computing the stack distance. */
 	private static final String[] STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES = new String[] { "org.junit.",
