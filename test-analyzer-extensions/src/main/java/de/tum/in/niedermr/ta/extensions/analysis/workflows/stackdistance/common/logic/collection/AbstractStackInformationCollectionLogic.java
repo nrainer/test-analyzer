@@ -44,12 +44,15 @@ public abstract class AbstractStackInformationCollectionLogic extends AbstractIn
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
+		super.execTestcaseExecutedSuccessfully(testCaseIdentifier);
 		appendStackDistanceOfTestcaseToResult(testCaseIdentifier);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedWithFailure(TestcaseIdentifier testCaseIdentifier, ITestRunResult testResult) {
+		super.execTestcaseExecutedWithFailure(testCaseIdentifier, testResult);
+
 		if (isIncludeFailingTests()) {
 			appendStackDistanceOfTestcaseToResult(testCaseIdentifier);
 		}

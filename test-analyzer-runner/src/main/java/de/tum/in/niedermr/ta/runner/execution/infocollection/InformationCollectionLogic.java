@@ -42,12 +42,15 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
+		super.execTestcaseExecutedSuccessfully(testCaseIdentifier);
 		recordTestcaseExecutionData(testCaseIdentifier);
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedWithFailure(TestcaseIdentifier testCaseIdentifier, ITestRunResult testResult) {
+		super.execTestcaseExecutedWithFailure(testCaseIdentifier, testResult);
+
 		if (isIncludeFailingTests()) {
 			recordTestcaseExecutionData(testCaseIdentifier);
 		}
