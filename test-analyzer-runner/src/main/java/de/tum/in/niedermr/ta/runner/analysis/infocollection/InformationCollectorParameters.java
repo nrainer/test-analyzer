@@ -10,7 +10,7 @@ import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 public class InformationCollectorParameters {
 
 	/** Number of args. */
-	private static final int ARGS_COUNT = 10;
+	private static final int ARGS_COUNT = 11;
 	public static final ProgramArgsKey ARGS_EXECUTION_ID = new ProgramArgsKey(InformationCollectorParameters.class, 0);
 	public static final ProgramArgsKey ARGS_FILE_WITH_TESTS_TO_RUN = new ProgramArgsKey(
 			InformationCollectorParameters.class, 1);
