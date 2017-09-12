@@ -22,6 +22,12 @@ public abstract class AbstractStackDistanceAnalysisWorkflow extends AbstractWork
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "stackdistance.useMultipleOutputFiles", false);
 
+	/**
+	 * <code>extension.stackdistance.includeFailingTests</code>: Whether to include the distance of failing test cases.
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_INCLUDE_FAILING_TESTS = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "stackdistance.includeFailingTests", false);
+
 	/** {@inheritDoc} */
 	@Override
 	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
@@ -32,6 +38,9 @@ public abstract class AbstractStackDistanceAnalysisWorkflow extends AbstractWork
 
 		analysisInformationCollectorStep.setUseMultiFileOutput(
 				configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES));
+
+		analysisInformationCollectorStep.setIncludeFailingTestcases(
+				configuration.getDynamicValues().getBooleanValue(CONFIGURATION_KEY_INCLUDE_FAILING_TESTS));
 
 		prepareStep.start();
 		analysisInstrumentationStep.start();

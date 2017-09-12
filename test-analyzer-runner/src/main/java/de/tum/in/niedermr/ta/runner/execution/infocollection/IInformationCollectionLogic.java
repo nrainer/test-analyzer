@@ -41,4 +41,6 @@ public interface IInformationCollectionLogic {
 	/** Execute the logic. */
 	void execute(String[] jarsWithTests, String[] testClassIncludes, String[] testClassExcludes,
 			boolean operateFaultTolerant) throws IteratorException, ReflectiveOperationException;
+
+	void setIncludeFailingTests(boolean includeFailingTests);
 }

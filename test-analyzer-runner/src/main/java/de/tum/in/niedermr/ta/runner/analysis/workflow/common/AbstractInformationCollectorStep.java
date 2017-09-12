@@ -64,6 +64,8 @@ public abstract class AbstractInformationCollectorStep extends AbstractExecution
 				getInformationCollectorLogicClass().getName());
 		argsWriter.setValue(InformationCollectorParameters.ARGS_OPERATE_FAULT_TOLERANT,
 				configuration.getOperateFaultTolerant().getValueAsString());
+		argsWriter.setValue(InformationCollectorParameters.ARGS_INCLUDE_FAILING_TESTCASES,
+				Boolean.toString(isIncludeFailingTestcases()));
 		argsWriter.setValue(InformationCollectorParameters.ARGS_TEST_CLASS_INCLUDES,
 				ProcessExecution.wrapPattern(configuration.getTestClassIncludes().getValue()));
 		argsWriter.setValue(InformationCollectorParameters.ARGS_TEST_CLASS_EXCLUDES,
@@ -74,6 +76,8 @@ public abstract class AbstractInformationCollectorStep extends AbstractExecution
 				Boolean.valueOf(m_useMultiFileOutput).toString());
 		return argsWriter;
 	}
+
+	protected abstract boolean isIncludeFailingTestcases();
 
 	protected abstract Class<? extends IInformationCollectionLogic> getInformationCollectorLogicClass();
 

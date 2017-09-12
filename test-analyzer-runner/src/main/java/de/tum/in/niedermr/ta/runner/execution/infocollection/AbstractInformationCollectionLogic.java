@@ -30,11 +30,18 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 	private String m_outputFile;
 	private IResultPresentation m_resultPresentation;
 	private boolean m_useMultiFileOutput;
+	private boolean m_includeFailingTests;
 
 	/** {@inheritDoc} */
 	@Override
 	public void setExecutionId(IFullExecutionId executionId) {
 		m_executionId = executionId;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void setIncludeFailingTests(boolean includeFailingTests) {
+		m_includeFailingTests = includeFailingTests;
 	}
 
 	/** {@inheritDoc} */
@@ -77,6 +84,10 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 	@Override
 	public IResultPresentation getResultPresentation() {
 		return m_resultPresentation;
+	}
+
+	public boolean isIncludeFailingTests() {
+		return m_includeFailingTests;
 	}
 
 	/** {@inheritDoc} */

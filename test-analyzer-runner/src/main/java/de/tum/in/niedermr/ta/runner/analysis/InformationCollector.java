@@ -75,6 +75,8 @@ public class InformationCollector {
 		informationCollectionLogic.setExecutionId(executionId);
 		boolean operateFaultTolerant = Boolean.parseBoolean(argsReader
 				.getArgument(InformationCollectorParameters.ARGS_OPERATE_FAULT_TOLERANT, Boolean.FALSE.toString()));
+		boolean includeFailingTests = Boolean.parseBoolean(argsReader
+				.getArgument(InformationCollectorParameters.ARGS_INCLUDE_FAILING_TESTCASES, Boolean.FALSE.toString()));
 		String[] testClassIncludes = ProcessExecution.unwrapAndSplitPattern(
 				argsReader.getArgument(InformationCollectorParameters.ARGS_TEST_CLASS_INCLUDES, true));
 		String[] testClassExcludes = ProcessExecution.unwrapAndSplitPattern(
@@ -89,6 +91,7 @@ public class InformationCollector {
 		informationCollectionLogic.setResultPresentation(
 				ResultPresentationUtil.createResultPresentation(resultPresentationChoice, executionId));
 		informationCollectionLogic.setUseMultiFileOutput(useMultiFileOutput);
+		informationCollectionLogic.setIncludeFailingTests(includeFailingTests);
 		informationCollectionLogic.execute(jarsWithTests, testClassIncludes, testClassExcludes, operateFaultTolerant);
 
 	}

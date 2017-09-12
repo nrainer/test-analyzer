@@ -15,6 +15,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.TestInformation;
+import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
 /**
@@ -41,6 +42,18 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
+		recordTestcaseExecutionData(testCaseIdentifier);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void execTestcaseExecutedWithFailure(TestcaseIdentifier testCaseIdentifier, ITestRunResult testResult) {
+		if (isIncludeFailingTests()) {
+			recordTestcaseExecutionData(testCaseIdentifier);
+		}
+	}
+
+	protected void recordTestcaseExecutionData(TestcaseIdentifier testCaseIdentifier) {
 		Set<String> methodsUnderTest = getInvocationLogContent();
 
 		for (String loggedMethodIdentifier : methodsUnderTest) {

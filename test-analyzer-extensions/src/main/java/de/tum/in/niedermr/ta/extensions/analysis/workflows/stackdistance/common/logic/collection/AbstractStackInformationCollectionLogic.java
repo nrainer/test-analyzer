@@ -8,6 +8,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
+import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
@@ -43,6 +44,18 @@ public abstract class AbstractStackInformationCollectionLogic extends AbstractIn
 	/** {@inheritDoc} */
 	@Override
 	protected void execTestcaseExecutedSuccessfully(TestcaseIdentifier testCaseIdentifier) {
+		appendStackDistanceOfTestcaseToResult(testCaseIdentifier);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void execTestcaseExecutedWithFailure(TestcaseIdentifier testCaseIdentifier, ITestRunResult testResult) {
+		if (isIncludeFailingTests()) {
+			appendStackDistanceOfTestcaseToResult(testCaseIdentifier);
+		}
+	}
+
+	protected void appendStackDistanceOfTestcaseToResult(TestcaseIdentifier testCaseIdentifier) {
 		appendToResult(testCaseIdentifier, StackLogDataManager.getInvocationsMinDistance(),
 				StackLogDataManager.getInvocationsMaxDistance(), StackLogDataManager.getInvocationsCount());
 	}

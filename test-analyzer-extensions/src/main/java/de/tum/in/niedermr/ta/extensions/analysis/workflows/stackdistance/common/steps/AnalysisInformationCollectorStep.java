@@ -15,6 +15,9 @@ public class AnalysisInformationCollectorStep extends AbstractInformationCollect
 	/** Result output file. */
 	private String m_resultOutputFile;
 
+	/** Include failing testcases. */
+	private boolean m_includeFailingTestcases;
+
 	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
@@ -56,5 +59,16 @@ public class AnalysisInformationCollectorStep extends AbstractInformationCollect
 	@Override
 	protected Class<? extends IInformationCollectionLogic> getInformationCollectorLogicClass() {
 		return m_informationCollectionLogicClass;
+	}
+
+	/** {@link #m_includeFailingTestcases} */
+	public void setIncludeFailingTestcases(boolean includeFailingTestcases) {
+		m_includeFailingTestcases = includeFailingTestcases;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected boolean isIncludeFailingTestcases() {
+		return m_includeFailingTestcases;
 	}
 }

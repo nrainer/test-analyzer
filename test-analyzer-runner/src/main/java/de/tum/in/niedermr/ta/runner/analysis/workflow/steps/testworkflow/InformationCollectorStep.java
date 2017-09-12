@@ -41,8 +41,15 @@ public class InformationCollectorStep extends AbstractInformationCollectorStep {
 				configuration.getCodePathToTest().countElements());
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Class<? extends IInformationCollectionLogic> getInformationCollectorLogicClass() {
 		return InformationCollectionLogic.class;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected boolean isIncludeFailingTestcases() {
+		return false;
 	}
 }

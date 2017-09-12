@@ -22,14 +22,16 @@ public class InformationCollectorParameters {
 			InformationCollectorParameters.class, 4);
 	public static final ProgramArgsKey ARGS_OPERATE_FAULT_TOLERANT = new ProgramArgsKey(
 			InformationCollectorParameters.class, 5);
-	public static final ProgramArgsKey ARGS_TEST_CLASS_INCLUDES = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_INCLUDE_FAILING_TESTCASES = new ProgramArgsKey(
 			InformationCollectorParameters.class, 6);
-	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_TEST_CLASS_INCLUDES = new ProgramArgsKey(
 			InformationCollectorParameters.class, 7);
-	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_TEST_CLASS_EXCLUDES = new ProgramArgsKey(
 			InformationCollectorParameters.class, 8);
-	public static final ProgramArgsKey ARGS_USE_MULTI_FILE_OUTPUT = new ProgramArgsKey(
+	public static final ProgramArgsKey ARGS_RESULT_PRESENTATION = new ProgramArgsKey(
 			InformationCollectorParameters.class, 9);
+	public static final ProgramArgsKey ARGS_USE_MULTI_FILE_OUTPUT = new ProgramArgsKey(
+			InformationCollectorParameters.class, 10);
 
 	/** Create a writer for the program arguments. */
 	public static ProgramArgsWriter createProgramArgsWriter() {
