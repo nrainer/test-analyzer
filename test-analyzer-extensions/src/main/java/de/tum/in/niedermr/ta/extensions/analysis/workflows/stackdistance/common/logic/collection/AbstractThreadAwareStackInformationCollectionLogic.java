@@ -6,7 +6,6 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.collection.StackInformationCollectionLogicV2;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v2.logic.collection.ThreadStackManager;
 import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
 
@@ -18,7 +17,7 @@ public abstract class AbstractThreadAwareStackInformationCollectionLogic
 		extends AbstractStackInformationCollectionLogic {
 
 	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(StackInformationCollectionLogicV2.class);
+	private static final Logger LOGGER = LogManager.getLogger(AbstractThreadAwareStackInformationCollectionLogic.class);
 
 	/** Prefixes of class names that should not be counted when computing the stack distance. */
 	private static final String[] STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES = new String[] { "org.junit.",
