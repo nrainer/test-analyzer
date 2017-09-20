@@ -16,6 +16,9 @@ import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.sample.SampleClass;
+import de.tum.in.niedermr.ta.sample.SampleClass2;
+import de.tum.in.niedermr.ta.sample.SampleClass3;
+import de.tum.in.niedermr.ta.sample.SampleClass4;
 
 /** Test {@link BytecodeUtility}. */
 public class BytecodeUtilityTest {
@@ -99,5 +102,23 @@ public class BytecodeUtilityTest {
 				.get();
 		assertTrue(BytecodeUtility.isPublicMethod(publicGetterMethodNode));
 		assertFalse(BytecodeUtility.isConstructor(publicGetterMethodNode));
+	}
+
+	/** Test. */
+	@Test
+	public void testHasParameterlessConstructor() throws IOException {
+		ClassNode cn;
+
+		cn = BytecodeUtility.getAcceptedClassNode(SampleClass.class);
+		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(SampleClass2.class);
+		assertFalse(BytecodeUtility.hasPublicParameterlessConstructor(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(SampleClass3.class);
+		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(SampleClass4.class);
+		assertFalse(BytecodeUtility.hasPublicParameterlessConstructor(cn));
 	}
 }
