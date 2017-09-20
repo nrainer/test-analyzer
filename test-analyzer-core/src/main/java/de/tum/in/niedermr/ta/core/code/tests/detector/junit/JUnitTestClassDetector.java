@@ -63,26 +63,22 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 			return false;
 		}
 
-		boolean isTestCase = false;
-		boolean isIgnored = false;
+		boolean hasTestcaseAnnotation = false;
+		boolean hasIgnoreAnnotation = false;
 
 		for (AnnotationNode annotation : (List<AnnotationNode>) method.visibleAnnotations) {
 			if (annotation.desc.equals(JUNIT_4_TEST_ANNOTATION)) {
-				isTestCase = true;
+				hasTestcaseAnnotation = true;
 			} else if (annotation.desc.equals(JUNIT_4_IGNORE_ANNOTATION)) {
-				isIgnored = true;
+				hasIgnoreAnnotation = true;
 			}
 		}
 
-		if (isTestCase) {
-			if (IGNORE_IGNORED_TEST_CASES && isIgnored) {
-				return false;
-			}
-
-			return true;
+		if (IGNORE_IGNORED_TEST_CASES && hasIgnoreAnnotation) {
+			return false;
 		}
 
-		return false;
+		return hasTestcaseAnnotation;
 	}
 
 	/** {@inheritDoc} */
