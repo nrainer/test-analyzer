@@ -51,11 +51,11 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 			}
 
 			if (m_ignoreAbstractClasses && BytecodeUtility.isAbstractClass(cn)) {
-				return ClassType.IGNORED_ABSTRACT_TEST_CLASS;
+				return ClassType.NON_EXECUTABLE_TEST_CLASS;
 			}
 
 			if (isExcludeTestClassesWithConstructor() && !BytecodeUtility.hasPublicParameterlessConstructor(cn)) {
-				return ClassType.TEST_CLASS_EXCLUDED_BECAUSE_OF_CONSTRUCTOR;
+				return ClassType.NON_EXECUTABLE_TEST_CLASS;
 			}
 		}
 

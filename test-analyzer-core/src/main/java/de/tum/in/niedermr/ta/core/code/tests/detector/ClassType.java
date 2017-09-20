@@ -14,17 +14,10 @@ public class ClassType {
 			"INNER_CLASS_IN_TEST_OR_IGNORED_CLASS", false, false);
 
 	/**
-	 * Test class with constructor (possibly a parameterized test, a suite, or a test class to be sub-classed).
-	 * Currently not supported.
+	 * Test class that cannot be executed (abstract test classes, parameterized test classes with constructor,
+	 * non-public test classes, ...).
 	 */
-	public static final ClassType TEST_CLASS_EXCLUDED_BECAUSE_OF_CONSTRUCTOR = new ClassType(
-			"TEST_CLASS_EXCLUDED_BECAUSE_OF_CONSTRUCTOR", false, false);
-
-	/**
-	 * Abstract test class detected by a test class detector configured to ignore these.
-	 */
-	public static final ClassType IGNORED_ABSTRACT_TEST_CLASS = new ClassType("IGNORED_ABSTRACT_TEST_CLASS", false,
-			false);
+	public static final ClassType NON_EXECUTABLE_TEST_CLASS = new ClassType("NON_EXECUTABLE_TEST_CLASS", false, false);
 
 	/** Test class. */
 	public static final ClassType TEST_CLASS = new ClassType("TEST_CLASS", true, false);

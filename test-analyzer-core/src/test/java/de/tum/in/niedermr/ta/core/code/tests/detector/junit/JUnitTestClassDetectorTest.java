@@ -61,7 +61,7 @@ public class JUnitTestClassDetectorTest {
 	public void testAbstractTestClasses() throws IOException {
 		ClassNode cn = BytecodeUtility.getAcceptedClassNode(AbstractJUnit4TestClass.class);
 
-		assertEquals(ClassType.IGNORED_ABSTRACT_TEST_CLASS, s_detector.analyzeIsTestClass(cn));
+		assertEquals(ClassType.NON_EXECUTABLE_TEST_CLASS, s_detector.analyzeIsTestClass(cn));
 		assertEquals(JUnitClassTypeResult.TEST_CLASS_JUNIT_4,
 				new JUnitTestClassDetector(true, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS).analyzeIsTestClass(cn));
 	}
@@ -125,5 +125,12 @@ public class JUnitTestClassDetectorTest {
 
 		cn = BytecodeUtility.getAcceptedClassNode(TestClassWithInnerClass.InnerClassInTestClass.class);
 		assertEquals(ClassType.INNER_CLASS_IN_TEST_OR_IGNORED_CLASS, s_detector.analyzeIsTestClass(cn));
+	}
+
+	/** Test. */
+	@Test
+	public void testNonPublicTestClass() throws IOException {
+		ClassNode cn = BytecodeUtility.getAcceptedClassNode(JUnitTestClassDetectorTestData.NonPublicTestClass.class);
+		assertEquals(ClassType.NON_EXECUTABLE_TEST_CLASS, s_detector.analyzeIsTestClass(cn));
 	}
 }
