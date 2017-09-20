@@ -4,11 +4,11 @@ import org.junit.Test;
 
 public class TestCollectorTestData {
 
-	class EmptyClass {
+	public static class EmptyClass {
 		// NOP
 	}
 
-	class TestClass1 {
+	public static class TestClass1 {
 		@Test
 		public void a() {
 			// NOP
@@ -20,7 +20,7 @@ public class TestCollectorTestData {
 		}
 	}
 
-	class TestClass2 {
+	public static class TestClass2 {
 		@Test
 		public void a() {
 			// NOP
@@ -32,25 +32,25 @@ public class TestCollectorTestData {
 		}
 	}
 
-	abstract class AbstractTestClassA {
+	public static abstract class AbstractTestClassA {
 		@Test
 		public void a() {
 			// NOP
 		}
 	}
 
-	abstract class AbstractTestClassB extends AbstractTestClassA {
+	public static abstract class AbstractTestClassB extends AbstractTestClassA {
 		// NOP
 	}
 
-	class NonAbstractTestClassC extends AbstractTestClassB {
+	public static class NonAbstractTestClassC extends AbstractTestClassB {
 		@Test
 		public void b() {
 			// NOP
 		}
 	}
 
-	class InheritingTestClass extends NonAbstractTestClassC {
+	public static class InheritingTestClass extends NonAbstractTestClassC {
 		@Test
 		public void c() {
 			// NOP

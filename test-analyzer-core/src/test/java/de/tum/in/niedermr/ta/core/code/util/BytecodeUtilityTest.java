@@ -126,7 +126,8 @@ public class BytecodeUtilityTest {
 		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
 
 		cn = BytecodeUtility.getAcceptedClassNode(SampleClass5.Sample5Inner1.class);
-		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
+		assertFalse("Default constructor of non-static inner classes takes an instance of the outer class",
+				BytecodeUtility.hasPublicParameterlessConstructor(cn));
 
 		cn = BytecodeUtility.getAcceptedClassNode(SampleClass5.Sample5Inner2.class);
 		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));

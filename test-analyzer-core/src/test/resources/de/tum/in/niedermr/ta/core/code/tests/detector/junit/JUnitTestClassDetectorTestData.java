@@ -7,7 +7,7 @@ import junit.framework.TestCase;
 
 public class JUnitTestClassDetectorTestData {
 
-	static class JUnit4TestClass {
+	public static class JUnit4TestClass {
 		@Test
 		public void a() {
 			// NOP
@@ -20,7 +20,7 @@ public class JUnitTestClassDetectorTestData {
 		}
 	}
 
-	static class JUnit3TestClass extends TestCase {
+	public static class JUnit3TestClass extends TestCase {
 
 		public void testA() {
 			// NOP
@@ -31,14 +31,14 @@ public class JUnitTestClassDetectorTestData {
 		}
 	}
 
-	static class JUnit4TestClassInheritingTestCase extends TestCase {
+	public static class JUnit4TestClassInheritingTestCase extends TestCase {
 		@Test
 		public void testA() {
 			// NOP
 		}
 	}
 
-	static abstract class AbstractJUnit4TestClass {
+	public static abstract class AbstractJUnit4TestClass {
 		@Test
 		public void a() {
 			// NOP
@@ -49,13 +49,13 @@ public class JUnitTestClassDetectorTestData {
 	 * No annotation, no inheritance.
 	 *
 	 */
-	static class NoTestClass1 {
+	public static class NoTestClass1 {
 		public void testA() {
 			// NOP
 		}
 	}
 
-	static class NoTestClass2 {
+	public static class NoTestClass2 {
 		@Ignore
 		@Test
 		public void ignored() {
