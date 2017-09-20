@@ -14,8 +14,14 @@ public class ClassType {
 			"INNER_CLASS_IN_TEST_OR_IGNORED_CLASS", false, false);
 
 	/**
-	 * Abstract test class detected by a test class detector configured to
-	 * ignore these.
+	 * Test class with constructor (possibly a parameterized test, a suite, or a test class to be sub-classed).
+	 * Currently not supported.
+	 */
+	public static final ClassType TEST_CLASS_EXCLUDED_BECAUSE_OF_CONSTRUCTOR = new ClassType(
+			"TEST_CLASS_EXCLUDED_BECAUSE_OF_CONSTRUCTOR", false, false);
+
+	/**
+	 * Abstract test class detected by a test class detector configured to ignore these.
 	 */
 	public static final ClassType IGNORED_ABSTRACT_TEST_CLASS = new ClassType("IGNORED_ABSTRACT_TEST_CLASS", false,
 			false);

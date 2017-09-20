@@ -53,6 +53,10 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 			if (m_ignoreAbstractClasses && BytecodeUtility.isAbstractClass(cn)) {
 				return ClassType.IGNORED_ABSTRACT_TEST_CLASS;
 			}
+
+			if (isExcludeTestClassesWithConstructor() && !BytecodeUtility.hasPublicParameterlessConstructor(cn)) {
+				return ClassType.TEST_CLASS_EXCLUDED_BECAUSE_OF_CONSTRUCTOR;
+			}
 		}
 
 		if (!classType.isTestClass() && isInnerClassInTestOrIgnoredClass(cn)) {
@@ -87,6 +91,10 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 		}
 
 		// include patterns are defined but no pattern matched
+		return false;
+	}
+
+	protected boolean isExcludeTestClassesWithConstructor() {
 		return false;
 	}
 

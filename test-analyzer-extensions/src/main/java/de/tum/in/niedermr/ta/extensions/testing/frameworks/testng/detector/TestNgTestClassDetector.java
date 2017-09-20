@@ -96,4 +96,10 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 
 		return false;
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected boolean isExcludeTestClassesWithConstructor() {
+		return true;
+	}
 }
