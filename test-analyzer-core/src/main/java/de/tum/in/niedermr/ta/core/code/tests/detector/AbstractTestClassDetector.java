@@ -54,6 +54,10 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 				return ClassType.NON_EXECUTABLE_TEST_CLASS;
 			}
 
+			if (isExcludeNonPublicClasses() && !BytecodeUtility.isPublicClass(cn)) {
+				return ClassType.NON_EXECUTABLE_TEST_CLASS;
+			}
+
 			if (isExcludeTestClassesWithConstructor() && !BytecodeUtility.hasPublicParameterlessConstructor(cn)) {
 				return ClassType.NON_EXECUTABLE_TEST_CLASS;
 			}
@@ -96,6 +100,10 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 
 	protected boolean isExcludeTestClassesWithConstructor() {
 		return false;
+	}
+
+	protected boolean isExcludeNonPublicClasses() {
+		return true;
 	}
 
 	/**

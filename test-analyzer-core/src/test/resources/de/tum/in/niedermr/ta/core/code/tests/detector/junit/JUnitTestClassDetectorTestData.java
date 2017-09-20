@@ -45,6 +45,13 @@ public class JUnitTestClassDetectorTestData {
 		}
 	}
 
+	static class NonPublicTestClass {
+		@Test
+		public void a() {
+			// NOP
+		}
+	}
+
 	/**
 	 * No annotation, no inheritance.
 	 *
