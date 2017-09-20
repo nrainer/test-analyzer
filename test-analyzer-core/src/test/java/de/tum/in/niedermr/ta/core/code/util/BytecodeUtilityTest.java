@@ -107,6 +107,13 @@ public class BytecodeUtilityTest {
 
 	/** Test. */
 	@Test
+	public void testClassFlags() throws IOException {
+		ClassNode cn = BytecodeUtility.getAcceptedClassNode(SampleClass.class);
+		assertTrue(BytecodeUtility.isPublicClass(cn));
+	}
+
+	/** Test. */
+	@Test
 	public void testHasParameterlessConstructor() throws IOException {
 		ClassNode cn;
 

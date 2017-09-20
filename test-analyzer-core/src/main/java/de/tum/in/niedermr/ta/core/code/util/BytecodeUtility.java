@@ -50,8 +50,16 @@ public class BytecodeUtility {
 		return OpcodesUtility.hasFlag(mn.access, Opcodes.ACC_ABSTRACT);
 	}
 
-	public static boolean isPublicMethod(MethodNode mn) {
-		return OpcodesUtility.hasFlag(mn.access, Opcodes.ACC_PUBLIC);
+	public static boolean isPublicClass(ClassNode classNode) {
+		return hasPublicAccess(classNode.access);
+	}
+
+	public static boolean isPublicMethod(MethodNode methodNode) {
+		return hasPublicAccess(methodNode.access);
+	}
+
+	private static boolean hasPublicAccess(int accessFlag) {
+		return OpcodesUtility.hasFlag(accessFlag, Opcodes.ACC_PUBLIC);
 	}
 
 	public static int countMethodInstructions(MethodNode methodNode) {
