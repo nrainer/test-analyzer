@@ -124,5 +124,11 @@ public class BytecodeUtilityTest {
 
 		cn = BytecodeUtility.getAcceptedClassNode(SampleClass5.class);
 		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(SampleClass5.Sample5Inner1.class);
+		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(SampleClass5.Sample5Inner2.class);
+		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
 	}
 }

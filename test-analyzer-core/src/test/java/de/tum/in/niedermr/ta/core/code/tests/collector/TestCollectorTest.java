@@ -22,6 +22,7 @@ public class TestCollectorTest {
 	private static final String[] EMPTY_PATTERN_STRINGS = new String[0];
 	private static final JUnitTestRunner JUNIT_TEST_RUNNER = new JUnitTestRunner();
 
+	/** Test. */
 	@Test
 	public void testCollectDefault() throws Exception {
 		ITestCollector collector = new TestCollector(
@@ -54,6 +55,7 @@ public class TestCollectorTest {
 		assertTrue(classesWithTestCases.get(TestClass2.class).contains("c"));
 	}
 
+	/** Test. */
 	@Test
 	public void testCollectInheritedMethods() throws Exception {
 		checkCollectInheritedMethodsInternal(true, true);
