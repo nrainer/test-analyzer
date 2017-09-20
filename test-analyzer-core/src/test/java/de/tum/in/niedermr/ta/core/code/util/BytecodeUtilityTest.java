@@ -19,6 +19,7 @@ import de.tum.in.niedermr.ta.sample.SampleClass;
 import de.tum.in.niedermr.ta.sample.SampleClass2;
 import de.tum.in.niedermr.ta.sample.SampleClass3;
 import de.tum.in.niedermr.ta.sample.SampleClass4;
+import de.tum.in.niedermr.ta.sample.SampleClass5;
 
 /** Test {@link BytecodeUtility}. */
 public class BytecodeUtilityTest {
@@ -120,5 +121,8 @@ public class BytecodeUtilityTest {
 
 		cn = BytecodeUtility.getAcceptedClassNode(SampleClass4.class);
 		assertFalse(BytecodeUtility.hasPublicParameterlessConstructor(cn));
+
+		cn = BytecodeUtility.getAcceptedClassNode(SampleClass5.class);
+		assertTrue(BytecodeUtility.hasPublicParameterlessConstructor(cn));
 	}
 }
