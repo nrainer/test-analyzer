@@ -33,14 +33,15 @@ public class TestCollector implements ITestCollector {
 		this.m_testClassDetector = testClassDetector;
 	}
 
-	public boolean collectTestcasesInNonAbstractSuperClasses() {
+	public boolean isCollectTestcasesInNonAbstractSuperClasses() {
 		return false;
 	}
 
-	public boolean collectTestcasesInAbstractSuperClasses() {
+	public boolean isCollectTestcasesInAbstractSuperClasses() {
 		return true;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void analyze(ClassReader cr, String originalClassPath) throws CodeOperationException {
 		ClassNode cn = new ClassNode();
@@ -71,7 +72,7 @@ public class TestCollector implements ITestCollector {
 
 		testcases.addAll(collectTestcasesInThisClass(cn, testClassType));
 
-		if ((collectTestcasesInNonAbstractSuperClasses() || collectTestcasesInAbstractSuperClasses())
+		if ((isCollectTestcasesInNonAbstractSuperClasses() || isCollectTestcasesInAbstractSuperClasses())
 				&& JavaUtility.hasSuperClassOtherThanObject(cn)) {
 			testcases.addAll(collectTestcasesInSuperClasses(cn.superName, testClassType));
 		}
@@ -103,8 +104,8 @@ public class TestCollector implements ITestCollector {
 
 			boolean isAbstract = BytecodeUtility.isAbstractClass(cnSuper);
 
-			if ((isAbstract && collectTestcasesInAbstractSuperClasses())
-					|| (!isAbstract && collectTestcasesInNonAbstractSuperClasses())) {
+			if ((isAbstract && isCollectTestcasesInAbstractSuperClasses())
+					|| (!isAbstract && isCollectTestcasesInNonAbstractSuperClasses())) {
 				testcases.addAll(collectTestcasesInThisClass(cnSuper, testClassType));
 			}
 
@@ -118,16 +119,19 @@ public class TestCollector implements ITestCollector {
 		return testcases;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Collection<Class<?>> getTestClasses() {
 		return m_result.keySet();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public Map<Class<?>, Set<String>> getTestClassesWithTestcases() {
 		return m_result;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public ITestClassDetector getTestClassDetector() {
 		return m_testClassDetector;

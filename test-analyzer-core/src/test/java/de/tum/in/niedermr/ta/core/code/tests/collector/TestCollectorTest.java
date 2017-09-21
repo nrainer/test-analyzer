@@ -69,12 +69,12 @@ public class TestCollectorTest {
 		TestCollector collector = new TestCollector(
 				JUNIT_TEST_RUNNER.createTestClassDetector(false, EMPTY_PATTERN_STRINGS, EMPTY_PATTERN_STRINGS)) {
 			@Override
-			public boolean collectTestcasesInNonAbstractSuperClasses() {
+			public boolean isCollectTestcasesInNonAbstractSuperClasses() {
 				return collectInNonAbstractClasses;
 			}
 
 			@Override
-			public boolean collectTestcasesInAbstractSuperClasses() {
+			public boolean isCollectTestcasesInAbstractSuperClasses() {
 				return collectInAbstractClasses;
 			}
 		};
@@ -87,9 +87,9 @@ public class TestCollectorTest {
 		assertTrue(testClasses.contains(InheritingTestClass.class));
 
 		Map<Class<?>, Set<String>> classesWithTestCases = collector.getTestClassesWithTestcases();
-		assertTrue(collector.collectTestcasesInAbstractSuperClasses() == classesWithTestCases
+		assertTrue(collector.isCollectTestcasesInAbstractSuperClasses() == classesWithTestCases
 				.get(InheritingTestClass.class).contains("a"));
-		assertTrue(collector.collectTestcasesInNonAbstractSuperClasses() == classesWithTestCases
+		assertTrue(collector.isCollectTestcasesInNonAbstractSuperClasses() == classesWithTestCases
 				.get(InheritingTestClass.class).contains("b"));
 		assertTrue(classesWithTestCases.get(InheritingTestClass.class).contains("c"));
 	}

@@ -26,16 +26,19 @@ public class JUnitSuiteCollector extends TestCollector {
 		super(suiteDetector);
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public boolean collectTestcasesInNonAbstractSuperClasses() {
+	public boolean isCollectTestcasesInNonAbstractSuperClasses() {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public boolean collectTestcasesInAbstractSuperClasses() {
+	public boolean isCollectTestcasesInAbstractSuperClasses() {
 		return false;
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected Set<String> collectTestcasesInThisClass(ClassNode cn, ClassType testClassType) {
 		if (testClassType.equals(JUnitClassTypeResult.TEST_SUITE_JUNIT_3)) {
