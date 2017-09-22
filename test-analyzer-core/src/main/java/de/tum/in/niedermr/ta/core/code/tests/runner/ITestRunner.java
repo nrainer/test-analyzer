@@ -13,5 +13,5 @@ public interface ITestRunner {
 	public ITestClassDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
 			String[] testClassExcludes);
 
-	public ITestRunResult runTest(Class<?> testClass, String testcaseName);
+	public ITestRunResult runTest(Class<?> testClass, String testcaseName) throws ReflectiveOperationException;
 }

@@ -196,7 +196,7 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 	 *            the result will be inserted in this map
 	 * @return true, if the test is executed with success
 	 */
-	protected boolean processTestcase(Class<?> testClass, String testCase) {
+	protected boolean processTestcase(Class<?> testClass, String testCase) throws ReflectiveOperationException {
 		TestcaseIdentifier testCaseIdentifier = TestcaseIdentifier.create(testClass, testCase);
 		execBeforeExecutingTestcase(testCaseIdentifier);
 
