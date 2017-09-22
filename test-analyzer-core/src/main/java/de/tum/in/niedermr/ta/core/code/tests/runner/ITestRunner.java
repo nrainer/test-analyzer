@@ -14,6 +14,4 @@ public interface ITestRunner {
 			String[] testClassExcludes);
 
 	public ITestRunResult runTest(Class<?> testClass, String testcaseName);
-
-	public void runTestsWithoutResult(Class<?> cls);
 }

@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.core.code.tests.runner.junit;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,21 +39,5 @@ public class JUnitTestRunnerTest {
 
 		assertEquals(ClassUnderJUnitTest.BEFORE_CLASS + ClassUnderJUnitTest.BEFORE + ClassUnderJUnitTest.TEST_A
 				+ ClassUnderJUnitTest.AFTER + ClassUnderJUnitTest.AFTER_CLASS, getSysErr());
-	}
-
-	@Test
-	public void testRunTestsWithoutResult() throws IOException {
-		m_testRunner.runTestsWithoutResult(ClassUnderJUnitTest.class);
-
-		String sysErr = getSysErr();
-
-		final String beginning = ClassUnderJUnitTest.BEFORE_CLASS + ClassUnderJUnitTest.BEFORE;
-		final String ending = ClassUnderJUnitTest.AFTER + ClassUnderJUnitTest.AFTER_CLASS;
-
-		assertTrue(sysErr
-				.equals(beginning + ClassUnderJUnitTest.TEST_A + ClassUnderJUnitTest.AFTER + ClassUnderJUnitTest.BEFORE
-						+ ClassUnderJUnitTest.TEST_B + ending)
-				|| sysErr.equals(beginning + ClassUnderJUnitTest.TEST_B + ClassUnderJUnitTest.AFTER
-						+ ClassUnderJUnitTest.BEFORE + ClassUnderJUnitTest.TEST_A + ending));
 	}
 }

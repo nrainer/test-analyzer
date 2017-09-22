@@ -24,11 +24,6 @@ public class JUnitTestRunner implements ITestRunner {
 	}
 
 	@Override
-	public void runTestsWithoutResult(Class<?> cls) {
-		m_jUnitCore.run(cls);
-	}
-
-	@Override
 	public ITestClassDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
 			String[] testClassExcludes) {
 		return new JUnitTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);

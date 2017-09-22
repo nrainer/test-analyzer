@@ -29,14 +29,6 @@ public class TestNgTestRunner implements ITestRunner {
 		return new TestNgRunResult(listener);
 	}
 
-	@Override
-	public void runTestsWithoutResult(Class<?> cls) {
-		TestNG testng = new TestNG();
-		testng.setTestClasses(new Class[] { cls });
-
-		testng.run();
-	}
-
 	class SelectMethodByNameInterceptor implements IMethodInterceptor {
 		private final String m_methodName;
 
