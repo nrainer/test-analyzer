@@ -51,14 +51,15 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 		return false;
 	}
 
-	private boolean isJUnit3Testcase(MethodNode method) {
+	/** Check if the method is a JUnit 3 test case. */
+	public boolean isJUnit3Testcase(MethodNode method) {
 		return method.name.startsWith(JUNIT_3_TEST_METHOD_NAME_PREFIX)
 				&& Type.getArgumentTypes(method.desc).length == 0;
 	}
 
 	/** Check if the method is a JUnit 4 test case. */
 	@SuppressWarnings("unchecked")
-	private boolean isJUnit4Testcase(MethodNode method) {
+	public boolean isJUnit4Testcase(MethodNode method) {
 		if (method.visibleAnnotations == null) {
 			return false;
 		}

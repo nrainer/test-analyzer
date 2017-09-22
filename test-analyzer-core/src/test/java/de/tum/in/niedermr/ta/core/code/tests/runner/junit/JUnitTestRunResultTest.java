@@ -13,8 +13,9 @@ import de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;
 public class JUnitTestRunResultTest {
 	private static final JUnitTestRunner TEST_RUNNER = new JUnitTestRunner();
 
+	/** Test. */
 	@Test
-	public void test1() {
+	public void test1() throws ReflectiveOperationException {
 		JUnitTestRunResult result = TEST_RUNNER.runTest(SampleJUnitTestClass.class, "a");
 
 		assertTrue(result.successful());
@@ -24,8 +25,9 @@ public class JUnitTestRunResultTest {
 		assertTrue(result.getAllExceptions().isEmpty());
 	}
 
+	/** Test. */
 	@Test
-	public void test2() {
+	public void test2() throws ReflectiveOperationException {
 		JUnitTestRunResult result = TEST_RUNNER.runTest(SampleJUnitTestClass.class, "b");
 
 		assertFalse(result.successful());
@@ -37,8 +39,9 @@ public class JUnitTestRunResultTest {
 		assertEquals(result.getFirstException(), result.getAllExceptions().get(0));
 	}
 
+	/** Test. */
 	@Test
-	public void test3() {
+	public void test3() throws ReflectiveOperationException {
 		JUnitTestRunResult result = TEST_RUNNER.runTest(SampleJUnitTestClass.class, "c");
 
 		assertFalse(result.successful());

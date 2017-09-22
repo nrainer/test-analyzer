@@ -11,18 +11,21 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 public class JUnitTestRunner implements ITestRunner {
 	protected final JUnitCore m_jUnitCore;
 
+	/** Constructor. */
 	public JUnitTestRunner() {
-		this.m_jUnitCore = new JUnitCore();
+		m_jUnitCore = new JUnitCore();
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public JUnitTestRunResult runTest(Class<?> testClass, String testcaseName) {
+	public JUnitTestRunResult runTest(Class<?> testClass, String testcaseName) throws ReflectiveOperationException {
 		// may cause the program to terminate if the test case or one of its invoked methods invokes System.exit
 		Result result = m_jUnitCore.run(Request.method(testClass, testcaseName));
 
 		return new JUnitTestRunResult(result);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public ITestClassDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
 			String[] testClassExcludes) {

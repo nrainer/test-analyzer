@@ -33,8 +33,9 @@ public class JUnitTestRunnerTest {
 		return m_temporarySysErr.toString();
 	}
 
+	/** Test. */
 	@Test
-	public void testRunTest() throws IOException {
+	public void testRunTest() throws IOException, ReflectiveOperationException {
 		m_testRunner.runTest(ClassUnderJUnitTest.class, "a");
 
 		assertEquals(ClassUnderJUnitTest.BEFORE_CLASS + ClassUnderJUnitTest.BEFORE + ClassUnderJUnitTest.TEST_A
