@@ -24,6 +24,13 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.useMultipleOutputFiles", false);
 
+	/** <code>extension.code.statistics.scope.methods</code> */
+	public static final DynamicConfigurationKey ANALYZE_METHODS = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.scope.methods", true);
+	/** <code>extension.code.statistics.scope.testcases</code> */
+	public static final DynamicConfigurationKey ANALYZE_TESTCASES = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.scope.testcases", true);
+
 	/** <code>extension.code.statistics.method.instructions</code> */
 	public static final DynamicConfigurationKey COUNT_INSTRUCTIONS = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.statistics.method.instructions", true);
@@ -42,15 +49,18 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 
 		ResultReceiverForCodeStatistics resultReceiver = createResultReceiverForCodeStatistics(context);
 
+		boolean analyzeMethods = configuration.getDynamicValues().getBooleanValue(ANALYZE_METHODS);
+		boolean analyzeTestcases = configuration.getDynamicValues().getBooleanValue(ANALYZE_TESTCASES);
+
 		if (configuration.getDynamicValues().getBooleanValue(COUNT_INSTRUCTIONS)) {
-			runCountInstructionsStep(resultReceiver);
+			runCountInstructionsStep(resultReceiver, analyzeMethods, analyzeTestcases);
 		}
 
-		if (configuration.getDynamicValues().getBooleanValue(COUNT_ASSERTIONS)) {
+		if (analyzeTestcases && configuration.getDynamicValues().getBooleanValue(COUNT_ASSERTIONS)) {
 			runCountAssertionsStep(resultReceiver);
 		}
 
-		if (configuration.getDynamicValues().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
+		if (analyzeMethods && configuration.getDynamicValues().getBooleanValue(COLLECT_ACCESS_MODIFIER)) {
 			runCollectAccessModifiersStep(resultReceiver);
 		}
 
@@ -72,14 +82,20 @@ public class CodeStatisticsWorkflow extends AbstractWorkflow {
 	}
 
 	/** Run the step to count the instructions of methods and test cases. */
-	protected void runCountInstructionsStep(ResultReceiverForCodeStatistics resultReceiver) {
+	protected void runCountInstructionsStep(ResultReceiverForCodeStatistics resultReceiver, boolean analyzeMethods,
+			boolean analyzeTestcases) {
 		InstructionCounterStep countInstructionsStep = createAndInitializeExecutionStep(InstructionCounterStep.class);
 		countInstructionsStep.start();
 
-		resultReceiver.addResultInstructionsPerMethod(countInstructionsStep.getInstructionsPerMethod());
-		resultReceiver.markResultAsPartiallyComplete();
-		resultReceiver.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
-		resultReceiver.markResultAsPartiallyComplete();
+		if (analyzeMethods) {
+			resultReceiver.addResultInstructionsPerMethod(countInstructionsStep.getInstructionsPerMethod());
+			resultReceiver.markResultAsPartiallyComplete();
+		}
+
+		if (analyzeTestcases) {
+			resultReceiver.addResultInstructionsPerTestcase(countInstructionsStep.getInstructionsPerTestcase());
+			resultReceiver.markResultAsPartiallyComplete();
+		}
 	}
 
 	/** Run the step to count assertions. */
