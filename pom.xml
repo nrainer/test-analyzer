@@ -84,7 +84,9 @@
 		<!-- maven properties -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		
+		<downloadSources>true</downloadSources>
+		<downloadJavadocs>true</downloadJavadocs>
+
 		<!-- custom properties -->
 		<currentVersion>2.1.0-SNAPSHOT</currentVersion>
 		<rootFolder>${project.basedir}</rootFolder>
