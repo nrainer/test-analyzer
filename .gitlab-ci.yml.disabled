@@ -1,0 +1,27 @@
+stages:
+  - build
+  - test
+
+compile:
+  stage: build
+  script:
+    - mvn compile
+
+compile-test:
+  stage: build
+  script:
+    - mvn test-compile
+	
+unit-tests:
+  stage: test
+  dependencies:
+    - compile-test
+  script:
+    - mvn test
+	
+unit-tests:
+  stage: test
+  dependencies:
+    - compile-test
+  script:
+    - mvn verify
