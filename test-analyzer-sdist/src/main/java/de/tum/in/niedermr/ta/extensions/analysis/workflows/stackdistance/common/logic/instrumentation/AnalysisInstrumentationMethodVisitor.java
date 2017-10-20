@@ -10,7 +10,10 @@ import de.tum.in.niedermr.ta.core.code.visitor.AbstractTryFinallyMethodVisitor;
 public class AnalysisInstrumentationMethodVisitor extends AbstractTryFinallyMethodVisitor {
 	private final MethodIdentifier m_identifier;
 
-	/** Path of the class that records the data gathered from the instrumentation. */
+	/**
+	 * Path of the class that records the data gathered from the
+	 * instrumentation.
+	 */
 	private final String m_instrumentationDataRetrieverClassPath;
 
 	/** Constructor. */
