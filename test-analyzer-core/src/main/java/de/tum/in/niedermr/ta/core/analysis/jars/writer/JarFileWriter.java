@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
+import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class JarFileWriter {
@@ -29,16 +29,16 @@ public class JarFileWriter {
 		}
 	}
 
-	public void writeClassIntoJar(JarFileElementRawData classFileData) throws IOException {
+	public void writeClassIntoJar(ClassFileData classFileData) throws IOException {
 		writeIntoJar(JavaUtility.ensureClassFileEnding(classFileData.getEntryName()), classFileData.getRawData());
 	}
 
-	public void writeResourceIntoJar(JarFileElementRawData resourceFileData) throws IOException {
+	public void writeResourceIntoJar(ClassFileData resourceFileData) throws IOException {
 		writeIntoJar(resourceFileData.getEntryName(), resourceFileData.getRawData());
 	}
 
-	public void writeClassesIntoJar(List<JarFileElementRawData> classFileList) throws IOException {
-		for (JarFileElementRawData classData : classFileList) {
+	public void writeClassesIntoJar(List<ClassFileData> classFileList) throws IOException {
+		for (ClassFileData classData : classFileList) {
 			writeClassIntoJar(classData);
 		}
 	}

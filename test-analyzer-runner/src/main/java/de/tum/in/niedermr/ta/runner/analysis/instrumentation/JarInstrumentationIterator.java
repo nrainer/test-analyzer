@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
+import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterator;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
@@ -55,7 +55,7 @@ public class JarInstrumentationIterator extends JarModificationIterator {
 				+ "Fault tolerant mode permits to continue after " + t.getClass().getName() + " with message '"
 				+ t.getMessage() + "'.");
 		try {
-			getJarFileWriter().writeClassIntoJar(new JarFileElementRawData(m_originalClassPath, m_classBytes));
+			getJarFileWriter().writeClassIntoJar(new ClassFileData(m_originalClassPath, m_classBytes));
 		} catch (IOException e) {
 			LOGGER.error("Writiing class into jar failed: " + m_originalClassPath);
 		}

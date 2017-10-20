@@ -3,9 +3,9 @@ package de.tum.in.niedermr.ta.runner.analysis.mutation;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
+import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.MethodFilterList;
-import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
 import de.tum.in.niedermr.ta.core.analysis.jars.writer.JarFileWriter;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
@@ -19,10 +19,11 @@ public class MethodMutation {
 	/**
 	 * Creates a new jar file which contains the class with the mutated method.
 	 * 
-	 * @return true, if the method was to be mutated and if the mutate operation was successful
+	 * @return true, if the method was to be mutated and if the mutate operation
+	 *         was successful
 	 */
-	public static boolean createJarWithMutatedMethod(MethodIdentifier methodIdentifier, String outputJarPath, IReturnValueGenerator retValGen,
-			IMethodFilter[] additionalMethodFilters) throws Exception {
+	public static boolean createJarWithMutatedMethod(MethodIdentifier methodIdentifier, String outputJarPath,
+			IReturnValueGenerator retValGen, IMethodFilter[] additionalMethodFilters) throws Exception {
 		String className = methodIdentifier.getOnlyClassName();
 
 		ClassReader cr = new ClassReader(className);
@@ -40,7 +41,7 @@ public class MethodMutation {
 
 		if (mutationExecuted) {
 			JarFileWriter writer = new JarFileWriter(outputJarPath);
-			writer.writeClassIntoJar(new JarFileElementRawData(JavaUtility.toClassPathWithEnding(className), cw.toByteArray()));
+			writer.writeClassIntoJar(new ClassFileData(JavaUtility.toClassPathWithEnding(className), cw.toByteArray()));
 			writer.close();
 		}
 
