@@ -5,7 +5,7 @@ import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
-import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractTryFinallyMethodVisitor;
+import de.tum.in.niedermr.ta.core.code.visitor.AbstractTryFinallyMethodVisitor;
 
 public class AnalysisInstrumentationMethodVisitor extends AbstractTryFinallyMethodVisitor {
 	private final MethodIdentifier m_identifier;

@@ -6,7 +6,7 @@ import org.objectweb.asm.Opcodes;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger.LoggingMode;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
-import de.tum.in.niedermr.ta.runner.analysis.instrumentation.AbstractTryFinallyMethodVisitor;
+import de.tum.in.niedermr.ta.core.code.visitor.AbstractTryFinallyMethodVisitor;
 
 public class TestModeMethodVisitor extends AbstractTryFinallyMethodVisitor implements Opcodes {
 	private static final String CP_INVOCATION_LOGGER = JavaUtility.toClassPathWithoutEnding(InvocationLogger.class);
