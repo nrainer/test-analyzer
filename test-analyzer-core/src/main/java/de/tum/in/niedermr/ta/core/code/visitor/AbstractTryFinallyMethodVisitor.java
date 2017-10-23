@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.runner.analysis.instrumentation;
+package de.tum.in.niedermr.ta.core.code.visitor;
 
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;

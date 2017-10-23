@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
+import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeAnalyzeOperation;
@@ -74,11 +74,11 @@ public class JarIteratorTest {
 
 		JarModificationIterator modificationIterator = new JarModificationIterator(TEST_INPUT_JAR, TEST_TEMP_JAR_1) {
 			@Override
-			protected List<JarFileElementRawData> getFurtherClassesToBeAdded() {
-				List<JarFileElementRawData> list = new LinkedList<>();
+			protected List<ClassFileData> getFurtherClassesToBeAdded() {
+				List<ClassFileData> list = new LinkedList<>();
 
 				try {
-					list.add(new JarFileElementRawData(JavaUtility.toClassPathWithEnding(classToAdd.getName()),
+					list.add(new ClassFileData(JavaUtility.toClassPathWithEnding(classToAdd.getName()),
 							new ClassReader(classToAdd.getName()).b));
 				} catch (IOException ex) {
 					// NOP

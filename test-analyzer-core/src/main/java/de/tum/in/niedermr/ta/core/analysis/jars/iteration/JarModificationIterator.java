@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.content.JarFileElementRawData;
+import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.analysis.jars.writer.JarFileWriter;
 import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
@@ -44,7 +44,7 @@ public class JarModificationIterator extends AbstractJarIterator<ICodeModificati
 		jarOperation.modify(cr, cw);
 
 		byte[] transformedClass = cw.toByteArray();
-		m_jarFileWriter.writeClassIntoJar(new JarFileElementRawData(originalClassPath, transformedClass));
+		m_jarFileWriter.writeClassIntoJar(new ClassFileData(originalClassPath, transformedClass));
 	}
 
 	/** {@inheritDoc} */
@@ -52,7 +52,7 @@ public class JarModificationIterator extends AbstractJarIterator<ICodeModificati
 	protected void handleResource(ICodeModificationOperation jarOperation, JarEntry resourceEntry, InputStream inStream)
 			throws IteratorException, CodeOperationException, IOException {
 		m_jarFileWriter.writeResourceIntoJar(
-				new JarFileElementRawData(resourceEntry.getName(), IOUtils.toByteArray(inStream)));
+				new ClassFileData(resourceEntry.getName(), IOUtils.toByteArray(inStream)));
 	}
 
 	/** {@inheritDoc} */
@@ -65,7 +65,7 @@ public class JarModificationIterator extends AbstractJarIterator<ICodeModificati
 		m_jarFileWriter.close();
 	}
 
-	protected List<JarFileElementRawData> getFurtherClassesToBeAdded() {
+	protected List<ClassFileData> getFurtherClassesToBeAdded() {
 		return new ArrayList<>();
 	}
 

@@ -12,6 +12,7 @@
 	<modules>
 		<module>test-analyzer-core</module>
 		<module>test-analyzer-runner</module>
+		<module>test-analyzer-sdist</module>
 		<module>test-analyzer-extensions</module>
 		<module>test-analyzer-test-int</module>
 	</modules>

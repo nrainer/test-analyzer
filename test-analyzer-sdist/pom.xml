@@ -2,10 +2,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<artifactId>test-analyzer-extensions</artifactId>
+	<artifactId>test-analyzer-sdist</artifactId>
 	<packaging>jar</packaging>
 
-	<name>TestAnalyzer Extensions</name>
+	<name>TestAnalyzer StackDistance</name>
 
 	<parent>
 		<groupId>de.tum.in.niedermr.ta</groupId>
@@ -38,20 +38,7 @@
 					</execution>
 				</executions>
 			</plugin>
-	
-			<plugin>
-				<!-- Needed so that (only) JUnit tests get executed (otherwise testNg 
-					is used because of the dependency) -->
-				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.19.1</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.surefire</groupId>
-						<artifactId>surefire-junit47</artifactId>
-						<version>2.19.1</version>
-					</dependency>
-				</dependencies>
-			</plugin>
+
 		</plugins>
 	</build>
 
@@ -61,18 +48,6 @@
 			<artifactId>test-analyzer-core</artifactId>
 			<version>${currentVersion}</version>
 		</dependency>
-
-		<dependency>
-			<groupId>de.tum.in.niedermr.ta</groupId>
-			<artifactId>test-analyzer-runner</artifactId>
-			<version>${currentVersion}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>de.tum.in.niedermr.ta</groupId>
-			<artifactId>test-analyzer-sdist</artifactId>
-			<version>${currentVersion}</version>
-		</dependency>
 		
 		<dependency>
 			<groupId>de.tum.in.niedermr.ta</groupId>
@@ -81,20 +56,7 @@
 			<type>test-jar</type>
 			<scope>test</scope>
 		</dependency>
-		
-		<dependency>
-			<groupId>de.tum.in.niedermr.ta</groupId>
-			<artifactId>test-analyzer-runner</artifactId>
-			<version>${currentVersion}</version>
-			<type>test-jar</type>
-			<scope>test</scope>
-		</dependency>
 
-		<dependency>
-			<groupId>org.testng</groupId>
-			<artifactId>testng</artifactId>
-			<version>${testng.version}</version>
-		</dependency>
 	</dependencies>
 
 </project>

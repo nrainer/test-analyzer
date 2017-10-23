@@ -1,6 +1,6 @@
-package de.tum.in.niedermr.ta.core.analysis.jars.content;
+package de.tum.in.niedermr.ta.core.analysis.content;
 
-public final class JarFileElementRawData {
+public final class ClassFileData {
 	private final String m_entryName;
 	private final byte[] m_rawData;
 
@@ -8,7 +8,7 @@ public final class JarFileElementRawData {
 	 * @param entryName
 	 *            class path with .class ending
 	 */
-	public JarFileElementRawData(String entryName, byte[] rawData) {
+	public ClassFileData(String entryName, byte[] rawData) {
 		this.m_entryName = entryName;
 		this.m_rawData = rawData;
 	}
