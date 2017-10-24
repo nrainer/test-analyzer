@@ -7,9 +7,10 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
 import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactOutputWriter;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
-public class JarFileWriter {
+class JarFileWriter implements IArtifactOutputWriter {
 	private final String m_jarFile;
 	private JarOutputStream m_outputStream;
 
@@ -23,27 +24,35 @@ public class JarFileWriter {
 		}
 	}
 
+	/** {@inheritDoc} */
+	@Override
 	public void close() throws IOException {
 		if (m_outputStream != null) {
 			m_outputStream.close();
 		}
 	}
 
-	public void writeClassIntoJar(ClassFileData classFileData) throws IOException {
-		writeIntoJar(JavaUtility.ensureClassFileEnding(classFileData.getEntryName()), classFileData.getRawData());
+	/** {@inheritDoc} */
+	@Override
+	public void writeClass(ClassFileData classFileData) throws IOException {
+		writeElement(JavaUtility.ensureClassFileEnding(classFileData.getEntryName()), classFileData.getRawData());
 	}
 
-	public void writeResourceIntoJar(ClassFileData resourceFileData) throws IOException {
-		writeIntoJar(resourceFileData.getEntryName(), resourceFileData.getRawData());
+	/** {@inheritDoc} */
+	@Override
+	public void writeResource(ClassFileData resourceFileData) throws IOException {
+		writeElement(resourceFileData.getEntryName(), resourceFileData.getRawData());
 	}
 
-	public void writeClassesIntoJar(List<ClassFileData> classFileList) throws IOException {
+	/** {@inheritDoc} */
+	@Override
+	public void writeClasses(List<ClassFileData> classFileList) throws IOException {
 		for (ClassFileData classData : classFileList) {
-			writeClassIntoJar(classData);
+			writeClass(classData);
 		}
 	}
 
-	private void writeIntoJar(String entryName, byte[] data) throws IOException {
+	private void writeElement(String entryName, byte[] data) throws IOException {
 		open();
 
 		JarEntry entry = new JarEntry(entryName);

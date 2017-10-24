@@ -139,7 +139,7 @@ public class TestCollector implements ITestCollector {
 
 	/** {@inheritDoc} */
 	@Override
-	public void clearResult() {
+	public void reset() {
 		m_result.clear();
 	}
 }

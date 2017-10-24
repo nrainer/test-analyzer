@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactAnalysisIterator;
 import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
@@ -223,7 +223,7 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	 */
 	protected Map<String, Long> getNonPrimitiveReturnTypes(Configuration configuration, ITestCollector testCollector,
 			String sourceJarFileName) throws ExecutionException {
-		JarAnalyzeIterator iterator = JarIteratorFactory.createJarAnalyzeIterator(sourceJarFileName,
+		IArtifactAnalysisIterator iterator = JarIteratorFactory.createAnalyzeIterator(sourceJarFileName,
 				configuration.getOperateFaultTolerant().getValue());
 		ReturnTypeRetrieverOperation operation = new ReturnTypeRetrieverOperation(testCollector.getTestClassDetector());
 

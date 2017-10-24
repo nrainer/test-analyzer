@@ -6,7 +6,4 @@ import org.objectweb.asm.ClassReader;
 public interface ICodeAnalyzeOperation extends ICodeOperation {
 
 	public void analyze(ClassReader cr, String originalClassPath) throws CodeOperationException;
-
-	/** Clear the result. */
-	public void clearResult();
 }

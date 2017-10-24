@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactAnalysisIterator;
 import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
@@ -152,7 +152,8 @@ public abstract class AbstractInformationCollectionLogic implements IInformation
 				testClassIncludes, testClassExcludes);
 
 		for (String inputJar : jarsWithTests) {
-			JarAnalyzeIterator jarWork = JarIteratorFactory.createJarAnalyzeIterator(inputJar, operateFaultTolerant);
+			IArtifactAnalysisIterator jarWork = JarIteratorFactory.createAnalyzeIterator(inputJar,
+					operateFaultTolerant);
 			jarWork.execute(collectOperation);
 		}
 

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactAnalysisIterator;
 import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
@@ -42,7 +42,7 @@ public class MethodModifierRetrievalStep extends AbstractExecutionStep {
 	/** Get data about the method access modifier. */
 	protected Map<MethodIdentifier, String> getMethodModifierData(Configuration configuration,
 			ITestCollector testCollector, String inputJarFile) throws ExecutionException {
-		JarAnalyzeIterator iterator = JarIteratorFactory.createJarAnalyzeIterator(inputJarFile,
+		IArtifactAnalysisIterator iterator = JarIteratorFactory.createAnalyzeIterator(inputJarFile,
 				configuration.getOperateFaultTolerant().getValue());
 
 		MethodModifierRetrievalOperation operation = new MethodModifierRetrievalOperation(

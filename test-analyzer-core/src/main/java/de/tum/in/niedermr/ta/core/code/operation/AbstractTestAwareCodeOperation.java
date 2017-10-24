@@ -33,4 +33,10 @@ abstract class AbstractTestAwareCodeOperation implements ICodeOperation {
 	protected ClassType analyzeClassType(ClassNode cn) {
 		return m_testClassDetector.analyzeIsTestClass(cn);
 	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void reset() {
+		// NOP
+	}
 }

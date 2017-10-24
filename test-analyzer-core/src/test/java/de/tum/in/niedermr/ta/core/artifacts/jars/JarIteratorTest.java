@@ -17,6 +17,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
+import de.tum.in.niedermr.ta.core.artifacts.exceptions.DefaultIteratorExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeAnalyzeOperation;
@@ -41,7 +42,10 @@ public class JarIteratorTest {
 	public void testInvocationSequence() throws IteratorException {
 		SequenceRecorderIterator it = new SequenceRecorderIterator(TEST_INPUT_JAR);
 		it.execute(new ICodeOperation() {
-			// NOP
+			/** {@inheritDoc} */
+			@Override
+			public void reset() {// NOP
+			}
 		});
 
 		assertTrue(it.getLog().startsWith(SequenceRecorderIterator.BEFORE_ALL));
@@ -52,7 +56,7 @@ public class JarIteratorTest {
 	/** Test. */
 	@Test
 	public void testAnalyzeIterator() throws IteratorException {
-		JarAnalyzeIterator it = new JarAnalyzeIterator(TEST_INPUT_JAR);
+		JarAnalyzeIterator it = new JarAnalyzeIterator(TEST_INPUT_JAR, new DefaultIteratorExceptionHandler());
 		ContentRecorderOperation operation = new ContentRecorderOperation();
 		it.execute(operation);
 
@@ -72,7 +76,8 @@ public class JarIteratorTest {
 
 		final Class<?> classToAdd = NewClass.class;
 
-		JarModificationIterator modificationIterator = new JarModificationIterator(TEST_INPUT_JAR, TEST_TEMP_JAR_1) {
+		JarModificationIterator modificationIterator = new JarModificationIterator(TEST_INPUT_JAR, TEST_TEMP_JAR_1,
+				new DefaultIteratorExceptionHandler()) {
 			@Override
 			protected List<ClassFileData> getFurtherClassesToBeAdded() {
 				List<ClassFileData> list = new LinkedList<>();
@@ -92,7 +97,8 @@ public class JarIteratorTest {
 
 		assertTrue(file.exists());
 
-		JarAnalyzeIterator analyzeIterator = new JarAnalyzeIterator(TEST_TEMP_JAR_1);
+		JarAnalyzeIterator analyzeIterator = new JarAnalyzeIterator(TEST_TEMP_JAR_1,
+				new DefaultIteratorExceptionHandler());
 		ContentRecorderOperation checkOperation = new ContentRecorderOperation();
 		analyzeIterator.execute(checkOperation);
 
@@ -111,7 +117,8 @@ public class JarIteratorTest {
 			file.delete();
 		}
 
-		JarModificationIterator modificationIterator = new JarModificationIterator(TEST_RESOURCE_JAR, TEST_TEMP_JAR_2);
+		JarModificationIterator modificationIterator = new JarModificationIterator(TEST_RESOURCE_JAR, TEST_TEMP_JAR_2,
+				new DefaultIteratorExceptionHandler());
 
 		modificationIterator.execute(new EmptyModificationOperation());
 
@@ -134,7 +141,7 @@ public class JarIteratorTest {
 		private final StringBuilder m_logger = new StringBuilder();
 
 		public SequenceRecorderIterator(String inputJarPath) {
-			super(inputJarPath);
+			super(inputJarPath, new DefaultIteratorExceptionHandler());
 		}
 
 		/** {@inheritDoc} */
@@ -164,25 +171,6 @@ public class JarIteratorTest {
 		public String getLog() {
 			return m_logger.toString();
 		}
-
-		/** {@inheritDoc} */
-		@Override
-		protected void onExceptionInHandleEntry(Throwable t, String className) throws IteratorException {
-			// NOP
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		protected void onExceptionInHandleResource(Throwable t, String resourcePath) throws IteratorException {
-			// NOP
-		}
-
-		/** {@inheritDoc} */
-		@Override
-		protected void onExceptionInJarProcessing(Throwable throwable, ICodeOperation jarOperation)
-				throws IteratorException {
-			// NOP
-		}
 	}
 
 	class ContentRecorderOperation implements ICodeAnalyzeOperation {
@@ -200,7 +188,7 @@ public class JarIteratorTest {
 
 		/** {@inheritDoc} */
 		@Override
-		public void clearResult() {
+		public void reset() {
 			// NOP
 		}
 	}
@@ -214,7 +202,7 @@ public class JarIteratorTest {
 
 		/** {@inheritDoc} */
 		@Override
-		public void clearResult() {
+		public void reset() {
 			// NOP
 		}
 	}
@@ -223,6 +211,12 @@ public class JarIteratorTest {
 		/** {@inheritDoc} */
 		@Override
 		public void modify(ClassReader cr, ClassWriter cw) throws CodeOperationException {
+			// NOP
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		public void reset() {
 			// NOP
 		}
 	}
