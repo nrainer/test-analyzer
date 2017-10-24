@@ -28,6 +28,6 @@ public class AbstractThreadAwareStackInformationCollectionLogic extends Abstract
 	/** {@inheritDoc} */
 	@Override
 	protected void startStackLogRecorder(TestcaseIdentifier testCaseIdentifier) {
-		m_threadAwareStackDistanceManager.execStartStackLogger(testCaseIdentifier);
+		m_threadAwareStackDistanceManager.startStackLogger(testCaseIdentifier);
 	}
 }
