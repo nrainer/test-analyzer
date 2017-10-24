@@ -11,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactAnalysisIterator;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.MainArtifactIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
@@ -109,7 +109,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 
 	private Map<TestcaseIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector,
 			boolean operateFaultTolerant) throws IteratorException {
-		IArtifactAnalysisIterator iterator = JarIteratorFactory.createAnalyzeIterator(inputJarFile,
+		IArtifactAnalysisIterator iterator = MainArtifactIteratorFactory.INSTANCE.createAnalyzeIterator(inputJarFile,
 				operateFaultTolerant);
 
 		iterator.execute(testCollector);

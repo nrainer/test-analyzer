@@ -6,7 +6,7 @@ import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactAnalysisIterator;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.MainArtifactIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.Identifier;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
@@ -71,7 +71,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 
 	private <T extends Identifier> Map<T, Integer> getCountInstructionsData(Configuration configuration, Mode mode,
 			ITestCollector testCollector, String inputJarFile) throws IteratorException {
-		IArtifactAnalysisIterator iterator = JarIteratorFactory.createAnalyzeIterator(inputJarFile,
+		IArtifactAnalysisIterator iterator = MainArtifactIteratorFactory.INSTANCE.createAnalyzeIterator(inputJarFile,
 				configuration.getOperateFaultTolerant().getValue());
 
 		if (mode == Mode.TESTCASE) {

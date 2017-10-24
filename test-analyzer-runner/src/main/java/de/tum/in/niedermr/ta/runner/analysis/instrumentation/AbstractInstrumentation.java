@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactModificationIterator;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.MainArtifactIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
@@ -58,9 +58,11 @@ public abstract class AbstractInstrumentation {
 		if (m_operateFaultTolerant) {
 			exceptionHandler = new FaultTolerantInstrumentationIteratorExceptionHandler();
 		} else {
-			exceptionHandler = JarIteratorFactory.createArtifactExceptionHandler(m_operateFaultTolerant);
+			exceptionHandler = MainArtifactIteratorFactory.INSTANCE
+					.createArtifactExceptionHandler(m_operateFaultTolerant);
 		}
 
-		return JarIteratorFactory.createModificationIterator(inputArtifactPath, outputArtifactPath, exceptionHandler);
+		return MainArtifactIteratorFactory.INSTANCE.createModificationIterator(inputArtifactPath, outputArtifactPath,
+				exceptionHandler);
 	}
 }
