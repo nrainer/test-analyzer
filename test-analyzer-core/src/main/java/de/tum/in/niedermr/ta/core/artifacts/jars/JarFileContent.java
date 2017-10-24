@@ -10,7 +10,7 @@ import java.util.jar.JarFile;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
-public class JarFileContent {
+class JarFileContent {
 	private final JarFile m_jarFile;
 	private final List<JarEntry> m_classEntryList;
 	private final List<JarEntry> m_resourceEntryList;
