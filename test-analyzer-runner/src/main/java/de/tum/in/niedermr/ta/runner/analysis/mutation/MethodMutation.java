@@ -6,8 +6,8 @@ import org.objectweb.asm.ClassWriter;
 import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.MethodFilterList;
-import de.tum.in.niedermr.ta.core.analysis.jars.writer.JarFileWriter;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
+import de.tum.in.niedermr.ta.core.artifacts.jars.JarFileWriter;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 

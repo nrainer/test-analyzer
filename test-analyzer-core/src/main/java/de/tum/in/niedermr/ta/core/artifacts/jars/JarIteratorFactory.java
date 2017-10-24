@@ -1,7 +1,7 @@
-package de.tum.in.niedermr.ta.core.analysis.jars.iteration;
+package de.tum.in.niedermr.ta.core.artifacts.jars;
 
 /** Factory to create instances of iterators. */
-public class IteratorFactory {
+public class JarIteratorFactory {
 
 	/** Create a read-only iterator to iterate over the classes of a jar file. */
 	public static JarAnalyzeIterator createJarAnalyzeIterator(String inputJarPath, boolean faultTolerant) {

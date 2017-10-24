@@ -7,8 +7,8 @@ import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 
 import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterator;
-import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.jars.JarModificationIterator;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
@@ -57,7 +57,7 @@ public class JarInstrumentationIterator extends JarModificationIterator {
 		try {
 			getJarFileWriter().writeClassIntoJar(new ClassFileData(m_originalClassPath, m_classBytes));
 		} catch (IOException e) {
-			LOGGER.error("Writiing class into jar failed: " + m_originalClassPath);
+			LOGGER.error("Writing class into jar failed: " + m_originalClassPath);
 		}
 	}
 }

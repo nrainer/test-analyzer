@@ -9,11 +9,11 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.jars.JarAnalyzeIterator;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
-import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
@@ -109,7 +109,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 
 	private Map<TestcaseIdentifier, Integer> getCountAssertionsData(String inputJarFile, ITestCollector testCollector,
 			boolean operateFaultTolerant) throws IteratorException {
-		JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile, operateFaultTolerant);
+		JarAnalyzeIterator iterator = JarIteratorFactory.createJarAnalyzeIterator(inputJarFile, operateFaultTolerant);
 
 		iterator.execute(testCollector);
 		this.m_allTestcases.putAll(testCollector.getTestClassesWithTestcases());

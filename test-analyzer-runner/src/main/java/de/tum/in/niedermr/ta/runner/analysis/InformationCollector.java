@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.runner.analysis;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;

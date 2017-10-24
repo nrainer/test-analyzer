@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.code.iteration;
+package de.tum.in.niedermr.ta.core.artifacts.iterator;
 
 import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
 

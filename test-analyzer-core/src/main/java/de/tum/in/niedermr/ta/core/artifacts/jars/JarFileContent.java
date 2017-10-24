@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.jars.content;
+package de.tum.in.niedermr.ta.core.artifacts.jars;
 
 import java.io.IOException;
 import java.io.InputStream;

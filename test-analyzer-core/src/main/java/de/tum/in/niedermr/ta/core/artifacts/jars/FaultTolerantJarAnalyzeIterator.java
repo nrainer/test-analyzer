@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.jars.iteration;
+package de.tum.in.niedermr.ta.core.artifacts.jars;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

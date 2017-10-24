@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.runner.analysis.instrumentation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterator;
+import de.tum.in.niedermr.ta.core.artifacts.jars.JarModificationIterator;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;

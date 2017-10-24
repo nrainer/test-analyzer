@@ -1,7 +1,7 @@
 package de.tum.in.niedermr.ta.runner.execution.infocollection;
 
 import de.tum.in.niedermr.ta.core.analysis.result.presentation.IResultPresentation;
-import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 

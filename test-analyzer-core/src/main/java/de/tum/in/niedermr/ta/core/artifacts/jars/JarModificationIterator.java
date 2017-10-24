@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.jars.iteration;
+package de.tum.in.niedermr.ta.core.artifacts.jars;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,8 +11,7 @@ import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
 import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
-import de.tum.in.niedermr.ta.core.analysis.jars.writer.JarFileWriter;
-import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 
