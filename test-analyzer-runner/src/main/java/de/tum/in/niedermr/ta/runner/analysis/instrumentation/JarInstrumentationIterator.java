@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 
 import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.artifacts.jars.JarModificationIterator;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;

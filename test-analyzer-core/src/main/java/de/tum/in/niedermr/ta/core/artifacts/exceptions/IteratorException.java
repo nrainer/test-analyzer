@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.artifacts.iterator;
+package de.tum.in.niedermr.ta.core.artifacts.exceptions;
 
 /** Iterator exception. */
 public class IteratorException extends Exception {

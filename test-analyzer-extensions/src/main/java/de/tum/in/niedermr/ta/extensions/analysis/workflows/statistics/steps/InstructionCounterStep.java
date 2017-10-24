@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.artifacts.jars.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.Identifier;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;

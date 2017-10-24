@@ -14,9 +14,9 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.artifacts.jars.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
