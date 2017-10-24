@@ -4,8 +4,6 @@ import java.util.Map;
 import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.AbstractThreadAwareStackDistanceManager;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v2.ThreadStackManager;
 
 /**
  * Logic to collect information about the test cases and methods under
@@ -24,8 +22,7 @@ public class AbstractThreadAwareStackInformationCollectionLogic extends Abstract
 	@Override
 	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		super.execBeforeExecutingAllTests(testClassesWithTestcases);
-		ThreadStackManager stackManager = new ThreadStackManager();
-		m_threadAwareStackDistanceManager.execSetThreadStackManagerAndVerify(stackManager);
+		m_threadAwareStackDistanceManager.beforeAllTests();
 	}
 
 	/** {@inheritDoc} */
