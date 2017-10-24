@@ -13,8 +13,8 @@ import org.objectweb.asm.ClassWriter;
 import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.io.IArtifactOutputWriter;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactModificationIterator;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactOutputWriter;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 

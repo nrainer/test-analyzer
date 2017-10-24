@@ -3,9 +3,9 @@ package de.tum.in.niedermr.ta.core.artifacts.jars;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.DefaultIteratorExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.FaultTolerantIteratorExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
+import de.tum.in.niedermr.ta.core.artifacts.io.IArtifactOutputWriter;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactAnalysisIterator;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactModificationIterator;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactOutputWriter;
 
 /** Factory to create instances of iterators. */
 public class JarIteratorFactory {

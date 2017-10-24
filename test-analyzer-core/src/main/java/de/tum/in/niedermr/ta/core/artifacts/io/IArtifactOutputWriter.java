@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.artifacts.iterator;
+package de.tum.in.niedermr.ta.core.artifacts.io;
 
 import java.io.IOException;
 import java.util.List;
