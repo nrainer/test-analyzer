@@ -51,7 +51,7 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> extends Abs
 			InputStream inputStream = classContainer.getInputStream(entry);
 
 			try {
-				handleResource(jarOperation, entry, inputStream);
+				handleResource(jarOperation, inputStream, entry.getName());
 			} catch (Throwable t) {
 				getExceptionHandler().onExceptionInHandleResource(t, this, inputStream, entry.getName());
 			} finally {

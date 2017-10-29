@@ -2,7 +2,6 @@ package de.tum.in.niedermr.ta.core.artifacts.iterator;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.jar.JarEntry;
 
 import org.objectweb.asm.ClassReader;
 
@@ -55,7 +54,7 @@ public abstract class AbstractArtifactIterator<OP extends ICodeOperation> implem
 		// NOP
 	}
 
-	protected void handleResource(OP artifactOperation, JarEntry resourceEntry, InputStream inStream)
+	protected void handleResource(OP artifactOperation, InputStream inStream, String entryName)
 			throws IteratorException, CodeOperationException, IOException {
 		// NOP
 	}

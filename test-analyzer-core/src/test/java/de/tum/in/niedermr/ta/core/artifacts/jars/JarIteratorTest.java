@@ -10,7 +10,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.jar.JarEntry;
 
 import org.junit.Test;
 import org.objectweb.asm.ClassReader;
@@ -158,7 +157,7 @@ public class JarIteratorTest {
 
 		/** {@inheritDoc} */
 		@Override
-		protected void handleResource(ICodeOperation jarOperation, JarEntry resourceEntryList, InputStream inStream) {
+		protected void handleResource(ICodeOperation jarOperation, InputStream inStream, String resourceEntryList) {
 			m_logger.append(HANDLE_RESOURCE);
 		}
 

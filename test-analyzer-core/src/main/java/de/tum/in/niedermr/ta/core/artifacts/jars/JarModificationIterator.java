@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarEntry;
 
 import org.apache.commons.io.IOUtils;
 import org.objectweb.asm.ClassReader;
@@ -50,9 +49,9 @@ class JarModificationIterator extends AbstractJarIterator<ICodeModificationOpera
 
 	/** {@inheritDoc} */
 	@Override
-	protected void handleResource(ICodeModificationOperation jarOperation, JarEntry resourceEntry, InputStream inStream)
+	protected void handleResource(ICodeModificationOperation jarOperation, InputStream inStream, String entryName)
 			throws IteratorException, CodeOperationException, IOException {
-		m_jarFileWriter.writeResource(new ClassFileData(resourceEntry.getName(), IOUtils.toByteArray(inStream)));
+		m_jarFileWriter.writeResource(new ClassFileData(entryName, IOUtils.toByteArray(inStream)));
 	}
 
 	/** {@inheritDoc} */
