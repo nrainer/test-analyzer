@@ -1,13 +1,18 @@
 package de.tum.in.niedermr.ta.sample;
 
-@SuppressWarnings("unused")
 public class SampleClass3 {
 
+	private String x;
+
 	public SampleClass3() {
-		// NOP
+		this("");
 	}
 
 	public SampleClass3(String x) {
-		// NOP
+		this.x = x;
+	}
+
+	public String getX() {
+		return x;
 	}
 }

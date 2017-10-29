@@ -1,18 +1,19 @@
 package de.tum.in.niedermr.ta.sample;
 
-@SuppressWarnings("unused")
 public class SampleClass2 {
 
+	private String x;
+
 	public SampleClass2(int x) {
-		// NOP
+		this(String.valueOf(x));
 	}
 
 	public SampleClass2(String x) {
-		// NOP
+		this.x = x;
 	}
 
 	@Override
 	public String toString() {
-		return "toString";
+		return x;
 	}
 }

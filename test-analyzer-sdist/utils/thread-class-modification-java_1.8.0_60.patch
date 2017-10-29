@@ -1,0 +1,41 @@
+diff --git a/test-analyzer-sdist/src/main/java/java/lang/Thread.java b/test-analyzer-sdist/src/main/java/java/lang/Thread.java
+index 342bb89..c72cca0 100644
+--- a/test-analyzer-sdist/src/main/java/java/lang/Thread.java
++++ b/test-analyzer-sdist/src/main/java/java/lang/Thread.java
+@@ -28,14 +28,17 @@ package java.lang;
+ import java.lang.ref.Reference;
+ import java.lang.ref.ReferenceQueue;
+ import java.lang.ref.WeakReference;
+-import java.security.AccessController;
+ import java.security.AccessControlContext;
++import java.security.AccessController;
+ import java.security.PrivilegedAction;
+-import java.util.Map;
+ import java.util.HashMap;
++import java.util.Map;
+ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ConcurrentMap;
+ import java.util.concurrent.locks.LockSupport;
++
++import de.tum.in.niedermr.ta.extensions.threads.IModifiedThreadClass;
++import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
+ import sun.nio.ch.Interruptible;
+ import sun.reflect.CallerSensitive;
+ import sun.reflect.Reflection;
+@@ -138,7 +141,7 @@ import sun.security.util.SecurityConstants;
+  * @since   JDK1.0
+  */
+ public
+-class Thread implements Runnable {
++class Thread implements Runnable, IModifiedThreadClass {
+     /* Make sure registerNatives is the first thing <clinit> does. */
+     private static native void registerNatives();
+     static {
+@@ -711,6 +714,7 @@ class Thread implements Runnable {
+ 
+         boolean started = false;
+         try {
++        	ThreadNotifier.INSTANCE.sendThreadStartedEvent(this);
+             start0();
+             started = true;
+         } finally {

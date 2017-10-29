@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" finding-creation="violations_orphans" scope-include="" scope-exclude="">
-  <component name="Other tools" dim="210,40" pos="21,431">
-    <code-mapping type="include" regex="test\-analyzer\-core/utilities/ClasspathHelp\.java" />
+  <component name="Other tools" dim="210,40" pos="21,491">
+    <code-mapping type="include" regex="test\-analyzer\-runner/utilities/ClasspathHelp\.java" />
   </component>
-  <component name="test.analyzer.core app" dim="220,40" pos="21,21">
+  <component name="test-analyzer-sdist app" dim="220,40" pos="131,231">
+    <code-mapping type="include" regex="test-analyzer-sdist/src/main.*" />
+  </component>
+  <component name="test-analyzer-sdist test" dim="220,40" pos="691,231">
+    <code-mapping type="include" regex="test-analyzer-sdist/src/test.*" />
+  </component>
+  <component name="test.analyzer.core app" dim="220,40" pos="61,41">
     <code-mapping type="include" regex="test-analyzer-core/src/main.*" />
   </component>
-  <component name="test.analyzer.core test" dim="220,40" pos="551,21">
+  <component name="test.analyzer.core test" dim="220,40" pos="771,41">
     <code-mapping type="include" regex="test-analyzer-core/src/test.*" />
     <code-mapping type="exclude" regex="test-analyzer-core/src/test/resources/de/tum/in/niedermr/ta/sample/.*" />
   </component>
-  <component name="test.analyzer.extensions app" dim="220,40" pos="21,231">
+  <component name="test.analyzer.extensions app" dim="220,40" pos="171,361">
     <code-mapping type="include" regex="test-analyzer-extensions/src/main.*" />
   </component>
-  <component name="test.analyzer.extensions test" dim="220,40" pos="551,241">
+  <component name="test.analyzer.extensions test" dim="220,40" pos="641,361">
     <code-mapping type="include" regex="test-analyzer-extensions/src/test.*" />
   </component>
-  <component name="test.analyzer.runner app" dim="220,40" pos="21,141">
+  <component name="test.analyzer.runner app" dim="220,40" pos="131,141">
     <code-mapping type="include" regex="test-analyzer-runner/src/main.*" />
   </component>
-  <component name="test.analyzer.runner test" dim="220,40" pos="551,141">
+  <component name="test.analyzer.runner test" dim="220,40" pos="691,141">
     <code-mapping type="include" regex="test-analyzer-runner/src/test.*" />
   </component>
-  <component name="test.analyzer.test.int test" dim="220,40" pos="551,341">
+  <component name="test.analyzer.test.int test" dim="220,40" pos="601,451">
     <code-mapping type="include" regex="test-analyzer-test-int/src/test.*" />
   </component>
   <allow source="test.analyzer.core test" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions app" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions app" target="test.analyzer.runner app" />
+  <allow source="test.analyzer.extensions app" target="test-analyzer-sdist app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.core app" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.core test" />
   <allow source="test.analyzer.extensions test" target="test.analyzer.extensions app" />
@@ -40,4 +47,8 @@
   <allow source="test.analyzer.test.int test" target="test.analyzer.core app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.extensions app" />
   <allow source="test.analyzer.test.int test" target="test.analyzer.runner app" />
+  <allow source="test.analyzer.test.int test" target="test-analyzer-sdist app" />
+  <allow source="test-analyzer-sdist app" target="test.analyzer.core app" />
+  <allow source="test-analyzer-sdist test" target="test.analyzer.core app" />
+  <allow source="test-analyzer-sdist test" target="test-analyzer-sdist app" />
 </conqat-architecture>
