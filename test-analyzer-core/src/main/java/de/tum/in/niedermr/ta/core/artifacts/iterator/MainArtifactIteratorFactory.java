@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.core.artifacts.iterator;
 
+import de.tum.in.niedermr.ta.core.artifacts.binaryclasses.BinaryClassesIteratorFactory;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.io.IArtifactOutputWriter;
 import de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorFactory;
@@ -11,10 +12,12 @@ public final class MainArtifactIteratorFactory extends AbstractArtifactIteratorF
 	public static final IArtifactIteratorFactory INSTANCE = new MainArtifactIteratorFactory();
 
 	private final JarIteratorFactory m_jarIteratorFactory;
+	private final BinaryClassesIteratorFactory m_binaryClassesIteratorFactory;
 
 	/** Constructor. */
 	public MainArtifactIteratorFactory() {
 		m_jarIteratorFactory = new JarIteratorFactory();
+		m_binaryClassesIteratorFactory = new BinaryClassesIteratorFactory();
 	}
 
 	/** {@inheritDoc} */
@@ -44,7 +47,7 @@ public final class MainArtifactIteratorFactory extends AbstractArtifactIteratorF
 			return m_jarIteratorFactory;
 		}
 
-		throw new UnsupportedOperationException("Type of artifact is not supported: " + artifactContainerPath);
+		return m_binaryClassesIteratorFactory;
 	}
 
 	private boolean isJarArtifact(String artifactContainerPath) {
