@@ -61,7 +61,7 @@ class JarModificationIterator extends AbstractJarIterator<ICodeModificationOpera
 			m_jarFileWriter.writeClasses(getFurtherClassesToBeAdded());
 		}
 
-		m_jarFileWriter.close();
+		m_jarFileWriter.ensureAllStreamsClosed();
 	}
 
 	protected List<ClassFileData> getFurtherClassesToBeAdded() {

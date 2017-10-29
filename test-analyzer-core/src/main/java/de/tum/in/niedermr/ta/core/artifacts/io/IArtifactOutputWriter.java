@@ -7,7 +7,7 @@ import de.tum.in.niedermr.ta.core.artifacts.content.ClassFileData;
 
 public interface IArtifactOutputWriter {
 
-	void close() throws IOException;
+	void ensureAllStreamsClosed() throws IOException;
 
 	void writeClass(ClassFileData classFileData) throws IOException;
 

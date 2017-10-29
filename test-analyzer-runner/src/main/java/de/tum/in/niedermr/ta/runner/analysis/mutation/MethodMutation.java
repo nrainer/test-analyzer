@@ -44,7 +44,7 @@ public class MethodMutation {
 			IArtifactOutputWriter writer = MainArtifactIteratorFactory.INSTANCE
 					.createArtifactOutputWriter(outputJarPath);
 			writer.writeClass(new ClassFileData(JavaUtility.toClassPathWithEnding(className), cw.toByteArray()));
-			writer.close();
+			writer.ensureAllStreamsClosed();
 		}
 
 		return mutationExecuted;

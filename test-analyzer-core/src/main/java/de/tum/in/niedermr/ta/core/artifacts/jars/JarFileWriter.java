@@ -2,31 +2,22 @@ package de.tum.in.niedermr.ta.core.artifacts.jars;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
-import de.tum.in.niedermr.ta.core.artifacts.content.ClassFileData;
-import de.tum.in.niedermr.ta.core.artifacts.io.IArtifactOutputWriter;
-import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
+import de.tum.in.niedermr.ta.core.artifacts.io.AbstractArtifactOutputWriter;
 
-class JarFileWriter implements IArtifactOutputWriter {
-	private final String m_jarFile;
+class JarFileWriter extends AbstractArtifactOutputWriter {
 	private JarOutputStream m_outputStream;
 
+	/** Constructor. */
 	public JarFileWriter(String jarFile) {
-		m_jarFile = jarFile;
-	}
-
-	private void ensureStreamOpen() throws IOException {
-		if (m_outputStream == null) {
-			m_outputStream = new JarOutputStream(new FileOutputStream(m_jarFile));
-		}
+		super(jarFile);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void close() throws IOException {
+	public void ensureAllStreamsClosed() throws IOException {
 		if (m_outputStream != null) {
 			m_outputStream.close();
 		}
@@ -34,26 +25,10 @@ class JarFileWriter implements IArtifactOutputWriter {
 
 	/** {@inheritDoc} */
 	@Override
-	public void writeClass(ClassFileData classFileData) throws IOException {
-		writeElement(JavaUtility.ensureClassFileEnding(classFileData.getEntryName()), classFileData.getRawData());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void writeResource(ClassFileData resourceFileData) throws IOException {
-		writeElement(resourceFileData.getEntryName(), resourceFileData.getRawData());
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	public void writeClasses(List<ClassFileData> classFileList) throws IOException {
-		for (ClassFileData classData : classFileList) {
-			writeClass(classData);
+	protected void writeElement(String entryName, byte[] data) throws IOException {
+		if (m_outputStream == null) {
+			m_outputStream = new JarOutputStream(new FileOutputStream(getArtifactPath()));
 		}
-	}
-
-	private void writeElement(String entryName, byte[] data) throws IOException {
-		ensureStreamOpen();
 
 		JarEntry entry = new JarEntry(entryName);
 		m_outputStream.putNextEntry(entry);
