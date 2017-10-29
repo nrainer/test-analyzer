@@ -8,40 +8,24 @@ import org.objectweb.asm.ClassReader;
 
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactIterator;
-import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;
+import de.tum.in.niedermr.ta.core.artifacts.iterator.AbstractArtifactIterator;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
 
 /** Abstract iterator for jar files. */
-public abstract class AbstractJarIterator<OP extends ICodeOperation> implements IArtifactIterator<OP> {
-	private final String m_inputJarPath;
-	private final IArtifactExceptionHandler m_exceptionHandler;
+public abstract class AbstractJarIterator<OP extends ICodeOperation> extends AbstractArtifactIterator<OP> {
 
+	/** Constructor. */
 	public AbstractJarIterator(String inputJarPath, IArtifactExceptionHandler exceptionHandler) {
-		m_inputJarPath = inputJarPath;
-		m_exceptionHandler = exceptionHandler;
-	}
-
-	/** @see #m_inputJarPath */
-	public String getInputJarPath() {
-		return m_inputJarPath;
+		super(inputJarPath, exceptionHandler);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public final void execute(OP jarOperation) throws IteratorException {
-		try {
-			beforeAll();
+	protected void processArtifactContent(OP artifactOperation) throws IOException, IteratorException {
+		JarFileContent classContainer = JarFileContent.fromJarFile(getPathToResource());
 
-			JarFileContent classContainer = JarFileContent.fromJarFile(m_inputJarPath);
-
-			processClassEntryList(jarOperation, classContainer);
-			processResourceEntryList(jarOperation, classContainer);
-
-			afterAll();
-		} catch (Throwable t) {
-			m_exceptionHandler.onExceptionInArtifactIteration(t, this, jarOperation, getInputJarPath());
-		}
+		processClassEntryList(artifactOperation, classContainer);
+		processResourceEntryList(artifactOperation, classContainer);
 	}
 
 	private void processClassEntryList(OP jarOperation, JarFileContent classContainer)
@@ -54,7 +38,7 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 			try {
 				handleEntry(jarOperation, classInputReader, originalClassPath);
 			} catch (Throwable t) {
-				m_exceptionHandler.onExceptionInHandleClass(t, this, classInputReader, originalClassPath);
+				getExceptionHandler().onExceptionInHandleClass(t, this, classInputReader, originalClassPath);
 			} finally {
 				inStream.close();
 			}
@@ -69,20 +53,10 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> implements 
 			try {
 				handleResource(jarOperation, entry, inputStream);
 			} catch (Throwable t) {
-				m_exceptionHandler.onExceptionInHandleResource(t, this, inputStream, entry.getName());
+				getExceptionHandler().onExceptionInHandleResource(t, this, inputStream, entry.getName());
 			} finally {
 				inputStream.close();
 			}
 		}
 	}
-
-	protected abstract void beforeAll() throws IteratorException, IOException;
-
-	protected abstract void handleEntry(OP jarOperation, ClassReader cr, String originalClassPath)
-			throws IteratorException, CodeOperationException, IOException;
-
-	protected abstract void handleResource(OP jarOperation, JarEntry resourceEntry, InputStream inStream)
-			throws IteratorException, CodeOperationException, IOException;
-
-	protected abstract void afterAll() throws IteratorException, IOException;
 }
