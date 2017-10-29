@@ -16,7 +16,7 @@ import org.junit.Test;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
 
-import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
+import de.tum.in.niedermr.ta.core.artifacts.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.DefaultIteratorExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.code.operation.CodeOperationException;

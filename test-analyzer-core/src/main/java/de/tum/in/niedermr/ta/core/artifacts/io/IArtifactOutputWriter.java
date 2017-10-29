@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.core.artifacts.io;
 import java.io.IOException;
 import java.util.List;
 
-import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
+import de.tum.in.niedermr.ta.core.artifacts.content.ClassFileData;
 
 public interface IArtifactOutputWriter {
 

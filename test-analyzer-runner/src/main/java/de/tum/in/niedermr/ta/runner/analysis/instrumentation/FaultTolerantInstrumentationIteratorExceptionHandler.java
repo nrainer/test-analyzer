@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 
-import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
+import de.tum.in.niedermr.ta.core.artifacts.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.FaultTolerantIteratorExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactIterator;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactModificationIterator;

@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarOutputStream;
 
-import de.tum.in.niedermr.ta.core.analysis.content.ClassFileData;
+import de.tum.in.niedermr.ta.core.artifacts.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.artifacts.io.IArtifactOutputWriter;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
