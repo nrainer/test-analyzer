@@ -26,7 +26,7 @@ public class JUnitTestClassDetectorTestData {
 			// NOP
 		}
 
-		public void testButNoTestcase(@SuppressWarnings("unused") String param) {
+		public void testButNoTestcase(String param) {
 			// NOP
 		}
 	}

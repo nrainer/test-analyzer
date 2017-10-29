@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" finding-creation="violations_orphans" scope-include="" scope-exclude="">
+<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="true" finding-creation="violations_orphans" scope-include="" scope-exclude="test-analyzer-runner/utilities/.*">
   <component name="application" dim="120,40" pos="21,21">
     <code-mapping type="include" regex="test-analyzer-core/src/main.*" />
     <code-mapping type="include" regex="test-analyzer-extensions/src/main.*" />
     <code-mapping type="include" regex="test-analyzer-runner/src/main.*" />
+    <code-mapping type="include" regex="test-analyzer-sdist/src/main.*" />
   </component>
   <component name="test" dim="120,40" pos="291,21">
     <code-mapping type="include" regex="test-analyzer-core/src/test.*" />
     <code-mapping type="include" regex="test-analyzer-extensions/src/test.*" />
     <code-mapping type="include" regex="test-analyzer-runner/src/test.*" />
     <code-mapping type="include" regex="test-analyzer-test-int/src/test.*" />
+    <code-mapping type="include" regex="test-analyzer-sdist/src/test.*" />
   </component>
   <allow source="test" target="application" />
 </conqat-architecture>

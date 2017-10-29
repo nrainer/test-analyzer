@@ -1,5 +1,5 @@
 <com.teamscale.core.migration.TeamscaleVersionContainer>
-  <version class="com.teamscale.index.configuration.service.EAnalysisProfileVersion">ANALYSIS_PROFILE_VERSION_20</version>
+  <version class="com.teamscale.index.configuration.EAnalysisProfileVersion">ANALYSIS_PROFILE_VERSION_28</version>
   <payload class="org.conqat.engine.index.configuration.instance.AnalysisProfile">
     <options class="linked-hash-map">
       <entry>
@@ -10,17 +10,12 @@
         <string>Enable search</string>
         <string>true</string>
       </entry>
-      <entry>
-        <string>Enable Redundant Literal Analysis</string>
-        <string>false</string>
-      </entry>
     </options>
     <name>Java (naming convention test-analyzer)</name>
     <languages class="linked-hash-set">
       <eu.cqse.check.framework.scanner.ELanguage>JAVA</eu.cqse.check.framework.scanner.ELanguage>
     </languages>
     <tools class="linked-hash-set">
-      <org.conqat.engine.index.configuration.model.EAnalysisTool>CUSTOM</org.conqat.engine.index.configuration.model.EAnalysisTool>
       <org.conqat.engine.index.configuration.model.EAnalysisTool>JACOCO</org.conqat.engine.index.configuration.model.EAnalysisTool>
     </tools>
     <qualityIndicators>
@@ -57,11 +52,11 @@
             <options class="linked-hash-map">
               <entry>
                 <string>Architecture violation</string>
-                <string>Red</string>
+                <string>red</string>
               </entry>
               <entry>
                 <string>Unmatched Types</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Include 3rd-party dependencies</string>
@@ -105,11 +100,11 @@
             <options class="linked-hash-map">
               <entry>
                 <string>Commented-out code</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Empty blocks</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Empty blocks: allow empty methods</string>
@@ -121,7 +116,7 @@
               </entry>
               <entry>
                 <string>Missing code</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
             </options>
             <name>General checks (built-in)</name>
@@ -130,11 +125,11 @@
             <options class="linked-hash-map">
               <entry>
                 <string>Avoid unused private fields (Java)</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Avoid unused private methods</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
             </options>
             <name>Unused code</name>
@@ -142,92 +137,110 @@
           <org.conqat.engine.index.configuration.instance.AnalysisGroup>
             <options class="linked-hash-map">
               <entry>
-                <string>Same Package Import</string>
-                <string>Yellow</string>
+                <string>Avoid ignoring JUnit tests</string>
+                <string>yellow</string>
               </entry>
               <entry>
-                <string>Method must not be named like constructor</string>
-                <string>Yellow</string>
+                <string>Test class naming convention</string>
+                <string>off</string>
               </entry>
+              <entry>
+                <string>Test class naming convention: naming pattern</string>
+                <string>^.*Test$</string>
+              </entry>
+              <entry>
+                <string>Annotation in JUnit 4 test class missing</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Annotation in JUnit 4 test class missing: Test class name pattern</string>
+                <string>.*Test$</string>
+              </entry>
+              <entry>
+                <string>Unit test classes should be located in the same package as the class under test</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Test class name ending</string>
+                <string>Test</string>
+              </entry>
+            </options>
+            <name>Test Conventions</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Exception stacktrace is lost</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Exception stacktrace is lost: Ignored exception types</string>
+                <string>NumberFormatException</string>
+              </entry>
+              <entry>
+                <string>Custom exception class</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Catch of generic exception</string>
+                <string>red</string>
+              </entry>
+              <entry>
+                <string>Throw of generic exception</string>
+                <string>red</string>
+              </entry>
+              <entry>
+                <string>Throw of generic exception: Method annotation filter</string>
+                <string>@Override,@Test</string>
+              </entry>
+            </options>
+            <name>Exception Handling</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
               <entry>
                 <string>Case Blocks Length</string>
-                <string>Off</string>
+                <string>off</string>
               </entry>
               <entry>
                 <string>Maximum case block length</string>
                 <string>10</string>
               </entry>
               <entry>
-                <string>Import from java.lang</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Logger was specified with a different class</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
                 <string>finalize() may not be overwritten</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>No star imports</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Unwanted constructor calls</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Unwanted constructor names</string>
                 <string>Boolean,Byte,Short,Integer,Long,Float,Double,String</string>
               </entry>
               <entry>
+                <string>Package name mismatch</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Allowed package prefixes</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Same package import</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
                 <string>Multiple top-level classes</string>
-                <string>Red</string>
-              </entry>
-              <entry>
-                <string>Custom exception class</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Field could be final (Java)</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Java annotations for non-final fields</string>
-                <string>Inject,Autowired,SpringBean</string>
-              </entry>
-              <entry>
-                <string>Never check for more than one condition in assert statements</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Avoid ignoring JUnit tests</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Unused imports</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Number of Method Parameters</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Maximum number of parameters</string>
-                <string>5</string>
+                <string>red</string>
               </entry>
               <entry>
                 <string>Call to printStackTrace()</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>hashCode() and equals()</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>File must have a valid copyright header</string>
-                <string>Off</string>
+                <string>off</string>
               </entry>
               <entry>
                 <string>Copyright Header</string>
@@ -236,120 +249,160 @@
 */</string>
               </entry>
               <entry>
-                <string>Multiple Assignments</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Too Many Constructors</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Maximum number of constructors</string>
-                <string>5</string>
-              </entry>
-              <entry>
-                <string>Do not compare this and null</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Avoid using ternary operators</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Use assertFalse instead of assertTrue with inverted condition (and vice versa)!</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Too Many Methods</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Maximum number of methods</string>
-                <string>32</string>
-              </entry>
-              <entry>
-                <string>Avoid leaving deprecated classes / methods / fields</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Public class attribute</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Annotation filter for public fields</string>
-                <string>@Inject,@Rule,@Mock,@AConQATFieldParameter,@AOptionFieldDescription</string>
+                <string>Specify new Logger instances with current class</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Properly initialize static variable</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
-                <string>Too Many Imports</string>
-                <string>Off</string>
+                <string>Too many imports</string>
+                <string>off</string>
               </entry>
               <entry>
                 <string>Maximum number of imports</string>
                 <string>50</string>
               </entry>
               <entry>
-                <string>Suspicious methods</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Catch of generic exception</string>
-                <string>Red</string>
-              </entry>
-              <entry>
-                <string>Java Unwanted Method Calls</string>
-                <string>Yellow</string>
+                <string>Java unwanted method calls</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Java Unwanted Methods</string>
                 <string>System.gc,System.err.println,System.exit,System.out.println</string>
               </entry>
               <entry>
-                <string>Private methods must not be final</string>
-                <string>Yellow</string>
+                <string>Suspicious methods</string>
+                <string>yellow</string>
               </entry>
               <entry>
-                <string>Throw of generic exception</string>
-                <string>Red</string>
+                <string>Private methods must not be final</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Maximum type name length</string>
-                <string>Off</string>
+                <string>off</string>
               </entry>
               <entry>
                 <string>Maximum name length</string>
                 <string>30</string>
               </entry>
               <entry>
-                <string>Switch/case without default</string>
-                <string>Yellow</string>
+                <string>Java unwanted imports</string>
+                <string>off</string>
               </entry>
               <entry>
-                <string>Bad Assignments</string>
-                <string>Off</string>
+                <string>Java Unwanted Imports: Patterns</string>
+                <string>sun\.misc\..*,com\.sun\..*</string>
               </entry>
               <entry>
                 <string>Modifiers must be in the right order</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Package Name Mismatch</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Allowed package prefixes</string>
-                <string></string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Transformation of byte sequence into String must consider encoding</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
-                <string>Inner Type Visiblity</string>
-                <string>Off</string>
+                <string>Unnecessary parameterless super constructor call</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Method must not be named like constructor</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Import from java.lang</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>No star imports</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Field could be final (Java)</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Java annotations for non-final fields</string>
+                <string>Inject,Autowired,SpringBean</string>
+              </entry>
+              <entry>
+                <string>Unused imports</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Never check for more than one condition in assert statements</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Bad assignments</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>hashCode() and equals()</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Do not compare this and null</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Avoid using ternary operators</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Inner type visiblity</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Too many methods</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Maximum number of methods</string>
+                <string>32</string>
+              </entry>
+              <entry>
+                <string>Too many constructors</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Maximum number of constructors</string>
+                <string>5</string>
+              </entry>
+              <entry>
+                <string>Avoid leaving deprecated classes / methods / fields</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Public class attribute</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Annotation filter for public fields</string>
+                <string>@Rule,@Mock,@Inject,@AOptionFieldDescription,@AConQATFieldParameter</string>
+              </entry>
+              <entry>
+                <string>Methods should not have too many parameters (Java)</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Methods should not have too many parameters (Java): max. parameters</string>
+                <string>5</string>
+              </entry>
+              <entry>
+                <string>Multiple assignments</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Avoid inverted conditions</string>
+                <string>off</string>
+              </entry>
+              <entry>
+                <string>Switch/case without default</string>
+                <string>yellow</string>
               </entry>
             </options>
             <name>Bad practice</name>
@@ -357,8 +410,55 @@
           <org.conqat.engine.index.configuration.instance.AnalysisGroup>
             <options class="linked-hash-map">
               <entry>
+                <string>Null pointer dereference</string>
+                <string>red</string>
+              </entry>
+              <entry>
+                <string>Identifier-based null pointer finding filters</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Custom assert methods</string>
+                <string>assert</string>
+              </entry>
+              <entry>
+                <string>Token stream transformations</string>
+                <string></string>
+              </entry>
+              <entry>
+                <string>Java: JUnit asserts</string>
+                <string>true</string>
+              </entry>
+            </options>
+            <name>Null pointer dereference</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Unused variable or parameter</string>
+                <string>yellow</string>
+              </entry>
+              <entry>
+                <string>Only analyze parameters of static and private methods</string>
+                <string>true</string>
+              </entry>
+            </options>
+            <name>Unused variable or parameter</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
+                <string>Calling contains on list</string>
+                <string>yellow</string>
+              </entry>
+            </options>
+            <name>Performance</name>
+          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
+          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
+            <options class="linked-hash-map">
+              <entry>
                 <string>Method returns null but return type is Optional</string>
-                <string>Red</string>
+                <string>red</string>
               </entry>
             </options>
             <name>Correctness</name>
@@ -414,7 +514,7 @@
               </entry>
               <entry>
                 <string>Clones</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Alert inconsistent changes</string>
@@ -462,7 +562,7 @@
             <options class="linked-hash-map">
               <entry>
                 <string>Task tags</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Task tag pattern</string>
@@ -474,37 +574,8 @@
           <org.conqat.engine.index.configuration.instance.AnalysisGroup>
             <options class="linked-hash-map">
               <entry>
-                <string>Unrelated interface comment</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Trivial interface comment</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Empty interface comment</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Short inline comment</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Long inline comment</string>
-                <string>Off</string>
-              </entry>
-              <entry>
-                <string>Comment with exclamation or question mark</string>
-                <string>Off</string>
-              </entry>
-            </options>
-            <name>Comment quality</name>
-          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
-          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
-            <options class="linked-hash-map">
-              <entry>
                 <string>Interface comment completeness</string>
-                <string>Off</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Required interface comments</string>
@@ -524,18 +595,6 @@
               </entry>
               <entry>
                 <string>Comment type metrics</string>
-                <string>false</string>
-              </entry>
-              <entry>
-                <string>Comment Completeness Assessment for Types</string>
-                <string>false</string>
-              </entry>
-              <entry>
-                <string>Comment Completeness Assessment for Methods</string>
-                <string>false</string>
-              </entry>
-              <entry>
-                <string>Comment Completeness Assessment for Attributes</string>
                 <string>false</string>
               </entry>
             </options>
@@ -576,11 +635,11 @@
             <options class="linked-hash-map">
               <entry>
                 <string>Non-ASCII characters</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Long lines</string>
-                <string>Off</string>
+                <string>off</string>
               </entry>
               <entry>
                 <string>Long lines: maximal length</string>
@@ -597,15 +656,15 @@
             <options class="linked-hash-map">
               <entry>
                 <string>Multiple statements in same line</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Multiple declarations in same statement</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Missing braces for block statements</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
             </options>
             <name>Code formatting</name>
@@ -645,7 +704,7 @@
             <options class="linked-hash-map">
               <entry>
                 <string>Java naming conventions</string>
-                <string>Yellow</string>
+                <string>yellow</string>
               </entry>
               <entry>
                 <string>Regex for Packages</string>
@@ -839,23 +898,10 @@
               </entry>
               <entry>
                 <string>Branch Coverage</string>
-                <string>false</string>
+                <string>true</string>
               </entry>
             </options>
             <name>Test Coverage</name>
-          </org.conqat.engine.index.configuration.instance.AnalysisGroup>
-          <org.conqat.engine.index.configuration.instance.AnalysisGroup>
-            <options class="linked-hash-map">
-              <entry>
-                <string>Unit test classes should be located in the same package as the class under test</string>
-                <string>Yellow</string>
-              </entry>
-              <entry>
-                <string>Test class name ending</string>
-                <string>Test</string>
-              </entry>
-            </options>
-            <name>Test Conventions</name>
           </org.conqat.engine.index.configuration.instance.AnalysisGroup>
         </groups>
       </org.conqat.engine.index.configuration.instance.QualityIndicator>
