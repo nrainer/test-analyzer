@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="false" finding-creation="violations_orphans" scope-include="" scope-exclude="">
+<conqat-architecture xmlns="http://conqat.cs.tum.edu/ns/architecture" policy="deny" file-based="false" finding-creation="violations_orphans" scope-include="" scope-exclude=".*Test">
   <component name="core.analysis" dim="140,40" pos="471,21">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.analysis.*" />
+  </component>
+  <component name="core.artifacts" dim="140,40" pos="1261,91">
+    <code-mapping type="include" regex="de\.tum\.in\.niedermr\.ta\.core\.artifacts\..*" />
   </component>
   <component name="core.code" dim="120,40" pos="841,21" stereotype="public">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.core.code.*" />
@@ -50,18 +53,23 @@
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.test.integration.*" />
   </component>
   <allow source="core.analysis" target="core.execution" />
-  <allow source="core.analysis" target="runner.analysis" />
+  <tolerate source="core.artifacts" target="core.analysis">
+    <dependency source="de.tum.in.niedermr.ta.core.artifacts.jars.JarFileWriter" target="de.tum.in.niedermr.ta.core.analysis.content.ClassFileData" />
+    <dependency source="de.tum.in.niedermr.ta.core.artifacts.jars.JarModificationIterator" target="de.tum.in.niedermr.ta.core.analysis.content.ClassFileData" />
+    <dependency source="de.tum.in.niedermr.ta.core.artifacts.io.IArtifactOutputWriter" target="de.tum.in.niedermr.ta.core.analysis.content.ClassFileData" />
+    <dependency source="de.tum.in.niedermr.ta.core.artifacts.jars.JarIteratorTest" target="de.tum.in.niedermr.ta.core.analysis.content.ClassFileData" />
+  </tolerate>
+  <allow source="core.artifacts" target="core.common" />
   <allow source="extensions.analysis" target="core.analysis" />
+  <allow source="extensions.analysis" target="core.artifacts" />
   <allow source="extensions.analysis" target="core.execution" />
   <allow source="extensions.analysis" target="extensions.threads" />
   <allow source="extensions.analysis" target="runner.analysis" />
   <allow source="extensions.analysis" target="runner.configuration" />
   <allow source="extensions.analysis" target="runner.execution" />
-  <tolerate source="extensions.analysis" target="runner.start">
-    <dependency source="de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AnalysisInformationCollector" target="de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart" />
-  </tolerate>
   <allow source="extensions.analysis" target="runner.test" />
   <allow source="runner.analysis" target="core.analysis" />
+  <allow source="runner.analysis" target="core.artifacts" />
   <allow source="runner.analysis" target="core.execution" />
   <allow source="runner.analysis" target="runner.configuration" />
   <allow source="runner.analysis" target="runner.execution" />
@@ -82,11 +90,10 @@
   </tolerate>
   <allow source="runner.configuration" target="runner.factory" />
   <allow source="runner.execution" target="core.analysis" />
+  <allow source="runner.execution" target="core.artifacts" />
   <allow source="runner.execution" target="core.execution" />
-  <allow source="runner.execution" target="runner.analysis" />
   <allow source="runner.execution" target="runner.configuration" />
   <allow source="runner.execution" target="runner.factory" />
-  <allow source="runner.execution" target="runner.start" />
   <allow source="runner.execution" target="runner.test" />
   <allow source="runner.factory" target="core.execution" />
   <allow source="runner.factory" target="runner.configuration" />
@@ -104,5 +111,4 @@
   <allow source="test.integration" target="runner.configuration" />
   <allow source="test.integration" target="runner.execution" />
   <allow source="test.integration" target="runner.factory" />
-  <allow source="test.integration" target="runner.start" />
 </conqat-architecture>
