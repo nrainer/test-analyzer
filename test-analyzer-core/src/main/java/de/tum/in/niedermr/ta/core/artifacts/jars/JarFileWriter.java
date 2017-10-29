@@ -15,12 +15,12 @@ class JarFileWriter implements IArtifactOutputWriter {
 	private JarOutputStream m_outputStream;
 
 	public JarFileWriter(String jarFile) {
-		this.m_jarFile = jarFile;
+		m_jarFile = jarFile;
 	}
 
-	private void open() throws IOException {
+	private void ensureStreamOpen() throws IOException {
 		if (m_outputStream == null) {
-			this.m_outputStream = new JarOutputStream(new FileOutputStream(m_jarFile));
+			m_outputStream = new JarOutputStream(new FileOutputStream(m_jarFile));
 		}
 	}
 
@@ -53,7 +53,7 @@ class JarFileWriter implements IArtifactOutputWriter {
 	}
 
 	private void writeElement(String entryName, byte[] data) throws IOException {
-		open();
+		ensureStreamOpen();
 
 		JarEntry entry = new JarEntry(entryName);
 		m_outputStream.putNextEntry(entry);
