@@ -33,6 +33,10 @@ class BinaryClassesIterator extends AbstractArtifactIterator {
 		List<File> files = FileSystemUtils.listFilesRecursively(artifactPath.toFile());
 
 		for (File currentFile : files) {
+			if (currentFile.isDirectory()) {
+				continue;
+			}
+
 			Path currentFilePath = Paths.get(currentFile.getPath());
 			handleEntryInArtifact(visitor, artifactOperation, artifactPath, currentFilePath);
 		}
@@ -45,7 +49,7 @@ class BinaryClassesIterator extends AbstractArtifactIterator {
 		}
 
 		FileInputStream inputStream = new FileInputStream(currentEntryPath.toFile());
-		String entryPath = currentEntryPath.relativize(artifactPath).toString();
+		String entryPath = artifactPath.relativize(currentEntryPath).toString();
 
 		if (currentEntryPath.endsWith(FileSystemConstants.FILE_EXTENSION_CLASS)) {
 			visitor.visitClassEntry(artifactOperation, inputStream, entryPath);
