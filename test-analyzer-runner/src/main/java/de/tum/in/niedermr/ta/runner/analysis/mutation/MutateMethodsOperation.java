@@ -52,7 +52,8 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 
 	private void mutate(MethodNode method, MethodIdentifier methodIdentifier) {
 		if (!ReturnValueGeneratorUtil.canHandleType(m_returnValueGenerator, methodIdentifier, method.desc)) {
-			// Note that capability to handle the return type is - if used correctly - already checked by the method
+			// Note that capability to handle the return type is - if used
+			// correctly - already checked by the method
 			// filter.
 			throw new IllegalStateException(
 					"The selected return value generator does not support a value generation for the method "
@@ -75,5 +76,11 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 	/** {@link #m_mutatedMethods} */
 	public List<MethodIdentifier> getMutatedMethods() {
 		return m_mutatedMethods;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public void reset() {
+		m_mutatedMethods.clear();
 	}
 }

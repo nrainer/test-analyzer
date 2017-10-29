@@ -4,12 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.IteratorFactory;
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarAnalyzeIterator;
+import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.factory.MainArtifactVisitorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactAnalysisVisitor;
 import de.tum.in.niedermr.ta.core.code.identifier.Identifier;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
-import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.InstructionCounterOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -71,7 +71,7 @@ public class InstructionCounterStep extends AbstractExecutionStep {
 
 	private <T extends Identifier> Map<T, Integer> getCountInstructionsData(Configuration configuration, Mode mode,
 			ITestCollector testCollector, String inputJarFile) throws IteratorException {
-		JarAnalyzeIterator iterator = IteratorFactory.createJarAnalyzeIterator(inputJarFile,
+		IArtifactAnalysisVisitor iterator = MainArtifactVisitorFactory.INSTANCE.createAnalyzeVisitor(inputJarFile,
 				configuration.getOperateFaultTolerant().getValue());
 
 		if (mode == Mode.TESTCASE) {

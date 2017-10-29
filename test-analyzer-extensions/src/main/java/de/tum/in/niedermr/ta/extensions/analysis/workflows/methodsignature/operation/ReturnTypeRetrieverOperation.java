@@ -73,7 +73,7 @@ public class ReturnTypeRetrieverOperation extends AbstractTestAwareCodeAnalyzeOp
 
 	/** {@inheritDoc} */
 	@Override
-	public void clearResult() {
+	public void reset() {
 		m_methodReturnTypes.clear();
 	}
 }

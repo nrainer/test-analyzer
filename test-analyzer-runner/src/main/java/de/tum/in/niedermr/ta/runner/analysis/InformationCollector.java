@@ -3,7 +3,7 @@ package de.tum.in.niedermr.ta.runner.analysis;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.code.iteration.IteratorException;
+import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
@@ -19,13 +19,15 @@ import de.tum.in.niedermr.ta.runner.logging.LoggingUtil;
 import de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart;
 
 /**
- * <b>INFCOL:</b> Collects <b>information about test classes, testcases and methods under test.</b><br/>
+ * <b>INFCOL:</b> Collects <b>information about test classes, testcases and
+ * methods under test.</b><br/>
  * The instrumentation step (INSTRU) must have been executed before.<br/>
  * <br/>
  * Note: It does not yet filter the methods under test, because
  * <ul>
  * <li>the method descriptor is not available at this point</li>
- * <li>different return value generators might want to work on different methods</li>
+ * <li>different return value generators might want to work on different
+ * methods</li>
  * </ul>
  * <br/>
  * Dependencies: ASM, log4j, jUnit, core.<br/>

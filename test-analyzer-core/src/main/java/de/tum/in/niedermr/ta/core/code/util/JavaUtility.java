@@ -40,7 +40,8 @@ public class JavaUtility {
 	 * Converts a class path to a class name.
 	 */
 	public static String toClassName(String classPath) {
-		return removeClassFileEnding(classPath).replace(JavaConstants.PATH_SEPARATOR, JavaConstants.PACKAGE_SEPARATOR);
+		return removeClassFileEnding(classPath).replace(JavaConstants.PATH_SEPARATOR, JavaConstants.PACKAGE_SEPARATOR)
+				.replace(FileSystemConstants.PATH_SEPARATOR_ALTERNATIVE, JavaConstants.PACKAGE_SEPARATOR);
 	}
 
 	/**

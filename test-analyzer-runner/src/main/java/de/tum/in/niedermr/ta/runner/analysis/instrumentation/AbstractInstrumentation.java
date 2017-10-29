@@ -3,7 +3,9 @@ package de.tum.in.niedermr.ta.runner.analysis.instrumentation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import de.tum.in.niedermr.ta.core.analysis.jars.iteration.JarModificationIterator;
+import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
+import de.tum.in.niedermr.ta.core.artifacts.factory.MainArtifactVisitorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactModificationVisitor;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.runner.execution.environment.Environment;
@@ -33,9 +35,9 @@ public abstract class AbstractInstrumentation {
 			ICodeModificationOperation operation) throws ExecutionException {
 		try {
 			for (int i = 0; i < jarsToBeInstrumented.length; i++) {
-				JarModificationIterator jarWork = new JarInstrumentationIterator(jarsToBeInstrumented[i],
-						Environment.getWithIndex(genericJarOutputPath, i), m_operateFaultTolerant);
-				jarWork.execute(operation);
+				IArtifactModificationVisitor modificationVisitor = createModificationVisitor(jarsToBeInstrumented,
+						genericJarOutputPath, i);
+				modificationVisitor.execute(operation);
 			}
 		} catch (NoClassDefFoundError ex) {
 			LOGGER.error("Incomplete classpath!");
@@ -45,5 +47,22 @@ public abstract class AbstractInstrumentation {
 			LOGGER.error(t);
 			throw new ExecutionException(m_executionId, t);
 		}
+	}
+
+	protected IArtifactModificationVisitor createModificationVisitor(String[] jarsToBeInstrumented,
+			String genericJarOutputPath, int index) {
+		String inputArtifactPath = jarsToBeInstrumented[index];
+		String outputArtifactPath = Environment.getWithIndex(genericJarOutputPath, index);
+		IArtifactExceptionHandler exceptionHandler;
+
+		if (m_operateFaultTolerant) {
+			exceptionHandler = new FaultTolerantInstrumentationIteratorExceptionHandler();
+		} else {
+			exceptionHandler = MainArtifactVisitorFactory.INSTANCE
+					.createArtifactExceptionHandler(m_operateFaultTolerant);
+		}
+
+		return MainArtifactVisitorFactory.INSTANCE.createModificationVisitor(inputArtifactPath, outputArtifactPath,
+				exceptionHandler);
 	}
 }

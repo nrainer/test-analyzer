@@ -50,7 +50,7 @@ public class AssertionCounterOperation extends AbstractTestAwareCodeAnalyzeOpera
 
 	/** {@inheritDoc} */
 	@Override
-	public void clearResult() {
+	public void reset() {
 		m_assertionsPerTestcase.clear();
 	}
 }

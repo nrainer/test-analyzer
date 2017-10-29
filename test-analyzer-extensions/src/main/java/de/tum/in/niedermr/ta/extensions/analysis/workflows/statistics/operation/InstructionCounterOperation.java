@@ -81,7 +81,7 @@ public class InstructionCounterOperation<T extends Identifier> extends AbstractT
 
 	/** {@inheritDoc} */
 	@Override
-	public void clearResult() {
+	public void reset() {
 		m_result.clear();
 	}
 }
