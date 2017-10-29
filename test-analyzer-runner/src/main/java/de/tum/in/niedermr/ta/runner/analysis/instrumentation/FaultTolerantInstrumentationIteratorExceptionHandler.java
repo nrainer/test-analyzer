@@ -8,8 +8,8 @@ import org.objectweb.asm.ClassReader;
 
 import de.tum.in.niedermr.ta.core.artifacts.content.ClassFileData;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.FaultTolerantIteratorExceptionHandler;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactIterator;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactModificationIterator;
+import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactModificationVisitor;
+import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactVisitor;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public class FaultTolerantInstrumentationIteratorExceptionHandler extends FaultTolerantIteratorExceptionHandler {
@@ -18,18 +18,19 @@ public class FaultTolerantInstrumentationIteratorExceptionHandler extends FaultT
 	private static final Logger LOGGER = LogManager
 			.getLogger(FaultTolerantInstrumentationIteratorExceptionHandler.class);
 
+	/** {@inheritDoc} */
 	@Override
-	public void onExceptionInHandleClass(Throwable throwable, IArtifactIterator<?> iterator,
-			ClassReader classInputReader, String originalClassPath) {
+	public void onExceptionInHandleClass(Throwable throwable, IArtifactVisitor<?> visitor, ClassReader classInputReader,
+			String originalClassPath) {
 		LOGGER.warn("Skipping bytecode instrumentation of " + JavaUtility.toClassName(classInputReader.getClassName())
 				+ "! " + "Fault tolerant mode permits to continue after " + throwable.getClass().getName()
 				+ " with message '" + throwable.getMessage() + "'.");
 
-		if (!(iterator instanceof IArtifactModificationIterator)) {
+		if (!(visitor instanceof IArtifactModificationVisitor)) {
 			return;
 		}
 
-		IArtifactModificationIterator modificationIterator = (IArtifactModificationIterator) iterator;
+		IArtifactModificationVisitor modificationIterator = (IArtifactModificationVisitor) visitor;
 
 		try {
 			modificationIterator.getArtifactOutputWriter()

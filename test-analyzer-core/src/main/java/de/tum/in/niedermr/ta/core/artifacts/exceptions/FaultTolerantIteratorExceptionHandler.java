@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.ClassReader;
 
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactIterator;
+import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactVisitor;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeOperation;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
@@ -18,15 +18,15 @@ public class FaultTolerantIteratorExceptionHandler implements IArtifactException
 
 	/** {@inheritDoc} */
 	@Override
-	public void onExceptionInHandleClass(Throwable throwable, IArtifactIterator<?> iterator,
-			ClassReader classInputReader, String originalClassPath) {
+	public void onExceptionInHandleClass(Throwable throwable, IArtifactVisitor<?> visitor, ClassReader classInputReader,
+			String originalClassPath) {
 		LOGGER.warn("Skipping " + JavaUtility.toClassName(classInputReader.getClassName()) + " in fault tolerant mode. "
 				+ throwable.getClass().getName() + " occurred with message '" + throwable.getMessage() + "'.");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void onExceptionInHandleResource(Throwable throwable, IArtifactIterator<?> iterator, InputStream inputStream,
+	public void onExceptionInHandleResource(Throwable throwable, IArtifactVisitor<?> visitor, InputStream inputStream,
 			String resourcePath) {
 		LOGGER.warn("Skipping resource " + resourcePath + " in fault tolerant mode. " + throwable.getClass().getName()
 				+ " occurred with message '" + throwable.getMessage() + "'.");
@@ -34,7 +34,7 @@ public class FaultTolerantIteratorExceptionHandler implements IArtifactException
 
 	/** {@inheritDoc} */
 	@Override
-	public void onExceptionInArtifactIteration(Throwable throwable, IArtifactIterator<?> iterator,
+	public void onExceptionInArtifactIteration(Throwable throwable, IArtifactVisitor<?> visitor,
 			ICodeOperation operation, String artifactContainer) {
 		LOGGER.error("Skipping artifact processing in fault tolerant mode because of a failure: " + artifactContainer,
 				throwable);

@@ -16,10 +16,9 @@ class JarFileContent {
 	private final List<JarEntry> m_resourceEntryList;
 
 	private JarFileContent(JarFile jarFile) throws IOException {
-		this.m_jarFile = jarFile;
-
-		this.m_classEntryList = new ArrayList<>();
-		this.m_resourceEntryList = new ArrayList<>();
+		m_jarFile = jarFile;
+		m_classEntryList = new ArrayList<>();
+		m_resourceEntryList = new ArrayList<>();
 	}
 
 	public static JarFileContent fromJarFile(String pathToJarFile) throws IOException {
@@ -29,7 +28,7 @@ class JarFileContent {
 	}
 
 	public List<JarEntry> getClassEntryList() {
-		return this.m_classEntryList;
+		return m_classEntryList;
 	}
 
 	public List<JarEntry> getResourceEntryList() {
