@@ -11,7 +11,6 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunResult;
 import de.tum.in.niedermr.ta.core.execution.id.IFullExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.StackLogDataManager;
 import de.tum.in.niedermr.ta.runner.execution.infocollection.AbstractInformationCollectionLogic;
 
 /** Logic to collect information about the test cases and methods under test. */
@@ -20,12 +19,14 @@ public abstract class AbstractStackInformationCollectionLogic extends AbstractIn
 	private IResultPresentationExtended m_resultPresentation;
 	private IResultReceiver m_resultReceiver;
 
+	/** {@inheritDoc} */
 	@Override
 	public void setExecutionId(IFullExecutionId executionId) {
 		super.setExecutionId(executionId);
 		m_resultPresentation = IResultPresentationExtended.create(executionId);
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	protected void execBeforeExecutingAllTests(Map<Class<?>, Set<String>> testClassesWithTestcases) {
 		Objects.requireNonNull(m_resultPresentation);
