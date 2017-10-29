@@ -68,8 +68,14 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 	public void beforeTest() throws IOException, ConfigurationException {
 		FileSystemUtils.ensureDirectoryExists(new File(getSpecificFolderTestWorkingArea()));
 
+		beforeLoadConfiguration();
 		loadConfiguration();
+
 		setUpJaCoCoIfAvailable();
+	}
+
+	protected void beforeLoadConfiguration() throws IOException, ConfigurationException {
+		// NOP
 	}
 
 	private void loadConfiguration() throws ConfigurationException, IOException {
