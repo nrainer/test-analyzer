@@ -62,4 +62,28 @@ public abstract class AbstractArtifactIterator<OP extends ICodeOperation> implem
 	protected void afterAll() throws IteratorException, IOException {
 		// NOP
 	}
+
+	protected void processClassEntry(OP artifactOperation, InputStream inStream, String originalClassPath)
+			throws IOException, IteratorException {
+		ClassReader classInputReader = new ClassReader(inStream);
+
+		try {
+			handleEntry(artifactOperation, classInputReader, originalClassPath);
+		} catch (Throwable t) {
+			getExceptionHandler().onExceptionInHandleClass(t, this, classInputReader, originalClassPath);
+		} finally {
+			inStream.close();
+		}
+	}
+
+	protected void processResourceEntry(OP artifactOperation, InputStream inputStream, String entryName)
+			throws IteratorException, IOException {
+		try {
+			handleResource(artifactOperation, inputStream, entryName);
+		} catch (Throwable t) {
+			getExceptionHandler().onExceptionInHandleResource(t, this, inputStream, entryName);
+		} finally {
+			inputStream.close();
+		}
+	}
 }

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.jar.JarEntry;
 
-import org.objectweb.asm.ClassReader;
-
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
 import de.tum.in.niedermr.ta.core.artifacts.iterator.AbstractArtifactIterator;
@@ -28,35 +26,20 @@ public abstract class AbstractJarIterator<OP extends ICodeOperation> extends Abs
 		processResourceEntryList(artifactOperation, classContainer);
 	}
 
-	private void processClassEntryList(OP jarOperation, JarFileContent classContainer)
+	private void processClassEntryList(OP artifactOperation, JarFileContent classContainer)
 			throws IteratorException, IOException {
 		for (JarEntry entry : classContainer.getClassEntryList()) {
 			InputStream inStream = classContainer.getInputStream(entry);
-			ClassReader classInputReader = new ClassReader(inStream);
 			String originalClassPath = entry.getName();
-
-			try {
-				handleEntry(jarOperation, classInputReader, originalClassPath);
-			} catch (Throwable t) {
-				getExceptionHandler().onExceptionInHandleClass(t, this, classInputReader, originalClassPath);
-			} finally {
-				inStream.close();
-			}
+			processClassEntry(artifactOperation, inStream, originalClassPath);
 		}
 	}
 
-	private void processResourceEntryList(OP jarOperation, JarFileContent classContainer)
+	private void processResourceEntryList(OP artifactOperation, JarFileContent classContainer)
 			throws IteratorException, IOException {
 		for (JarEntry entry : classContainer.getResourceEntryList()) {
 			InputStream inputStream = classContainer.getInputStream(entry);
-
-			try {
-				handleResource(jarOperation, inputStream, entry.getName());
-			} catch (Throwable t) {
-				getExceptionHandler().onExceptionInHandleResource(t, this, inputStream, entry.getName());
-			} finally {
-				inputStream.close();
-			}
+			processResourceEntry(artifactOperation, inputStream, entry.getName());
 		}
 	}
 }
