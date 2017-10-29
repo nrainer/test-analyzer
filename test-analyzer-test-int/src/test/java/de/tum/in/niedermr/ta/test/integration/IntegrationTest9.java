@@ -29,6 +29,7 @@ public class IntegrationTest9 extends AbstractIntegrationTest {
 		File testDataJarFile = new File(getCommonFolderTestData() + JAR_TEST_DATA);
 		assertFilesExists(MSG_PATH_TO_TEST_JAR_IS_INCORRECT, testDataJarFile);
 
+		FileSystemUtils.deleteRecursively(new File(getSpecificFolderTestWorkingArea() + "code/"));
 		unzipJar(testDataJarFile.getPath(), getSpecificFolderTestWorkingArea() + "code/mutate/classes/");
 		unzipJar(testDataJarFile.getPath(), getSpecificFolderTestWorkingArea() + "code/test/classes/");
 	}
