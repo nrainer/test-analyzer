@@ -43,18 +43,18 @@ class BinaryClassesIterator extends AbstractArtifactIterator {
 	}
 
 	private <OP extends ICodeOperation> void handleEntryInArtifact(IArtifactVisitorForIterator<OP> visitor,
-			OP artifactOperation, Path artifactPath, Path currentEntryPath) throws IOException, IteratorException {
-		if (Files.isDirectory(currentEntryPath)) {
+			OP artifactOperation, Path artifactPath, Path originalEntryPath) throws IOException, IteratorException {
+		if (Files.isDirectory(originalEntryPath)) {
 			return;
 		}
 
-		FileInputStream inputStream = new FileInputStream(currentEntryPath.toFile());
-		String entryPath = artifactPath.relativize(currentEntryPath).toString();
+		FileInputStream inputStream = new FileInputStream(originalEntryPath.toFile());
+		String relativeEntryPath = artifactPath.relativize(originalEntryPath).toString();
 
-		if (currentEntryPath.endsWith(FileSystemConstants.FILE_EXTENSION_CLASS)) {
-			visitor.visitClassEntry(artifactOperation, inputStream, entryPath);
+		if (relativeEntryPath.endsWith(FileSystemConstants.FILE_EXTENSION_CLASS)) {
+			visitor.visitClassEntry(artifactOperation, inputStream, relativeEntryPath);
 		} else {
-			visitor.visitResourceEntry(artifactOperation, inputStream, entryPath);
+			visitor.visitResourceEntry(artifactOperation, inputStream, relativeEntryPath);
 		}
 	}
 }
