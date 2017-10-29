@@ -46,13 +46,21 @@ public abstract class AbstractArtifactIterator<OP extends ICodeOperation> implem
 
 	protected abstract void processArtifactContent(OP artifactOperation) throws IOException, IteratorException;
 
-	protected abstract void beforeAll() throws IteratorException, IOException;
+	protected void beforeAll() throws IteratorException, IOException {
+		// NOP
+	}
 
-	protected abstract void handleEntry(OP artifactOperation, ClassReader cr, String originalClassPath)
-			throws IteratorException, CodeOperationException, IOException;
+	protected void handleEntry(OP artifactOperation, ClassReader cr, String originalClassPath)
+			throws IteratorException, CodeOperationException, IOException {
+		// NOP
+	}
 
-	protected abstract void handleResource(OP artifactOperation, JarEntry resourceEntry, InputStream inStream)
-			throws IteratorException, CodeOperationException, IOException;
+	protected void handleResource(OP artifactOperation, JarEntry resourceEntry, InputStream inStream)
+			throws IteratorException, CodeOperationException, IOException {
+		// NOP
+	}
 
-	protected abstract void afterAll() throws IteratorException, IOException;
+	protected void afterAll() throws IteratorException, IOException {
+		// NOP
+	}
 }

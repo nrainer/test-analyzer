@@ -23,6 +23,7 @@ class JarModificationIterator extends AbstractJarIterator<ICodeModificationOpera
 		implements IArtifactModificationIterator {
 	private final IArtifactOutputWriter m_jarFileWriter;
 
+	/** Constructor. */
 	protected JarModificationIterator(String inputJarPath, String outputJarPath,
 			IArtifactExceptionHandler exceptionHandler) {
 		super(inputJarPath, exceptionHandler);
@@ -33,12 +34,6 @@ class JarModificationIterator extends AbstractJarIterator<ICodeModificationOpera
 	@Override
 	public IArtifactOutputWriter getArtifactOutputWriter() {
 		return m_jarFileWriter;
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void beforeAll() throws IteratorException, IOException {
-		// NOP
 	}
 
 	/** {@inheritDoc} */
