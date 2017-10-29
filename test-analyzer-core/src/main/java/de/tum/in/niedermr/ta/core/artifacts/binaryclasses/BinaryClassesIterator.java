@@ -1,11 +1,14 @@
 package de.tum.in.niedermr.ta.core.artifacts.binaryclasses;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
+
+import org.conqat.lib.commons.filesystem.FileSystemUtils;
 
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
@@ -27,11 +30,11 @@ class BinaryClassesIterator extends AbstractArtifactIterator {
 			OP artifactOperation) throws IOException, IteratorException {
 		Path artifactPath = Paths.get(getPathToResource());
 
-		try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(artifactPath)) {
+		List<File> files = FileSystemUtils.listFilesRecursively(artifactPath.toFile());
 
-			for (Path currentEntryPath : directoryStream) {
-				handleEntryInArtifact(visitor, artifactOperation, artifactPath, currentEntryPath);
-			}
+		for (File currentFile : files) {
+			Path currentFilePath = Paths.get(currentFile.getPath());
+			handleEntryInArtifact(visitor, artifactOperation, artifactPath, currentFilePath);
 		}
 	}
 
