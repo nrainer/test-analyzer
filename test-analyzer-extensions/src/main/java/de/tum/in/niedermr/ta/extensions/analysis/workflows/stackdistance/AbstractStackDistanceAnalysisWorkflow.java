@@ -10,20 +10,24 @@ import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfiguration
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.IInformationCollectionLogic;
 
 /**
- * Computes the minimum and maximum distance on the call stack between test case and method.
+ * Computes the minimum and maximum distance on the call stack between test case
+ * and method.
  */
 public abstract class AbstractStackDistanceAnalysisWorkflow extends AbstractWorkflow {
 
 	/**
-	 * <code>extension.stackdistance.useMultipleOutputFiles</code>: Split the output into multiple files.
+	 * <code>extension.stackdistance.useMultipleOutputFiles</code>: Split the
+	 * output into multiple files.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "stackdistance.useMultipleOutputFiles", false);
 
 	/**
-	 * <code>extension.stackdistance.includeFailingTests</code>: Whether to include the distance of failing test cases.
+	 * <code>extension.stackdistance.includeFailingTests</code>: Whether to
+	 * include the distance of failing test cases.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_INCLUDE_FAILING_TESTS = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "stackdistance.includeFailingTests", false);
@@ -48,9 +52,30 @@ public abstract class AbstractStackDistanceAnalysisWorkflow extends AbstractWork
 		cleanupStep.start();
 	}
 
-	/** Create an appropriate instance of {@link AnalysisInstrumentationStep}. */
-	protected abstract AnalysisInstrumentationStep createAnalysisInstrumentationStep();
+	/**
+	 * Create an appropriate instance of {@link AnalysisInstrumentationStep}.
+	 */
+	protected AnalysisInstrumentationStep createAnalysisInstrumentationStep() {
+		AnalysisInstrumentationStep step = createAndInitializeExecutionStep(AnalysisInstrumentationStep.class);
+		step.setStackLogRecorderClass(getStackLogRecorderClass());
+		return step;
+	}
 
-	/** Create an appropriate instance of {@link AnalysisInformationCollectorStep}. */
-	protected abstract AnalysisInformationCollectorStep createAnalysisInformationCollectorStep();
+	/**
+	 * Create an appropriate instance of
+	 * {@link AnalysisInformationCollectorStep}.
+	 */
+	protected AnalysisInformationCollectorStep createAnalysisInformationCollectorStep() {
+		AnalysisInformationCollectorStep step = createAndInitializeExecutionStep(
+				AnalysisInformationCollectorStep.class);
+		step.setResultOutputFile(getResultOutputFile());
+		step.setInformationCollectorLogicClass(getInformationCollectorLogicClass());
+		return step;
+	}
+
+	protected abstract Class<?> getStackLogRecorderClass();
+
+	protected abstract Class<? extends IInformationCollectionLogic> getInformationCollectorLogicClass();
+
+	protected abstract String getResultOutputFile();
 }
