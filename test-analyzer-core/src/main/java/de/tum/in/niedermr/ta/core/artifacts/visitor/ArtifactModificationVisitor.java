@@ -25,6 +25,7 @@ public class ArtifactModificationVisitor extends AbstractArtifactVisitor<ICodeMo
 		m_artifactOutputWriter = artifactOutputWriter;
 	}
 
+	@Override
 	public IArtifactOutputWriter getArtifactOutputWriter() {
 		return m_artifactOutputWriter;
 	}
