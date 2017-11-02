@@ -4,9 +4,8 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentC
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.AbstractStackDistanceAnalysisWorkflow;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v1.StackInformationCollectionLogicV1;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.recording.v1.StackLogRecorderV1;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.AnalysisInformationCollectorStep;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.steps.AnalysisInstrumentationStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.v3.StackDistanceAnalysisWorkflowV3;
+import de.tum.in.niedermr.ta.runner.execution.infocollection.IInformationCollectionLogic;
 
 /**
  * Computes the minimum and maximum distance on the call stack between test case
@@ -19,19 +18,19 @@ public class StackDistanceAnalysisWorkflowV1 extends AbstractStackDistanceAnalys
 
 	/** {@inheritDoc} */
 	@Override
-	protected AnalysisInstrumentationStep createAnalysisInstrumentationStep() {
-		AnalysisInstrumentationStep step = createAndInitializeExecutionStep(AnalysisInstrumentationStep.class);
-		step.setStackLogRecorderClass(StackLogRecorderV1.class);
-		return step;
+	protected Class<?> getStackLogRecorderClass() {
+		return StackLogRecorderV1.class;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected AnalysisInformationCollectorStep createAnalysisInformationCollectorStep() {
-		AnalysisInformationCollectorStep step = createAndInitializeExecutionStep(
-				AnalysisInformationCollectorStep.class);
-		step.setResultOutputFile(ExtensionEnvironmentConstants.FILE_OUTPUT_STACK_DISTANCES_V1);
-		step.setInformationCollectorLogicClass(StackInformationCollectionLogicV1.class);
-		return step;
+	protected Class<? extends IInformationCollectionLogic> getInformationCollectorLogicClass() {
+		return StackInformationCollectionLogicV1.class;
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected String getResultOutputFile() {
+		return ExtensionEnvironmentConstants.FILE_OUTPUT_STACK_DISTANCES_V1;
 	}
 }

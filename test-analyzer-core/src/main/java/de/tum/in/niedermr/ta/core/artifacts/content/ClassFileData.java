@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.core.analysis.content;
+package de.tum.in.niedermr.ta.core.artifacts.content;
 
 public final class ClassFileData {
 	private final String m_entryName;
