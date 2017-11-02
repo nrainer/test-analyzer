@@ -1,8 +1,5 @@
 package de.tum.in.niedermr.ta.sdist.maven;
 
-import java.util.List;
-
-import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -29,25 +26,25 @@ public class StackDistanceMojo extends AbstractMojo {
 	private MavenProject project;
 
 	/** {@inheritDoc} */
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		String builtSourceCodeDirectory = project.getBuild().getOutputDirectory();
+		String inputArtifactPath = builtSourceCodeDirectory;
+		String outputArtifactPath = builtSourceCodeDirectory;
 
 		try {
-			List<String> classpathElements = project.getTestClasspathElements();
-			instrumentSourceCode(builtSourceCodeDirectory, classpathElements);
-		} catch (DependencyResolutionRequiredException | IteratorException e) {
-			throw new MojoExecutionException("Exception", e);
+			instrumentSourceCode(inputArtifactPath, outputArtifactPath);
+		} catch (IteratorException e) {
+			throw new MojoExecutionException("IteratorException", e);
 		}
 	}
 
-	protected void instrumentSourceCode(String builtSourceCodeDirectory, List<String> classpathElements)
-			throws IteratorException {
-		String inputArtifactPath = builtSourceCodeDirectory;
-		String outputArtifactPath = builtSourceCodeDirectory;
+	protected void instrumentSourceCode(String inputArtifactPath, String outputArtifactPath) throws IteratorException {
+		// Note that the classes to be mutated are not loaded. Consequently, default test class detectors are not
+		// working.
+
 		IArtifactExceptionHandler exceptionHandler = MainArtifactVisitorFactory.INSTANCE
-				.createArtifactExceptionHandler(true);
+				.createArtifactExceptionHandler(false);
 
 		IArtifactModificationVisitor modificationIterator = MainArtifactVisitorFactory.INSTANCE
 				.createModificationVisitor(inputArtifactPath, outputArtifactPath, exceptionHandler);
