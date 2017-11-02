@@ -14,8 +14,8 @@ import org.apache.maven.project.MavenProject;
 
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
 import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.IArtifactModificationIterator;
-import de.tum.in.niedermr.ta.core.artifacts.iterator.MainArtifactIteratorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.factory.MainArtifactVisitorFactory;
+import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactModificationVisitor;
 import de.tum.in.niedermr.ta.core.code.tests.detector.BiasedTestClassDetector;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
@@ -46,11 +46,11 @@ public class StackDistanceMojo extends AbstractMojo {
 			throws IteratorException {
 		String inputArtifactPath = builtSourceCodeDirectory;
 		String outputArtifactPath = builtSourceCodeDirectory;
-		IArtifactExceptionHandler exceptionHandler = MainArtifactIteratorFactory.INSTANCE
+		IArtifactExceptionHandler exceptionHandler = MainArtifactVisitorFactory.INSTANCE
 				.createArtifactExceptionHandler(true);
 
-		IArtifactModificationIterator modificationIterator = MainArtifactIteratorFactory.INSTANCE
-				.createModificationIterator(inputArtifactPath, outputArtifactPath, exceptionHandler);
+		IArtifactModificationVisitor modificationIterator = MainArtifactVisitorFactory.INSTANCE
+				.createModificationVisitor(inputArtifactPath, outputArtifactPath, exceptionHandler);
 
 		// the source code folder contains only source classes
 		ITestClassDetector testClassDetector = new BiasedTestClassDetector(ClassType.NO_TEST_CLASS);
