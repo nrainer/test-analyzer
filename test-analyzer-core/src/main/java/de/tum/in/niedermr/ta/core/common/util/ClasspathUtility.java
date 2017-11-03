@@ -16,18 +16,24 @@ public class ClasspathUtility {
 	private static final String ENCODED_CHARACTER_SPACE = "%20";
 
 	public static String getCurrentClasspath() {
-		StringBuilder sB = new StringBuilder();
+		List<URLClassLoader> classLoaders = Arrays.asList((URLClassLoader) ClasspathUtility.class.getClassLoader(),
+				(URLClassLoader) ClassLoader.getSystemClassLoader());
+		return getCurrentClasspath(classLoaders);
+	}
 
-		ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
+	public static String getCurrentClasspath(List<URLClassLoader> classLoaders) {
+		StringBuilder builder = new StringBuilder();
 
-		URL[] urlArray = ((URLClassLoader) sysClassLoader).getURLs();
+		for (URLClassLoader classLoader : classLoaders) {
+			URL[] urlArray = classLoader.getURLs();
 
-		for (URL url : urlArray) {
-			sB.append(url.getFile().replace(ENCODED_CHARACTER_SPACE, CHARACTER_SPACE));
-			sB.append(FileSystemConstants.CP_SEP);
+			for (URL url : urlArray) {
+				builder.append(url.getFile().replace(ENCODED_CHARACTER_SPACE, CHARACTER_SPACE));
+				builder.append(FileSystemConstants.CP_SEP);
+			}
 		}
 
-		return sB.toString();
+		return builder.toString();
 	}
 
 	/**
