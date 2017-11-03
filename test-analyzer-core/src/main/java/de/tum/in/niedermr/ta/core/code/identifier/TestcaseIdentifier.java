@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.core.code.identifier;
 
 import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 
 /** Identifier for Java test case methods. */
@@ -69,7 +70,7 @@ public final class TestcaseIdentifier implements Identifier {
 	}
 
 	public final Class<?> resolveTestClass() throws ClassNotFoundException {
-		return Class.forName(getTestClassName());
+		return JavaUtility.loadClass(getTestClassName());
 	}
 
 	public final Class<?> resolveTestClassNoEx() {

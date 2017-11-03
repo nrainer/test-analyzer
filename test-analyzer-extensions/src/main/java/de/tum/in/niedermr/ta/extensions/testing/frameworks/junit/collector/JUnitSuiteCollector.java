@@ -54,7 +54,7 @@ public class JUnitSuiteCollector extends TestCollector {
 		Set<String> testcases = new HashSet<>();
 
 		try {
-			Class<?> cls = Class.forName(JavaUtility.toClassName(cn.name));
+			Class<?> cls = JavaUtility.loadClass(JavaUtility.toClassName(cn.name));
 
 			List<junit.framework.Test> testsOfSuite = getTestsOfSuite(cls);
 

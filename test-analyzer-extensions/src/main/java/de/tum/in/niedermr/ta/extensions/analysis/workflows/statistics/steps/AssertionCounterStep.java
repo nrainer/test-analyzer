@@ -15,6 +15,7 @@ import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactAnalysisVisitor;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation.AssertionCounterOperation;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
@@ -71,7 +72,7 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 
 		for (String className : KNOWN_FURTHER_ASSERTION_CLASS_NAMES) {
 			try {
-				Class<?> cls = Class.forName(className);
+				Class<?> cls = JavaUtility.loadClass(className);
 
 				result.add(cls);
 

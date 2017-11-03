@@ -1,8 +1,14 @@
 package de.tum.in.niedermr.ta.core.common.util;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
 public class ClasspathUtility {
@@ -30,12 +36,11 @@ public class ClasspathUtility {
 	public static String getCurrentProgramClasspath() {
 		String classpath = ClasspathUtility.getCurrentClasspath();
 
-		try {
-			Class.forName("org.objectweb.asm.Opcodes");
+		if (JavaUtility.isClassAvailable("org.objectweb.asm.Opcodes")) {
 			return classpath;
-		} catch (ClassNotFoundException ex) {
-			return classpath + ";/lib";
 		}
+
+		return classpath + ";/lib";
 	}
 
 	/** Get the OS dependent classpath separator. */
@@ -45,5 +50,28 @@ public class ClasspathUtility {
 		}
 
 		return FileSystemConstants.CLASSPATH_SEPARATOR_LINUX;
+	}
+
+	public static URLClassLoader createClassLoader(String[] classpathElements) {
+		return createClassLoader(Arrays.asList(classpathElements));
+	}
+
+	public static URLClassLoader createClassLoader(List<String> classpathElements) {
+		List<URL> classpathUrls = new ArrayList<>();
+
+		for (String element : classpathElements) {
+			if (StringUtility.isNullOrEmpty(element)) {
+				continue;
+			}
+
+			try {
+				classpathUrls.add(new File(element).toURI().toURL());
+			} catch (MalformedURLException e) {
+				// should not happen
+				throw new IllegalStateException("Malformed URL", e);
+			}
+		}
+
+		return new URLClassLoader(classpathUrls.toArray(new URL[0]), Thread.currentThread().getContextClassLoader());
 	}
 }

@@ -45,8 +45,7 @@ public class JavaUtility {
 	}
 
 	/**
-	 * Converts a class name to a class path and adds the file extension
-	 * '.class'.
+	 * Converts a class name to a class path and adds the file extension '.class'.
 	 */
 	public static String toClassPathWithEnding(String className) {
 		return ensureClassFileEnding(getClassPath(className));
@@ -75,8 +74,33 @@ public class JavaUtility {
 		}
 	}
 
+	/** Load a class by its name. */
+	public static Class<?> loadClass(String className) throws ClassNotFoundException {
+		return Class.forName(className);
+	}
+
+	/** Load a class by its name. */
+	public static Class<?> loadClassNoEx(String className) throws ClassNotFoundException {
+		try {
+			return loadClass(className);
+		} catch (ClassNotFoundException e) {
+			LOGGER.error("ClassNotFoundException in loadClassNoEx", e);
+			return null;
+		}
+	}
+
+	/** Check if a class can be found. */
+	public static boolean isClassAvailable(String className) {
+		try {
+			loadClass(className);
+			return true;
+		} catch (ClassNotFoundException e) {
+			return false;
+		}
+	}
+
 	private static Class<?> getClassFromNode(ClassNode classNode) throws ClassNotFoundException {
-		return Class.forName(toClassName(classNode.name));
+		return loadClass(toClassName(classNode.name));
 	}
 
 	private static String getClassPath(String className) {
@@ -95,7 +119,7 @@ public class JavaUtility {
 
 	public static boolean inheritsClass(ClassNode cn, String nameOfSuperClassToBeDetected)
 			throws ClassNotFoundException {
-		return inheritsClass(cn, Class.forName(nameOfSuperClassToBeDetected));
+		return inheritsClass(cn, loadClass(nameOfSuperClassToBeDetected));
 	}
 
 	public static boolean inheritsClass(ClassNode cn, Class<?> superClassToBeDetected) throws ClassNotFoundException {
@@ -131,6 +155,6 @@ public class JavaUtility {
 
 	@SuppressWarnings("unchecked")
 	public static <T> T createInstance(String className) throws ReflectiveOperationException {
-		return (T) Class.forName(className).newInstance();
+		return (T) loadClass(className).newInstance();
 	}
 }

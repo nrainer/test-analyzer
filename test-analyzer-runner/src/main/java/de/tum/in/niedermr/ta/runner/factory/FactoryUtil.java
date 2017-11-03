@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.runner.factory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
@@ -27,9 +28,7 @@ public final class FactoryUtil {
 			throws ReflectiveOperationException {
 		String factoryClassName = configuration.getFactoryClass().getValue();
 
-		try {
-			Class.forName(factoryClassName);
-		} catch (ClassNotFoundException e) {
+		if (!JavaUtility.isClassAvailable(factoryClassName)) {
 			LOGGER.info(factoryClassName + " is not yet on the classpath. Using " + DefaultFactory.class.getName()
 					+ " in this process.");
 			return new DefaultFactory();

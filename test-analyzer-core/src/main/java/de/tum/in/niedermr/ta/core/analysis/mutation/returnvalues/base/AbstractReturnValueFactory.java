@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 public abstract class AbstractReturnValueFactory implements IReturnValueFactory {
 
@@ -46,7 +47,7 @@ public abstract class AbstractReturnValueFactory implements IReturnValueFactory 
 		}
 
 		try {
-			Class<?> cls = Class.forName(returnType);
+			Class<?> cls = JavaUtility.loadClass(returnType);
 
 			if (!cls.isAssignableFrom(instance.getClass())) {
 				LOGGER.error(instance.getClass().getName() + " is not suitable for " + returnType);
