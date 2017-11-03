@@ -24,10 +24,10 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 	private static final String JUNIT_4_RUN_WITH_ANNOTATION = "Lorg/junit/runner/RunWith;";
 	private static final String JUNIT_4_SUITE_CLASSES_ANNOTATION = "Lorg/junit/runners/Suite$SuiteClasses;";
 
-	public JUnitSuiteDetector(String[] testClassIncludes, String[] testClassExcludes) {
+	public JUnitSuiteDetector(String[] testClassIncludes, String[] testClassExcludes, ClassLoader classLoader) {
 		// accept abstract classes always since no instance is needed (to invoke the static suite method) and inherited
 		// suite methods are not considered
-		super(true, testClassIncludes, testClassExcludes);
+		super(true, testClassIncludes, testClassExcludes, classLoader);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 
 	private boolean isJUnit3TestSuite(ClassNode cn) {
 		try {
-			Class<?> cls = JavaUtility.loadClass(JavaUtility.toClassName(cn.name));
+			Class<?> cls = JavaUtility.loadClass(JavaUtility.toClassName(cn.name), getClassLoader());
 			return getJUnit3SuiteMethod(cls) != null;
 		} catch (ClassNotFoundException e) {
 			// should not occur

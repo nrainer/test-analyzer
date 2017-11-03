@@ -69,13 +69,13 @@ public final class TestcaseIdentifier implements Identifier {
 		return m_className;
 	}
 
-	public final Class<?> resolveTestClass() throws ClassNotFoundException {
-		return JavaUtility.loadClass(getTestClassName());
+	public final Class<?> resolveTestClass(ClassLoader classLoader) throws ClassNotFoundException {
+		return JavaUtility.loadClass(getTestClassName(), classLoader);
 	}
 
-	public final Class<?> resolveTestClassNoEx() {
+	public final Class<?> resolveTestClassNoEx(ClassLoader classLoader) {
 		try {
-			return resolveTestClass();
+			return resolveTestClass(classLoader);
 		} catch (ClassNotFoundException e) {
 			return null;
 		}

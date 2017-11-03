@@ -20,12 +20,14 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 	private final boolean m_ignoreAbstractClasses;
 	private final Collection<Pattern> m_testClassIncludePatterns;
 	private final Collection<Pattern> m_testClassExcludePatterns;
+	private final ClassLoader m_classLoader;
 
 	public AbstractTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes) {
+			String[] testClassExcludes, ClassLoader classLoader) {
 		m_ignoreAbstractClasses = !(acceptAbstractTestClasses);
 		m_testClassIncludePatterns = compilePatterns(testClassIncludes);
 		m_testClassExcludePatterns = compilePatterns(testClassExcludes);
+		m_classLoader = classLoader;
 	}
 
 	protected Collection<Pattern> compilePatterns(String[] patternStrings) {
@@ -58,7 +60,8 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 				return ClassType.NON_EXECUTABLE_TEST_CLASS;
 			}
 
-			if (isExcludeTestClassesWithNonDefaultConstructor() && !BytecodeUtility.hasPublicParameterlessConstructor(cn)) {
+			if (isExcludeTestClassesWithNonDefaultConstructor()
+					&& !BytecodeUtility.hasPublicParameterlessConstructor(cn)) {
 				return ClassType.NON_EXECUTABLE_TEST_CLASS;
 			}
 		}
@@ -110,7 +113,7 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 	 * Check if the class node is an inner class and an outer class is a test class.
 	 */
 	private boolean isInnerClassInTestOrIgnoredClass(ClassNode cn) {
-		Optional<Class<?>> outerClass = JavaUtility.getOuterClassNoEx(cn);
+		Optional<Class<?>> outerClass = JavaUtility.getOuterClassNoEx(cn, m_classLoader);
 
 		if (!outerClass.isPresent()) {
 			return false;
@@ -128,5 +131,10 @@ public abstract class AbstractTestClassDetector implements ITestClassDetector {
 		}
 
 		return false;
+	}
+
+	@Override
+	public ClassLoader getClassLoader() {
+		return m_classLoader;
 	}
 }

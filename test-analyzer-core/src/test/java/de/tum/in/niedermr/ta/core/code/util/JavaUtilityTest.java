@@ -21,8 +21,10 @@ public class JavaUtilityTest implements FileSystemConstants {
 
 	@Test
 	public void testEnsureClassFileEnding() {
-		assertEquals(String.class.getName() + FILE_EXTENSION_CLASS, JavaUtility.ensureClassFileEnding(CLASS_NAME_STRING));
-		assertEquals(String.class.getName() + FILE_EXTENSION_CLASS, JavaUtility.ensureClassFileEnding(CLASS_NAME_STRING + FILE_EXTENSION_CLASS));
+		assertEquals(String.class.getName() + FILE_EXTENSION_CLASS,
+				JavaUtility.ensureClassFileEnding(CLASS_NAME_STRING));
+		assertEquals(String.class.getName() + FILE_EXTENSION_CLASS,
+				JavaUtility.ensureClassFileEnding(CLASS_NAME_STRING + FILE_EXTENSION_CLASS));
 	}
 
 	@Test
@@ -44,7 +46,8 @@ public class JavaUtilityTest implements FileSystemConstants {
 
 	@Test
 	public void testClassPathAndName() {
-		assertEquals(CLASS_NAME_STRING, JavaUtility.toClassName(JavaUtility.toClassPathWithEnding((CLASS_NAME_STRING))));
+		assertEquals(CLASS_NAME_STRING,
+				JavaUtility.toClassName(JavaUtility.toClassPathWithEnding((CLASS_NAME_STRING))));
 	}
 
 	@Test
@@ -64,8 +67,8 @@ public class JavaUtilityTest implements FileSystemConstants {
 	@Test
 	public void testInheritsClass1() throws ClassNotFoundException, IOException {
 		ClassNode cn = BytecodeUtility.getAcceptedClassNode(String.class);
-		assertTrue(JavaUtility.inheritsClass(cn, Object.class));
-		assertTrue(JavaUtility.inheritsClass(cn, Object.class.getName()));
+		assertTrue(JavaUtility.inheritsClass(cn, Object.class, getClass().getClassLoader()));
+		assertTrue(JavaUtility.inheritsClass(cn, Object.class.getName(), getClass().getClassLoader()));
 	}
 
 	@Test
@@ -81,6 +84,7 @@ public class JavaUtilityTest implements FileSystemConstants {
 	public void testCreateInstance() throws ReflectiveOperationException {
 		String className = LinkedList.class.getName();
 
-		assertEquals(className, JavaUtility.createInstance(className).getClass().getName());
+		assertEquals(className,
+				JavaUtility.createInstance(className, getClass().getClassLoader()).getClass().getName());
 	}
 }

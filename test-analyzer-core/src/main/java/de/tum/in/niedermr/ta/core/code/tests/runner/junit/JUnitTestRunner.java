@@ -28,7 +28,7 @@ public class JUnitTestRunner implements ITestRunner {
 	/** {@inheritDoc} */
 	@Override
 	public ITestClassDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes) {
+			String[] testClassExcludes, ClassLoader classLoader) {
 		return new JUnitTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
 	}
 }

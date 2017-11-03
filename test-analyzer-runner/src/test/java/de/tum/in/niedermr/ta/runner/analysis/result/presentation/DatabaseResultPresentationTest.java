@@ -24,8 +24,8 @@ public class DatabaseResultPresentationTest {
 				DatabaseResultPresentation.tryParseExecutionIdFromExecutionInformation(Arrays.asList("abc", "cde")));
 
 		IExecutionId executionId = ExecutionIdFactory.createNewShortExecutionId();
-		IResultPresentation resultPresentation = ResultPresentationUtil
-				.createResultPresentation(DatabaseResultPresentation.class.getName(), executionId);
+		IResultPresentation resultPresentation = ResultPresentationUtil.createResultPresentation(
+				DatabaseResultPresentation.class.getName(), executionId, getClass().getClassLoader());
 
 		String executionInformation = resultPresentation
 				.formatExecutionInformation(Arrays.asList("configurationKey1=configurationValue1"));

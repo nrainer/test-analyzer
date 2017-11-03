@@ -9,22 +9,22 @@ import de.tum.in.niedermr.ta.runner.configuration.property.ResultPresentationPro
 public class ResultPresentationUtil {
 
 	/** Create the appropriate instance of {@link IResultPresentation} and set the execution id. */
-	public static IResultPresentation createResultPresentation(String resultPresentation, IExecutionId executionId)
-			throws ReflectiveOperationException {
-		IResultPresentation presentation = createResultPresentationWithoutExecutionId(resultPresentation);
+	public static IResultPresentation createResultPresentation(String resultPresentation, IExecutionId executionId,
+			ClassLoader classLoader) throws ReflectiveOperationException {
+		IResultPresentation presentation = createResultPresentationWithoutExecutionId(resultPresentation, classLoader);
 		presentation.setExecutionId(executionId);
 		return presentation;
 	}
 
 	/** Create the appropriate instance of {@link IResultPresentation}. The execution id is not set. */
-	public static IResultPresentation createResultPresentationWithoutExecutionId(String resultPresentation)
-			throws ReflectiveOperationException {
+	public static IResultPresentation createResultPresentationWithoutExecutionId(String resultPresentation,
+			ClassLoader classLoader) throws ReflectiveOperationException {
 		if (resultPresentation.equals(ResultPresentationProperty.RESULT_PRESENTATION_TEXT)) {
 			return new TextResultPresentation();
 		} else if (resultPresentation.equals(ResultPresentationProperty.RESULT_PRESENTATION_DB)) {
 			return new DatabaseResultPresentation();
 		}
 
-		return JavaUtility.createInstance(resultPresentation);
+		return JavaUtility.createInstance(resultPresentation, classLoader);
 	}
 }

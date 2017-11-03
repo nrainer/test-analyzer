@@ -67,12 +67,12 @@ public class AssertionCounterStep extends AbstractExecutionStep {
 		};
 	}
 
-	private List<Class<?>> getAvailableAssertionClasses() {
+	private List<Class<?>> getAvailableAssertionClasses(ClassLoader classLoader) {
 		List<Class<?>> result = new LinkedList<>();
 
 		for (String className : KNOWN_FURTHER_ASSERTION_CLASS_NAMES) {
 			try {
-				Class<?> cls = JavaUtility.loadClass(className);
+				Class<?> cls = JavaUtility.loadClass(className, classLoader);
 
 				result.add(cls);
 

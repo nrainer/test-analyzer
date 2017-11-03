@@ -24,23 +24,24 @@ public final class FactoryUtil {
 	 * 
 	 * @throws ReflectiveOperationException
 	 */
-	public static IFactory tryCreateFactoryOrUseDefault(Configuration configuration)
+	public static IFactory tryCreateFactoryOrUseDefault(Configuration configuration, ClassLoader classLoader)
 			throws ReflectiveOperationException {
 		String factoryClassName = configuration.getFactoryClass().getValue();
 
-		if (!JavaUtility.isClassAvailable(factoryClassName)) {
+		if (!JavaUtility.isClassAvailable(factoryClassName, classLoader)) {
 			LOGGER.info(factoryClassName + " is not yet on the classpath. Using " + DefaultFactory.class.getName()
 					+ " in this process.");
 			return new DefaultFactory();
 		}
 
-		return configuration.getFactoryClass().createInstance();
+		return configuration.getFactoryClass().createInstance(classLoader);
 	}
 
 	/** Create an instance of the factory. */
-	public static IFactory createFactory(Configuration configuration) throws ExecutionException {
+	public static IFactory createFactory(Configuration configuration, ClassLoader classLoader)
+			throws ExecutionException {
 		try {
-			return configuration.getFactoryClass().createInstance();
+			return configuration.getFactoryClass().createInstance(classLoader);
 		} catch (ReflectiveOperationException e) {
 			throw new ExecutionException("Factory creation failed", e);
 		}

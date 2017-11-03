@@ -20,7 +20,8 @@ public class TestNgTestClassDetectorTest {
 	/** Set up. */
 	@BeforeClass
 	public static void setUp() {
-		s_detector = new TestNgTestClassDetector(false, new String[0], new String[0]);
+		s_detector = new TestNgTestClassDetector(false, new String[0], new String[0],
+				TestNgTestClassDetectorTest.class.getClassLoader());
 	}
 
 	/** Test. */

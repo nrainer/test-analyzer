@@ -52,7 +52,8 @@ public class TestNgTestRunner implements ITestRunner {
 
 	@Override
 	public ITestClassDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes) {
-		return new TestNgTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader) {
+		return new TestNgTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes,
+				classLoader);
 	}
 }

@@ -65,9 +65,9 @@ public class JavaUtility {
 		return toClassPathWithoutEnding(cls.getName());
 	}
 
-	public static Optional<Class<?>> getOuterClassNoEx(ClassNode classNode) {
+	public static Optional<Class<?>> getOuterClassNoEx(ClassNode classNode, ClassLoader classLoader) {
 		try {
-			Class<?> cls = getClassFromNode(classNode);
+			Class<?> cls = getClassFromNode(classNode, classLoader);
 			return Optional.ofNullable(cls.getEnclosingClass());
 		} catch (ClassNotFoundException e) {
 			return Optional.empty();
@@ -75,14 +75,14 @@ public class JavaUtility {
 	}
 
 	/** Load a class by its name. */
-	public static Class<?> loadClass(String className) throws ClassNotFoundException {
-		return Class.forName(className);
+	public static Class<?> loadClass(String className, ClassLoader classLoader) throws ClassNotFoundException {
+		return Class.forName(className, true, classLoader);
 	}
 
 	/** Load a class by its name. */
-	public static Class<?> loadClassNoEx(String className) throws ClassNotFoundException {
+	public static Class<?> loadClassNoEx(String className, ClassLoader classLoader) throws ClassNotFoundException {
 		try {
-			return loadClass(className);
+			return loadClass(className, classLoader);
 		} catch (ClassNotFoundException e) {
 			LOGGER.error("ClassNotFoundException in loadClassNoEx", e);
 			return null;
@@ -90,17 +90,18 @@ public class JavaUtility {
 	}
 
 	/** Check if a class can be found. */
-	public static boolean isClassAvailable(String className) {
+	public static boolean isClassAvailable(String className, ClassLoader classLoader) {
 		try {
-			loadClass(className);
+			loadClass(className, classLoader);
 			return true;
 		} catch (ClassNotFoundException e) {
 			return false;
 		}
 	}
 
-	private static Class<?> getClassFromNode(ClassNode classNode) throws ClassNotFoundException {
-		return loadClass(toClassName(classNode.name));
+	private static Class<?> getClassFromNode(ClassNode classNode, ClassLoader classLoader)
+			throws ClassNotFoundException {
+		return loadClass(toClassName(classNode.name), classLoader);
 	}
 
 	private static String getClassPath(String className) {
@@ -117,18 +118,19 @@ public class JavaUtility {
 		return !toClassName(cn.superName).equals(Object.class.getName());
 	}
 
-	public static boolean inheritsClass(ClassNode cn, String nameOfSuperClassToBeDetected)
+	public static boolean inheritsClass(ClassNode cn, String nameOfSuperClassToBeDetected, ClassLoader classLoader)
 			throws ClassNotFoundException {
-		return inheritsClass(cn, loadClass(nameOfSuperClassToBeDetected));
+		return inheritsClass(cn, loadClass(nameOfSuperClassToBeDetected, classLoader), classLoader);
 	}
 
-	public static boolean inheritsClass(ClassNode cn, Class<?> superClassToBeDetected) throws ClassNotFoundException {
-		return inheritsClass(getClassFromNode(cn), superClassToBeDetected);
+	public static boolean inheritsClass(ClassNode cn, Class<?> superClassToBeDetected, ClassLoader classLoader)
+			throws ClassNotFoundException {
+		return inheritsClass(getClassFromNode(cn, classLoader), superClassToBeDetected);
 	}
 
-	public static boolean inheritsClassNoEx(ClassNode cn, Class<?> superClassToBeDetected) {
+	public static boolean inheritsClassNoEx(ClassNode cn, Class<?> superClassToBeDetected, ClassLoader classLoader) {
 		try {
-			return inheritsClass(cn, superClassToBeDetected);
+			return inheritsClass(cn, superClassToBeDetected, classLoader);
 		} catch (ClassNotFoundException e) {
 			LOGGER.error("ClassNotFoundException in inheritsClassNoEx", e);
 			return false;
@@ -154,7 +156,7 @@ public class JavaUtility {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T createInstance(String className) throws ReflectiveOperationException {
-		return (T) loadClass(className).newInstance();
+	public static <T> T createInstance(String className, ClassLoader classLoader) throws ReflectiveOperationException {
+		return (T) loadClass(className, classLoader).newInstance();
 	}
 }

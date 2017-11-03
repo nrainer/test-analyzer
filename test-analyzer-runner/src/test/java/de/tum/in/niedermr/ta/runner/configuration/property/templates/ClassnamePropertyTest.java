@@ -81,10 +81,10 @@ public class ClassnamePropertyTest {
 		AbstractClassnameProperty<List<?>> stubProperty = getStubProperty();
 
 		stubProperty.setValue(HashSet.class);
-		assertTrue(stubProperty.createInstance() instanceof HashSet);
+		assertTrue(stubProperty.createInstance(getClass().getClassLoader()) instanceof HashSet);
 
 		stubProperty.setValue((Class<?>) null);
-		assertNull(stubProperty.createInstance());
+		assertNull(stubProperty.createInstance(getClass().getClassLoader()));
 	}
 
 	private AbstractClassnameProperty<List<?>> getStubProperty() {

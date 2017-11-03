@@ -18,7 +18,7 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 		}
 	}
 
-	public T createInstance() throws ReflectiveOperationException {
+	public T createInstance(ClassLoader classLoader) throws ReflectiveOperationException {
 		if (isEmpty()) {
 			return null;
 		} else {
@@ -30,7 +30,7 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 				}
 			}
 
-			return JavaUtility.createInstance(value);
+			return JavaUtility.createInstance(value, classLoader);
 		}
 	}
 
@@ -67,9 +67,9 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 	protected final void validateFurther() throws ConfigurationException {
 		if (isAllowedConstant()) {
 			return;
-		} else {
-			validateClassName();
 		}
+
+		validateClassName();
 	}
 
 	private boolean isAllowedConstant() {
@@ -87,19 +87,19 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 	}
 
 	/** @see #validateClassName(String, Class, IConfigurationProperty) */
-	private void validateClassName() throws ConfigurationException {
-		validateClassName(getValue(), getRequiredType(), this);
+	private void validateClassName(ClassLoader classLoader) throws ConfigurationException {
+		validateClassName(getValue(), getRequiredType(), this, classLoader);
 	}
 
 	/**
 	 * Validate that a class can be loaded, accessed and instantiated and be casted to a certain type.
 	 */
 	public static void validateClassName(String className, Class<?> requiredType,
-			IConfigurationProperty<?> propertyForExceptions) throws ConfigurationException {
+			IConfigurationProperty<?> propertyForExceptions, ClassLoader classLoader) throws ConfigurationException {
 		Class<?> cls;
 
 		try {
-			cls = JavaUtility.loadClass(className);
+			cls = JavaUtility.loadClass(className, classLoader);
 			cls.newInstance();
 		} catch (ClassNotFoundException ex) {
 			throw new ConfigurationException(propertyForExceptions, "Not in classpath: " + className + ".");

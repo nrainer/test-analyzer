@@ -18,8 +18,8 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 	private static final String JUNIT_4_IGNORE_ANNOTATION = "Lorg/junit/Ignore;";
 
 	public JUnitTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes) {
-		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader) {
+		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes, classLoader);
 	}
 
 	/** {@inheritDoc} */
@@ -37,7 +37,7 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 	}
 
 	private boolean isJUnit3TestClass(ClassNode cn) {
-		return JavaUtility.inheritsClassNoEx(cn, junit.framework.TestCase.class);
+		return JavaUtility.inheritsClassNoEx(cn, junit.framework.TestCase.class, getClassLoader());
 	}
 
 	@SuppressWarnings("unchecked")

@@ -25,7 +25,7 @@ public class AnalysisInstrumentation extends AbstractInstrumentation {
 	public void injectAnalysisStatements(String[] jarsToBeInstrumented, String genericJarOutputPath,
 			ITestRunner testRunner, String[] testClassIncludes, String[] testClassExcludes) throws ExecutionException {
 		// true as argument in order to include abstract test classes
-		ITestClassDetector detector = testRunner.createTestClassDetector(true, testClassIncludes, testClassExcludes);
+		ITestClassDetector detector = testRunner.createTestClassDetector(true, testClassIncludes, testClassExcludes, XX);
 		AnalysisInstrumentationOperation operation = new AnalysisInstrumentationOperation(detector,
 				m_instrumentationDataRetrieverClass);
 		instrumentJars(jarsToBeInstrumented, genericJarOutputPath, operation);

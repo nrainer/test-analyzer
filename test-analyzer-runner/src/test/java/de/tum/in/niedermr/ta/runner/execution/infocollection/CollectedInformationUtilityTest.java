@@ -57,8 +57,8 @@ public class CollectedInformationUtilityTest {
 	public void testToSQLStatements() throws ReflectiveOperationException {
 		final IExecutionId executionId = ExecutionIdFactory.ID_FOR_TESTS;
 
-		IResultPresentation resultPresentation = ResultPresentationUtil
-				.createResultPresentation(DatabaseResultPresentation.class.getName(), executionId);
+		IResultPresentation resultPresentation = ResultPresentationUtil.createResultPresentation(
+				DatabaseResultPresentation.class.getName(), executionId, getClass().getClassLoader());
 
 		String expected = resultPresentation.formatMethodAndTestcaseMapping(
 				MethodIdentifier.parse("de.tum.in.ma.project.example.SimpleCalculation.getResultAsString()"),

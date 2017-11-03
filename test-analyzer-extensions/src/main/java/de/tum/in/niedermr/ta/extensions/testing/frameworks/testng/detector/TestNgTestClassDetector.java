@@ -16,8 +16,8 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 
 	/** Constructor. */
 	public TestNgTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes) {
-		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader) {
+		super(acceptAbstractTestClasses, testClassIncludes, testClassExcludes, classLoader);
 	}
 
 	/** {@inheritDoc} */

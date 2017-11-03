@@ -27,15 +27,12 @@ public class PresentationTest implements CommonConstants {
 	@Test
 	public void testGetResultPresentation() throws ReflectiveOperationException {
 		assertEquals(DatabaseResultPresentation.class,
-				ResultPresentationUtil
-						.createResultPresentationWithoutExecutionId(ResultPresentationProperty.RESULT_PRESENTATION_DB)
-						.getClass());
-		assertEquals(TextResultPresentation.class,
-				ResultPresentationUtil
-						.createResultPresentationWithoutExecutionId(ResultPresentationProperty.RESULT_PRESENTATION_TEXT)
-						.getClass());
-		assertEquals(TextResultPresentation.class, ResultPresentationUtil
-				.createResultPresentationWithoutExecutionId(TextResultPresentation.class.getName()).getClass());
+				ResultPresentationUtil.createResultPresentationWithoutExecutionId(
+						ResultPresentationProperty.RESULT_PRESENTATION_DB, getClass().getClassLoader()).getClass());
+		assertEquals(TextResultPresentation.class, ResultPresentationUtil.createResultPresentationWithoutExecutionId(
+				ResultPresentationProperty.RESULT_PRESENTATION_TEXT, getClass().getClassLoader()).getClass());
+		assertEquals(TextResultPresentation.class, ResultPresentationUtil.createResultPresentationWithoutExecutionId(
+				TextResultPresentation.class.getName(), getClass().getClassLoader()).getClass());
 	}
 
 	@Test

@@ -67,9 +67,9 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 		}
 	}
 
-	protected Class<?> resolveClass(String returnType) throws ClassNotFoundException {
+	protected Class<?> resolveClass(String returnType, ClassLoader classLoader) throws ClassNotFoundException {
 		String cleanedClassName = returnType.replace(JavaConstants.ARRAY_BRACKETS, "");
-		return JavaUtility.loadClass(cleanedClassName);
+		return JavaUtility.loadClass(cleanedClassName, classLoader);
 	}
 
 	protected static Object createInstance(Class<?> cls) throws ReflectiveOperationException {

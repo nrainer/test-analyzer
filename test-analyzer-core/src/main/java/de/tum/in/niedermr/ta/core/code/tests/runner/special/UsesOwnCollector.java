@@ -8,5 +8,5 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
  */
 public interface UsesOwnCollector {
 	public ITestCollector getTestCollector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader);
 }

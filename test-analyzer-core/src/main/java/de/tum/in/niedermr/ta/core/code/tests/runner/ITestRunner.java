@@ -11,7 +11,7 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.special.UsesOwnCollector;
  */
 public interface ITestRunner {
 	public ITestClassDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader);
 
 	public ITestRunResult runTest(Class<?> testClass, String testcaseName) throws ReflectiveOperationException;
 }

@@ -8,5 +8,5 @@ import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
  */
 public interface UsesOtherDetectorForTestcaseInstrumentation {
 	public ITestClassDetector getTestClassDetectorForTestcaseInstrumentation(String[] testClassIncludes,
-			String[] testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader);
 }

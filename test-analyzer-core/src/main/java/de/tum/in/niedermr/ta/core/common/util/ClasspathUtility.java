@@ -33,10 +33,10 @@ public class ClasspathUtility {
 	/**
 	 * Warning: Must not be used when the program is started with the libraries to analyze, mutate and test.
 	 */
-	public static String getCurrentProgramClasspath() {
+	public static String getCurrentProgramClasspath(ClassLoader classLoader) {
 		String classpath = ClasspathUtility.getCurrentClasspath();
 
-		if (JavaUtility.isClassAvailable("org.objectweb.asm.Opcodes")) {
+		if (JavaUtility.isClassAvailable("org.objectweb.asm.Opcodes", classLoader)) {
 			return classpath;
 		}
 

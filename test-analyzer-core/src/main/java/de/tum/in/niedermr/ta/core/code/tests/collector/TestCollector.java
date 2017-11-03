@@ -29,8 +29,8 @@ public class TestCollector implements ITestCollector {
 	protected final ITestClassDetector m_testClassDetector;
 
 	public TestCollector(ITestClassDetector testClassDetector) {
-		this.m_result = new HashMap<>();
-		this.m_testClassDetector = testClassDetector;
+		m_result = new HashMap<>();
+		m_testClassDetector = testClassDetector;
 	}
 
 	public boolean isCollectTestcasesInNonAbstractSuperClasses() {
@@ -60,7 +60,7 @@ public class TestCollector implements ITestCollector {
 		}
 
 		try {
-			Class<?> cls = JavaUtility.loadClass(JavaUtility.toClassName(originalClassPath));
+			Class<?> cls = JavaUtility.loadClass(JavaUtility.toClassName(originalClassPath), getClassLoader());
 			m_result.put(cls, testcases);
 		} catch (ClassNotFoundException e) {
 			throw new CodeOperationException("ClassNotFoundException", e);
@@ -141,5 +141,9 @@ public class TestCollector implements ITestCollector {
 	@Override
 	public void reset() {
 		m_result.clear();
+	}
+
+	protected ClassLoader getClassLoader() {
+		return m_testClassDetector.getClassLoader();
 	}
 }

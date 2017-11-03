@@ -89,7 +89,8 @@ public class AnalyzerRunnerStart {
 		LOGGER.info("Working folder is: " + workingFolder);
 
 		if (configuration.getTestAnalyzerClasspath().isEmpty()) {
-			configuration.getTestAnalyzerClasspath().setValue(ClasspathUtility.getCurrentProgramClasspath());
+			configuration.getTestAnalyzerClasspath()
+					.setValue(ClasspathUtility.getCurrentProgramClasspath(AnalyzerRunnerStart.class.getClassLoader()));
 		} else {
 			LOGGER.info("Using the test analyzer classpath from the configuration!");
 		}
@@ -153,7 +154,8 @@ public class AnalyzerRunnerStart {
 	private static void startExecutionInNewProcess(Configuration configuration, IExecutionId executionId,
 			final String currentCanonicalPath, final String workingFolder)
 			throws IOException, ReflectiveOperationException {
-		IFactory defaultFactory = FactoryUtil.tryCreateFactoryOrUseDefault(configuration);
+		IFactory defaultFactory = FactoryUtil.tryCreateFactoryOrUseDefault(configuration,
+				configuration.getClassLoaderFromFullClasspath());
 		ProcessExecution processExecution = defaultFactory.createNewProcessExecution(configuration, workingFolder,
 				currentCanonicalPath, workingFolder);
 

@@ -7,4 +7,6 @@ public interface ITestClassDetector {
 	ClassType analyzeIsTestClass(ClassNode cn);
 
 	boolean analyzeIsTestcase(MethodNode methodNode, ClassType testClassType);
+
+	ClassLoader getClassLoader();
 }

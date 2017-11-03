@@ -21,7 +21,7 @@ public class ReturnTypeRetrieverOperationTest {
 	@Test
 	public void testReturnTypeRetriever() throws Exception {
 		ReturnTypeRetrieverOperation operation = new ReturnTypeRetrieverOperation(
-				new JUnitTestClassDetector(true, new String[0], new String[0]));
+				new JUnitTestClassDetector(true, new String[0], new String[0], getClass().getClassLoader()));
 
 		ClassReader cr = new ClassReader(SampleClass.class.getName());
 		operation.analyze(cr, JavaUtility.toClassPathWithoutEnding(SampleClass.class));

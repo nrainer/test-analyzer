@@ -20,26 +20,27 @@ public class TestInstrumentation extends AbstractInstrumentation {
 	}
 
 	public void injectTestingModeStatements(String[] jarsWithTests, String genericJarOutputPath, ITestRunner testRunner,
-			String[] testClassIncludes, String[] testClassExcludes) throws ExecutionException {
+			String[] testClassIncludes, String[] testClassExcludes, ClassLoader classLoader) throws ExecutionException {
 		TestInstrumentationOperation operation = createTestInstrumentationOperation(testRunner, testClassIncludes,
-				testClassExcludes);
+				testClassExcludes, classLoader);
 		instrumentJars(jarsWithTests, genericJarOutputPath, operation);
 	}
 
 	public TestInstrumentationOperation createTestInstrumentationOperation(ITestRunner testRunner,
-			String[] testClassIncludes, String[] testClassExcludes) {
-		ITestClassDetector detector = getAppropriateTestDetector(testRunner, testClassIncludes, testClassExcludes);
+			String[] testClassIncludes, String[] testClassExcludes, ClassLoader classLoader) {
+		ITestClassDetector detector = getAppropriateTestDetector(testRunner, testClassIncludes, testClassExcludes,
+				classLoader);
 		return new TestInstrumentationOperation(detector);
 	}
 
 	protected ITestClassDetector getAppropriateTestDetector(ITestRunner testRunner, String[] testClassIncludes,
-			String[] testClassExcludes) {
+			String[] testClassExcludes, ClassLoader classLoader) {
 		if (testRunner instanceof UsesOtherDetectorForTestcaseInstrumentation) {
 			return ((UsesOtherDetectorForTestcaseInstrumentation) testRunner)
-					.getTestClassDetectorForTestcaseInstrumentation(testClassIncludes, testClassExcludes);
+					.getTestClassDetectorForTestcaseInstrumentation(testClassIncludes, testClassExcludes, classLoader);
 		} else {
 			// true as argument in order to get also testcases in abstract classes
-			return testRunner.createTestClassDetector(true, testClassIncludes, testClassExcludes);
+			return testRunner.createTestClassDetector(true, testClassIncludes, testClassExcludes, classLoader);
 		}
 	}
 }

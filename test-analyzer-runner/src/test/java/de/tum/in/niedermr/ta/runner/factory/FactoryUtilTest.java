@@ -13,7 +13,7 @@ public class FactoryUtilTest {
 	@Test
 	public void testCreateFactory() {
 		Configuration configuration = new Configuration();
-		IFactory factory = FactoryUtil.createFactory(configuration);
+		IFactory factory = FactoryUtil.createFactory(configuration, getClass().getClassLoader());
 		assertNotNull(factory);
 		assertEquals(configuration.getFactoryClass().getValue(), factory.getClass().getName());
 	}

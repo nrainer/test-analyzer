@@ -7,11 +7,13 @@ import org.objectweb.asm.tree.MethodNode;
 public class BiasedTestClassDetector implements ITestClassDetector {
 
 	/** Class type to return in {@link #analyzeIsTestClass(ClassNode)}. */
-	private ClassType m_classType;
+	private final ClassType m_classType;
+	private final ClassLoader m_classLoader;
 
 	/** Constructor. */
-	public BiasedTestClassDetector(ClassType classType) {
+	public BiasedTestClassDetector(ClassType classType, ClassLoader classLoader) {
 		m_classType = classType;
+		m_classLoader = classLoader;
 	}
 
 	/** {@inheritDoc} */
@@ -24,5 +26,11 @@ public class BiasedTestClassDetector implements ITestClassDetector {
 	@Override
 	public boolean analyzeIsTestcase(MethodNode methodNode, ClassType testClassType) {
 		return m_classType.isTestClass();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public ClassLoader getClassLoader() {
+		return m_classLoader;
 	}
 }

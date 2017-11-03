@@ -27,19 +27,19 @@ public class JUnitSuiteRunner extends JUnitTestRunner
 
 	@Override
 	public JUnitSuiteDetector createTestClassDetector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes) {
-		return new JUnitSuiteDetector(testClassIncludes, testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader) {
+		return new JUnitSuiteDetector(testClassIncludes, testClassExcludes, classLoader);
 	}
 
 	@Override
 	public JUnitSuiteCollector getTestCollector(boolean acceptAbstractTestClasses, String[] testClassIncludes,
-			String[] testClassExcludes) {
+			String[] testClassExcludes, ClassLoader classLoader) {
 		return new JUnitSuiteCollector(
-				createTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes));
+				createTestClassDetector(acceptAbstractTestClasses, testClassIncludes, testClassExcludes, XX));
 	}
 
 	private junit.framework.Test getTestByName(Class<?> testClass, String testcaseName) {
-		JUnitSuiteCollector collector = getTestCollector(false, new String[0], new String[0]);
+		JUnitSuiteCollector collector = getTestCollector(false, new String[0], new String[0], XX);
 		List<junit.framework.Test> tests = collector.getTestsOfSuite(testClass);
 
 		return tests.get(getTestIndex(testcaseName));
@@ -55,7 +55,7 @@ public class JUnitSuiteRunner extends JUnitTestRunner
 
 	@Override
 	public ITestClassDetector getTestClassDetectorForTestcaseInstrumentation(String[] testClassIncludes,
-			String[] testClassExcludes) {
-		return new JUnitTestClassDetector(true, testClassIncludes, testClassExcludes);
+			String[] testClassExcludes, ClassLoader classLoader) {
+		return new JUnitTestClassDetector(true, testClassIncludes, testClassExcludes, classLoader);
 	}
 }

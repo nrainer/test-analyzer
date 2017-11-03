@@ -21,7 +21,7 @@ public class TestcaseIdentifierTest {
 	public void testCreate() throws ClassNotFoundException {
 		TestcaseIdentifier testIdentifier = TestcaseIdentifier.create(EXPECTED_TEST_IDENTIFIER_CLASS, TEST_CASE_NAME);
 
-		assertEquals(EXPECTED_TEST_IDENTIFIER_CLASS, testIdentifier.resolveTestClass());
+		assertEquals(EXPECTED_TEST_IDENTIFIER_CLASS, testIdentifier.resolveTestClass(getClass().getClassLoader()));
 		assertEquals(EXPECTED_TEST_IDENTIFIER_CLASS_NAME, testIdentifier.getTestClassName());
 		assertEquals(TEST_CASE_NAME, testIdentifier.getTestcaseName());
 		assertEquals(EXPECTED_TEST_IDENTIFIER_STRING, testIdentifier.get());

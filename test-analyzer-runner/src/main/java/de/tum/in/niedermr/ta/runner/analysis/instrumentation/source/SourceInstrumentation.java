@@ -23,7 +23,7 @@ public class SourceInstrumentation extends AbstractInstrumentation {
 	public void injectLoggingStatements(String[] jarsToBeInstrumented, String genericJarOutputPath,
 			ITestRunner testRunner, String[] testClassIncludes, String[] testClassExcludes) throws ExecutionException {
 		// true as argument in order not to instrument abstract test classes
-		ITestClassDetector detector = testRunner.createTestClassDetector(true, testClassIncludes, testClassExcludes);
+		ITestClassDetector detector = testRunner.createTestClassDetector(true, testClassIncludes, testClassExcludes, XX);
 
 		TestInstrumentation testInstrumentation = new TestInstrumentation(getExecutionId(), isOperateFaultTolerant());
 

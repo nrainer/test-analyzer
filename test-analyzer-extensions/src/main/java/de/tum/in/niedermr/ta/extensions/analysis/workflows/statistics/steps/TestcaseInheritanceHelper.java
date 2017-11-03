@@ -14,24 +14,25 @@ public class TestcaseInheritanceHelper {
 	private static final Logger LOGGER = LogManager.getLogger(TestcaseInheritanceHelper.class);
 
 	protected static void postProcessAllTestcases(Map<Class<?>, Set<String>> allTestcases,
-			Map<TestcaseIdentifier, Integer> collectedTestcaseStatistics) {
+			Map<TestcaseIdentifier, Integer> collectedTestcaseStatistics, ClassLoader classLoader) {
 		for (Entry<Class<?>, Set<String>> entry : allTestcases.entrySet()) {
 			Class<?> originalClass = entry.getKey();
 			Set<String> testcaseSet = entry.getValue();
 
 			for (String testcase : testcaseSet) {
-				postProcessTestcase(originalClass, testcase, collectedTestcaseStatistics);
+				postProcessTestcase(originalClass, testcase, collectedTestcaseStatistics, classLoader);
 			}
 		}
 	}
 
 	private static void postProcessTestcase(Class<?> originalClass, String testcase,
-			Map<TestcaseIdentifier, Integer> collectedTestcaseStatistics) {
+			Map<TestcaseIdentifier, Integer> collectedTestcaseStatistics, ClassLoader classLoader) {
 		TestcaseIdentifier testIdentifier = TestcaseIdentifier.create(originalClass, testcase);
 
 		if (!collectedTestcaseStatistics.containsKey(testIdentifier)) {
 			try {
-				TestcaseInheritanceHelper.tryToFindTestcaseInSuperClass(collectedTestcaseStatistics, testIdentifier);
+				TestcaseInheritanceHelper.tryToFindTestcaseInSuperClass(collectedTestcaseStatistics, testIdentifier,
+						classLoader);
 			} catch (Exception ex) {
 				LOGGER.error("Error when trying to find testcase in super class: ", ex);
 			}
@@ -39,8 +40,8 @@ public class TestcaseInheritanceHelper {
 	}
 
 	private static void tryToFindTestcaseInSuperClass(Map<TestcaseIdentifier, Integer> testcaseStatistics,
-			TestcaseIdentifier testIdentifier) throws Exception {
-		Class<?> superClass = testIdentifier.resolveTestClass();
+			TestcaseIdentifier testIdentifier, ClassLoader classLoader) throws Exception {
+		Class<?> superClass = testIdentifier.resolveTestClass(classLoader);
 
 		while (true) {
 			superClass = superClass.getSuperclass();

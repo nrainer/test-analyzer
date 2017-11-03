@@ -19,7 +19,7 @@ import junit.framework.TestSuite;
 public class JUnitSuiteDetectorTests {
 	@Test
 	public void testSuites() throws IOException {
-		JUnitSuiteDetector detector = new JUnitSuiteDetector(new String[0], new String[0]);
+		JUnitSuiteDetector detector = new JUnitSuiteDetector(new String[0], new String[0], getClass().getClassLoader());
 
 		ClassNode cn;
 
