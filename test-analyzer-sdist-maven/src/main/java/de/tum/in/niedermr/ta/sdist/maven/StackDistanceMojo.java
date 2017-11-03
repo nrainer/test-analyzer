@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.sdist.maven;
 
+import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -9,15 +10,12 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-import de.tum.in.niedermr.ta.core.artifacts.exceptions.IArtifactExceptionHandler;
-import de.tum.in.niedermr.ta.core.artifacts.exceptions.IteratorException;
-import de.tum.in.niedermr.ta.core.artifacts.factory.MainArtifactVisitorFactory;
-import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactModificationVisitor;
-import de.tum.in.niedermr.ta.core.code.tests.detector.BiasedTestClassDetector;
-import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
-import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.instrumentation.AnalysisInstrumentationOperation;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.recording.v3.StackLogRecorderV3;
+import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
+import de.tum.in.niedermr.ta.core.common.util.StringUtility;
+import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
+import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
+import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
 @Mojo(name = "sdist", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES, requiresDependencyResolution = ResolutionScope.TEST)
 public class StackDistanceMojo extends AbstractMojo {
@@ -33,28 +31,27 @@ public class StackDistanceMojo extends AbstractMojo {
 		String outputArtifactPath = builtSourceCodeDirectory;
 
 		try {
-			instrumentSourceCode(inputArtifactPath, outputArtifactPath);
-		} catch (IteratorException e) {
+			getLog().info("Starting to instrument non-test classes for stack distance computation");
+			instrumentSourceCodeInNewProcess(inputArtifactPath, outputArtifactPath);
+			getLog().info("Completed instrumenting non-test classes for stack distance computation");
+		} catch (DependencyResolutionRequiredException e) {
 			throw new MojoExecutionException("IteratorException", e);
 		}
 	}
 
-	protected void instrumentSourceCode(String inputArtifactPath, String outputArtifactPath) throws IteratorException {
-		// Note that the classes to be mutated are not loaded. Consequently, default test class detectors are not
-		// working.
+	@SuppressWarnings("unchecked")
+	protected void instrumentSourceCodeInNewProcess(String inputArtifactPath, String outputArtifactPath)
+			throws DependencyResolutionRequiredException {
+		String executionPath = project.getBasedir().getAbsolutePath();
+		String classpath = ClasspathUtility.getCurrentClasspath()
+				+ StringUtility.join(project.getTestClasspathElements(), FileSystemConstants.CP_SEP);
 
-		IArtifactExceptionHandler exceptionHandler = MainArtifactVisitorFactory.INSTANCE
-				.createArtifactExceptionHandler(false);
+		ProgramArgsWriter argsWriter = StackDistanceInstrumentation.createProgramArgsWriter();
+		argsWriter.setValue(StackDistanceInstrumentation.ARGS_ARTIFACT_INPUT_PATH, inputArtifactPath);
+		argsWriter.setValue(StackDistanceInstrumentation.ARGS_ARTIFACT_OUTPUT_PATH, outputArtifactPath);
 
-		IArtifactModificationVisitor modificationIterator = MainArtifactVisitorFactory.INSTANCE
-				.createModificationVisitor(inputArtifactPath, outputArtifactPath, exceptionHandler);
-
-		// the source code folder contains only source classes
-		ITestClassDetector testClassDetector = new BiasedTestClassDetector(ClassType.NO_TEST_CLASS);
-
-		AnalysisInstrumentationOperation operation = new AnalysisInstrumentationOperation(testClassDetector,
-				StackLogRecorderV3.class);
-
-		modificationIterator.execute(operation);
+		ProcessExecution processExecution = new ProcessExecution(executionPath, executionPath, executionPath);
+		processExecution.execute(ExecutionIdFactory.createNewShortExecutionId(), ProcessExecution.NO_TIMEOUT,
+				StackDistanceInstrumentation.class, classpath, argsWriter);
 	}
 }
