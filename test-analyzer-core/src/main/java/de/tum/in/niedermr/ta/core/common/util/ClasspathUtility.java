@@ -1,7 +1,10 @@
 package de.tum.in.niedermr.ta.core.common.util;
 
+import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.List;
 
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
@@ -45,5 +48,22 @@ public class ClasspathUtility {
 		}
 
 		return FileSystemConstants.CLASSPATH_SEPARATOR_LINUX;
+	}
+
+	public static URLClassLoader createClassLoader(List<String> classpathElements) {
+		URL[] classpathUrls = new URL[classpathElements.size()];
+
+		for (int i = 0; i < classpathElements.size(); i++) {
+			String element = classpathElements.get(i);
+
+			try {
+				classpathUrls[i] = new File(element).toURI().toURL();
+			} catch (MalformedURLException e) {
+				// should not happen
+				throw new IllegalStateException("Malformed URL", e);
+			}
+		}
+
+		return new URLClassLoader(classpathUrls, Thread.currentThread().getContextClassLoader());
 	}
 }
