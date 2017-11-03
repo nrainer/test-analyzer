@@ -40,7 +40,7 @@ public class ClasspathUtility {
 			return classpath;
 		}
 
-		return classpath + ";/lib";
+		return classpath + ";/lib" + FileSystemConstants.CP_SEP;
 	}
 
 	/** Get the OS dependent classpath separator. */
