@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.core.analysis;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.junit.Test;
 
 /** Abstract test class for bytecode modifications. */
@@ -26,4 +28,27 @@ public abstract class AbstractBytecodeMutationTest<T> {
 	/** Test the modified class. */
 	protected abstract void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			T instanceOfOriginalClass) throws Exception;
+
+	/** Invoke a method. */
+	protected final void invokeMethod(Object instanceOfMutatedClass, String methodName, Object... params)
+			throws ReflectiveOperationException {
+
+		Class<?>[] paramTypes = new Class<?>[params.length];
+
+		for (int i = 0; i < params.length; i++) {
+			paramTypes[i] = params[i].getClass();
+		}
+
+		instanceOfMutatedClass.getClass().getMethod(methodName, paramTypes).invoke(instanceOfMutatedClass, params);
+	}
+
+	/** Invoke a method. */
+	protected final void invokeMethodNoInvocationEx(Object instanceOfMutatedClass, String methodName, Object... params)
+			throws ReflectiveOperationException {
+		try {
+			invokeMethod(instanceOfMutatedClass, methodName, params);
+		} catch (InvocationTargetException e) {
+			// NOP
+		}
+	}
 }
