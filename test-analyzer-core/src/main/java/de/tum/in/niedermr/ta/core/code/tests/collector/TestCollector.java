@@ -60,7 +60,7 @@ public class TestCollector implements ITestCollector {
 		}
 
 		try {
-			Class<?> cls = Class.forName(JavaUtility.toClassName(originalClassPath));
+			Class<?> cls = JavaUtility.loadClass(JavaUtility.toClassName(originalClassPath));
 			m_result.put(cls, testcases);
 		} catch (ClassNotFoundException e) {
 			throw new CodeOperationException("ClassNotFoundException", e);

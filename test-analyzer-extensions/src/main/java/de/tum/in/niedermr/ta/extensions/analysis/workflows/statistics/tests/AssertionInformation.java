@@ -90,7 +90,7 @@ public class AssertionInformation {
 			return new AssertionResult(true, methodIdentifier);
 		}
 
-		Class<?> cls = Class.forName(methodIdentifier.getOnlyClassName());
+		Class<?> cls = JavaUtility.loadClass(methodIdentifier.getOnlyClassName());
 
 		for (Class<?> assertionClass : m_assertionClassesInUse) {
 			if (JavaUtility.inheritsClass(cls, assertionClass)) {

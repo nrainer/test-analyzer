@@ -59,8 +59,8 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 	 * Valid if one of the following applies:
 	 * <ul>
 	 * <li>the value is an allowed constant</li>
-	 * <li>a class with the value as name is on the classpath, the class can be
-	 * instantiated and the class is an instance of the desired type</li>
+	 * <li>a class with the value as name is on the classpath, the class can be instantiated and the class is an
+	 * instance of the desired type</li>
 	 * </ul>
 	 */
 	@Override
@@ -92,15 +92,14 @@ public abstract class AbstractClassnameProperty<T> extends AbstractStringPropert
 	}
 
 	/**
-	 * Validate that a class can be loaded, accessed and instantiated and be
-	 * casted to a certain type.
+	 * Validate that a class can be loaded, accessed and instantiated and be casted to a certain type.
 	 */
 	public static void validateClassName(String className, Class<?> requiredType,
 			IConfigurationProperty<?> propertyForExceptions) throws ConfigurationException {
 		Class<?> cls;
 
 		try {
-			cls = Class.forName(className);
+			cls = JavaUtility.loadClass(className);
 			cls.newInstance();
 		} catch (ClassNotFoundException ex) {
 			throw new ConfigurationException(propertyForExceptions, "Not in classpath: " + className + ".");

@@ -17,6 +17,7 @@ import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractRe
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.UnwantedReturnTypeException;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 /**
  * Uses reflection to create instances of
@@ -68,7 +69,7 @@ public class SimpleReflectionReturnValueFactory extends AbstractReturnValueFacto
 
 	protected Class<?> resolveClass(String returnType) throws ClassNotFoundException {
 		String cleanedClassName = returnType.replace(JavaConstants.ARRAY_BRACKETS, "");
-		return Class.forName(cleanedClassName);
+		return JavaUtility.loadClass(cleanedClassName);
 	}
 
 	protected static Object createInstance(Class<?> cls) throws ReflectiveOperationException {

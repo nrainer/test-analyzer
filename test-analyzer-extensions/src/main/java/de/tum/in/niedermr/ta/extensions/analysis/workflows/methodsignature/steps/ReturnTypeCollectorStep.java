@@ -20,6 +20,7 @@ import de.tum.in.niedermr.ta.core.artifacts.visitor.IArtifactAnalysisVisitor;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.tests.collector.ITestCollector;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.ReturnTypeRetrieverOperation;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.steps.AbstractExecutionStep;
 import de.tum.in.niedermr.ta.runner.configuration.Configuration;
@@ -201,7 +202,7 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	/** Get the origin from where a class was loaded. */
 	private String tryGetClassOrigin(String className) {
 		try {
-			Class<?> cls = Class.forName(className);
+			Class<?> cls = JavaUtility.loadClass(className);
 			CodeSource codeSource = cls.getProtectionDomain().getCodeSource();
 
 			if (codeSource != null) {
@@ -223,8 +224,8 @@ public class ReturnTypeCollectorStep extends AbstractExecutionStep {
 	 */
 	protected Map<String, Long> getNonPrimitiveReturnTypes(Configuration configuration, ITestCollector testCollector,
 			String sourceJarFileName) throws ExecutionException {
-		IArtifactAnalysisVisitor iterator = MainArtifactVisitorFactory.INSTANCE
-				.createAnalyzeVisitor(sourceJarFileName, configuration.getOperateFaultTolerant().getValue());
+		IArtifactAnalysisVisitor iterator = MainArtifactVisitorFactory.INSTANCE.createAnalyzeVisitor(sourceJarFileName,
+				configuration.getOperateFaultTolerant().getValue());
 		ReturnTypeRetrieverOperation operation = new ReturnTypeRetrieverOperation(testCollector.getTestClassDetector());
 
 		try {

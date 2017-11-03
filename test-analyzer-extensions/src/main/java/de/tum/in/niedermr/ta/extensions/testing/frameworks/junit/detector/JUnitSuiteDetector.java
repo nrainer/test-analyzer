@@ -43,7 +43,7 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 
 	private boolean isJUnit3TestSuite(ClassNode cn) {
 		try {
-			Class<?> cls = Class.forName(JavaUtility.toClassName(cn.name));
+			Class<?> cls = JavaUtility.loadClass(JavaUtility.toClassName(cn.name));
 			return getJUnit3SuiteMethod(cls) != null;
 		} catch (ClassNotFoundException e) {
 			// should not occur

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.List;
 
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
 public class ClasspathUtility {
@@ -33,12 +34,11 @@ public class ClasspathUtility {
 	public static String getCurrentProgramClasspath() {
 		String classpath = ClasspathUtility.getCurrentClasspath();
 
-		try {
-			Class.forName("org.objectweb.asm.Opcodes");
+		if (JavaUtility.isClassAvailable("org.objectweb.asm.Opcodes")) {
 			return classpath;
-		} catch (ClassNotFoundException ex) {
-			return classpath + ";/lib";
 		}
+
+		return classpath + ";/lib";
 	}
 
 	/** Get the OS dependent classpath separator. */

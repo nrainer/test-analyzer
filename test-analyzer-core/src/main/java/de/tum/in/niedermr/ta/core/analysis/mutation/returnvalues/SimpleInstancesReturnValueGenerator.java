@@ -7,10 +7,10 @@ import org.objectweb.asm.Type;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.base.AbstractReturnValueGenerator;
 import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 
 /**
- * Supports the creation of instances of classes which provide a constructor
- * without parameters.
+ * Supports the creation of instances of classes which provide a constructor without parameters.
  */
 public class SimpleInstancesReturnValueGenerator extends AbstractReturnValueGenerator {
 
@@ -18,7 +18,7 @@ public class SimpleInstancesReturnValueGenerator extends AbstractReturnValueGene
 	@Override
 	public boolean checkReturnValueSupported(MethodIdentifier methodIdentifier, Type returnType) {
 		try {
-			Class.forName(returnType.getClassName()).newInstance();
+			JavaUtility.createInstance(returnType.getClassName());
 			return true;
 		} catch (Exception ex) {
 			return false;
