@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
@@ -50,20 +52,26 @@ public class ClasspathUtility {
 		return FileSystemConstants.CLASSPATH_SEPARATOR_LINUX;
 	}
 
-	public static URLClassLoader createClassLoader(List<String> classpathElements) {
-		URL[] classpathUrls = new URL[classpathElements.size()];
+	public static URLClassLoader createClassLoader(String[] classpathElements) {
+		return createClassLoader(Arrays.asList(classpathElements));
+	}
 
-		for (int i = 0; i < classpathElements.size(); i++) {
-			String element = classpathElements.get(i);
+	public static URLClassLoader createClassLoader(List<String> classpathElements) {
+		List<URL> classpathUrls = new ArrayList<>();
+
+		for (String element : classpathElements) {
+			if (StringUtility.isNullOrEmpty(element)) {
+				continue;
+			}
 
 			try {
-				classpathUrls[i] = new File(element).toURI().toURL();
+				classpathUrls.add(new File(element).toURI().toURL());
 			} catch (MalformedURLException e) {
 				// should not happen
 				throw new IllegalStateException("Malformed URL", e);
 			}
 		}
 
-		return new URLClassLoader(classpathUrls, Thread.currentThread().getContextClassLoader());
+		return new URLClassLoader(classpathUrls.toArray(new URL[0]), Thread.currentThread().getContextClassLoader());
 	}
 }

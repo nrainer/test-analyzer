@@ -7,6 +7,7 @@ import de.tum.in.niedermr.ta.core.analysis.filter.IMethodFilter;
 import de.tum.in.niedermr.ta.core.code.tests.runner.ITestRunner;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
+import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.core.common.util.FileUtility;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.IWorkflow;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
@@ -378,6 +379,14 @@ public class Configuration extends AbstractConfiguration implements FileSystemCo
 	public final String getFullClasspath() {
 		return m_codePathToMutate.getValue() + CP_SEP + m_codePathToTest.getValue() + CP_SEP + m_classpath.getValue()
 				+ CP_SEP;
+	}
+
+	public final String[] getElementsOfFullClasspath() {
+		return getFullClasspath().split(CP_SEP);
+	}
+
+	public final ClassLoader getClassLoaderFromFullClasspath() {
+		return ClasspathUtility.createClassLoader(getElementsOfFullClasspath());
 	}
 
 	public final String getPrefixedWorkingFolderIfNotAbsolute(String prefix) {
