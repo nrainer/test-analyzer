@@ -7,7 +7,7 @@ public class VoidReturnValueGeneratorTest extends AbstractReturnValueGeneratorTe
 
 	/** Constructor. */
 	public VoidReturnValueGeneratorTest() {
-		super(new VoidReturnValueGenerator(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new VoidReturnValueGenerator());
 	}
 
 	/** {@inheritDoc} */

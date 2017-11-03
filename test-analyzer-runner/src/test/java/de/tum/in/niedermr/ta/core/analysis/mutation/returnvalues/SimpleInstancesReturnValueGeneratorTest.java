@@ -15,7 +15,7 @@ public class SimpleInstancesReturnValueGeneratorTest
 
 	/** Constructor. */
 	public SimpleInstancesReturnValueGeneratorTest() {
-		super(new SimpleInstancesReturnValueGenerator(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new SimpleInstancesReturnValueGenerator());
 	}
 
 	/** {@inheritDoc} */

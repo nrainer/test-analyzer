@@ -7,7 +7,7 @@ public class SimpleReturnValueGeneratorWith1Test extends AbstractReturnValueGene
 
 	/** Constructor. */
 	public SimpleReturnValueGeneratorWith1Test() {
-		super(new SimpleReturnValueGeneratorWith1(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new SimpleReturnValueGeneratorWith1());
 	}
 
 	/** {@inheritDoc} */

@@ -8,7 +8,7 @@ public class SimpleAndWrapperReturnValueGeneratorWith0Test
 
 	/** Constructor. */
 	public SimpleAndWrapperReturnValueGeneratorWith0Test() {
-		super(new SimpleAndWrapperReturnValueGeneratorWith0(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new SimpleAndWrapperReturnValueGeneratorWith0());
 	}
 
 	/** {@inheritDoc} */

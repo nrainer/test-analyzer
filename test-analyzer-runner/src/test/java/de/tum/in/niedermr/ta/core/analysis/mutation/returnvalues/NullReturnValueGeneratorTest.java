@@ -15,7 +15,7 @@ public class NullReturnValueGeneratorTest extends AbstractReturnValueGeneratorTe
 
 	/** Constructor. */
 	public NullReturnValueGeneratorTest() {
-		super(new NullReturnValueGenerator(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new NullReturnValueGenerator());
 	}
 
 	/** {@inheritDoc} */

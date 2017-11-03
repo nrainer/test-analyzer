@@ -23,7 +23,7 @@ public class CommonInstancesReturnValueGeneratorTest
 
 	/** Constructor. */
 	public CommonInstancesReturnValueGeneratorTest() throws InvalidClassException, ReflectiveOperationException {
-		super(new CommonInstancesReturnValueGenerator(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new CommonInstancesReturnValueGenerator());
 	}
 
 	/** {@inheritDoc} */
