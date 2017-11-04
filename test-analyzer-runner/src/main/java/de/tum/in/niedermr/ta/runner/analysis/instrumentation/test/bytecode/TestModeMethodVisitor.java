@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.runner.analysis.instrumentation.test.bytecode;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger.LoggingMode;
@@ -18,17 +19,17 @@ public class TestModeMethodVisitor extends AbstractTryFinallyMethodVisitor imple
 	private static final String METHOD_NAME_SET_MODE = "setMode";
 	private static final String METHOD_DESC_SET_MODE = "(L" + CP_LOGGING_MODE + ";)V";
 
-	public TestModeMethodVisitor(MethodVisitor mv) {
-		super(Opcodes.ASM5, mv);
+	public TestModeMethodVisitor(MethodVisitor mv, ClassNode cn, String name, String desc) {
+		super(Opcodes.ASM5, mv, cn, name, desc);
 	}
 
 	@Override
-	protected void execVisitBeforeFirstTryCatchBlock() {
+	protected void execVisitCodeBeforeFirstTryCatchBlock() {
 		insertInstructionToSetMode(LoggingMode.TESTING);
 	}
 
 	@Override
-	protected void execVisitFinallyBlock() {
+	protected void execVisitCodeInFinallyBlock() {
 		insertInstructionToSetMode(LoggingMode.FRAMING);
 	}
 

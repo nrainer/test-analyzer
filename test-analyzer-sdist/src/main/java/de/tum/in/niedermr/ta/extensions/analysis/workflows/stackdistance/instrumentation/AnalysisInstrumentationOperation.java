@@ -22,8 +22,7 @@ public class AnalysisInstrumentationOperation extends AbstractTestAwareCodeModif
 	/** {@inheritDoc} */
 	@Override
 	protected void modifySourceClass(ClassReader cr, ClassWriter cw) {
-		ClassVisitor cv = new AnalysisInstrumentationClassVisitor(cw, cr.getClassName(),
-				m_instrumentationDataRetrieverClass);
+		ClassVisitor cv = new AnalysisInstrumentationClassVisitor(cw, cr, m_instrumentationDataRetrieverClass);
 		cr.accept(cv, ClassReader.EXPAND_FRAMES);
 	}
 }

@@ -31,7 +31,7 @@ public class TestInstrumentationOperation extends AbstractTestAwareCodeModificat
 
 		Set<MethodIdentifier> testcases = getTestcases(cn, classType);
 
-		ClassVisitor cv = new TestModeClassVisitor(cn.name, cw, testcases);
+		ClassVisitor cv = new TestModeClassVisitor(cn, cw, testcases);
 		cr.accept(cv, 0);
 	}
 

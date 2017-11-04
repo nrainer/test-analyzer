@@ -5,18 +5,22 @@ import java.util.Set;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 
 public class TestModeClassVisitor extends ClassVisitor {
+	private final ClassNode m_cn;
 	private final String m_className;
 	private final Set<MethodIdentifier> m_testcases;
 
-	public TestModeClassVisitor(String className, ClassVisitor cv, Set<MethodIdentifier> testcases) {
+	/** Constructor. */
+	public TestModeClassVisitor(ClassNode cn, ClassVisitor cv, Set<MethodIdentifier> testcases) {
 		super(Opcodes.ASM5, cv);
 
-		this.m_className = className;
-		this.m_testcases = testcases;
+		m_cn = cn;
+		m_className = cn.name;
+		m_testcases = testcases;
 	}
 
 	@Override
@@ -24,7 +28,7 @@ public class TestModeClassVisitor extends ClassVisitor {
 		MethodVisitor mv = super.visitMethod(access, name, desc, signature, exceptions);
 
 		if (m_testcases.contains(MethodIdentifier.create(m_className, name, desc))) {
-			return new TestModeMethodVisitor(mv);
+			return new TestModeMethodVisitor(mv, m_cn, name, desc);
 		} else {
 			return mv;
 		}
