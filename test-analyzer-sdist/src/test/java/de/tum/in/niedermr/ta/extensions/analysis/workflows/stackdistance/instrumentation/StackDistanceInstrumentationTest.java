@@ -39,7 +39,7 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 		assertInvocationCounts(1);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "throwExternallyCreatedException");
-		assertInvocationCounts(2);
+		assertInvocationCounts(2, false);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "computation");
 		assertInvocationCounts(1);
@@ -53,12 +53,18 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", new Integer(80));
 		assertInvocationCounts(2);
 
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "synchronizedMultiExits", new Integer(80));
+		assertInvocationCounts(2);
+
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
 		assertInvocationCounts(2);
 		assertTrue(StackLogRecorderForTestingPurposes.s_methodIdentifierStrings.get(0).contains("failInputDependent"));
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.FALSE);
 		assertInvocationCounts(2);
+
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "recursive", new Integer(3));
+		assertInvocationCounts(4);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryFinally");
 		assertInvocationCounts(1);
@@ -78,7 +84,16 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 
 	/** Assert the invocations. */
 	protected void assertInvocationCounts(int invocationCount) {
+		assertInvocationCounts(invocationCount, true);
+	}
+
+	/** Assert the invocations. */
+	protected void assertInvocationCounts(int invocationCount, boolean assertMaxMethodNestingDepth) {
 		assertInvocationCounts(invocationCount, invocationCount);
+
+		if (assertMaxMethodNestingDepth) {
+			assertMaxInvocationCount(invocationCount);
+		}
 	}
 
 	/** Assert the invocations. */
@@ -87,5 +102,11 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 				StackLogRecorderForTestingPurposes.s_pushInvocationCount);
 		assertEquals("Pop invocation mismatch", popInvocations,
 				StackLogRecorderForTestingPurposes.s_popInvocationCount);
+	}
+
+	/** Assert the invocations. */
+	protected void assertMaxInvocationCount(int maxMethodNestingDepth) {
+		assertEquals("Max method nesting depth mismatch", maxMethodNestingDepth,
+				StackLogRecorderForTestingPurposes.s_maxMethodNestingDepth);
 	}
 }

@@ -42,9 +42,33 @@ public class StackDistanceSampleClass {
 		return 3;
 	}
 
+	public synchronized int synchronizedMultiExits(Integer x) {
+		if (x == null) {
+			return 1;
+		} else if (x < 1000) {
+			if (x == 100) {
+				return 0;
+			} else if (x == 80) {
+				failIfTrue(true);
+			}
+
+			throw new IllegalArgumentException();
+		}
+
+		return 3;
+	}
+
 	public int computation() {
 		int x = 3;
 		return x << 1;
+	}
+
+	public void recursive(Integer n) {
+		if (n == 0) {
+			return;
+		}
+
+		recursive(n - 1);
 	}
 
 	public int failInputDependent(Boolean fail) {
