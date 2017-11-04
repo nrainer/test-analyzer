@@ -36,7 +36,13 @@
 			<artifactId>test-analyzer-sdist</artifactId>
 			<version>${currentVersion}</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-runner</artifactId>
+			<version>${currentVersion}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.maven</groupId>
 			<artifactId>maven-artifact</artifactId>
