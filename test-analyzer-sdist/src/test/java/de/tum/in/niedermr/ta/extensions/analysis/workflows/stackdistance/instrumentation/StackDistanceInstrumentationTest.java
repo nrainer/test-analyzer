@@ -29,50 +29,45 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 	protected void verifyModification(Class<?> modifiedClass, Object instanceOfModifiedClass,
 			StackDistanceSampleClass instanceOfOriginalClass) throws Exception {
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethod(instanceOfModifiedClass, "empty");
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "empty");
 		assertInvocationCounts(1);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethod(instanceOfModifiedClass, "returnMethodResult");
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "returnMethodResult");
 		assertInvocationCounts(2);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfModifiedClass, "throwException");
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "throwException");
 		assertInvocationCounts(2);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfModifiedClass, "throwExternallyCreatedException");
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "throwExternallyCreatedException");
 		assertInvocationCounts(2);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethod(instanceOfModifiedClass, "computation");
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "computation");
 		assertInvocationCounts(1);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethod(instanceOfModifiedClass, "multiReturnExits", new Integer(4));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiReturnExits", new Integer(4));
 		assertInvocationCounts(1);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
 		assertInvocationCounts(2);
 		assertTrue(StackLogRecorderForTestingPurposes.s_methodIdentifierStrings.get(0).contains("failInputDependent"));
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.FALSE);
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.FALSE);
 		assertInvocationCounts(2);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfModifiedClass, "tryFinally");
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryFinally");
 		assertInvocationCounts(1);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.TRUE);
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.TRUE);
 		assertInvocationCounts(1);
 
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.FALSE);
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.FALSE);
 		assertInvocationCounts(1);
+	}
+
+	protected void resetRecorderAndInvokeMethodNoInvocationEx(Object instanceOfMutatedClass, String methodName,
+			Object... params) throws ReflectiveOperationException {
+		StackLogRecorderForTestingPurposes.reset();
+		invokeMethodNoInvocationEx(instanceOfMutatedClass, methodName, params);
 	}
 
 	/** Assert the invocations. */
