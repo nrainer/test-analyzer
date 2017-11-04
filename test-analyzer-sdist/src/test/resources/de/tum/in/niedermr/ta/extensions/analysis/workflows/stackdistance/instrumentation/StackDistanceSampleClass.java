@@ -14,7 +14,29 @@ public class StackDistanceSampleClass {
 		throw new IllegalStateException();
 	}
 
+	public int throwExternallyCreatedException() {
+		throw createException();
+	}
+
+	private IllegalStateException createException() {
+		return new IllegalStateException();
+	}
+
 	public int returnValue() {
+		return 3;
+	}
+
+	public int multiReturnExits(Integer x) {
+		if (x == null) {
+			return 1;
+		} else if (x > 3) {
+			if (x > 100) {
+				return 0;
+			}
+
+			return 4;
+		}
+
 		return 3;
 	}
 
@@ -37,7 +59,7 @@ public class StackDistanceSampleClass {
 		}
 	}
 
-	private int failIfTrue(boolean fail) {
+	public int failIfTrue(Boolean fail) {
 		if (fail) {
 			throw new IllegalStateException("Fail requested");
 		}

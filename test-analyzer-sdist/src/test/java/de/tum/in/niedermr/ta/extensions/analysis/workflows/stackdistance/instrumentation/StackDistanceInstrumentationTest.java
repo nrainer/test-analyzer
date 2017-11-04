@@ -31,39 +31,60 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 
 		StackLogRecorderForTestingPurposes.reset();
 		invokeMethod(instanceOfModifiedClass, "empty");
-		assertInvocationCounts(1, 1);
+		assertInvocationCounts(1);
 
 		StackLogRecorderForTestingPurposes.reset();
 		invokeMethod(instanceOfModifiedClass, "returnMethodResult");
-		assertInvocationCounts(2, 2);
+		assertInvocationCounts(2);
 
 		StackLogRecorderForTestingPurposes.reset();
 		invokeMethodNoInvocationEx(instanceOfModifiedClass, "throwException");
-		// assertInvocationCounts(1, 1);
+		assertInvocationCounts(2);
+
+		StackLogRecorderForTestingPurposes.reset();
+		invokeMethodNoInvocationEx(instanceOfModifiedClass, "throwExternallyCreatedException");
+		assertInvocationCounts(2);
 
 		StackLogRecorderForTestingPurposes.reset();
 		invokeMethod(instanceOfModifiedClass, "computation");
-		assertInvocationCounts(1, 1);
+		assertInvocationCounts(1);
+
+		StackLogRecorderForTestingPurposes.reset();
+		invokeMethod(instanceOfModifiedClass, "multiReturnExits", new Integer(4));
+		assertInvocationCounts(1);
 
 		StackLogRecorderForTestingPurposes.reset();
 		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
-		assertInvocationCounts(2, 2);
+		assertInvocationCounts(2);
 		assertTrue(StackLogRecorderForTestingPurposes.s_methodIdentifierStrings.get(0).contains("failInputDependent"));
 
 		StackLogRecorderForTestingPurposes.reset();
 		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.FALSE);
-		assertInvocationCounts(2, 2);
+		assertInvocationCounts(2);
 
 		StackLogRecorderForTestingPurposes.reset();
 		invokeMethodNoInvocationEx(instanceOfModifiedClass, "tryFinally");
-		assertInvocationCounts(1, 1);
+		assertInvocationCounts(1);
+
+		StackLogRecorderForTestingPurposes.reset();
+		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.TRUE);
+		assertInvocationCounts(1);
+
+		StackLogRecorderForTestingPurposes.reset();
+		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.FALSE);
+		assertInvocationCounts(1);
 	}
 
+	/** Assert the invocations. */
+	protected void assertInvocationCounts(int invocationCount) {
+		assertInvocationCounts(invocationCount, invocationCount);
+	}
+
+	/** Assert the invocations. */
 	protected void assertInvocationCounts(int pushInvocations, int popInvocations) {
 		assertEquals("Push invocation mismatch", pushInvocations,
 				StackLogRecorderForTestingPurposes.s_pushInvocationCount);
 		assertEquals("Pop invocation mismatch", popInvocations,
 				StackLogRecorderForTestingPurposes.s_popInvocationCount);
 	}
-
 }
