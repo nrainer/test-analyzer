@@ -36,7 +36,7 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 		assertInvocationCounts(2);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "throwException");
-		assertInvocationCounts(2);
+		assertInvocationCounts(1);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "throwExternallyCreatedException");
 		assertInvocationCounts(2);
@@ -44,8 +44,14 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "computation");
 		assertInvocationCounts(1);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiReturnExits", new Integer(4));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", new Integer(100));
 		assertInvocationCounts(1);
+
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", new Integer(400));
+		assertInvocationCounts(1);
+
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", new Integer(80));
+		assertInvocationCounts(2);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
 		assertInvocationCounts(2);

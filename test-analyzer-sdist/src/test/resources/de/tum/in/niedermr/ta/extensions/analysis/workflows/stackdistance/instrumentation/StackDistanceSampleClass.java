@@ -26,15 +26,17 @@ public class StackDistanceSampleClass {
 		return 3;
 	}
 
-	public int multiReturnExits(Integer x) {
+	public int multiExits(Integer x) {
 		if (x == null) {
 			return 1;
-		} else if (x > 3) {
-			if (x > 100) {
+		} else if (x < 1000) {
+			if (x == 100) {
 				return 0;
+			} else if (x == 80) {
+				failIfTrue(true);
 			}
 
-			return 4;
+			throw new IllegalArgumentException();
 		}
 
 		return 3;
