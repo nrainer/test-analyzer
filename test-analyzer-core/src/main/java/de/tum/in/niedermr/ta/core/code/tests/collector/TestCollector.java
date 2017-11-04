@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -80,11 +79,10 @@ public class TestCollector implements ITestCollector {
 		return testcases;
 	}
 
-	@SuppressWarnings("unchecked")
 	protected Set<String> collectTestcasesInThisClass(ClassNode cn, ClassType testClassType) {
 		Set<String> testcases = new HashSet<>();
 
-		for (MethodNode meth : (List<MethodNode>) cn.methods) {
+		for (MethodNode meth : cn.methods) {
 			if (m_testClassDetector.analyzeIsTestcase(meth, testClassType)) {
 				testcases.add(meth.name);
 			}

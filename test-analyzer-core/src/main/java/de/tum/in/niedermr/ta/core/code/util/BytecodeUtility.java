@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.core.code.util;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
@@ -79,9 +78,8 @@ public class BytecodeUtility {
 	}
 
 	/** Check if a class has a public parameterless constructor. */
-	@SuppressWarnings("unchecked")
 	public static boolean hasPublicParameterlessConstructor(ClassNode classNode) {
-		for (MethodNode methodNode : (List<MethodNode>) classNode.methods) {
+		for (MethodNode methodNode : classNode.methods) {
 			if (isConstructor(methodNode) && isPublicMethod(methodNode)
 					&& Type.getArgumentTypes(methodNode.desc).length == 0) {
 				return true;

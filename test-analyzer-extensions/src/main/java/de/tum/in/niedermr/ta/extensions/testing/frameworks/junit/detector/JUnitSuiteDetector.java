@@ -2,7 +2,6 @@ package de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.detector;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -68,7 +67,6 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private boolean isJUnit4TestSuite(ClassNode cn) {
 		if (cn.visibleAnnotations == null) {
 			return false;
@@ -77,7 +75,7 @@ public class JUnitSuiteDetector extends AbstractTestClassDetector {
 		boolean annotatedRunWith = false;
 		boolean annotatedSuiteClasses = false;
 
-		for (AnnotationNode annotation : (List<AnnotationNode>) cn.visibleAnnotations) {
+		for (AnnotationNode annotation : cn.visibleAnnotations) {
 			if (annotation.desc.equals(JUNIT_4_RUN_WITH_ANNOTATION)) {
 				annotatedRunWith = true;
 			} else if (annotation.desc.equals(JUNIT_4_SUITE_CLASSES_ANNOTATION)) {

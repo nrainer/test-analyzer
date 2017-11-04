@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.tree.ClassNode;
@@ -42,9 +41,8 @@ public class InstructionCounterOperation<T extends Identifier> extends AbstractT
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void analyzeMethods(ClassNode cn, ClassType testClassType) {
-		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
+		for (MethodNode methodNode : cn.methods) {
 			analyzeMethod(cn, testClassType, methodNode);
 		}
 	}
