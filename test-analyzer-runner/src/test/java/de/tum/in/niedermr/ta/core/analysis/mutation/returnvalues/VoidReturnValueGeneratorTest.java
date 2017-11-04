@@ -12,7 +12,7 @@ public class VoidReturnValueGeneratorTest extends AbstractReturnValueGeneratorTe
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		assertEquals("no mutation expected", instanceOfOriginalClass.getStringValue(),
 				mutatedClass.getMethod("getStringValue").invoke(instanceOfMutatedClass));

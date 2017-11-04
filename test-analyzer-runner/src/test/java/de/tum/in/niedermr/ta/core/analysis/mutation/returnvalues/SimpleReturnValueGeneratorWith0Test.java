@@ -17,7 +17,7 @@ public class SimpleReturnValueGeneratorWith0Test extends AbstractReturnValueGene
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		verifyMutationForSimpleValueMethods(mutatedClass, instanceOfMutatedClass);
 

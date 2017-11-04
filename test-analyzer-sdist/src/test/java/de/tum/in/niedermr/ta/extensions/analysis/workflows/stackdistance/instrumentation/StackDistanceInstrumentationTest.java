@@ -18,44 +18,44 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 
 	/** {@inheritDoc} */
 	@Override
-	protected Class<?> mutateClass(Class<?> classToBeMutated) throws Exception {
+	protected Class<?> modifyClass(Class<?> classToBeModified) throws Exception {
 		ICodeModificationOperation modificationOperation = new AnalysisInstrumentationOperation(
 				new BiasedTestClassDetector(ClassType.NO_TEST_CLASS), StackLogRecorderForTestingPurposes.class);
-		return BytecodeModificationTestUtility.createAndLoadModifiedClass(classToBeMutated, modificationOperation);
+		return BytecodeModificationTestUtility.createAndLoadModifiedClass(classToBeModified, modificationOperation);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> modifiedClass, Object instanceOfModifiedClass,
 			StackDistanceSampleClass instanceOfOriginalClass) throws Exception {
 
 		StackLogRecorderForTestingPurposes.reset();
-		invokeMethod(instanceOfMutatedClass, "empty");
+		invokeMethod(instanceOfModifiedClass, "empty");
 		assertInvocationCounts(1, 1);
 
 		StackLogRecorderForTestingPurposes.reset();
-		invokeMethod(instanceOfMutatedClass, "returnMethodResult");
+		invokeMethod(instanceOfModifiedClass, "returnMethodResult");
 		assertInvocationCounts(2, 2);
 
 		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfMutatedClass, "throwException");
+		invokeMethodNoInvocationEx(instanceOfModifiedClass, "throwException");
 		// assertInvocationCounts(1, 1);
 
 		StackLogRecorderForTestingPurposes.reset();
-		invokeMethod(instanceOfMutatedClass, "computation");
+		invokeMethod(instanceOfModifiedClass, "computation");
 		assertInvocationCounts(1, 1);
 
 		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfMutatedClass, "failInputDependent", Boolean.TRUE);
+		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
 		assertInvocationCounts(2, 2);
 		assertTrue(StackLogRecorderForTestingPurposes.s_methodIdentifierStrings.get(0).contains("failInputDependent"));
 
 		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfMutatedClass, "failInputDependent", Boolean.FALSE);
+		invokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.FALSE);
 		assertInvocationCounts(2, 2);
 
 		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfMutatedClass, "tryFinally");
+		invokeMethodNoInvocationEx(instanceOfModifiedClass, "tryFinally");
 		assertInvocationCounts(1, 1);
 	}
 

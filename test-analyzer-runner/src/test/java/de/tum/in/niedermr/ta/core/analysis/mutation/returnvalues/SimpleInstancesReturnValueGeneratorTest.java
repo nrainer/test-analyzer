@@ -20,7 +20,7 @@ public class SimpleInstancesReturnValueGeneratorTest
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		assertEquals("", mutatedClass.getMethod("getStringBuilder").invoke(instanceOfMutatedClass).toString());
 	}

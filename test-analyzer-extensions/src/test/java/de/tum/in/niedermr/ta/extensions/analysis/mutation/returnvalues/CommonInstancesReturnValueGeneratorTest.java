@@ -28,7 +28,7 @@ public class CommonInstancesReturnValueGeneratorTest
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		CommonReturnValueFactory factory = new CommonReturnValueFactory();
 		Object expected;

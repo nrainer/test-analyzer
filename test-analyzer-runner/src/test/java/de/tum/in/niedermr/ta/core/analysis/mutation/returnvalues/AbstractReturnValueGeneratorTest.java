@@ -19,7 +19,7 @@ public abstract class AbstractReturnValueGeneratorTest<T> extends AbstractByteco
 
 	/** {@inheritDoc} */
 	@Override
-	protected Class<?> mutateClass(Class<?> classToBeMutated) throws Exception {
+	protected Class<?> modifyClass(Class<?> classToBeMutated) throws Exception {
 		MethodFilterList filterList = MethodFilterList.createWithDefaultFilters();
 		filterList.addValueGenerationSupportedFilter(m_returnValueGenerator);
 		ICodeModificationOperation modificationOperation = new MutateMethodsOperation(m_returnValueGenerator,

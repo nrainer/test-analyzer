@@ -9,6 +9,7 @@ public abstract class AbstractBytecodeMutationTest<T> {
 
 	private Class<T> m_classToBeMutated;
 
+	/** Constructor. */
 	public AbstractBytecodeMutationTest(Class<T> classToBeMutated) {
 		m_classToBeMutated = classToBeMutated;
 	}
@@ -16,21 +17,21 @@ public abstract class AbstractBytecodeMutationTest<T> {
 	/** Test. */
 	@Test
 	public void testBytecodeModification() throws Exception {
-		Class<?> mutatedClass = mutateClass(m_classToBeMutated);
+		Class<?> mutatedClass = modifyClass(m_classToBeMutated);
 		Object instanceOfMutatedClass = mutatedClass.newInstance();
 		T instanceOfOriginalClass = m_classToBeMutated.newInstance();
-		verifyMutation(mutatedClass, instanceOfMutatedClass, instanceOfOriginalClass);
+		verifyModification(mutatedClass, instanceOfMutatedClass, instanceOfOriginalClass);
 	}
 
 	/** Modify the class. */
-	protected abstract Class<?> mutateClass(Class<?> classToBeMutated) throws Exception;
+	protected abstract Class<?> modifyClass(Class<?> classToBeModified) throws Exception;
 
-	/** Test the modified class. */
-	protected abstract void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	/** Verify the modified class. */
+	protected abstract void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			T instanceOfOriginalClass) throws Exception;
 
 	/** Invoke a method. */
-	protected final void invokeMethod(Object instanceOfMutatedClass, String methodName, Object... params)
+	protected final void invokeMethod(Object instanceOfModifiedClass, String methodName, Object... params)
 			throws ReflectiveOperationException {
 
 		Class<?>[] paramTypes = new Class<?>[params.length];
@@ -39,7 +40,7 @@ public abstract class AbstractBytecodeMutationTest<T> {
 			paramTypes[i] = params[i].getClass();
 		}
 
-		instanceOfMutatedClass.getClass().getMethod(methodName, paramTypes).invoke(instanceOfMutatedClass, params);
+		instanceOfModifiedClass.getClass().getMethod(methodName, paramTypes).invoke(instanceOfModifiedClass, params);
 	}
 
 	/** Invoke a method. */
