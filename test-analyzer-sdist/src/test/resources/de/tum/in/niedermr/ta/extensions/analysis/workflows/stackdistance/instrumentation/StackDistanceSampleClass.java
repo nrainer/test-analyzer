@@ -10,6 +10,23 @@ public class StackDistanceSampleClass {
 		return returnValue();
 	}
 
+	public int delegateToFailIfTrue() {
+		failIfTrue(true);
+		return 0;
+	}
+
+	public int delegateToDelegateToFailIfTrue() {
+		try {
+			delegateToDelegateToFailIfTrue();
+		} catch (Exception e) {
+			// NOP
+		}
+
+		recursive(5);
+
+		return 0;
+	}
+
 	public int throwException() {
 		throw new IllegalStateException();
 	}
@@ -64,7 +81,7 @@ public class StackDistanceSampleClass {
 	}
 
 	public void recursive(Integer n) {
-		if (n == 0) {
+		if (n <= 1) {
 			return;
 		}
 
