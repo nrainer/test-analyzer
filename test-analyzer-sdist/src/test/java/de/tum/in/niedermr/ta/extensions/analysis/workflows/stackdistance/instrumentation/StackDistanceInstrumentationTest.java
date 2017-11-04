@@ -71,9 +71,14 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.TRUE);
 		assertInvocationCounts(1);
-
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.FALSE);
 		assertInvocationCounts(1);
+
+		// TODO
+		// resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfFalse", Boolean.TRUE);
+		// assertInvocationCounts(1);
+		// resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfFalse", Boolean.FALSE);
+		// assertInvocationCounts(1);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", new Integer(1));
 		assertInvocationCounts(1);

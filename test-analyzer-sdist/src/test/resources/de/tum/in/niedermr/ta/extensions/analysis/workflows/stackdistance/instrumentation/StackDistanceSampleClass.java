@@ -108,4 +108,12 @@ public class StackDistanceSampleClass {
 
 		return 0;
 	}
+
+	public int failIfFalse(Boolean failNot) {
+		if (failNot) {
+			return 0;
+		}
+
+		throw new IllegalStateException("Fail requested");
+	}
 }
