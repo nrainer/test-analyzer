@@ -78,6 +78,9 @@ public abstract class AbstractStackDistanceInstrumentationTest
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "synchronizedThrowCatchThrow2");
 		assertInvocationCounts(1);
 
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "synchronizedBlock");
+		assertInvocationCounts(2);
+
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.TRUE);
 		assertInvocationCounts(1);
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.FALSE);
