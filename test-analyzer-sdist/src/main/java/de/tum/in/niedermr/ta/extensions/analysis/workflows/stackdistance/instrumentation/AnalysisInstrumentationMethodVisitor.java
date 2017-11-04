@@ -37,7 +37,8 @@ public class AnalysisInstrumentationMethodVisitor extends AbstractTryFinallyMeth
 	/** {@inheritDoc} */
 	@Override
 	protected void execVisitCodeInFinallyBlock() {
-		mv.visitMethodInsn(Opcodes.INVOKESTATIC, m_instrumentationDataRetrieverClassPath, "popInvocation", "()V",
-				false);
+		visitLdcInsn(m_identifier.get());
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, m_instrumentationDataRetrieverClassPath, "popInvocation",
+				"(Ljava/lang/String;)V", false);
 	}
 }

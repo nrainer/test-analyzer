@@ -28,7 +28,10 @@ public class StackLogRecorderForTestingPurposes {
 		s_methodIdentifierStrings.add(methodIdentifierString);
 	}
 
-	public static synchronized void popInvocation() {
+	/**
+	 * * @param methodIdentifierString
+	 */
+	public static synchronized void popInvocation(String methodIdentifierString) {
 		s_popInvocationCount++;
 		s_methodNestingDepth--;
 	}

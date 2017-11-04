@@ -68,8 +68,10 @@ public class StackLogRecorderV3 {
 
 	/**
 	 * Pop invocation: The invocation is completed, the test case is about to leave the method.
+	 * 
+	 * @param methodIdentifierString
 	 */
-	public static synchronized void popInvocation() {
+	public static synchronized void popInvocation(String methodIdentifierString) {
 		String currentThreadName = Thread.currentThread().getName();
 
 		Integer currentStackDistance = s_currentStackDistanceByThreadName.get(currentThreadName);

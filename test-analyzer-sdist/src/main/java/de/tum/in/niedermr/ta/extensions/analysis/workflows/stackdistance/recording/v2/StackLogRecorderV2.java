@@ -53,8 +53,10 @@ public class StackLogRecorderV2 {
 
 	/**
 	 * Pop invocation: The invocation is completed, the test case is about to leave the method.
+	 * 
+	 * @param methodIdentifierString
 	 */
-	public static synchronized void popInvocation() {
+	public static synchronized void popInvocation(String methodIdentifierString) {
 		// NOP: not needed (but keep the method because the instrumented code invokes it)
 	}
 }
