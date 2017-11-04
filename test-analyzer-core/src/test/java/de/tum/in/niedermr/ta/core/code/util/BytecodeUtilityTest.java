@@ -55,7 +55,6 @@ public class BytecodeUtilityTest {
 	}
 
 	/** Test. */
-	@SuppressWarnings("unchecked")
 	@Test
 	public void testCountMethodInstructions() throws ClassNotFoundException, IOException {
 		final Class<?> cls = SampleClass.class;
@@ -72,7 +71,7 @@ public class BytecodeUtilityTest {
 
 		int countChecks = 0;
 
-		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
+		for (MethodNode methodNode : cn.methods) {
 			MethodIdentifier currentIdentifier = MethodIdentifier.create(cls, methodNode);
 
 			Integer currentExpectedCountValue = expected.get(currentIdentifier);
@@ -92,7 +91,6 @@ public class BytecodeUtilityTest {
 	public void testMethodFlags() throws IOException {
 		ClassNode cn = BytecodeUtility.getAcceptedClassNode(SampleClass.class);
 
-		@SuppressWarnings("unchecked")
 		List<MethodNode> methods = cn.methods;
 
 		MethodNode constructorMethodNode = methods.stream().filter(method -> "<init>".equals(method.name)).findAny()

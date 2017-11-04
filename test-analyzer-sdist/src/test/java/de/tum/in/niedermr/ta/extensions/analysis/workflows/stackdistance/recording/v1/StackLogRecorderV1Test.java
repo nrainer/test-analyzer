@@ -47,11 +47,11 @@ public class StackLogRecorderV1Test {
 		StackLogRecorderV1.pushInvocation(methodIdentifier1.get());
 		StackLogRecorderV1.pushInvocation(methodIdentifier2.get());
 		StackLogRecorderV1.pushInvocation(methodIdentifier3.get());
-		StackLogRecorderV1.popInvocation();
-		StackLogRecorderV1.popInvocation();
+		StackLogRecorderV1.popInvocation(methodIdentifier3.get());
+		StackLogRecorderV1.popInvocation(methodIdentifier2.get());
 		StackLogRecorderV1.pushInvocation(methodIdentifier3.get());
-		StackLogRecorderV1.popInvocation();
-		StackLogRecorderV1.popInvocation();
+		StackLogRecorderV1.popInvocation(methodIdentifier3.get());
+		StackLogRecorderV1.popInvocation(methodIdentifier1.get());
 
 		Map<MethodIdentifier, Integer> invocationsMinDistance = StackLogDataManager.getInvocationsMinDistance();
 		Map<MethodIdentifier, Integer> invocationsMaxDistance = StackLogDataManager.getInvocationsMaxDistance();

@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.runner.analysis.instrumentation.test;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.objectweb.asm.ClassReader;
@@ -31,15 +30,14 @@ public class TestInstrumentationOperation extends AbstractTestAwareCodeModificat
 
 		Set<MethodIdentifier> testcases = getTestcases(cn, classType);
 
-		ClassVisitor cv = new TestModeClassVisitor(cn.name, cw, testcases);
+		ClassVisitor cv = new TestModeClassVisitor(cn, cw, testcases);
 		cr.accept(cv, 0);
 	}
 
-	@SuppressWarnings("unchecked")
 	private Set<MethodIdentifier> getTestcases(ClassNode cn, ClassType testClassType) {
 		Set<MethodIdentifier> result = new HashSet<>();
 
-		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
+		for (MethodNode methodNode : cn.methods) {
 			if (getTestClassDetector().analyzeIsTestcase(methodNode, testClassType)) {
 				result.add(MethodIdentifier.create(cn.name, methodNode));
 			}

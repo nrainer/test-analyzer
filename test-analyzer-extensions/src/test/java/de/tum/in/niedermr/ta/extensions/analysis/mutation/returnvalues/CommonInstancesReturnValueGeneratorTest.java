@@ -23,12 +23,12 @@ public class CommonInstancesReturnValueGeneratorTest
 
 	/** Constructor. */
 	public CommonInstancesReturnValueGeneratorTest() throws InvalidClassException, ReflectiveOperationException {
-		super(new CommonInstancesReturnValueGenerator(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new CommonInstancesReturnValueGenerator());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		CommonReturnValueFactory factory = new CommonReturnValueFactory();
 		Object expected;

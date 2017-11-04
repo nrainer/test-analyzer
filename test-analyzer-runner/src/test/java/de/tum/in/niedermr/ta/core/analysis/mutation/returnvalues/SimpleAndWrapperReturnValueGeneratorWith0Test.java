@@ -8,12 +8,12 @@ public class SimpleAndWrapperReturnValueGeneratorWith0Test
 
 	/** Constructor. */
 	public SimpleAndWrapperReturnValueGeneratorWith0Test() {
-		super(new SimpleAndWrapperReturnValueGeneratorWith0(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new SimpleAndWrapperReturnValueGeneratorWith0());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		SimpleReturnValueGeneratorWith0Test.verifyMutationForSimpleValueMethods(mutatedClass, instanceOfMutatedClass);
 

@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.Opcodes;
@@ -31,9 +30,8 @@ public class MethodModifierRetrievalOperation extends AbstractTestAwareCodeAnaly
 		analyzeMethods(cn);
 	}
 
-	@SuppressWarnings("unchecked")
 	private void analyzeMethods(ClassNode cn) {
-		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
+		for (MethodNode methodNode : cn.methods) {
 			if (!(BytecodeUtility.isConstructor(methodNode) || BytecodeUtility.isAbstractMethod(methodNode))) {
 				m_result.put(MethodIdentifier.create(cn.name, methodNode), getAccessModifier(methodNode));
 			}

@@ -15,12 +15,12 @@ public class SimpleInstancesReturnValueGeneratorTest
 
 	/** Constructor. */
 	public SimpleInstancesReturnValueGeneratorTest() {
-		super(new SimpleInstancesReturnValueGenerator(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new SimpleInstancesReturnValueGenerator());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		assertEquals("", mutatedClass.getMethod("getStringBuilder").invoke(instanceOfMutatedClass).toString());
 	}

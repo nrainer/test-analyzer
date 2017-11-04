@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.recording.v3;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
@@ -22,6 +23,9 @@ public class StackLogRecorderV3 {
 	/** Current stack distance per thread name. */
 	private static Map<String, Integer> s_currentStackDistanceByThreadName = new HashMap<>();
 
+	/** Current methods on stack per thread name. */
+	private static Map<String, LinkedList<String>> s_currentMethodsOnStackByThreadName = new HashMap<>();
+
 	/** Set the thread manager and verify that the modified thread class was loaded. */
 	public static void setThreadStackManagerAndVerify(ThreadStackManager threadManager) {
 		s_threadStackManager = threadManager;
@@ -36,6 +40,7 @@ public class StackLogRecorderV3 {
 	public static synchronized void startLog(TestcaseIdentifier testCaseIdentifier) {
 		StackLogDataManager.resetAndStart(testCaseIdentifier);
 		s_currentStackDistanceByThreadName.clear();
+		s_currentMethodsOnStackByThreadName.clear();
 		s_threadStackManager.setStopClassName(testCaseIdentifier.toMethodIdentifier().getOnlyClassName());
 	}
 
@@ -56,28 +61,48 @@ public class StackLogRecorderV3 {
 		String currentThreadName = Thread.currentThread().getName();
 
 		Integer currentStackDistance = s_currentStackDistanceByThreadName.get(currentThreadName);
+		LinkedList<String> methodsOnStack = s_currentMethodsOnStackByThreadName.get(currentThreadName);
 
 		if (currentStackDistance == null) {
 			currentStackDistance = s_threadStackManager.getStackHeightOfThread(currentThreadName);
+			methodsOnStack = new LinkedList<>();
 		}
 
 		currentStackDistance++;
+		methodsOnStack.add(methodIdentifierString);
+
 		s_currentStackDistanceByThreadName.put(currentThreadName, currentStackDistance);
+		s_currentMethodsOnStackByThreadName.put(currentThreadName, methodsOnStack);
+
 		StackLogDataManager.visitMethodInvocation(methodIdentifier, currentStackDistance);
 	}
 
 	/**
 	 * Pop invocation: The invocation is completed, the test case is about to leave the method.
+	 * 
+	 * @param methodIdentifierString
 	 */
-	public static synchronized void popInvocation() {
+	public static synchronized void popInvocation(String methodIdentifierString) {
 		String currentThreadName = Thread.currentThread().getName();
 
 		Integer currentStackDistance = s_currentStackDistanceByThreadName.get(currentThreadName);
+		LinkedList<String> methodsOnStack = s_currentMethodsOnStackByThreadName.get(currentThreadName);
 
 		if (currentStackDistance != null) {
-			currentStackDistance--;
+			while (!methodsOnStack.getLast().equals(methodIdentifierString) && !methodsOnStack.isEmpty()) {
+				// fix for missing invocations of popInvocation (not always invoked on ATHROWS)
+				currentStackDistance--;
+				methodsOnStack.removeLast();
+			}
+
+			if (!methodsOnStack.isEmpty()) {
+				// should never be empty
+				currentStackDistance--;
+				methodsOnStack.removeLast();
+			}
 
 			if (currentStackDistance < 0) {
+				// should not happen
 				currentStackDistance = 0;
 			}
 

@@ -36,8 +36,10 @@ public class StackLogRecorderV1 {
 
 	/**
 	 * Pop invocation: The invocation is completed, the test case is about to leave the method.
+	 * 
+	 * @param methodIdentifierString
 	 */
-	public static synchronized void popInvocation() {
+	public static synchronized void popInvocation(String methodIdentifierString) {
 		if (s_currentStackDistance == 0) {
 			return;
 		}

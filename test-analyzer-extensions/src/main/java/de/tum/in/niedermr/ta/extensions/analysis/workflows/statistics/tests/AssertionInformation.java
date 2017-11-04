@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -48,13 +47,12 @@ public class AssertionInformation {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	private void initAssertionClass(Class<?> assertionClass) {
 		try {
 			final String className = assertionClass.getName();
 			ClassNode cn = BytecodeUtility.getAcceptedClassNode(className);
 
-			for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
+			for (MethodNode methodNode : cn.methods) {
 				if (BytecodeUtility.isPublicMethod(methodNode)) {
 					MethodIdentifier methodIdentifier = MethodIdentifier.create(className, methodNode);
 					int[] popOpcodes = calculatePopOpcodes(methodNode.desc);

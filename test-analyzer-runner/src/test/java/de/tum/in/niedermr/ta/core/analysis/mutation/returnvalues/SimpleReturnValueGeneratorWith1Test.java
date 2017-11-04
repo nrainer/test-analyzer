@@ -7,12 +7,12 @@ public class SimpleReturnValueGeneratorWith1Test extends AbstractReturnValueGene
 
 	/** Constructor. */
 	public SimpleReturnValueGeneratorWith1Test() {
-		super(new SimpleReturnValueGeneratorWith1(), ClassWithMethodsForMutation.class);
+		super(ClassWithMethodsForMutation.class, new SimpleReturnValueGeneratorWith1());
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyMutation(Class<?> mutatedClass, Object instanceOfMutatedClass,
+	protected void verifyModification(Class<?> mutatedClass, Object instanceOfMutatedClass,
 			ClassWithMethodsForMutation instanceOfOriginalClass) throws ReflectiveOperationException {
 		assertEquals(1, mutatedClass.getMethod("getIntValue").invoke(instanceOfMutatedClass));
 		assertEquals("A", mutatedClass.getMethod("getStringValue").invoke(instanceOfMutatedClass));

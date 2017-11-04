@@ -1,7 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.Type;
@@ -16,8 +15,7 @@ import de.tum.in.niedermr.ta.core.code.util.Identification;
 
 /**
  * Operation to retrieve the declared return types of methods.<br/>
- * Does not include constructors, abstract methods and methods with void return
- * type!
+ * Does not include constructors, abstract methods and methods with void return type!
  */
 public class ReturnTypeRetrieverOperation extends AbstractTestAwareCodeAnalyzeOperation {
 
@@ -37,9 +35,8 @@ public class ReturnTypeRetrieverOperation extends AbstractTestAwareCodeAnalyzeOp
 	}
 
 	/** Analyze the return types of the methods of the class. */
-	@SuppressWarnings("unchecked")
 	private void analyzeReturnTypes(ClassNode classNode) {
-		for (MethodNode methodNode : (List<MethodNode>) classNode.methods) {
+		for (MethodNode methodNode : classNode.methods) {
 			Type returnType = Type.getReturnType(methodNode.desc);
 
 			if (!isRelevantMethod(methodNode, returnType)) {

@@ -5,16 +5,12 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
 import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitClassTypeResult;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.detector.JUnitSuiteDetector;
-import junit.framework.TestSuite;
 
 public class JUnitSuiteDetectorTests {
 	@Test
@@ -31,21 +27,5 @@ public class JUnitSuiteDetectorTests {
 
 		cn = BytecodeUtility.getAcceptedClassNode(NoTestSuite.class);
 		assertEquals(ClassType.NO_TEST_CLASS, detector.analyzeIsTestClass(cn));
-	}
-
-	static class JUnit3TestSuite {
-		public static junit.framework.Test suite() {
-			return null;
-		}
-	}
-
-	@RunWith(Suite.class)
-	@SuiteClasses({})
-	static class JUnit4TestSuite {
-		// NOP
-	}
-
-	static class NoTestSuite extends TestSuite {
-		// NOP
 	}
 }
