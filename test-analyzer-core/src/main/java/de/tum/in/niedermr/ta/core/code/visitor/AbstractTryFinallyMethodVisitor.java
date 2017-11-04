@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.core.code.visitor;
 
-import java.util.List;
 import java.util.ListIterator;
 
 import org.objectweb.asm.Label;
@@ -114,11 +113,10 @@ public abstract class AbstractTryFinallyMethodVisitor extends MethodVisitor impl
 		// NOP
 	}
 
-	@SuppressWarnings("unchecked")
 	private boolean hasOnlyAThrowExits() {
 		MethodNode correspondingMethodNode = null;
 
-		for (MethodNode methodNode : (List<MethodNode>) m_cn.methods) {
+		for (MethodNode methodNode : m_cn.methods) {
 			if (matches(methodNode)) {
 				correspondingMethodNode = methodNode;
 				break;
