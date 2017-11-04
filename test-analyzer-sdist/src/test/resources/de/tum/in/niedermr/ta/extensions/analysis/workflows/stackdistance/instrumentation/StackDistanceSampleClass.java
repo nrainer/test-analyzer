@@ -109,6 +109,26 @@ public class StackDistanceSampleClass {
 		}
 	}
 
+	public int synchronizedThrowCatchThrow1() throws Exception {
+		try {
+			throw new Exception();
+		} catch (Exception e) {
+			synchronized (this) {
+				throw e;
+			}
+		}
+	}
+
+	public int synchronizedThrowCatchThrow2() throws Exception {
+		synchronized (this) {
+			try {
+				throw new Exception();
+			} catch (Exception e) {
+				throw e;
+			}
+		}
+	}
+
 	public int failIfTrue(Boolean fail) {
 		if (fail) {
 			throw new IllegalStateException("Fail requested");
