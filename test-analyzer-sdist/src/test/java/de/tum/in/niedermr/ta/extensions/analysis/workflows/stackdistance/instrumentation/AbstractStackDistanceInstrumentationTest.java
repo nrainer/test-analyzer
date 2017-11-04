@@ -1,18 +1,16 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.instrumentation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import de.tum.in.niedermr.ta.core.analysis.AbstractBytecodeMutationTest;
 import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 import de.tum.in.niedermr.ta.core.code.tests.detector.BiasedTestClassDetector;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.visitor.BytecodeModificationTestUtility;
 
-public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTest<StackDistanceSampleClass> {
+public abstract class AbstractStackDistanceInstrumentationTest
+		extends AbstractBytecodeMutationTest<StackDistanceSampleClass> {
 
 	/** Constructor. */
-	public StackDistanceInstrumentationTest() {
+	public AbstractStackDistanceInstrumentationTest() {
 		super(StackDistanceSampleClass.class);
 	}
 
@@ -20,14 +18,17 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 	@Override
 	protected Class<?> modifyClass(Class<?> classToBeModified) throws Exception {
 		ICodeModificationOperation modificationOperation = new AnalysisInstrumentationOperation(
-				new BiasedTestClassDetector(ClassType.NO_TEST_CLASS), StackLogRecorderForTestingPurposes.class);
+				new BiasedTestClassDetector(ClassType.NO_TEST_CLASS), getStackLogRecorder());
 		return BytecodeModificationTestUtility.createAndLoadModifiedClass(classToBeModified, modificationOperation);
 	}
 
+	protected abstract Class<?> getStackLogRecorder();
+
 	/** {@inheritDoc} */
 	@Override
-	protected void verifyModification(Class<?> modifiedClass, Object instanceOfModifiedClass,
+	protected final void verifyModification(Class<?> modifiedClass, Object instanceOfModifiedClass,
 			StackDistanceSampleClass instanceOfOriginalClass) throws Exception {
+		beforeVerifyModification();
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "empty");
 		assertInvocationCounts(1);
@@ -39,7 +40,7 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 		assertInvocationCounts(1);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "throwExternallyCreatedException");
-		assertInvocationCounts(2, false);
+		assertInvocationCounts(2, true);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "computation");
 		assertInvocationCounts(1);
@@ -58,12 +59,11 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
 		assertInvocationCounts(2);
-		assertTrue(StackLogRecorderForTestingPurposes.s_methodIdentifierStrings.get(0).contains("failInputDependent"));
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.FALSE);
 		assertInvocationCounts(2);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "recursive", new Integer(3));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "recursive", new Integer(4));
 		assertInvocationCounts(4);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryFinally");
@@ -83,51 +83,38 @@ public class StackDistanceInstrumentationTest extends AbstractBytecodeMutationTe
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.FALSE);
 		assertInvocationCounts(1);
 
-		// TODO
-		// resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfFalse", Boolean.TRUE);
-		// assertInvocationCounts(1);
-		// resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfFalse", Boolean.FALSE);
-		// assertInvocationCounts(1);
-
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", new Integer(1));
 		assertInvocationCounts(1);
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", new Integer(2));
 		assertInvocationCounts(1);
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", new Integer(3));
 		assertInvocationCounts(1);
+
+		execVerifyFurther(modifiedClass, instanceOfModifiedClass, instanceOfOriginalClass);
 	}
 
-	protected void resetRecorderAndInvokeMethodNoInvocationEx(Object instanceOfMutatedClass, String methodName,
-			Object... params) throws ReflectiveOperationException {
-		StackLogRecorderForTestingPurposes.reset();
-		invokeMethodNoInvocationEx(instanceOfMutatedClass, methodName, params);
+	protected void beforeVerifyModification() throws Exception {
+		// NOP
 	}
+
+	/**
+	 * @param modifiedClass
+	 * @param instanceOfModifiedClass
+	 * @param instanceOfOriginalClass
+	 */
+	protected void execVerifyFurther(Class<?> modifiedClass, Object instanceOfModifiedClass,
+			StackDistanceSampleClass instanceOfOriginalClass) throws Exception {
+		// NOP
+	}
+
+	protected abstract void resetRecorderAndInvokeMethodNoInvocationEx(Object instanceOfMutatedClass, String methodName,
+			Object... params) throws ReflectiveOperationException;
 
 	/** Assert the invocations. */
-	protected void assertInvocationCounts(int invocationCount) {
+	protected final void assertInvocationCounts(int invocationCount) {
 		assertInvocationCounts(invocationCount, true);
 	}
 
 	/** Assert the invocations. */
-	protected void assertInvocationCounts(int invocationCount, boolean assertMaxMethodNestingDepth) {
-		assertInvocationCounts(invocationCount, invocationCount);
-
-		if (assertMaxMethodNestingDepth) {
-			assertMaxInvocationCount(invocationCount);
-		}
-	}
-
-	/** Assert the invocations. */
-	protected void assertInvocationCounts(int pushInvocations, int popInvocations) {
-		assertEquals("Push invocation mismatch", pushInvocations,
-				StackLogRecorderForTestingPurposes.s_pushInvocationCount);
-		assertEquals("Pop invocation mismatch", popInvocations,
-				StackLogRecorderForTestingPurposes.s_popInvocationCount);
-	}
-
-	/** Assert the invocations. */
-	protected void assertMaxInvocationCount(int maxMethodNestingDepth) {
-		assertEquals("Max method nesting depth mismatch", maxMethodNestingDepth,
-				StackLogRecorderForTestingPurposes.s_maxMethodNestingDepth);
-	}
+	protected abstract void assertInvocationCounts(int invocationCount, boolean skipMaxMethodNestingDepthCheck);
 }
