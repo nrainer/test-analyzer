@@ -85,6 +85,22 @@ public class StackDistanceSampleClass {
 		}
 	}
 
+	public int tryCatch(Integer x) {
+		try {
+			if (x == 1) {
+				throw new Exception();
+			}
+
+			if (x == 2) {
+				return 2;
+			}
+		} catch (Exception e) {
+			return 3;
+		}
+
+		return 4;
+	}
+
 	public int failIfTrue(Boolean fail) {
 		if (fail) {
 			throw new IllegalStateException("Fail requested");
