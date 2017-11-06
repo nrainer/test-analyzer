@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.operation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.objectweb.asm.tree.ClassNode;
@@ -24,9 +25,10 @@ public class AssertionCounterOperation extends AbstractTestAwareCodeAnalyzeOpera
 	}
 
 	/** {@inheritDoc} */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void analyzeTestClass(ClassNode cn, String originalClassPath, ClassType testClassType) {
-		for (MethodNode methodNode : cn.methods) {
+		for (MethodNode methodNode : (List<MethodNode>) cn.methods) {
 			if (getTestClassDetector().analyzeIsTestcase(methodNode, testClassType)) {
 				analyzeTestCase(cn, methodNode);
 			}

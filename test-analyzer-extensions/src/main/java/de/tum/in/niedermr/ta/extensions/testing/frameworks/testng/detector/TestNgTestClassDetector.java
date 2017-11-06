@@ -21,12 +21,13 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 	}
 
 	/** {@inheritDoc} */
+	@SuppressWarnings("unchecked")
 	@Override
 	protected ClassType isTestClassInternal(ClassNode cn) {
 		int countTestMethods = 0;
 		int countDisabledTests = 0;
 
-		for (MethodNode method : cn.methods) {
+		for (MethodNode method : (List<MethodNode>) cn.methods) {
 			if (isTestNgTestMethod(method)) {
 				countTestMethods++;
 
@@ -53,12 +54,13 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 		return testClassType.isTestClass() && isTestNgTestMethod(methodNode) && !isDisabledTestcase(methodNode);
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean isTestNgTestMethod(MethodNode method) {
 		if (method.visibleAnnotations == null) {
 			return false;
 		}
 
-		for (AnnotationNode annotation : method.visibleAnnotations) {
+		for (AnnotationNode annotation : (List<AnnotationNode>) method.visibleAnnotations) {
 			if (annotation.desc.contains(TEST_ANNOTATION)) {
 				return true;
 			}
@@ -67,10 +69,11 @@ public class TestNgTestClassDetector extends AbstractTestClassDetector {
 		return false;
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean isDisabledTestcase(MethodNode method) {
 		List<Object> testAnnotationValues = null;
 
-		for (AnnotationNode annotation : method.visibleAnnotations) {
+		for (AnnotationNode annotation : (List<AnnotationNode>) method.visibleAnnotations) {
 			if (annotation.desc.contains(TEST_ANNOTATION)) {
 				testAnnotationValues = annotation.values;
 			}

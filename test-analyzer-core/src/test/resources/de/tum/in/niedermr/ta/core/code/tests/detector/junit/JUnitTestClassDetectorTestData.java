@@ -27,7 +27,7 @@ public class JUnitTestClassDetectorTestData {
 		}
 
 		public void testButNoTestcase(String param) {
-			param.toString();
+			// NOP
 		}
 	}
 
