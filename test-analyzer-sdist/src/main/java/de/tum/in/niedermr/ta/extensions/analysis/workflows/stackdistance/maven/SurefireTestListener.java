@@ -2,6 +2,8 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.maven;
 
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -19,16 +21,18 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.dataman
  * Test listener for Maven (JUnit) tests. <br/>
  * Uses the logic of {@link StackDistanceAnalysisWorkflowV3}. <br/>
  * 
- * This listener records and writes the stack distance to a file. Note that the
- * instrumentation must be done before running the tests with this listener.
+ * This listener records and writes the stack distance to a file. Note that the instrumentation must be done before
+ * running the tests with this listener.
  */
 public class SurefireTestListener extends RunListener {
+
+	/** Logger. */
+	private static final Logger LOGGER = LogManager.getLogger(SurefireTestListener.class);
 
 	private static final String OUTPUT_FILE = "./stack-distance.xml";
 
 	/**
-	 * Note that for parameterized test cases more than one statement may be
-	 * created for a certain test case identifier.
+	 * Note that for parameterized test cases more than one statement may be created for a certain test case identifier.
 	 */
 	private static final String SQL_INSERT_STACK_DISTANCE_STATEMENT = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, invocationCount) VALUES ('????', '%s', '%s', '%s', '%s'); ";
 
@@ -41,8 +45,13 @@ public class SurefireTestListener extends RunListener {
 	public void testRunStarted(Description description) throws Exception {
 		ensureOutputWriterInitialized();
 
-		m_stackDistanceManager = new ThreadAwareStackDistanceManagerV3();
-		m_stackDistanceManager.beforeAllTests();
+		try {
+			m_stackDistanceManager = new ThreadAwareStackDistanceManagerV3();
+			m_stackDistanceManager.beforeAllTests();
+		} catch (Exception e) {
+			LOGGER.error("Problem in testRunStarted for: " + description.toString());
+			throw e;
+		}
 	}
 
 	/** {@inheritDoc} */
