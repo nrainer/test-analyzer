@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.extensions.threads.IModifiedThreadClass;
 import de.tum.in.niedermr.ta.extensions.threads.IThreadListener;
 import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
@@ -27,14 +28,12 @@ public class ThreadStackManager implements IThreadListener {
 	private final Map<String, Integer> m_stackHeightAtStartByThreadName = new HashMap<>();
 
 	/**
-	 * Stop class from where to stop counting the stacks. Occurrences of this
-	 * class will be excluded.
+	 * Stop class from where to stop counting the stacks. Occurrences of this class will be excluded.
 	 */
 	private String m_stopClassName;
 
 	/**
-	 * Class names which start with one of the specified prefixes will not be
-	 * counted when computing the stack distance.
+	 * Class names which start with one of the specified prefixes will not be counted when computing the stack distance.
 	 */
 	private String[] m_stackCountIgnoreClassNamePrefixes;
 
@@ -69,8 +68,12 @@ public class ThreadStackManager implements IThreadListener {
 			return;
 		}
 
-		throw new IllegalStateException(
+		LOGGER.error(
 				"It appears that the original java.lang.Thread class is used instead of the modified one! Either put the modified Thread class into the endorsed folder or use StackDistanceAnalysisWorkflowV1");
+		LOGGER.error("Classpath is: " + ClasspathUtility.getCurrentClasspath());
+
+		throw new IllegalStateException(
+				"It appears that the original java.lang.Thread class is used instead of the modified one!");
 	}
 
 	/** {@link #m_stopClassName} */
@@ -84,8 +87,7 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/**
-	 * Compute the current stack height, including the height for creating this
-	 * thread.
+	 * Compute the current stack height, including the height for creating this thread.
 	 * 
 	 * @param startClassName
 	 *            start counting the stack elements (top down) after this class
@@ -105,8 +107,7 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/**
-	 * Compute the stack height of the thread, including the height for creating
-	 * this thread.
+	 * Compute the stack height of the thread, including the height for creating this thread.
 	 */
 	private int computeStackHeightOfThread(String threadCreatorName) {
 		int creatorThreadStackHeight = computeStackHeightOnCurrentThreadOnly(ThreadNotifier.class.getName());
@@ -136,8 +137,7 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/**
-	 * Compute the current height on the stack, <b>without</b> the height for
-	 * creating this thread.
+	 * Compute the current height on the stack, <b>without</b> the height for creating this thread.
 	 * 
 	 * @param startClassName
 	 *            start counting after this class (this class excluded)
@@ -154,8 +154,7 @@ public class ThreadStackManager implements IThreadListener {
 	 * @param startClassName
 	 *            start counting after this class (this class excluded)
 	 * @param stopClassName
-	 *            stop counting when this class is reached (this class is not
-	 *            counted)
+	 *            stop counting when this class is reached (this class is not counted)
 	 */
 	protected static int computeStackHeightOfStackTrace(String startClassName, String stopClassName,
 			StackTraceElement[] stackTrace, String[] ignoredClassNamePrefixes) {
