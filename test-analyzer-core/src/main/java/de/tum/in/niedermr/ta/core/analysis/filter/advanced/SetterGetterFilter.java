@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.core.analysis.filter.advanced;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import org.objectweb.asm.Opcodes;
@@ -22,7 +23,8 @@ import de.tum.in.niedermr.ta.core.code.util.OpcodesUtility;
 public class SetterGetterFilter implements IMethodFilter {
 
 	/**
-	 * The class names in the set indicate that information about the methods in these classes is already available.
+	 * The class names in the set indicate that information about the methods in
+	 * these classes is already available.
 	 */
 	private final Set<String> m_initializedClasses;
 
@@ -51,6 +53,7 @@ public class SetterGetterFilter implements IMethodFilter {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void ensureDataAvailability(String className) throws IOException {
 		if (m_initializedClasses.contains(className)) {
 			return;
@@ -58,7 +61,7 @@ public class SetterGetterFilter implements IMethodFilter {
 
 		ClassNode cn = BytecodeUtility.getAcceptedClassNode(className);
 
-		for (MethodNode method : cn.methods) {
+		for (MethodNode method : (List<MethodNode>) cn.methods) {
 			MethodIdentifier methodIdentifier = MethodIdentifier.create(className, method);
 			boolean isSetterOrGetter = determineIsSetterOrGetter(method);
 
@@ -76,7 +79,8 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	/**
-	 * Return true if the instructions are supposed to be a simple setter. <code>
+	 * Return true if the instructions are supposed to be a simple setter.
+	 * <code>
 	 * 1 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 2 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 3 ALOAD
@@ -93,6 +97,7 @@ public class SetterGetterFilter implements IMethodFilter {
 			return false;
 		}
 
+		@SuppressWarnings("unchecked")
 		Iterator<AbstractInsnNode> it = instructionList.iterator();
 		AbstractInsnNode node;
 
@@ -152,6 +157,7 @@ public class SetterGetterFilter implements IMethodFilter {
 			return false;
 		}
 
+		@SuppressWarnings("unchecked")
 		Iterator<AbstractInsnNode> it = instructionList.iterator();
 		AbstractInsnNode node;
 
@@ -186,7 +192,8 @@ public class SetterGetterFilter implements IMethodFilter {
 	}
 
 	/**
-	 * Return true if the instructions are supposed to be a simple constant getter. <code>
+	 * Return true if the instructions are supposed to be a simple constant
+	 * getter. <code>
 	 * 1 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 2 (IRRELEVANT INTERNAL INSTRUCTION) 
 	 * 3 xCONST_x | xPUSH | LDC | LDC_W | LDC2_W 
@@ -196,31 +203,32 @@ public class SetterGetterFilter implements IMethodFilter {
 	private boolean isSimpleConstantGetter(InsnList instructionList) {
 		if (instructionList.size() != 5) {
 			return false;
+		} else {
+			@SuppressWarnings("unchecked")
+			Iterator<AbstractInsnNode> it = instructionList.iterator();
+			AbstractInsnNode node;
+
+			// drop instruction 1 (irrelevant)
+			it.next();
+
+			// drop instruction 2 (irrelevant)
+			it.next();
+
+			// instruction 3
+			node = it.next();
+
+			if (node.getOpcode() > 20) {
+				return false;
+			}
+
+			// instruction 4
+			node = it.next();
+
+			if (!OpcodesUtility.isXRETURN(node.getOpcode())) {
+				return false;
+			}
+
+			return true;
 		}
-
-		Iterator<AbstractInsnNode> it = instructionList.iterator();
-		AbstractInsnNode node;
-
-		// drop instruction 1 (irrelevant)
-		it.next();
-
-		// drop instruction 2 (irrelevant)
-		it.next();
-
-		// instruction 3
-		node = it.next();
-
-		if (node.getOpcode() > 20) {
-			return false;
-		}
-
-		// instruction 4
-		node = it.next();
-
-		if (!OpcodesUtility.isXRETURN(node.getOpcode())) {
-			return false;
-		}
-
-		return true;
 	}
 }

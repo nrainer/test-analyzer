@@ -146,6 +146,21 @@ public class StackDistanceSampleClass {
 		}
 	}
 
+	public int synchronizedBlock() {
+		int x = returnValue();
+
+		synchronized (this) {
+
+			if (x > 3) {
+				return x;
+			}
+
+			x++;
+		}
+
+		return x;
+	}
+
 	public int failIfTrue(Boolean fail) {
 		if (fail) {
 			throw new IllegalStateException("Fail requested");
