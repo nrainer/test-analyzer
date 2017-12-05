@@ -10,7 +10,7 @@ import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.analysis.filter.core.ConstructorFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.MethodNameFilter;
-import de.tum.in.niedermr.ta.core.analysis.filter.core.NonEmptyMethodFilter;
+import de.tum.in.niedermr.ta.core.analysis.filter.core.EmptyMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.SyntheticMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.ValueGenerationSupportedFilter;
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.IReturnValueGenerator;
@@ -41,7 +41,7 @@ public final class MethodFilterList implements IMethodFilter {
 
 	private void addDefaultFilters() {
 		addFilter(new ConstructorFilter());
-		addFilter(new NonEmptyMethodFilter());
+		addFilter(new EmptyMethodFilter());
 		addFilter(new SyntheticMethodFilter());
 	}
 

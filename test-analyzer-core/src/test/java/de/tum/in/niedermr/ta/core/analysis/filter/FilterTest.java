@@ -13,7 +13,7 @@ import de.tum.in.niedermr.ta.core.analysis.filter.advanced.HashCodeMethodFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.advanced.SetterGetterFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.ConstructorFilter;
 import de.tum.in.niedermr.ta.core.analysis.filter.core.MethodNameFilter;
-import de.tum.in.niedermr.ta.core.analysis.filter.core.NonEmptyMethodFilter;
+import de.tum.in.niedermr.ta.core.analysis.filter.core.EmptyMethodFilter;
 import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.sample.SampleClass;
@@ -66,7 +66,7 @@ public class FilterTest {
 	public void testNonEmptyFilter() throws Exception {
 		final String className = SampleClass.class.getName();
 
-		IMethodFilter filter = new NonEmptyMethodFilter();
+		IMethodFilter filter = new EmptyMethodFilter();
 
 		MethodNode methodNode;
 
