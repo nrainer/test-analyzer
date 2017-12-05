@@ -2,8 +2,6 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.maven;
 
 import java.util.Map;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.runner.Description;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
@@ -13,6 +11,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
+import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.AbstractThreadAwareStackDistanceManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.StackLogDataManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v3.ThreadAwareStackDistanceManagerV3;
@@ -25,9 +24,6 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.dataman
  * running the tests with this listener.
  */
 public class SurefireTestListener extends RunListener {
-
-	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(SurefireTestListener.class);
 
 	private static final String OUTPUT_FILE = "./stack-distance.xml";
 
@@ -48,8 +44,14 @@ public class SurefireTestListener extends RunListener {
 		try {
 			m_stackDistanceManager = new ThreadAwareStackDistanceManagerV3();
 			m_stackDistanceManager.beforeAllTests();
+			m_resultReceiver.append("# INFO Stack distance setup successful: " + description);
+			m_resultReceiver.markResultAsPartiallyComplete();
 		} catch (Exception e) {
-			LOGGER.error("Problem in testRunStarted for: " + description.toString());
+			// note that the description may be null
+			m_resultReceiver.append("# ERROR Stack distance setup failed for: " + description);
+			m_resultReceiver.append("# Cause is: " + e.getMessage());
+			m_resultReceiver.append("# Classpath is: " + ClasspathUtility.getCurrentClasspath());
+			m_resultReceiver.markResultAsPartiallyComplete();
 			throw e;
 		}
 	}
