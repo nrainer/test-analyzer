@@ -19,4 +19,10 @@ public class ClasspathUtilityTest {
 		assertFalse(currentClasspath.contains(" "));
 		assertTrue(currentClasspath.endsWith(FileSystemConstants.CP_SEP));
 	}
+
+	/** Check that the class to determine the completeness of the classpath has not been renamed. */
+	@Test
+	public void checkOpcodesClassIsAvailable() throws ClassNotFoundException {
+		Class.forName(ClasspathUtility.ASM_OPCODES_CLASS);
+	}
 }

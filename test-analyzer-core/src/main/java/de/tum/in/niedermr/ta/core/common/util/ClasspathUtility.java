@@ -12,6 +12,7 @@ import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
 public class ClasspathUtility {
+	protected static final String ASM_OPCODES_CLASS = "org.objectweb.asm.Opcodes";
 	private static final String CHARACTER_SPACE = " ";
 	private static final String ENCODED_CHARACTER_SPACE = "%20";
 
@@ -42,7 +43,7 @@ public class ClasspathUtility {
 	public static String getCurrentProgramClasspath() {
 		String classpath = ClasspathUtility.getCurrentClasspath();
 
-		if (JavaUtility.isClassAvailable("org.objectweb.asm.Opcodes")) {
+		if (JavaUtility.isClassAvailable(ASM_OPCODES_CLASS)) {
 			return classpath;
 		}
 
