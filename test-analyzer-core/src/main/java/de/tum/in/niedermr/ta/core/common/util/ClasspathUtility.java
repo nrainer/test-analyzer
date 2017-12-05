@@ -18,10 +18,10 @@ public class ClasspathUtility {
 	public static String getCurrentClasspath() {
 		List<URLClassLoader> classLoaders = Arrays.asList((URLClassLoader) ClasspathUtility.class.getClassLoader(),
 				(URLClassLoader) ClassLoader.getSystemClassLoader());
-		return getCurrentClasspath(classLoaders);
+		return getClasspathFromClassLoaders(classLoaders);
 	}
 
-	public static String getCurrentClasspath(List<URLClassLoader> classLoaders) {
+	static String getClasspathFromClassLoaders(List<URLClassLoader> classLoaders) {
 		StringBuilder builder = new StringBuilder();
 
 		for (URLClassLoader classLoader : classLoaders) {
