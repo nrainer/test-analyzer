@@ -6,7 +6,9 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
@@ -24,12 +26,20 @@ public class ClasspathUtility {
 
 	static String getClasspathFromClassLoaders(List<URLClassLoader> classLoaders) {
 		StringBuilder builder = new StringBuilder();
+		Set<String> alreadyUsedUrls = new HashSet<>();
 
 		for (URLClassLoader classLoader : classLoaders) {
 			URL[] urlArray = classLoader.getURLs();
 
 			for (URL url : urlArray) {
-				builder.append(url.getFile().replace(ENCODED_CHARACTER_SPACE, CHARACTER_SPACE));
+				String urlString = url.getFile().replace(ENCODED_CHARACTER_SPACE, CHARACTER_SPACE);
+
+				if (alreadyUsedUrls.contains(urlString)) {
+					continue;
+				}
+
+				alreadyUsedUrls.add(urlString);
+				builder.append(urlString);
 				builder.append(FileSystemConstants.CP_SEP);
 			}
 		}
