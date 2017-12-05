@@ -82,6 +82,7 @@ public class JUnitTestClassDetectorTest {
 	public void testAnalyzeIsTestcaseForJUnit3() throws IOException {
 		ClassNode classNode = BytecodeUtility.getAcceptedClassNode(JUnit3TestClass.class);
 
+		@SuppressWarnings("unchecked")
 		List<MethodNode> methods = classNode.methods;
 
 		Optional<MethodNode> methodNodeTestA = methods.stream().filter(methodNode -> methodNode.name.equals("testA"))
@@ -102,6 +103,7 @@ public class JUnitTestClassDetectorTest {
 	public void testAnalyzeIsTestcaseForJUnit4() throws IOException {
 		ClassNode classNode = BytecodeUtility.getAcceptedClassNode(JUnit4TestClass.class);
 
+		@SuppressWarnings("unchecked")
 		List<MethodNode> methods = classNode.methods;
 
 		Optional<MethodNode> methodNodeA = methods.stream().filter(methodNode -> methodNode.name.equals("a")).findAny();

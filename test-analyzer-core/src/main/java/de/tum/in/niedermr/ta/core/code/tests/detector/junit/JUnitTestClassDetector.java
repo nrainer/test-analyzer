@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.core.code.tests.detector.junit;
 
+import java.util.List;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
@@ -38,8 +40,9 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 		return JavaUtility.inheritsClassNoEx(cn, junit.framework.TestCase.class);
 	}
 
+	@SuppressWarnings("unchecked")
 	private boolean isJUnit4TestClass(ClassNode cn) {
-		for (MethodNode method : cn.methods) {
+		for (MethodNode method : (List<MethodNode>) cn.methods) {
 			if (isJUnit4Testcase(method)) {
 				return true;
 			}
@@ -55,6 +58,7 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 	}
 
 	/** Check if the method is a JUnit 4 test case. */
+	@SuppressWarnings("unchecked")
 	public boolean isJUnit4Testcase(MethodNode method) {
 		if (method.visibleAnnotations == null) {
 			return false;
@@ -63,7 +67,7 @@ public class JUnitTestClassDetector extends AbstractTestClassDetector {
 		boolean hasTestcaseAnnotation = false;
 		boolean hasIgnoreAnnotation = false;
 
-		for (AnnotationNode annotation : method.visibleAnnotations) {
+		for (AnnotationNode annotation : (List<AnnotationNode>) method.visibleAnnotations) {
 			if (annotation.desc.equals(JUNIT_4_TEST_ANNOTATION)) {
 				hasTestcaseAnnotation = true;
 			} else if (annotation.desc.equals(JUNIT_4_IGNORE_ANNOTATION)) {

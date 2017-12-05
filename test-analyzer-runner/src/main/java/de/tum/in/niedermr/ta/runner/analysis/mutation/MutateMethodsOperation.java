@@ -33,12 +33,13 @@ public class MutateMethodsOperation implements ICodeModificationOperation {
 	}
 
 	/** {@inheritDoc} */
+	@SuppressWarnings("unchecked")
 	@Override
 	public void modify(ClassReader cr, ClassWriter cw) throws CodeOperationException {
 		ClassNode classNode = new ClassNode();
 		cr.accept(classNode, 0);
 
-		for (MethodNode method : classNode.methods) {
+		for (MethodNode method : (List<MethodNode>) classNode.methods) {
 			MethodIdentifier methodIdentifier = MethodIdentifier.create(classNode, method);
 
 			if (m_methodFilters.apply(methodIdentifier, method).isAccepted()) {
