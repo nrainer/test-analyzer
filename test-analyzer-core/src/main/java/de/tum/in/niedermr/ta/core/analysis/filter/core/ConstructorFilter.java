@@ -9,12 +9,13 @@ import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 
 public class ConstructorFilter implements IMethodFilter {
 
+	/** {@inheritDoc} */
 	@Override
 	public FilterResult apply(MethodIdentifier methodIdentifier, MethodNode method) {
 		if (BytecodeUtility.isConstructor(methodIdentifier.getOnlyMethodName())) {
 			return FilterResult.reject(ConstructorFilter.class);
-		} else {
-			return FilterResult.accepted();
 		}
+
+		return FilterResult.accepted();
 	}
 }
