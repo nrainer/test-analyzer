@@ -9,6 +9,7 @@
 				<value>de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.maven.SurefireTestListener</value>
 			</property>
 		</properties>
+		<argLine>-Djava.endorsed.dirs="C:/Program Files/Java/jre1.8.0_60/lib/endorsed"</argLine>
 	</configuration>
 </plugin>
 
