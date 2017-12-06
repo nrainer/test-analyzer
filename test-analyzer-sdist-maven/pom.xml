@@ -1,0 +1,73 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<artifactId>test-analyzer-sdist-maven</artifactId>
+	<packaging>maven-plugin</packaging>
+
+	<name>TestAnalyzer StackDistance Maven-Plugin</name>
+
+	<parent>
+		<groupId>de.tum.in.niedermr.ta</groupId>
+		<artifactId>test-analyzer-parent</artifactId>
+		<version>2.1.0-SNAPSHOT</version>
+	</parent>
+
+	<properties>
+		<!-- Must be set as absolute path. -->
+		<rootFolder>${project.basedir}/../</rootFolder>
+		<maven.version>2.2.1</maven.version>
+	</properties>
+
+	<build>
+		<plugins>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-core</artifactId>
+			<version>${currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-sdist</artifactId>
+			<version>${currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>de.tum.in.niedermr.ta</groupId>
+			<artifactId>test-analyzer-runner</artifactId>
+			<version>${currentVersion}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-artifact</artifactId>
+			<version>${maven.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-project</artifactId>
+			<version>${maven.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.maven</groupId>
+			<artifactId>maven-plugin-api</artifactId>
+			<version>${maven.version}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.apache.maven.plugin-tools</groupId>
+			<artifactId>maven-plugin-annotations</artifactId>
+			<version>3.4</version>
+			<scope>provided</scope>
+		</dependency>
+
+	</dependencies>
+
+</project>

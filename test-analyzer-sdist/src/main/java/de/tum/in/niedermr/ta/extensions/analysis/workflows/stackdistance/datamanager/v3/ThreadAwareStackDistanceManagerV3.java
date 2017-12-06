@@ -15,8 +15,7 @@ public class ThreadAwareStackDistanceManagerV3 extends AbstractThreadAwareStackD
 
 	/** {@inheritDoc} */
 	@Override
-	protected void execStartStackLogger(TestcaseIdentifier testcaseIdentifier) {
+	public void startStackLogger(TestcaseIdentifier testcaseIdentifier) {
 		StackLogRecorderV3.startLog(testcaseIdentifier);
 	}
-
 }

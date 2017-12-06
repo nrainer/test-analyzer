@@ -6,28 +6,45 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 
 public class ClasspathUtility {
+	protected static final String ASM_OPCODES_CLASS = "org.objectweb.asm.Opcodes";
 	private static final String CHARACTER_SPACE = " ";
 	private static final String ENCODED_CHARACTER_SPACE = "%20";
 
 	public static String getCurrentClasspath() {
-		StringBuilder sB = new StringBuilder();
+		List<URLClassLoader> classLoaders = Arrays.asList((URLClassLoader) ClasspathUtility.class.getClassLoader(),
+				(URLClassLoader) ClassLoader.getSystemClassLoader());
+		return getClasspathFromClassLoaders(classLoaders);
+	}
 
-		ClassLoader sysClassLoader = ClassLoader.getSystemClassLoader();
+	static String getClasspathFromClassLoaders(List<URLClassLoader> classLoaders) {
+		StringBuilder builder = new StringBuilder();
+		Set<String> alreadyUsedUrls = new HashSet<>();
 
-		URL[] urlArray = ((URLClassLoader) sysClassLoader).getURLs();
+		for (URLClassLoader classLoader : classLoaders) {
+			URL[] urlArray = classLoader.getURLs();
 
-		for (URL url : urlArray) {
-			sB.append(url.getFile().replace(ENCODED_CHARACTER_SPACE, CHARACTER_SPACE));
-			sB.append(FileSystemConstants.CP_SEP);
+			for (URL url : urlArray) {
+				String urlString = url.getFile().replace(ENCODED_CHARACTER_SPACE, CHARACTER_SPACE);
+
+				if (alreadyUsedUrls.contains(urlString)) {
+					continue;
+				}
+
+				alreadyUsedUrls.add(urlString);
+				builder.append(urlString);
+				builder.append(FileSystemConstants.CP_SEP);
+			}
 		}
 
-		return sB.toString();
+		return builder.toString();
 	}
 
 	/**
@@ -36,11 +53,11 @@ public class ClasspathUtility {
 	public static String getCurrentProgramClasspath() {
 		String classpath = ClasspathUtility.getCurrentClasspath();
 
-		if (JavaUtility.isClassAvailable("org.objectweb.asm.Opcodes")) {
+		if (JavaUtility.isClassAvailable(ASM_OPCODES_CLASS)) {
 			return classpath;
 		}
 
-		return classpath + ";/lib";
+		return classpath + ";/lib" + FileSystemConstants.CP_SEP;
 	}
 
 	/** Get the OS dependent classpath separator. */

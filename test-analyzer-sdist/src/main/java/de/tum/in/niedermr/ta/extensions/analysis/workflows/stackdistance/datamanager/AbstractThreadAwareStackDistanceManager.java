@@ -34,5 +34,5 @@ public abstract class AbstractThreadAwareStackDistanceManager {
 	/** Set the {@link ThreadStackManager} and verify it. */
 	protected abstract void execSetThreadStackManagerAndVerify(ThreadStackManager stackManager);
 
-	protected abstract void execStartStackLogger(TestcaseIdentifier testcaseIdentifier);
+	public abstract void startStackLogger(TestcaseIdentifier testcaseIdentifier);
 }
