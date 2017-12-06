@@ -11,7 +11,6 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
-import de.tum.in.niedermr.ta.core.common.util.ClasspathUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.AbstractThreadAwareStackDistanceManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.StackLogDataManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v3.ThreadAwareStackDistanceManagerV3;
@@ -44,13 +43,13 @@ public class SurefireTestListener extends RunListener {
 		try {
 			m_stackDistanceManager = new ThreadAwareStackDistanceManagerV3();
 			m_stackDistanceManager.beforeAllTests();
-			m_resultReceiver.append("# INFO Stack distance setup successful: " + description);
+			m_resultReceiver.append("# INFO Stack distance setup successful.");
 			m_resultReceiver.markResultAsPartiallyComplete();
 		} catch (Exception e) {
-			// note that the description may be null
-			m_resultReceiver.append("# ERROR Stack distance setup failed for: " + description);
+			m_resultReceiver.append("# ERROR Stack distance setup failed!");
 			m_resultReceiver.append("# Cause is: " + e.getMessage());
-			m_resultReceiver.append("# Classpath is: " + ClasspathUtility.getCurrentClasspath());
+			m_resultReceiver.append(
+					"# Check if the endorsed dir is used. It must be specified explicitly in the surefire configuration!");
 			m_resultReceiver.markResultAsPartiallyComplete();
 			throw e;
 		}
