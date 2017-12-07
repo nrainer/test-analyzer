@@ -15,13 +15,13 @@
   <component name="core.execution" dim="150,40" pos="681,21">
     <code-mapping type="include" regex="de\.tum\.in\.niedermr\.ta\.core\.execution\..*" />
   </component>
-  <component name="extensions.analysis" dim="170,40" pos="551,621">
+  <component name="extensions.analysis" dim="170,40" pos="551,651">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.extensions.analysis.*" />
   </component>
-  <component name="extensions.testing" dim="190,40" pos="801,621">
+  <component name="extensions.testing" dim="190,40" pos="831,621">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.extensions.testing.*" />
   </component>
-  <component name="extensions.threads" dim="170,40" pos="301,621">
+  <component name="extensions.threads" dim="170,40" pos="271,621">
     <code-mapping type="include" regex="de\.tum\.in\.niedermr\.ta\.extensions\.threads\..*" />
   </component>
   <component name="other" dim="120,40" pos="21,21">
@@ -48,6 +48,9 @@
   </component>
   <component name="runner.test" dim="120,40" pos="51,281">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.runner.test.*" />
+  </component>
+  <component name="sdist-maven" dim="160,40" pos="1191,661">
+    <code-mapping type="include" regex="de\.tum\.in\.niedermr\.ta\.sdist\..*" />
   </component>
   <component name="test.integration" dim="170,40" pos="951,541">
     <code-mapping type="include" regex="de.tum.in.niedermr.ta.test.integration.*" />
@@ -105,6 +108,9 @@
   <allow source="runner.start" target="runner.execution" />
   <allow source="runner.start" target="runner.factory" />
   <allow source="runner.test" target="runner.configuration" />
+  <allow source="sdist-maven" target="core.artifacts" />
+  <allow source="sdist-maven" target="extensions.analysis" />
+  <allow source="sdist-maven" target="runner.execution" />
   <allow source="test.integration" target="core.analysis" />
   <allow source="test.integration" target="extensions.analysis" />
   <allow source="test.integration" target="extensions.threads" />

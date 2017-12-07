@@ -5,6 +5,7 @@
     <code-mapping type="include" regex="test-analyzer-extensions/src/main.*" />
     <code-mapping type="include" regex="test-analyzer-runner/src/main.*" />
     <code-mapping type="include" regex="test-analyzer-sdist/src/main.*" />
+    <code-mapping type="include" regex="test-analyzer-sdist-maven/src/main.*" />
   </component>
   <component name="test" dim="120,40" pos="291,21">
     <code-mapping type="include" regex="test-analyzer-core/src/test.*" />
