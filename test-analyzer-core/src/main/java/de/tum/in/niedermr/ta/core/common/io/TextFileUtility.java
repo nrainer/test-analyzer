@@ -42,9 +42,13 @@ public class TextFileUtility {
 		List<String> result = new ArrayList<>();
 
 		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
-			String line;
+			while (true) {
+				String line = reader.readLine();
 
-			while ((line = reader.readLine()) != null) {
+				if (line == null) {
+					break;
+				}
+
 				result.add(line);
 			}
 		} catch (FileNotFoundException e) {
