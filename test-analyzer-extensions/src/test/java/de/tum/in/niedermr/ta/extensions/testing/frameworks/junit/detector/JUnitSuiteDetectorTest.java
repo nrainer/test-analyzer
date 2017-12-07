@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.collector;
+package de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.detector;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,7 +10,9 @@ import org.objectweb.asm.tree.ClassNode;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitClassTypeResult;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
-import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.detector.JUnitSuiteDetector;
+import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.collector.JUnit3TestSuite;
+import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.collector.JUnit4TestSuite;
+import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.collector.NoTestSuite;
 
 public class JUnitSuiteDetectorTest {
 
