@@ -45,16 +45,16 @@ public abstract class AbstractStackDistanceInstrumentationTest
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "computation");
 		assertInvocationCounts(1);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", new Integer(100));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", (Integer) 100);
 		assertInvocationCounts(1);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", new Integer(400));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", (Integer) 400);
 		assertInvocationCounts(1);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", new Integer(80));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "multiExits", (Integer) 80);
 		assertInvocationCounts(2);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "synchronizedMultiExits", new Integer(80));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "synchronizedMultiExits", (Integer) 80);
 		assertInvocationCounts(2);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.TRUE);
@@ -63,7 +63,7 @@ public abstract class AbstractStackDistanceInstrumentationTest
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failInputDependent", Boolean.FALSE);
 		assertInvocationCounts(2);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "recursive", new Integer(4));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "recursive", (Integer) 4);
 		assertInvocationCounts(4);
 
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryFinally");
@@ -86,11 +86,11 @@ public abstract class AbstractStackDistanceInstrumentationTest
 		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "failIfTrue", Boolean.FALSE);
 		assertInvocationCounts(1);
 
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", new Integer(1));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", (Integer) 1);
 		assertInvocationCounts(1);
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", new Integer(2));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", (Integer) 2);
 		assertInvocationCounts(1);
-		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", new Integer(3));
+		resetRecorderAndInvokeMethodNoInvocationEx(instanceOfModifiedClass, "tryCatch", (Integer) 3);
 		assertInvocationCounts(1);
 
 		execVerifyFurther(modifiedClass, instanceOfModifiedClass, instanceOfOriginalClass);

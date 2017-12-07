@@ -25,7 +25,7 @@ public class ReturnTypeCollectorStepTest {
 	/** Execution step. */
 	private ReturnTypeCollectorStep m_executionStep;
 
-	/** Input data. */
+	/** Type occurrences. */
 	private Map<String, Integer> m_typeOccurrences;
 
 	/** Result receiver. */

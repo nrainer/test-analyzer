@@ -41,7 +41,7 @@ public class MethodMutationTestStateStatistics {
 		return m_methodStateCount.getOrDefault(state, 0);
 	}
 
-	/** Add values from another instance. */
+	/** Merge with values from another instance. */
 	public void mergeWith(MethodMutationTestStateStatistics statistics) {
 		for (Entry<MethodMutationTestState, Integer> otherEntry : statistics.m_methodStateCount.entrySet()) {
 			if (otherEntry.getValue() != null) {

@@ -49,7 +49,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 		resultReceiver.markResultAsComplete();
 	}
 
-	/** Parse a single mutation node. */
+	/** Initialize XPath expressions. */
 	private void initializeXPathExpressions() throws XPathExpressionException {
 		m_mutationNodeXPath = compileXPath("mutations/mutation");
 		m_mutatedClassNodeXPath = compileXPath("./mutatedClass");
