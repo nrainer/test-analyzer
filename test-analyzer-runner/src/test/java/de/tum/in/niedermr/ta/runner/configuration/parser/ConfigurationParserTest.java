@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.analysis.mutation.returnvalues.VoidReturnValueGenerator;
@@ -23,13 +22,6 @@ public class ConfigurationParserTest {
 
 	private static final DynamicConfigurationKey DYNAMIC_PROPERTY_1 = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "data.compress", false);
-
-	/** After. */
-	@After
-	public void after() {
-		// reset
-		AbstractConfigurationParser.setFastFail(false);
-	}
 
 	/** Test. */
 	@Test
@@ -90,8 +82,6 @@ public class ConfigurationParserTest {
 	/** Test. */
 	@Test(expected = ConfigurationException.class)
 	public void testParseWithException() throws IOException, ConfigurationException {
-		AbstractConfigurationParser.setFastFail(true);
-
 		Configuration stub = new Configuration();
 
 		List<String> configLines = new LinkedList<>();
@@ -165,6 +155,18 @@ public class ConfigurationParserTest {
 
 		public void parse() throws IOException, ConfigurationException {
 			super.parse("");
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		protected void execHandleParseLineException(String line) throws ConfigurationException {
+			throw new ConfigurationException("Parse line exception");
+		}
+
+		/** {@inheritDoc} */
+		@Override
+		protected void execHandleAlreadySetProperty(String line) throws ConfigurationException {
+			throw new ConfigurationException("Property already set");
 		}
 	}
 

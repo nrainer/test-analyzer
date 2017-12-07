@@ -23,8 +23,6 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(AbstractConfigurationParser.class);
 
-	private static boolean s_fastFail = false;
-
 	private T m_configuration;
 	private ConfigurationPropertyMap m_propertyMap;
 	private Set<IConfigurationProperty<?>> m_processedPropertiesInCurrentFile;
@@ -34,11 +32,6 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 		m_configuration = createNewConfiguration();
 		m_propertyMap = new ConfigurationPropertyMap(m_configuration);
 		m_processedPropertiesInCurrentFile = new HashSet<>();
-	}
-
-	/** For test code only. */
-	public static void setFastFail(boolean fastFail) {
-		s_fastFail = fastFail;
 	}
 
 	protected abstract T createNewConfiguration();
@@ -70,7 +63,7 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 				parseLine(currentLine);
 			} catch (ArrayIndexOutOfBoundsException | IllegalStateException | NullPointerException
 					| ConfigurationException ex) {
-				handleParseLineException(currentLine);
+				execHandleParseLineException(currentLine);
 			}
 		}
 
@@ -83,12 +76,8 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 		configurationVersionProperty.setConfigurationVersionOfProgram();
 	}
 
-	private void handleParseLineException(String line) throws ConfigurationException {
-		if (s_fastFail) {
-			throw new ConfigurationException("Invalid line: " + line);
-		} else {
-			LOGGER.warn("Skipping invalid log file line: " + line);
-		}
+	protected void execHandleParseLineException(String line) throws ConfigurationException {
+		LOGGER.warn("Skipping invalid log file line: " + line);
 	}
 
 	protected List<String> getFileContent(String pathToConfigFile) throws IOException {
@@ -200,14 +189,12 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 
 	private void checkIfAlreadySet(IConfigurationProperty<?> property, String line) throws ConfigurationException {
 		if (m_processedPropertiesInCurrentFile.contains(property)) {
-			String msg = "Replacing property value which was already set with: " + line;
-
-			if (s_fastFail) {
-				throw new ConfigurationException(property, msg);
-			} else {
-				LOGGER.warn(msg);
-			}
+			execHandleAlreadySetProperty(line);
 		}
+	}
+
+	protected void execHandleAlreadySetProperty(String line) throws ConfigurationException {
+		LOGGER.warn("Replacing property value which was already set with: " + line);
 	}
 
 	private void handleInheritance(String inheritLine, String pathToCurrentConfiguration)
