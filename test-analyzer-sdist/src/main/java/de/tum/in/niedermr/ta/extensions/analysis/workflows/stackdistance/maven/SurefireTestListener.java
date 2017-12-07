@@ -24,7 +24,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.dataman
  */
 public class SurefireTestListener extends RunListener {
 
-	private static final String OUTPUT_FILE = "./stack-distance.xml";
+	private static final String OUTPUT_FILE = "./stack-distance.sql";
 
 	/**
 	 * Note that for parameterized test cases more than one statement may be created for a certain test case identifier.
