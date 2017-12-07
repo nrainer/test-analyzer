@@ -12,7 +12,9 @@ import de.tum.in.niedermr.ta.core.code.tests.detector.junit.JUnitClassTypeResult
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.extensions.testing.frameworks.junit.detector.JUnitSuiteDetector;
 
-public class JUnitSuiteDetectorTests {
+public class JUnitSuiteDetectorTest {
+
+	/** Test. */
 	@Test
 	public void testSuites() throws IOException {
 		JUnitSuiteDetector detector = new JUnitSuiteDetector(new String[0], new String[0]);
