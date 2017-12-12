@@ -16,7 +16,7 @@ public class MutationSqlOutputBuilder {
 
 	/** SQL insert statement. */
 	private static final String SQL_INSERT_STATEMENT = "INSERT INTO Pit_Mutation_Result_Import "
-			+ "(execution, mutatedMethod, mutationStatus, killingTestcase, mutatorName, mutationDescription) "
+			+ "(execution, mutatedMethod, mutationStatus, killingTestcase, killingTestcaseOrig, mutatorName, mutationDescription) "
 			+ "VALUES (%s);";
 
 	/** Execution id. */
@@ -28,8 +28,10 @@ public class MutationSqlOutputBuilder {
 	private MethodIdentifier m_mutatedMethod;
 	/** Name of the mutator. */
 	private String m_mutatorName;
-	/** Identifier of the test case that first killed the method. */
+	/** Test case identifier of the test case that first killed the method. */
 	private Optional<TestcaseIdentifier> m_killingTestcase;
+	/** Signature (as specified in the XML file) of the test case that first killed the method. */
+	private Optional<String> m_killingTestcaseOrigSignature;
 	/** Description of the mutation. */
 	private String m_mutationDescription;
 
@@ -61,8 +63,10 @@ public class MutationSqlOutputBuilder {
 	public void setKillingTestSignature(String killingTestSignature) {
 		if (StringUtility.isNullOrEmpty(killingTestSignature)) {
 			m_killingTestcase = Optional.empty();
+			m_killingTestcaseOrigSignature = Optional.empty();
 		} else {
 			m_killingTestcase = Optional.of(TestcaseIdentifier.createFromJavaName(killingTestSignature));
+			m_killingTestcaseOrigSignature = Optional.of(killingTestSignature);
 		}
 	}
 
@@ -80,8 +84,10 @@ public class MutationSqlOutputBuilder {
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationStatus));
 		builder.append(", ");
+		builder.append(m_killingTestcase.map(identifier -> asSqlString(identifier.get())).orElse("NULL"));
+		builder.append(", ");
 		builder.append(
-				m_killingTestcase.map(identifier -> asSqlString(identifier.toMethodIdentifier().get())).orElse("NULL"));
+				m_killingTestcaseOrigSignature.map(methodSignature -> asSqlString(methodSignature)).orElse("NULL"));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutatorName));
 		builder.append(", ");
