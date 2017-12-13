@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser;
 
+import java.util.regex.Pattern;
+
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -88,7 +90,8 @@ public class PitResultParser extends AbstractXmlContentParser {
 		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
 
 		if (m_testcaseUnrollingEnabled && killingTestSignatureValue.contains(m_testcaseUnrollingSeparator)) {
-			String[] allKillingTestSignatures = killingTestSignatureValue.split(m_testcaseUnrollingSeparator);
+			String[] allKillingTestSignatures = killingTestSignatureValue
+					.split(Pattern.quote(m_testcaseUnrollingSeparator));
 
 			for (String currentTestSignature : allKillingTestSignatures) {
 				parseMutationNode(mutationNode, currentTestSignature, resultReceiver);
