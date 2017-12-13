@@ -2,7 +2,6 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.AbstractConverterWorkflow;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractParserStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps.CoverageParserStep;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
@@ -10,7 +9,7 @@ import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfiguration
 /**
  * Parser for coverage information. Currently, only coverage in form of XML from JaCoCo is supported.
  */
-public class CoverageParserWorkflow extends AbstractConverterWorkflow {
+public class CoverageParserWorkflow extends AbstractConverterWorkflow<CoverageParserStep> {
 
 	/** Default name of the coverage file. */
 	private static final String DEFAULT_COVERAGE_FILE_NAME = "coverage.xml";
@@ -45,7 +44,7 @@ public class CoverageParserWorkflow extends AbstractConverterWorkflow {
 
 	/** {@inheritDoc} */
 	@Override
-	protected Class<? extends AbstractParserStep> getParserStep() {
+	protected Class<CoverageParserStep> getParserStep() {
 		return CoverageParserStep.class;
 	}
 }

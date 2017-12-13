@@ -12,7 +12,7 @@ import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 import de.tum.in.niedermr.ta.runner.execution.exceptions.ExecutionException;
 
 /** Abstract converter workflow. */
-public abstract class AbstractConverterWorkflow extends AbstractWorkflow {
+public abstract class AbstractConverterWorkflow<PARSER_STEP extends AbstractParserStep> extends AbstractWorkflow {
 
 	/** {@inheritDoc} */
 	@Override
@@ -43,7 +43,7 @@ public abstract class AbstractConverterWorkflow extends AbstractWorkflow {
 	 *            of the execution
 	 */
 	protected void convert(ExecutionContext context, String inputFileName, IResultReceiver resultReceiver) {
-		AbstractParserStep parseCoverageStep = createAndInitializeExecutionStep(getParserStep());
+		PARSER_STEP parseCoverageStep = createAndInitializeExecutionStep(getParserStep());
 		parseCoverageStep.setInputFileName(inputFileName);
 		parseCoverageStep.setResultReceiver(resultReceiver);
 		parseCoverageStep.start();
@@ -59,5 +59,5 @@ public abstract class AbstractConverterWorkflow extends AbstractWorkflow {
 	protected abstract String getOutputFile();
 
 	/** Get the parser step. */
-	protected abstract Class<? extends AbstractParserStep> getParserStep();
+	protected abstract Class<PARSER_STEP> getParserStep();
 }

@@ -2,13 +2,12 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.AbstractConverterWorkflow;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractParserStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.steps.PitConverterStep;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 
 /** Workflow to parse a PIT mutation testing result and convert it to SQL data. */
-public class PitOutputConverterWorkflow extends AbstractConverterWorkflow {
+public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitConverterStep> {
 
 	/** Default name of the pit file. */
 	private static final String DEFAULT_PIT_INPUT_FILE_NAME = "mutations.xml";
@@ -45,7 +44,7 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow {
 
 	/** {@inheritDoc} */
 	@Override
-	protected Class<? extends AbstractParserStep> getParserStep() {
+	protected Class<PitConverterStep> getParserStep() {
 		return PitConverterStep.class;
 	}
 }
