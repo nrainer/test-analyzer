@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.junit.Test;
@@ -28,16 +29,21 @@ public abstract class AbstractContentParserTest {
 
 	/** Test. */
 	@Test
-	public void testParser() throws Exception {
+	public void testParserWithDefaultConfiguration() throws Exception {
 		IContentParser parser = createParser();
+		testParser(parser, m_inputFileName, m_expectedResultFileName);
+	}
+
+	protected void testParser(IContentParser parser, String inputFileName, String expectedResultFileName)
+			throws ContentParserException, IOException {
 		parser.initialize();
 
-		File inputFileName = new File(TestUtility.getTestFolder(getClass()) + m_inputFileName);
+		File inputFile = new File(TestUtility.getTestFolder(getClass()) + inputFileName);
 		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 
-		parser.parse(inputFileName, resultReceiver);
+		parser.parse(inputFile, resultReceiver);
 		List<String> expectedOutput = TextFileUtility
-				.readFromFile(TestUtility.getTestFolder(getClass()) + m_expectedResultFileName);
+				.readFromFile(TestUtility.getTestFolder(getClass()) + expectedResultFileName);
 		assertEquals(expectedOutput, resultReceiver.getResult());
 	}
 
