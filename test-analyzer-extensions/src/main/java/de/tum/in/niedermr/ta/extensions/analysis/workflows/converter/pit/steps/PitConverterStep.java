@@ -8,6 +8,9 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser.
 /** Step to convert PIT result files. */
 public class PitConverterStep extends AbstractParserStep {
 
+	private boolean m_enableTestcaseUnrolling = false;
+	private String m_testcaseSeparatorForUnrolling;
+
 	/** {@inheritDoc} */
 	@Override
 	protected String getSuffixForFullExecutionId() {
@@ -23,6 +26,17 @@ public class PitConverterStep extends AbstractParserStep {
 	/** {@inheritDoc} */
 	@Override
 	protected IContentParser createParser(IExecutionId executionId) {
-		return new PitResultParser(executionId);
+		PitResultParser resultParser = new PitResultParser(executionId);
+
+		if (m_enableTestcaseUnrolling) {
+			resultParser.enableTestcaseUnrolling(m_testcaseSeparatorForUnrolling);
+		}
+
+		return resultParser;
+	}
+
+	public void enableTestcaseUnrolling(String testcaseSeparator) {
+		m_enableTestcaseUnrolling = true;
+		m_testcaseSeparatorForUnrolling = testcaseSeparator;
 	}
 }

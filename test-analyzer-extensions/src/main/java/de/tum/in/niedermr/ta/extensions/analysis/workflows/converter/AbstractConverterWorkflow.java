@@ -43,10 +43,19 @@ public abstract class AbstractConverterWorkflow<PARSER_STEP extends AbstractPars
 	 *            of the execution
 	 */
 	protected void convert(ExecutionContext context, String inputFileName, IResultReceiver resultReceiver) {
-		PARSER_STEP parseCoverageStep = createAndInitializeExecutionStep(getParserStep());
-		parseCoverageStep.setInputFileName(inputFileName);
-		parseCoverageStep.setResultReceiver(resultReceiver);
-		parseCoverageStep.start();
+		PARSER_STEP converterStep = createAndInitializeExecutionStep(getParserStep());
+		configureStepBeforeConvert(context, converterStep, inputFileName, resultReceiver);
+		converterStep.start();
+	}
+
+	/**
+	 * @param context
+	 *            which contains the configuration
+	 */
+	protected void configureStepBeforeConvert(ExecutionContext context, PARSER_STEP converterStep, String inputFileName,
+			IResultReceiver resultReceiver) {
+		converterStep.setInputFileName(inputFileName);
+		converterStep.setResultReceiver(resultReceiver);
 	}
 
 	/** Get the configuration key for whether to use multiple output files. */
