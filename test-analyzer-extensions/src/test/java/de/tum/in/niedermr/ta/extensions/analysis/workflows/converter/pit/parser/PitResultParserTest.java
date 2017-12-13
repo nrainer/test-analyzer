@@ -10,7 +10,7 @@ public class PitResultParserTest extends AbstractContentParserTest {
 
 	/** Constructor. */
 	public PitResultParserTest() {
-		super("mutations.xml", "expected.sql.txt");
+		super("mutations-1.xml", "expected-1.sql.txt");
 	}
 
 	/** {@inheritDoc} */
