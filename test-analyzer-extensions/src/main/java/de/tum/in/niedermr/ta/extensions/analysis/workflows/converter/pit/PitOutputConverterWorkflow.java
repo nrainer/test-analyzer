@@ -21,10 +21,10 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.inputFile", DEFAULT_PIT_INPUT_FILE_NAME);
 
 	/**
-	 * <code>extension.coverter.pit.useMultipleOutputFiles</code>: Split the output into multiple files.
+	 * <code>extension.converter.pit.useMultipleOutputFiles</code>: Split the output into multiple files.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "coverter.pit.useMultipleOutputFiles", false);
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.useMultipleOutputFiles", false);
 
 	/**
 	 * <code>extension.converter.pit.unrollMultipleTestcases.enabled</code>: Create multiple statements from entries
