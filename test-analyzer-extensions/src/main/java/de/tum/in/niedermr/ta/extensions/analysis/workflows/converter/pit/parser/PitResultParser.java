@@ -88,22 +88,25 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** Parse a single mutation node. */
 	private void parseMutationNode(Node mutationNode, IResultReceiver resultReceiver) throws XPathExpressionException {
 		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
+		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
 
 		if (m_testcaseUnrollingEnabled && killingTestSignatureValue.contains(m_testcaseUnrollingSeparator)) {
 			String[] allKillingTestSignatures = killingTestSignatureValue
 					.split(Pattern.quote(m_testcaseUnrollingSeparator));
 
 			for (String currentTestSignature : allKillingTestSignatures) {
-				parseMutationNode(mutationNode, currentTestSignature, resultReceiver);
+				outputBuilder.setKillingTestSignature(currentTestSignature);
+				resultReceiver.append(outputBuilder.complete());
 			}
 		} else {
-			parseMutationNode(mutationNode, killingTestSignatureValue, resultReceiver);
+			outputBuilder.setKillingTestSignature(killingTestSignatureValue);
+			resultReceiver.append(outputBuilder.complete());
 		}
 	}
 
 	/** Parse a single mutation node. */
-	private void parseMutationNode(Node mutationNode, String killingTestSignature, IResultReceiver resultReceiver)
-			throws XPathExpressionException {
+	private MutationSqlOutputBuilder parseMutationNodeAndCreateOutputBuilder(Node mutationNode,
+			String killingTestSignature) throws XPathExpressionException {
 		MutationSqlOutputBuilder mutationSqlOutputBuilder = getResultPresentation().createMutationSqlOutputBuilder();
 		mutationSqlOutputBuilder.setMutationStatus(evaluateAttributeValue(mutationNode, "status"));
 		mutationSqlOutputBuilder.setMutatedMethod(evaluateStringValue(mutationNode, m_mutatedClassNodeXPath),
@@ -112,7 +115,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 		mutationSqlOutputBuilder.setMutatorName(evaluateStringValue(mutationNode, m_mutatorNameNodeXPath));
 		mutationSqlOutputBuilder.setKillingTestSignature(killingTestSignature);
 		mutationSqlOutputBuilder.setMutationDescription(evaluateStringValue(mutationNode, m_descriptionNodeXPath));
-		resultReceiver.append(mutationSqlOutputBuilder.complete());
+		return mutationSqlOutputBuilder;
 	}
 
 	/** Enable unrolling test cases if killingTestcases contains multiple test cases with a modified version of PIT. */
