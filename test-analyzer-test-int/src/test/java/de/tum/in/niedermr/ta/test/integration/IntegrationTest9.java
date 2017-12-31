@@ -14,8 +14,7 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 import de.tum.in.niedermr.ta.runner.configuration.exceptions.ConfigurationException;
 
 /**
- * Integration test.<br/>
- * Nothing special.
+ * Integration test with classes as files instead of jars.<br/>
  * 
  * @see "configuration file in test data"
  */
