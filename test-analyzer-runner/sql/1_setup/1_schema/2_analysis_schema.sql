@@ -95,7 +95,7 @@ CREATE TABLE Pit_Mutation_Info
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
 	mutatedMethod VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
-	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR') NOT NULL,
+	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR', 'NON_VIABLE') NOT NULL,
 	killingTestcase VARCHAR(1024) COLLATE UTF8_BIN,
 	methodId INT(11) REFERENCES Method_Info(methodId),
 	killingTestcaseId INT(11) REFERENCES Testcase_Info(testcaseId),

@@ -105,7 +105,7 @@ CREATE TABLE Pit_Mutation_Result_Import
 	execution VARCHAR(5) NOT NULL,
 	mutatedMethod VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
-	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR') NOT NULL,
+	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR', 'NON_VIABLE') NOT NULL,
 	-- testcase as testcase identifier
 	killingTestcase VARCHAR(1024) COLLATE UTF8_BIN,
 	-- testcase as specified in the xml file
