@@ -100,7 +100,7 @@ CREATE TABLE Pit_Mutation_Info
 	methodId INT(11) REFERENCES Method_Info(methodId),
 	testcaseId INT(11) REFERENCES Testcase_Info(testcaseId),
     isConstructor TINYINT(1) GENERATED ALWAYS AS (mutatedMethod LIKE '%<init>(%)') VIRTUAL,
-    isDetectable TINYINT(1) GENERATED ALWAYS AS (mutationStatus NOT IN ('NO_COVERAGE', 'NOT_VIABLE')) VIRTUAL,
+    isDetectable TINYINT(1) GENERATED ALWAYS AS (mutationStatus NOT IN ('NO_COVERAGE', 'NON_VIABLE')) VIRTUAL,
     isDetected TINYINT(1) GENERATED ALWAYS AS (mutationStatus IN ('KILLED', 'TIMED_OUT', 'MEMORY_ERROR')) VIRTUAL,
     mutatedMethodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatedMethod)) VIRTUAL,
     mutatorNameHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatorName)) VIRTUAL
