@@ -1,5 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 import javax.xml.xpath.XPathExpression;
@@ -92,5 +93,14 @@ public class PitMutationMatrixParser extends PitResultParser {
 		}
 
 		return testcaseSignatures.split(Pattern.quote(m_testcaseUnrollingSeparator));
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected List<String> getOutputFileHeader() {
+		List<String> headerLines = super.getOutputFileHeader();
+		headerLines.add(getResultPresentation().formatLineComment(
+				"Mutation nodes were unrolled to an insert statement for each killing and non-killing test case."));
+		return headerLines;
 	}
 }
