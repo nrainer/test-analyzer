@@ -31,7 +31,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** Mutator node of mutation node. */
 	private XPathExpression m_mutatorNameNodeXPath;
 	/** Killing test node of mutation node. */
-	private XPathExpression m_killingTestNodeXPath;
+	protected XPathExpression m_killingTestNodeXPath;
 	/** Description node of mutation node. */
 	private XPathExpression m_descriptionNodeXPath;
 
@@ -50,7 +50,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 	}
 
 	/** Initialize XPath expressions. */
-	private void initializeXPathExpressions() throws XPathExpressionException {
+	protected void initializeXPathExpressions() throws XPathExpressionException {
 		m_mutationNodeXPath = compileXPath("mutations/mutation");
 		m_mutatedClassNodeXPath = compileXPath("./mutatedClass");
 		m_mutatedMethodNodeXPath = compileXPath("./mutatedMethod");
@@ -67,7 +67,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node currentNode = nodeList.item(i);
 
-			parseMutationNode(currentNode, resultReceiver);
+			parseMutationNodeAndAppendToResultReceiver(currentNode, resultReceiver);
 			resultReceiver.markResultAsPartiallyComplete();
 
 			if (i > 0 && i % 1000 == 0) {
@@ -80,16 +80,17 @@ public class PitResultParser extends AbstractXmlContentParser {
 		}
 	}
 
-	/** Parse a single mutation node. */
-	private void parseMutationNode(Node mutationNode, IResultReceiver resultReceiver) throws XPathExpressionException {
-		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
+	/** Parse a single mutation node and append the result to the result receiver. */
+	protected void parseMutationNodeAndAppendToResultReceiver(Node mutationNode, IResultReceiver resultReceiver)
+			throws XPathExpressionException {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
+		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
 		outputBuilder.setTestSignature(killingTestSignatureValue);
 		resultReceiver.append(outputBuilder.complete());
 	}
 
-	/** Parse a single mutation node. */
-	private MutationSqlOutputBuilder parseMutationNodeAndCreateOutputBuilder(Node mutationNode,
+	/** Parse a single mutation node (without setting information about the executed test case). */
+	protected MutationSqlOutputBuilder parseMutationNodeAndCreateOutputBuilder(Node mutationNode,
 			String killingTestSignature) throws XPathExpressionException {
 		MutationSqlOutputBuilder mutationSqlOutputBuilder = createOutputBuilder();
 		mutationSqlOutputBuilder.setMutationStatus(evaluateAttributeValue(mutationNode, "status"));

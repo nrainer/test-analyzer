@@ -47,6 +47,16 @@ public class MutationSqlOutputBuilder {
 		m_testcaseOrigColumnName = testcaseOrigColumnName;
 	}
 
+	/** {@link m_mutatedMethod} */
+	public MethodIdentifier getMutatedMethod() {
+		return m_mutatedMethod;
+	}
+
+	/** {@link m_mutationStatus} */
+	public String getMutationStatus() {
+		return m_mutationStatus;
+	}
+
 	/** {@link m_mutationStatus} */
 	public void setMutationStatus(String mutationStatus) {
 		m_mutationStatus = mutationStatus;
