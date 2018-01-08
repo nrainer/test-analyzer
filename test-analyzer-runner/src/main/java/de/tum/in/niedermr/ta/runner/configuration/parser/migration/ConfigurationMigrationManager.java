@@ -11,10 +11,10 @@ public class ConfigurationMigrationManager {
 	private static final List<IConfigurationMigration> ALL_MIGRATIONS = new ArrayList<>();
 
 	static {
-		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV1ToV2());
-		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV2ToV3());
-		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV3ToV4());
-		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV4ToV5());
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV1());
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV2());
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV3());
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV4());
 	}
 
 	/**

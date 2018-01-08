@@ -15,9 +15,9 @@ public class ConfigurationMigrationManagerTest {
 	public void testCreateAggregatedMigrationWithRelevantSteps() {
 		Collection<IConfigurationMigration> steps = ConfigurationMigrationManager
 				.createAggregatedMigrationWithRelevantSteps(2).m_migrations;
-		assertFalse(containsStepOfClass(steps, ConfigurationMigrationFromV1ToV2.class));
-		assertTrue(containsStepOfClass(steps, ConfigurationMigrationFromV2ToV3.class));
-		assertTrue(containsStepOfClass(steps, ConfigurationMigrationFromV3ToV4.class));
+		assertFalse(containsStepOfClass(steps, ConfigurationMigrationFromV1.class));
+		assertTrue(containsStepOfClass(steps, ConfigurationMigrationFromV2.class));
+		assertTrue(containsStepOfClass(steps, ConfigurationMigrationFromV3.class));
 	}
 
 	private boolean containsStepOfClass(Collection<IConfigurationMigration> steps,

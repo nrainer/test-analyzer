@@ -2,21 +2,25 @@ package de.tum.in.niedermr.ta.runner.configuration.parser.migration;
 
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
-/** Migration for the configuration from version 2 to 3. */
-class ConfigurationMigrationFromV2ToV3 implements IConfigurationMigration {
+/** Migration for the configuration from version 3 to 4. */
+class ConfigurationMigrationFromV3 implements IConfigurationMigration {
 
 	/** {@inheritDoc} */
 	@Override
 	public int getFromVersion() {
-		return 2;
+		return 3;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String migrateKey(String key) {
 		switch (key) {
-		case "testClassesToSkip":
-			return "testClassExcludes";
+		case "testWorkflows":
+			return "workflows";
+		case "executeCollectInformation":
+			return "advanced.testworkflow.collectInformation";
+		case "executeMutateAndTest":
+			return "advanced.testworkflow.mutateAndTest";
 		default:
 			return key;
 		}

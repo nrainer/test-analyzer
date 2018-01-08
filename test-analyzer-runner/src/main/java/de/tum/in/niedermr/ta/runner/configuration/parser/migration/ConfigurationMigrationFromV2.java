@@ -2,23 +2,21 @@ package de.tum.in.niedermr.ta.runner.configuration.parser.migration;
 
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
-/** Migration for the configuration from version 4 to 5. */
-class ConfigurationMigrationFromV4ToV5 implements IConfigurationMigration {
+/** Migration for the configuration from version 2 to 3. */
+class ConfigurationMigrationFromV2 implements IConfigurationMigration {
 
 	/** {@inheritDoc} */
 	@Override
 	public int getFromVersion() {
-		return 4;
+		return 2;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public String migrateKey(String key) {
 		switch (key) {
-		case "extension.converter.pit.unrollMultipleTestcases.enabled":
-			return "extension.converter.pit.mutationMatrix.enabled";
-		case "extension.converter.pit.unrollMultipleTestcases.separator":
-			return "extension.converter.pit.mutationMatrix.testcaseSeparator";
+		case "testClassesToSkip":
+			return "testClassExcludes";
 		default:
 			return key;
 		}
