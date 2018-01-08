@@ -1,7 +1,5 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser;
 
-import java.util.regex.Pattern;
-
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -21,9 +19,6 @@ public class PitResultParser extends AbstractXmlContentParser {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(PitResultParser.class);
-
-	private boolean m_testcaseUnrollingEnabled;
-	private String m_testcaseUnrollingSeparator;
 
 	/** Mutation node. */
 	private XPathExpression m_mutationNodeXPath;
@@ -89,19 +84,8 @@ public class PitResultParser extends AbstractXmlContentParser {
 	private void parseMutationNode(Node mutationNode, IResultReceiver resultReceiver) throws XPathExpressionException {
 		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
-
-		if (m_testcaseUnrollingEnabled && killingTestSignatureValue.contains(m_testcaseUnrollingSeparator)) {
-			String[] allKillingTestSignatures = killingTestSignatureValue
-					.split(Pattern.quote(m_testcaseUnrollingSeparator));
-
-			for (String currentTestSignature : allKillingTestSignatures) {
-				outputBuilder.setTestSignature(currentTestSignature);
-				resultReceiver.append(outputBuilder.complete());
-			}
-		} else {
-			outputBuilder.setTestSignature(killingTestSignatureValue);
-			resultReceiver.append(outputBuilder.complete());
-		}
+		outputBuilder.setTestSignature(killingTestSignatureValue);
+		resultReceiver.append(outputBuilder.complete());
 	}
 
 	/** Parse a single mutation node. */
@@ -120,11 +104,5 @@ public class PitResultParser extends AbstractXmlContentParser {
 
 	protected MutationSqlOutputBuilder createOutputBuilder() {
 		return getResultPresentation().createMutationSqlOutputBuilder("killingTestcase", "killingTestcaseOrig");
-	}
-
-	/** Enable unrolling test cases if killingTestcases contains multiple test cases with a modified version of PIT. */
-	public void enableTestcaseUnrolling(String testcaseSeparator) {
-		m_testcaseUnrollingEnabled = true;
-		m_testcaseUnrollingSeparator = testcaseSeparator;
 	}
 }

@@ -1,7 +1,5 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser;
 
-import org.junit.Test;
-
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractContentParserTest;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
@@ -17,13 +15,5 @@ public class PitResultParserTest extends AbstractContentParserTest {
 	@Override
 	protected PitResultParser createParser() {
 		return new PitResultParser(ExecutionIdFactory.ID_FOR_TESTS);
-	}
-
-	/** Test. */
-	@Test
-	public void testParserWithUnrolling() throws Exception {
-		PitResultParser parser = createParser();
-		parser.enableTestcaseUnrolling("|");
-		testParser(parser, "mutations-2.xml", "expected-2.sql.txt");
 	}
 }

@@ -30,14 +30,14 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 	 * <code>extension.converter.pit.unrollMultipleTestcases.enabled</code>: Create multiple statements from entries
 	 * with multiple testcases.
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEY_UNROLL_TESTCASES_ENABLED = DynamicConfigurationKey
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_PARSE_MUTATION_MATRIX = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.unrollMultipleTestcases.enabled", true);
 
 	/**
 	 * <code>extension.converter.pit.unrollMultipleTestcases.separator</code>: Separator for multiple testcases in the
 	 * PIT file.
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEY_UNROLL_TESTCASES_SEPARATOR = DynamicConfigurationKey
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_TESTCASES_SEPARATOR = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.unrollMultipleTestcases.separator", "|");
 
 	/** {@inheritDoc} */
@@ -70,10 +70,10 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 			String inputFileName, IResultReceiver resultReceiver) {
 		super.configureStepBeforeConvert(context, converterStep, inputFileName, resultReceiver);
 
-		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEY_UNROLL_TESTCASES_ENABLED)) {
+		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEY_PARSE_MUTATION_MATRIX)) {
 			String testcaseSeparator = context.getConfiguration().getDynamicValues()
-					.getStringValue(CONFIGURATION_KEY_UNROLL_TESTCASES_SEPARATOR);
-			converterStep.enableTestcaseUnrolling(testcaseSeparator);
+					.getStringValue(CONFIGURATION_KEY_TESTCASES_SEPARATOR);
+			converterStep.enableParseMutationMatrix(testcaseSeparator);
 		}
 	}
 }

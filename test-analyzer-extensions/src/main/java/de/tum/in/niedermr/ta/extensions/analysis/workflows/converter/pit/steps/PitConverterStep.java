@@ -8,7 +8,12 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser.
 /** Step to convert PIT result files. */
 public class PitConverterStep extends AbstractParserStep {
 
-	private boolean m_enableTestcaseUnrolling = false;
+	/**
+	 * Use data from an execution of a modified version of PIT which writes all killing and succeeding test cases for
+	 * each mutation into the output. Otherwise, the data only contains the first killing test case (if the mutation was
+	 * killed).
+	 */
+	private boolean m_parseMutationMatrix = false;
 	private String m_testcaseSeparatorForUnrolling;
 
 	/** {@inheritDoc} */
@@ -26,17 +31,11 @@ public class PitConverterStep extends AbstractParserStep {
 	/** {@inheritDoc} */
 	@Override
 	protected IContentParser createParser(IExecutionId executionId) {
-		PitResultParser resultParser = new PitResultParser(executionId);
-
-		if (m_enableTestcaseUnrolling) {
-			resultParser.enableTestcaseUnrolling(m_testcaseSeparatorForUnrolling);
-		}
-
-		return resultParser;
+		return new PitResultParser(executionId);
 	}
 
-	public void enableTestcaseUnrolling(String testcaseSeparator) {
-		m_enableTestcaseUnrolling = true;
+	public void enableParseMutationMatrix(String testcaseSeparator) {
+		m_parseMutationMatrix = true;
 		m_testcaseSeparatorForUnrolling = testcaseSeparator;
 	}
 }
