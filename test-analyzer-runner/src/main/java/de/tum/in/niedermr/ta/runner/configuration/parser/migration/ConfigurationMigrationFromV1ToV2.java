@@ -17,6 +17,12 @@ class ConfigurationMigrationFromV1ToV2 implements IConfigurationMigration {
 
 	/** {@inheritDoc} */
 	@Override
+	public int getFromVersion() {
+		return 1;
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public String migrateKey(String key) {
 		switch (key) {
 		case "returnValueGeneratorNames":

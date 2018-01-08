@@ -7,6 +7,12 @@ class ConfigurationMigrationFromV3ToV4 implements IConfigurationMigration {
 
 	/** {@inheritDoc} */
 	@Override
+	public int getFromVersion() {
+		return 3;
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public String migrateKey(String key) {
 		switch (key) {
 		case "testWorkflows":

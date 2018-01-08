@@ -7,6 +7,12 @@ class ConfigurationMigrationFromV2ToV3 implements IConfigurationMigration {
 
 	/** {@inheritDoc} */
 	@Override
+	public int getFromVersion() {
+		return 2;
+	}
+
+	/** {@inheritDoc} */
+	@Override
 	public String migrateKey(String key) {
 		switch (key) {
 		case "testClassesToSkip":
