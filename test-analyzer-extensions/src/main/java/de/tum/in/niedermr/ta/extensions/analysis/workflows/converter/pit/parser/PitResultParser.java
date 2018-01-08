@@ -103,6 +103,6 @@ public class PitResultParser extends AbstractXmlContentParser {
 	}
 
 	protected MutationSqlOutputBuilder createOutputBuilder() {
-		return getResultPresentation().createMutationSqlOutputBuilder("killingTestcase", "killingTestcaseOrig");
+		return getResultPresentation().createMutationSqlOutputBuilder("testcase", "testcaseOrig");
 	}
 }

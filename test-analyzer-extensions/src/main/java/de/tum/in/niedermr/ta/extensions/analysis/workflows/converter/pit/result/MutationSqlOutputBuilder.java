@@ -67,13 +67,13 @@ public class MutationSqlOutputBuilder {
 	}
 
 	/** {@link m_testcase} */
-	public void setTestSignature(String killingTestSignature) {
-		if (StringUtility.isNullOrEmpty(killingTestSignature)) {
+	public void setTestSignature(String testSignature) {
+		if (StringUtility.isNullOrEmpty(testSignature)) {
 			m_testcase = Optional.empty();
 			m_testcaseOrigSignature = Optional.empty();
 		} else {
-			m_testcase = Optional.of(TestcaseIdentifier.createFromJavaName(killingTestSignature));
-			m_testcaseOrigSignature = Optional.of(killingTestSignature);
+			m_testcase = Optional.of(TestcaseIdentifier.createFromJavaName(testSignature));
+			m_testcaseOrigSignature = Optional.of(testSignature);
 		}
 	}
 
