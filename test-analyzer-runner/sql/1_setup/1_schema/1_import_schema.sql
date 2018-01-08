@@ -107,12 +107,12 @@ CREATE TABLE Pit_Mutation_Result_Import
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
 	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR', 'NON_VIABLE') NOT NULL,
 	-- testcase as testcase identifier
-	killingTestcase VARCHAR(1024) COLLATE UTF8_BIN,
+	testcase VARCHAR(1024) COLLATE UTF8_BIN,
 	-- testcase as specified in the xml file
-	killingTestcaseOrig VARCHAR(1024) COLLATE UTF8_BIN,
+	testcaseOrig VARCHAR(1024) COLLATE UTF8_BIN,
 	mutationDescription VARCHAR(1024) COLLATE UTF8_BIN,
     methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatedMethod)) VIRTUAL,
-    killingTestcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(killingTestcase)) VIRTUAL
+    testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL
 );
 
 CREATE INDEX idx_ei_1 ON Execution_Information(execution);
@@ -127,6 +127,6 @@ CREATE INDEX idx_sii_2 ON Stack_Info_Import(testcaseHash);
 CREATE INDEX idx_mii_1 ON Method_Info_Import(execution, methodHash);
 CREATE INDEX idx_tii_1 ON Testcase_Info_Import(execution, testcaseHash);
 CREATE INDEX idx_pmr_1 ON Pit_Mutation_Result_Import(execution, methodHash);
-CREATE INDEX idx_pmr_2 ON Pit_Mutation_Result_Import(execution, killingTestcaseHash);
+CREATE INDEX idx_pmr_2 ON Pit_Mutation_Result_Import(execution, testcaseHash);
 
 ALTER TABLE Execution_Information ADD CONSTRAINT uc_ei_1 UNIQUE (execution);

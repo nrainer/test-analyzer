@@ -8,25 +8,28 @@ import de.tum.in.niedermr.ta.runner.configuration.Configuration;
 /** Manages the migration of {@link Configuration}s. */
 public class ConfigurationMigrationManager {
 
+	private static final List<IConfigurationMigration> ALL_MIGRATIONS = new ArrayList<>();
+
+	static {
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV1());
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV2());
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV3());
+		ALL_MIGRATIONS.add(new ConfigurationMigrationFromV4());
+	}
+
 	/**
 	 * Create the needed migration that may consist of multiple migrations steps to update a configuration to the recent
 	 * state.
 	 */
-	public static IConfigurationMigration createMigration(int version) {
-		List<IConfigurationMigration> migrations = new ArrayList<>();
+	public static ChainedConfigurationMigration createAggregatedMigrationWithRelevantSteps(int currentVersion) {
+		List<IConfigurationMigration> migrationsToApply = new ArrayList<>();
 
-		if (version <= 1) {
-			migrations.add(new ConfigurationMigrationFromV1ToV2());
+		for (IConfigurationMigration migrationStep : ALL_MIGRATIONS) {
+			if (currentVersion <= migrationStep.getFromVersion()) {
+				migrationsToApply.add(migrationStep);
+			}
 		}
 
-		if (version <= 2) {
-			migrations.add(new ConfigurationMigrationFromV2ToV3());
-		}
-
-		if (version <= 3) {
-			migrations.add(new ConfigurationMigrationFromV3ToV4());
-		}
-
-		return new ChainedConfigurationMigration(migrations);
+		return new ChainedConfigurationMigration(migrationsToApply);
 	}
 }

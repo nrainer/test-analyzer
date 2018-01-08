@@ -27,18 +27,18 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.useMultipleOutputFiles", false);
 
 	/**
-	 * <code>extension.converter.pit.unrollMultipleTestcases.enabled</code>: Create multiple statements from entries
-	 * with multiple testcases.
+	 * <code>extension.converter.pit.mutationMatrix.enabled</code>: Create multiple statements from entries to build a
+	 * complete matrix of killed and non-killed mutations.
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEY_UNROLL_TESTCASES_ENABLED = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.unrollMultipleTestcases.enabled", true);
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_PARSE_MUTATION_MATRIX = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.mutationMatrix.enabled", true);
 
 	/**
-	 * <code>extension.converter.pit.unrollMultipleTestcases.separator</code>: Separator for multiple testcases in the
+	 * <code>extension.converter.pit.mutationMatrix.testcaseSeparator</code>: Separator for multiple testcases in the
 	 * PIT file.
 	 */
-	public static final DynamicConfigurationKey CONFIGURATION_KEY_UNROLL_TESTCASES_SEPARATOR = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.unrollMultipleTestcases.separator", "|");
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_TESTCASES_SEPARATOR = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.mutationMatrix.testcaseSeparator", "|");
 
 	/** {@inheritDoc} */
 	@Override
@@ -70,10 +70,10 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 			String inputFileName, IResultReceiver resultReceiver) {
 		super.configureStepBeforeConvert(context, converterStep, inputFileName, resultReceiver);
 
-		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEY_UNROLL_TESTCASES_ENABLED)) {
+		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEY_PARSE_MUTATION_MATRIX)) {
 			String testcaseSeparator = context.getConfiguration().getDynamicValues()
-					.getStringValue(CONFIGURATION_KEY_UNROLL_TESTCASES_SEPARATOR);
-			converterStep.enableTestcaseUnrolling(testcaseSeparator);
+					.getStringValue(CONFIGURATION_KEY_TESTCASES_SEPARATOR);
+			converterStep.enableParseMutationMatrix(testcaseSeparator);
 		}
 	}
 }

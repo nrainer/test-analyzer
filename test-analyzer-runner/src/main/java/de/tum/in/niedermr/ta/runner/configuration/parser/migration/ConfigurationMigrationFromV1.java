@@ -13,7 +13,13 @@ import de.tum.in.niedermr.ta.runner.configuration.property.WorkflowsProperty;
 import de.tum.in.niedermr.ta.runner.configuration.property.templates.IConfigurationProperty;
 
 /** Migration for the configuration from version 1 to 2. */
-class ConfigurationMigrationFromV1ToV2 implements IConfigurationMigration {
+class ConfigurationMigrationFromV1 implements IConfigurationMigration {
+
+	/** {@inheritDoc} */
+	@Override
+	public int getFromVersion() {
+		return 1;
+	}
 
 	/** {@inheritDoc} */
 	@Override

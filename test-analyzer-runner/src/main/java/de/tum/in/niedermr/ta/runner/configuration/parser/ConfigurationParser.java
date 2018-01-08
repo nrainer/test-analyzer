@@ -65,7 +65,7 @@ public class ConfigurationParser extends AbstractConfigurationParser<Configurati
 			LOGGER.warn(ConfigurationVersionProperty.NAME + " specified with null value.");
 			m_configurationMigration = null;
 		} else {
-			m_configurationMigration = ConfigurationMigrationManager.createMigration(version);
+			m_configurationMigration = ConfigurationMigrationManager.createAggregatedMigrationWithRelevantSteps(version);
 		}
 	}
 }

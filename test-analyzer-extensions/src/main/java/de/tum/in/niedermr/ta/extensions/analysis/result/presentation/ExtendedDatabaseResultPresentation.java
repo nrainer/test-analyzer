@@ -111,7 +111,8 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 
 	/** {@inheritDoc} */
 	@Override
-	public MutationSqlOutputBuilder createMutationSqlOutputBuilder() {
-		return new MutationSqlOutputBuilder(getExecutionId());
+	public MutationSqlOutputBuilder createMutationSqlOutputBuilder(String testcaseIdentifierColumnName,
+			String testcaseOrigColumnName) {
+		return new MutationSqlOutputBuilder(getExecutionId(), testcaseIdentifierColumnName, testcaseOrigColumnName);
 	}
 }

@@ -96,11 +96,11 @@ CREATE TABLE Pit_Mutation_Info
 	mutatedMethod VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
 	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR', 'NON_VIABLE') NOT NULL,
-	killingTestcase VARCHAR(1024) COLLATE UTF8_BIN,
+	testcase VARCHAR(1024) COLLATE UTF8_BIN,
 	methodId INT(11) REFERENCES Method_Info(methodId),
-	killingTestcaseId INT(11) REFERENCES Testcase_Info(testcaseId),
+	testcaseId INT(11) REFERENCES Testcase_Info(testcaseId),
     isConstructor TINYINT(1) GENERATED ALWAYS AS (mutatedMethod LIKE '%<init>(%)') VIRTUAL,
-    isDetectable TINYINT(1) GENERATED ALWAYS AS (mutationStatus <> 'NO_COVERAGE') VIRTUAL,
+    isDetectable TINYINT(1) GENERATED ALWAYS AS (mutationStatus NOT IN ('NO_COVERAGE', 'NON_VIABLE')) VIRTUAL,
     isDetected TINYINT(1) GENERATED ALWAYS AS (mutationStatus IN ('KILLED', 'TIMED_OUT', 'MEMORY_ERROR')) VIRTUAL,
     mutatedMethodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatedMethod)) VIRTUAL,
     mutatorNameHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatorName)) VIRTUAL
@@ -115,7 +115,7 @@ CREATE INDEX idx_aly_rvgi_1 ON RetValGen_Info(execution, retValGenHash);
 CREATE INDEX idx_aly_tri_1 ON Test_Result_Info(execution, methodId, testcaseId);
 CREATE INDEX idx_aly_tri_2 ON Test_Result_Info(testcaseId);
 CREATE INDEX idx_aly_pmi_1 ON Pit_Mutation_Info(execution, methodId);
-CREATE INDEX idx_aly_pmi_2 ON Pit_Mutation_Info(execution, killingTestcaseId);
+CREATE INDEX idx_aly_pmi_2 ON Pit_Mutation_Info(execution, testcaseId);
 
 ALTER TABLE Relation_Info ADD CONSTRAINT uc_aly_ri_1 UNIQUE (execution, methodId, testcaseId);
 ALTER TABLE Test_Result_Info ADD CONSTRAINT uc_aly_tri_1 UNIQUE (execution, methodId, testcaseId, retValGenId);

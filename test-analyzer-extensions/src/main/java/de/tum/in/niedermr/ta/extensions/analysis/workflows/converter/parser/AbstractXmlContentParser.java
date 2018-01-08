@@ -5,6 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -62,6 +64,7 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		try {
 			BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(inputFile));
 			Document document = m_documentBuilder.parse(inputStream);
+			resultReceiver.append(getOutputFileHeader());
 			parse(document, resultReceiver);
 			resultReceiver.markResultAsComplete();
 		} catch (SAXException | IOException | XPathExpressionException e) {
@@ -123,5 +126,11 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 
 			return null;
 		}
+	}
+
+	protected List<String> getOutputFileHeader() {
+		List<String> outputHeader = new ArrayList<>();
+		outputHeader.add(getResultPresentation().formatLineComment("Created with: " + getClass().getName()));
+		return outputHeader;
 	}
 }

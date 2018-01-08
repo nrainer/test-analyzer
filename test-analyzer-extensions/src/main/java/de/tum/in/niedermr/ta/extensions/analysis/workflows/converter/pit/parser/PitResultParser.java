@@ -1,7 +1,5 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.parser;
 
-import java.util.regex.Pattern;
-
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -16,14 +14,11 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractXmlContentParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result.MutationSqlOutputBuilder;
 
-/** Coverage parser for JaCoCo XML files. */
+/** Coverage parser for PIT XML files. */
 public class PitResultParser extends AbstractXmlContentParser {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(PitResultParser.class);
-
-	private boolean m_testcaseUnrollingEnabled;
-	private String m_testcaseUnrollingSeparator;
 
 	/** Mutation node. */
 	private XPathExpression m_mutationNodeXPath;
@@ -36,7 +31,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** Mutator node of mutation node. */
 	private XPathExpression m_mutatorNameNodeXPath;
 	/** Killing test node of mutation node. */
-	private XPathExpression m_killingTestNodeXPath;
+	protected XPathExpression m_killingTestNodeXPath;
 	/** Description node of mutation node. */
 	private XPathExpression m_descriptionNodeXPath;
 
@@ -55,7 +50,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 	}
 
 	/** Initialize XPath expressions. */
-	private void initializeXPathExpressions() throws XPathExpressionException {
+	protected void initializeXPathExpressions() throws XPathExpressionException {
 		m_mutationNodeXPath = compileXPath("mutations/mutation");
 		m_mutatedClassNodeXPath = compileXPath("./mutatedClass");
 		m_mutatedMethodNodeXPath = compileXPath("./mutatedMethod");
@@ -72,7 +67,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Node currentNode = nodeList.item(i);
 
-			parseMutationNode(currentNode, resultReceiver);
+			parseMutationNodeAndAppendToResultReceiver(currentNode, resultReceiver);
 			resultReceiver.markResultAsPartiallyComplete();
 
 			if (i > 0 && i % 1000 == 0) {
@@ -85,42 +80,30 @@ public class PitResultParser extends AbstractXmlContentParser {
 		}
 	}
 
-	/** Parse a single mutation node. */
-	private void parseMutationNode(Node mutationNode, IResultReceiver resultReceiver) throws XPathExpressionException {
-		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
+	/** Parse a single mutation node and append the result to the result receiver. */
+	protected void parseMutationNodeAndAppendToResultReceiver(Node mutationNode, IResultReceiver resultReceiver)
+			throws XPathExpressionException {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
-
-		if (m_testcaseUnrollingEnabled && killingTestSignatureValue.contains(m_testcaseUnrollingSeparator)) {
-			String[] allKillingTestSignatures = killingTestSignatureValue
-					.split(Pattern.quote(m_testcaseUnrollingSeparator));
-
-			for (String currentTestSignature : allKillingTestSignatures) {
-				outputBuilder.setKillingTestSignature(currentTestSignature);
-				resultReceiver.append(outputBuilder.complete());
-			}
-		} else {
-			outputBuilder.setKillingTestSignature(killingTestSignatureValue);
-			resultReceiver.append(outputBuilder.complete());
-		}
+		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
+		outputBuilder.setTestSignature(killingTestSignatureValue);
+		resultReceiver.append(outputBuilder.complete());
 	}
 
-	/** Parse a single mutation node. */
-	private MutationSqlOutputBuilder parseMutationNodeAndCreateOutputBuilder(Node mutationNode,
+	/** Parse a single mutation node (without setting information about the executed test case). */
+	protected MutationSqlOutputBuilder parseMutationNodeAndCreateOutputBuilder(Node mutationNode,
 			String killingTestSignature) throws XPathExpressionException {
-		MutationSqlOutputBuilder mutationSqlOutputBuilder = getResultPresentation().createMutationSqlOutputBuilder();
+		MutationSqlOutputBuilder mutationSqlOutputBuilder = createOutputBuilder();
 		mutationSqlOutputBuilder.setMutationStatus(evaluateAttributeValue(mutationNode, "status"));
 		mutationSqlOutputBuilder.setMutatedMethod(evaluateStringValue(mutationNode, m_mutatedClassNodeXPath),
 				evaluateStringValue(mutationNode, m_mutatedMethodNodeXPath),
 				evaluateStringValue(mutationNode, m_methodTypeSignatureNodeXPath));
 		mutationSqlOutputBuilder.setMutatorName(evaluateStringValue(mutationNode, m_mutatorNameNodeXPath));
-		mutationSqlOutputBuilder.setKillingTestSignature(killingTestSignature);
+		mutationSqlOutputBuilder.setTestSignature(killingTestSignature);
 		mutationSqlOutputBuilder.setMutationDescription(evaluateStringValue(mutationNode, m_descriptionNodeXPath));
 		return mutationSqlOutputBuilder;
 	}
 
-	/** Enable unrolling test cases if killingTestcases contains multiple test cases with a modified version of PIT. */
-	public void enableTestcaseUnrolling(String testcaseSeparator) {
-		m_testcaseUnrollingEnabled = true;
-		m_testcaseUnrollingSeparator = testcaseSeparator;
+	protected MutationSqlOutputBuilder createOutputBuilder() {
+		return getResultPresentation().createMutationSqlOutputBuilder("testcase", "testcaseOrig");
 	}
 }
