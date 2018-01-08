@@ -36,5 +36,6 @@ public interface IResultPresentationExtended extends IResultPresentation {
 
 	ProjectCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel);
 
-	MutationSqlOutputBuilder createMutationSqlOutputBuilder();
+	MutationSqlOutputBuilder createMutationSqlOutputBuilder(String testcaseIdentifierColumnName,
+			String testcaseOrigColumnName);
 }

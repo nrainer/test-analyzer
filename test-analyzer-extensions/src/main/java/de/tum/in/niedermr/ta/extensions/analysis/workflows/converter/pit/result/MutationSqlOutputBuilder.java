@@ -16,11 +16,15 @@ public class MutationSqlOutputBuilder {
 
 	/** SQL insert statement. */
 	private static final String SQL_INSERT_STATEMENT = "INSERT INTO Pit_Mutation_Result_Import "
-			+ "(execution, mutatedMethod, mutationStatus, killingTestcase, killingTestcaseOrig, mutatorName, mutationDescription) "
-			+ "VALUES (%s);";
+			+ "(execution, mutatedMethod, mutationStatus, %s, %s, mutatorName, mutationDescription) " + "VALUES (%s);";
 
 	/** Execution id. */
 	private IExecutionId m_executionId;
+
+	/** Name of the test case identifier column in the insert statement. */
+	private String m_testcaseIdentifierColumnName;
+	/** Name of the original test case name column in the insert statement. */
+	private String m_testcaseOrigColumnName;
 
 	/** Mutation status. */
 	private String m_mutationStatus;
@@ -28,16 +32,19 @@ public class MutationSqlOutputBuilder {
 	private MethodIdentifier m_mutatedMethod;
 	/** Name of the mutator. */
 	private String m_mutatorName;
-	/** Test case identifier of the test case that first killed the method. */
-	private Optional<TestcaseIdentifier> m_killingTestcase;
-	/** Signature (as specified in the XML file) of the test case that first killed the method. */
-	private Optional<String> m_killingTestcaseOrigSignature;
+	/** Identifier of the test case. */
+	private Optional<TestcaseIdentifier> m_testcase;
+	/** Signature (as specified in the XML file) of the test case. */
+	private Optional<String> m_testcaseOrigSignature;
 	/** Description of the mutation. */
 	private String m_mutationDescription;
 
 	/** Constructor. */
-	public MutationSqlOutputBuilder(IExecutionId executionId) {
+	public MutationSqlOutputBuilder(IExecutionId executionId, String testcaseIdentifierColumnName,
+			String testcaseOrigColumnName) {
 		m_executionId = executionId;
+		m_testcaseIdentifierColumnName = testcaseIdentifierColumnName;
+		m_testcaseOrigColumnName = testcaseOrigColumnName;
 	}
 
 	/** {@link m_mutationStatus} */
@@ -59,14 +66,14 @@ public class MutationSqlOutputBuilder {
 		m_mutatorName = mutatorName;
 	}
 
-	/** {@link m_killingTestSignature} */
-	public void setKillingTestSignature(String killingTestSignature) {
+	/** {@link m_testcase} */
+	public void setTestSignature(String killingTestSignature) {
 		if (StringUtility.isNullOrEmpty(killingTestSignature)) {
-			m_killingTestcase = Optional.empty();
-			m_killingTestcaseOrigSignature = Optional.empty();
+			m_testcase = Optional.empty();
+			m_testcaseOrigSignature = Optional.empty();
 		} else {
-			m_killingTestcase = Optional.of(TestcaseIdentifier.createFromJavaName(killingTestSignature));
-			m_killingTestcaseOrigSignature = Optional.of(killingTestSignature);
+			m_testcase = Optional.of(TestcaseIdentifier.createFromJavaName(killingTestSignature));
+			m_testcaseOrigSignature = Optional.of(killingTestSignature);
 		}
 	}
 
@@ -84,16 +91,16 @@ public class MutationSqlOutputBuilder {
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationStatus));
 		builder.append(", ");
-		builder.append(m_killingTestcase.map(identifier -> asSqlString(identifier.get())).orElse("NULL"));
+		builder.append(m_testcase.map(identifier -> asSqlString(identifier.get())).orElse("NULL"));
 		builder.append(", ");
-		builder.append(
-				m_killingTestcaseOrigSignature.map(methodSignature -> asSqlString(methodSignature)).orElse("NULL"));
+		builder.append(m_testcaseOrigSignature.map(methodSignature -> asSqlString(methodSignature)).orElse("NULL"));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutatorName));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationDescription));
 
-		return String.format(SQL_INSERT_STATEMENT, builder.toString());
+		return String.format(SQL_INSERT_STATEMENT, m_testcaseIdentifierColumnName, m_testcaseOrigColumnName,
+				builder.toString());
 	}
 
 	/** Wrap a string value in quotation marks. */
