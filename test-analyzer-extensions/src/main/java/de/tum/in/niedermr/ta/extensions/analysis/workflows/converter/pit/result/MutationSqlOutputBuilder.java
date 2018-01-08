@@ -76,7 +76,7 @@ public class MutationSqlOutputBuilder {
 		m_mutatorName = mutatorName;
 	}
 
-	/** {@link m_testcase} */
+	/** Set the signature of the test case. */
 	public void setTestSignature(String testSignature) {
 		if (StringUtility.isNullOrEmpty(testSignature)) {
 			m_testcase = Optional.empty();

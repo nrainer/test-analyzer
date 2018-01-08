@@ -27,8 +27,8 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.useMultipleOutputFiles", false);
 
 	/**
-	 * <code>extension.converter.pit.mutationMatrix.enabled</code>: Create multiple statements from entries with
-	 * multiple testcases.
+	 * <code>extension.converter.pit.mutationMatrix.enabled</code>: Create multiple statements from entries to build a
+	 * complete matrix of killed and non-killed mutations.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_PARSE_MUTATION_MATRIX = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.mutationMatrix.enabled", true);
