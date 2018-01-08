@@ -27,18 +27,18 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.useMultipleOutputFiles", false);
 
 	/**
-	 * <code>extension.converter.pit.unrollMultipleTestcases.enabled</code>: Create multiple statements from entries
-	 * with multiple testcases.
+	 * <code>extension.converter.pit.mutationMatrix.enabled</code>: Create multiple statements from entries with
+	 * multiple testcases.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_PARSE_MUTATION_MATRIX = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.unrollMultipleTestcases.enabled", true);
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.mutationMatrix.enabled", true);
 
 	/**
-	 * <code>extension.converter.pit.unrollMultipleTestcases.separator</code>: Separator for multiple testcases in the
+	 * <code>extension.converter.pit.mutationMatrix.testcaseSeparator</code>: Separator for multiple testcases in the
 	 * PIT file.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_TESTCASES_SEPARATOR = DynamicConfigurationKey
-			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.unrollMultipleTestcases.separator", "|");
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.mutationMatrix.testcaseSeparator", "|");
 
 	/** {@inheritDoc} */
 	@Override

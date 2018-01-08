@@ -27,6 +27,10 @@ public class ConfigurationMigrationManager {
 			migrations.add(new ConfigurationMigrationFromV3ToV4());
 		}
 
+		if (version <= 4) {
+			migrations.add(new ConfigurationMigrationFromV4ToV5());
+		}
+
 		return new ChainedConfigurationMigration(migrations);
 	}
 }
