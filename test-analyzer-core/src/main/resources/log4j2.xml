@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration status="OFF">
+<Configuration>
 
 	<properties>
 		<property name="mainLogFile">./logs/TestAnalyzer.log</property>
@@ -8,7 +8,7 @@
 		<property name="loggingPattern">%d{dd.MM.yy HH:mm:ss} %level %c{1} [%t] %m%n</property>
 	</properties>
 	
- 	<appenders>
+ 	<Appenders>
 		<RollingFile name="MainFile" fileName="${mainLogFile}" filePattern="${mainLogFilePattern}">
 			<PatternLayout>
 				<pattern>${loggingPattern}</pattern>
@@ -30,13 +30,13 @@
 	 	<Console name="Console" target="SYSTEM_OUT">
 			<PatternLayout pattern="%p %m%n"/>
 		</Console>
-	</appenders>
+	</Appenders>
 	
-	<loggers>
-		<root level="info">
-			<appender-ref ref="MainFile"/>
-			<appender-ref ref="TestSysErr"/>
-			<appender-ref ref="Console"/>
-		</root>
-	</loggers>
-</configuration>
+	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="MainFile"/>
+			<AppenderRef ref="TestSysErr"/>
+			<AppenderRef ref="Console"/>
+		</Root>
+	</Loggers>
+</Configuration>
