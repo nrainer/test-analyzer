@@ -100,7 +100,8 @@ public class MutationSqlOutputBuilder {
 	}
 
 	public SqlMultiInsertStatementBuilder createMultiInsertStatementBuilder() {
-		return new SqlMultiInsertStatementBuilder(SQL_INSERT_STATEMENT);
+		return new SqlMultiInsertStatementBuilder(
+				String.format(SQL_INSERT_STATEMENT, m_testcaseIdentifierColumnName, m_testcaseOrigColumnName, "%s"));
 	}
 
 	public void addToMultiInsertBuilder(SqlMultiInsertStatementBuilder builder) {
