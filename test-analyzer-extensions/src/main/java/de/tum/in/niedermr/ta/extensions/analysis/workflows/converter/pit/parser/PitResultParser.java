@@ -91,7 +91,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
 		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
 		outputBuilder.setTestSignature(killingTestSignatureValue);
-		resultReceiver.append(outputBuilder.complete());
+		resultReceiver.append(outputBuilder.toSqlStatement());
 	}
 
 	/** Parse a single mutation node (without setting information about the executed test case). */

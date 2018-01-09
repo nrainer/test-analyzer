@@ -93,7 +93,7 @@ public class MutationSqlOutputBuilder {
 	}
 
 	/** Complete. */
-	public String complete() {
+	public String toSqlStatement() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(asSqlString(m_executionId.getShortId()));
 		builder.append(", ");

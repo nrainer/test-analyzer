@@ -25,6 +25,6 @@ public class MutationSqlOutputBuilderTest {
 				+ " ('TEST', 'java.lang.StringBuilder.toString()', 'KILLED', 'java.lang.StringBuilderTest;testToString',"
 				+ " 'java.lang.StringBuilderTest.testToString(java.lang.StringBuilderTest)', 'org.pitest.experimental.LogicRemover',"
 				+ " 'Remove logic');";
-		assertEquals(expected, builder.complete());
+		assertEquals(expected, builder.toSqlStatement());
 	}
 }

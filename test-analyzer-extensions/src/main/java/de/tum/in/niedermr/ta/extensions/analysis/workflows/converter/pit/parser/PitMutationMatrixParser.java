@@ -67,7 +67,7 @@ public class PitMutationMatrixParser extends PitResultParser {
 
 		if (successfulTestcaseSignatures.length == 0 && killingTestcaseSignatures.length == 0) {
 			outputBuilder.setTestSignature(null);
-			resultReceiver.append(outputBuilder.complete());
+			resultReceiver.append(outputBuilder.toSqlStatement());
 			return;
 		}
 
@@ -75,14 +75,14 @@ public class PitMutationMatrixParser extends PitResultParser {
 		for (String testcaseSignature : successfulTestcaseSignatures) {
 			outputBuilder.setMutationStatus(MUTATION_STATUS_SURVIVED);
 			outputBuilder.setTestSignature(testcaseSignature);
-			resultReceiver.append(outputBuilder.complete());
+			resultReceiver.append(outputBuilder.toSqlStatement());
 		}
 
 		// add test cases that were not executed with success (and killed the mutant)
 		for (String testcaseSignature : killingTestcaseSignatures) {
 			outputBuilder.setMutationStatus(mutationStatusOfXmlNode);
 			outputBuilder.setTestSignature(testcaseSignature);
-			resultReceiver.append(outputBuilder.complete());
+			resultReceiver.append(outputBuilder.toSqlStatement());
 		}
 	}
 
