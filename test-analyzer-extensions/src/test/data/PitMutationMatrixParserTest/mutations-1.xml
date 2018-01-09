@@ -10,7 +10,7 @@
 		<mutator>org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator</mutator>
 		<index>174</index>
 		<killingTest>org.jfree.chart.plot.XYPlotTest.testRemoveDomainMarker(org.jfree.chart.plot.XYPlotTest)</killingTest>
-		<successfulTest/>
+		<succeedingTest/>
 		<description>negated conditional</description>
 	</mutation>
 	
@@ -23,7 +23,7 @@
 		<mutator>org.pitest.mutationtest.engine.gregor.mutators.VoidMethodCallMutator</mutator>
 		<index>30</index>
 		<killingTest/>
-		<successfulTest/>
+		<succeedingTest/>
 		<description>removed call to org/jfree/chart/axis/AxisSpace::ensureAtLeast</description>
 	</mutation>
 	
@@ -36,7 +36,7 @@
 		<mutator>org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator</mutator>
 		<index>193</index>
 		<killingTest>org.jfree.chart.plot.XYPlotTest.testRemoveDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testMarkerUpdate(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XZTest.testMarkerData(org.jfree.chart.plot.XZTest)|org.jfree.chart.plot.XYPlotTest.testMarkerUpdate2(org.jfree.chart.plot.XYPlotTest)</killingTest>
-		<successfulTest>org.jfree.chart.plot.XYPlotTest.testMirrorDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testSimplifyDomainMarker(org.jfree.chart.plot.XYPlotTest)</successfulTest>
+		<succeedingTest>org.jfree.chart.plot.XYPlotTest.testMirrorDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testSimplifyDomainMarker(org.jfree.chart.plot.XYPlotTest)</succeedingTest>
 		<description>negated conditional</description>
 	</mutation>
 	
@@ -49,7 +49,7 @@
 		<mutator>org.pitest.mutationtest.engine.gregor.mutators.NegateConditionalsMutator</mutator>
 		<index>198</index>
 		<killingTest/>
-		<successfulTest>org.jfree.chart.plot.XYPlotTest.testMirrorDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testSimplifyDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testRemoveDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testMarkerUpdate(org.jfree.chart.plot.XYPlotTest)</successfulTest>
+		<succeedingTest>org.jfree.chart.plot.XYPlotTest.testMirrorDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testSimplifyDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testRemoveDomainMarker(org.jfree.chart.plot.XYPlotTest)|org.jfree.chart.plot.XYPlotTest.testMarkerUpdate(org.jfree.chart.plot.XYPlotTest)</succeedingTest>
 		<description>changed return statement</description>
 	</mutation>
 

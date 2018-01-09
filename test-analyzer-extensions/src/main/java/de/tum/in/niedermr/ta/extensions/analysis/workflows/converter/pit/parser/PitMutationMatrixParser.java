@@ -28,7 +28,7 @@ public class PitMutationMatrixParser extends PitResultParser {
 	private static final Logger LOGGER = LogManager.getLogger(PitMutationMatrixParser.class);
 
 	/** Killing test node of mutation node. */
-	private XPathExpression m_successfulTestNodeXPath;
+	private XPathExpression m_succeedingTestNodeXPath;
 
 	/** Separator for test cases. */
 	private String m_testcaseUnrollingSeparator;
@@ -44,7 +44,7 @@ public class PitMutationMatrixParser extends PitResultParser {
 	protected void initializeXPathExpressions() throws XPathExpressionException {
 		super.initializeXPathExpressions();
 
-		m_successfulTestNodeXPath = compileXPath("./successfulTest");
+		m_succeedingTestNodeXPath = compileXPath("./succeedingTest");
 	}
 
 	/** {@inheritDoc} */
@@ -55,7 +55,7 @@ public class PitMutationMatrixParser extends PitResultParser {
 		final String mutationStatusOfXmlNode = outputBuilder.getMutationStatus();
 
 		String[] successfulTestcaseSignatures = splitTestcases(
-				evaluateStringValue(mutationNode, m_successfulTestNodeXPath));
+				evaluateStringValue(mutationNode, m_succeedingTestNodeXPath));
 		String[] killingTestcaseSignatures = splitTestcases(evaluateStringValue(mutationNode, m_killingTestNodeXPath));
 
 		if (MUTATION_STATUS_SURVIVED.equals(mutationStatusOfXmlNode) && successfulTestcaseSignatures.length == 0) {
