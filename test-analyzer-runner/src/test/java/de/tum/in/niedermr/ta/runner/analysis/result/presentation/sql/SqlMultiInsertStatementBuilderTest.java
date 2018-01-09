@@ -5,13 +5,13 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-/** Test {@link SqlMultiInsertStatement}. */
-public class SqlMultiInsertStatementTest {
+/** Test {@link SqlMultiInsertStatementBuilder}. */
+public class SqlMultiInsertStatementBuilderTest {
 
 	/** Test. */
 	@Test
 	public void testToSql() {
-		SqlMultiInsertStatement statement = new SqlMultiInsertStatement("INSERT INTO Person (id, name) VALUES\r\n%s;");
+		SqlMultiInsertStatementBuilder statement = new SqlMultiInsertStatementBuilder("INSERT INTO Person (id, name) VALUES\r\n%s;");
 
 		assertTrue(statement.toSql().isEmpty());
 

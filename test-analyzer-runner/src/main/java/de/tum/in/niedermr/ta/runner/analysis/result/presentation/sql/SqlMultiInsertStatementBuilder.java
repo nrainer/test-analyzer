@@ -3,14 +3,14 @@ package de.tum.in.niedermr.ta.runner.analysis.result.presentation.sql;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SqlMultiInsertStatement {
+public class SqlMultiInsertStatementBuilder {
 
 	private static final String VALUE_PART_SEPARATOR = ",\r\n";
 
 	private final String m_statementShallow;
 	private final List<String> m_valueStatementParts;
 
-	public SqlMultiInsertStatement(String statementShallow) {
+	public SqlMultiInsertStatementBuilder(String statementShallow) {
 		m_statementShallow = statementShallow;
 		m_valueStatementParts = new ArrayList<>();
 	}
