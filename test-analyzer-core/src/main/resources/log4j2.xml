@@ -17,14 +17,12 @@
 		    	<SizeBasedTriggeringPolicy size="100 MB" />
 		    </Policies>
 		    <DefaultRolloverStrategy />
-			<RegexFilter regex="TestSysErr" onMatch="DENY" onMismatch="ACCEPT"/>
 		</RollingFile>
 		
 		<File name="TestSysErr" fileName="${testSysErrLogFile}">
 			<PatternLayout>
 				<pattern>${loggingPattern}</pattern>
 			</PatternLayout>
-			<RegexFilter regex="TestSysErr" onMatch="ACCEPT"/>
 		</File>
 		
 	 	<Console name="Console" target="SYSTEM_OUT">
@@ -35,8 +33,11 @@
 	<Loggers>
 		<Root level="info">
 			<AppenderRef ref="MainFile"/>
-			<AppenderRef ref="TestSysErr"/>
 			<AppenderRef ref="Console"/>
 		</Root>
+		
+		<Logger name="TestSysErr" level="info" additivity="false">
+			<AppenderRef ref="TestSysErr"/>
+		</Logger>
 	</Loggers>
 </Configuration>
