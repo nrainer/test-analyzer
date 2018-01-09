@@ -14,6 +14,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result.MutationSqlOutputBuilder;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.sql.SqlMultiInsertStatementBuilder;
 
 /**
  * Coverage parser for modified PIT XML files that contain data to create a mutation matrix. <br/>
@@ -71,19 +72,23 @@ public class PitMutationMatrixParser extends PitResultParser {
 			return;
 		}
 
+		SqlMultiInsertStatementBuilder multiInsertBuilder = outputBuilder.createMultiInsertStatementBuilder();
+
 		// add test cases that were executed with success (and thus, did not kill the mutant)
 		for (String testcaseSignature : successfulTestcaseSignatures) {
 			outputBuilder.setMutationStatus(MUTATION_STATUS_SURVIVED);
 			outputBuilder.setTestSignature(testcaseSignature);
-			resultReceiver.append(outputBuilder.toSqlStatement());
+			outputBuilder.addToMultiInsertBuilder(multiInsertBuilder);
 		}
 
 		// add test cases that were not executed with success (and killed the mutant)
 		for (String testcaseSignature : killingTestcaseSignatures) {
 			outputBuilder.setMutationStatus(mutationStatusOfXmlNode);
 			outputBuilder.setTestSignature(testcaseSignature);
-			resultReceiver.append(outputBuilder.toSqlStatement());
+			outputBuilder.addToMultiInsertBuilder(multiInsertBuilder);
 		}
+
+		resultReceiver.append(multiInsertBuilder.toSql());
 	}
 
 	private String[] splitTestcases(String testcaseSignatures) {
