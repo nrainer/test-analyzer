@@ -7,6 +7,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.PitOutputConverterWorkflow;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.sql.SqlMultiInsertStatementBuilder;
 
 /** Output builder for {@link PitOutputConverterWorkflow}. */
 public class MutationSqlOutputBuilder {
@@ -92,10 +93,18 @@ public class MutationSqlOutputBuilder {
 		m_mutationDescription = mutationDescription.replace("'", "");
 	}
 
-	/** Complete. */
+	/** To SQL statement. */
 	public String toSqlStatement() {
 		return String.format(SQL_INSERT_STATEMENT, m_testcaseIdentifierColumnName, m_testcaseOrigColumnName,
 				toValuesSqlStatementPart());
+	}
+
+	public SqlMultiInsertStatementBuilder createMultiInsertStatementBuilder() {
+		return new SqlMultiInsertStatementBuilder(SQL_INSERT_STATEMENT);
+	}
+
+	public void addToMultiInsertBuilder(SqlMultiInsertStatementBuilder builder) {
+		builder.addValuesStatementPart(toValuesSqlStatementPart());
 	}
 
 	private String toValuesSqlStatementPart() {
