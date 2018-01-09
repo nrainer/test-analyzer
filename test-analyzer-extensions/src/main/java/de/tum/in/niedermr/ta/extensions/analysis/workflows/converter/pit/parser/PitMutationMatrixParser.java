@@ -49,8 +49,8 @@ public class PitMutationMatrixParser extends PitResultParser {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void parseMutationNodeAndAppendToResultReceiver(Node mutationNode, IResultReceiver resultReceiver)
-			throws XPathExpressionException {
+	protected void parseMutationNodeAndAppendToResultReceiver(int nodeIndex, Node mutationNode,
+			IResultReceiver resultReceiver) throws XPathExpressionException {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
 		final String mutationStatusOfXmlNode = outputBuilder.getMutationStatus();
 
@@ -61,8 +61,7 @@ public class PitMutationMatrixParser extends PitResultParser {
 		if (MUTATION_STATUS_SURVIVED.equals(mutationStatusOfXmlNode) && successfulTestcaseSignatures.length == 0) {
 			// no information about successful test cases has been recorded (note that the status must be taken into
 			// account because the status NO_COVERAGE has no attached test cases)
-			LOGGER.warn("No information about successful test cases has been recorded: "
-					+ outputBuilder.getMutatedMethod().get());
+			LOGGER.warn("No information about successful test cases has been recorded for node " + nodeIndex);
 			// result with null as test case will be added by the next if block
 		}
 
