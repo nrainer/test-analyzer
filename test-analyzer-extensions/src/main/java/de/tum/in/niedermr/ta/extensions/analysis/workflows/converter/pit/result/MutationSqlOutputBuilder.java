@@ -16,15 +16,15 @@ public class MutationSqlOutputBuilder {
 
 	/** SQL insert statement. */
 	private static final String SQL_INSERT_STATEMENT = "INSERT INTO Pit_Mutation_Result_Import "
-			+ "(execution, mutatedMethod, mutationStatus, %s, %s, mutatorName, mutationDescription) " + "VALUES (%s);";
+			+ "(execution, mutatedMethod, mutationStatus, %s, %s, mutatorName, mutationDescription) " + "VALUES %s;";
 
 	/** Execution id. */
-	private IExecutionId m_executionId;
+	private final IExecutionId m_executionId;
 
 	/** Name of the test case identifier column in the insert statement. */
-	private String m_testcaseIdentifierColumnName;
+	private final String m_testcaseIdentifierColumnName;
 	/** Name of the original test case name column in the insert statement. */
-	private String m_testcaseOrigColumnName;
+	private final String m_testcaseOrigColumnName;
 
 	/** Mutation status. */
 	private String m_mutationStatus;
@@ -94,7 +94,13 @@ public class MutationSqlOutputBuilder {
 
 	/** Complete. */
 	public String toSqlStatement() {
+		return String.format(SQL_INSERT_STATEMENT, m_testcaseIdentifierColumnName, m_testcaseOrigColumnName,
+				toValuesSqlStatementPart());
+	}
+
+	private String toValuesSqlStatementPart() {
 		StringBuilder builder = new StringBuilder();
+		builder.append("(");
 		builder.append(asSqlString(m_executionId.getShortId()));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutatedMethod.get()));
@@ -108,9 +114,8 @@ public class MutationSqlOutputBuilder {
 		builder.append(asSqlString(m_mutatorName));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationDescription));
-
-		return String.format(SQL_INSERT_STATEMENT, m_testcaseIdentifierColumnName, m_testcaseOrigColumnName,
-				builder.toString());
+		builder.append(")");
+		return builder.toString();
 	}
 
 	/** Wrap a string value in quotation marks. */
