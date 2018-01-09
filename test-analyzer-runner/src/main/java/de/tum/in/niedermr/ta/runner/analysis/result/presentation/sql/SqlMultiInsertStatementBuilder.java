@@ -10,9 +10,19 @@ public class SqlMultiInsertStatementBuilder {
 	private final String m_statementShallow;
 	private final List<String> m_valueStatementParts;
 
+	/**
+	 * Constructor.
+	 * 
+	 * @param statementShallow
+	 *            must contain a <code>%s</code> placeholder.
+	 */
 	public SqlMultiInsertStatementBuilder(String statementShallow) {
 		m_statementShallow = statementShallow;
 		m_valueStatementParts = new ArrayList<>();
+
+		if (!m_statementShallow.contains("%s")) {
+			throw new IllegalArgumentException("statementShallow must contain a %s placeholder");
+		}
 	}
 
 	/**
