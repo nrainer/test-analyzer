@@ -10,7 +10,9 @@ import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
+import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
+import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 
 /** Abstract test for {@link IContentParser}. */
 public abstract class AbstractContentParserTest {
@@ -42,9 +44,12 @@ public abstract class AbstractContentParserTest {
 		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 
 		parser.parse(inputFile, resultReceiver);
-		List<String> expectedOutput = TextFileUtility
+		List<String> expectedResultLines = TextFileUtility
 				.readFromFile(TestUtility.getTestFolder(getClass()) + expectedResultFileName);
-		assertEquals(expectedOutput, resultReceiver.getResult());
+
+		String expectedResult = StringUtility.join(expectedResultLines, CommonConstants.NEW_LINE);
+		String actualResult = StringUtility.join(resultReceiver.getResult(), CommonConstants.NEW_LINE);
+		assertEquals(expectedResult, actualResult);
 	}
 
 	/** Create a parser. */
