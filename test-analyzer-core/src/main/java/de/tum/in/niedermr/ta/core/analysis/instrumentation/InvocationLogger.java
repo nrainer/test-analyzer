@@ -19,6 +19,10 @@ public class InvocationLogger {
 		reset();
 	}
 
+	/**
+	 * Start the log. <br/>
+	 * Invoked from generated code.
+	 */
 	public static synchronized void log(String methodIdentifier) {
 		if (s_mode == LoggingMode.TESTING) {
 			s_testingLog.add(methodIdentifier);
@@ -44,6 +48,10 @@ public class InvocationLogger {
 		setMode(LoggingMode.FRAMING);
 	}
 
+	/**
+	 * Set the current mode. <br/>
+	 * Invoked from generated code.
+	 */
 	public static synchronized void setMode(LoggingMode newMode) {
 		s_mode = newMode;
 	}
@@ -51,7 +59,8 @@ public class InvocationLogger {
 	public enum LoggingMode {
 		/**
 		 * Framing: For the preparation before and the wrap-up after tests. (e. g. invocations from
-		 * <code>@BeforeClass</code>, <code>@Before</code>, <code>@After</code>, <code>@AfterClass</code>)
+		 * <code>@BeforeClass</code> / <code>@BeforeAll</code>, <code>@Before</code>, <code>@After</code>,
+		 * <code>@AfterClass</code> / <code>@AfterAll</code>)
 		 */
 		FRAMING,
 		/**
