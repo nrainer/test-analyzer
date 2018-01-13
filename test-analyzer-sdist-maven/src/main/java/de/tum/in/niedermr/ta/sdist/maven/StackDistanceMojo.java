@@ -41,19 +41,26 @@ public class StackDistanceMojo extends AbstractMojo {
 		}
 
 		getLog().info("Starting to instrument non-test classes for stack distance computation");
-
 		try {
-			for (String codeDirectory : compiledCodeDirectoriesToInstrument) {
-				getLog().info("Instrumenting: " + codeDirectory);
-				String inputArtifactPath = codeDirectory;
-				String outputArtifactPath = codeDirectory;
-				instrumentSourceCodeInNewProcess(inputArtifactPath, outputArtifactPath);
-			}
+			instrumentCodeDirectories(compiledCodeDirectoriesToInstrument);
 		} catch (DependencyResolutionRequiredException e) {
 			throw new MojoExecutionException("IteratorException", e);
 		}
-
 		getLog().info("Completed instrumenting non-test classes for stack distance computation");
+	}
+
+	private void instrumentCodeDirectories(List<String> compiledCodeDirectoriesToInstrument)
+			throws DependencyResolutionRequiredException {
+		for (String codeDirectory : compiledCodeDirectoriesToInstrument) {
+			instrumentCodeDirectory(codeDirectory);
+		}
+	}
+
+	private void instrumentCodeDirectory(String codeDirectory) throws DependencyResolutionRequiredException {
+		getLog().info("Instrumenting: " + codeDirectory);
+		String inputArtifactPath = codeDirectory;
+		String outputArtifactPath = codeDirectory;
+		instrumentSourceCodeInNewProcess(inputArtifactPath, outputArtifactPath);
 	}
 
 	@SuppressWarnings("unchecked")
