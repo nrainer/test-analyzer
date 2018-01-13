@@ -1,5 +1,8 @@
 package de.tum.in.niedermr.ta.sdist.maven;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -23,20 +26,34 @@ public class StackDistanceMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project}", readonly = true, required = true)
 	private MavenProject project;
 
+	/** Additional directories with compiled source source to be instrumented. */
+	@Parameter(property = "additionalApplicationClasspathElements")
+	private ArrayList<String> additionalApplicationClasspathElements;
+
 	/** {@inheritDoc} */
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
-		String builtSourceCodeDirectory = project.getBuild().getOutputDirectory();
-		String inputArtifactPath = builtSourceCodeDirectory;
-		String outputArtifactPath = builtSourceCodeDirectory;
+		List<String> compiledCodeDirectoriesToInstrument = new ArrayList<>();
+		compiledCodeDirectoriesToInstrument.add(project.getBuild().getOutputDirectory());
+
+		if (additionalApplicationClasspathElements != null) {
+			compiledCodeDirectoriesToInstrument.addAll(compiledCodeDirectoriesToInstrument);
+		}
+
+		getLog().info("Starting to instrument non-test classes for stack distance computation");
 
 		try {
-			getLog().info("Starting to instrument non-test classes for stack distance computation");
-			instrumentSourceCodeInNewProcess(inputArtifactPath, outputArtifactPath);
-			getLog().info("Completed instrumenting non-test classes for stack distance computation");
+			for (String codeDirectory : compiledCodeDirectoriesToInstrument) {
+				getLog().info("Instrumenting: " + codeDirectory);
+				String inputArtifactPath = codeDirectory;
+				String outputArtifactPath = codeDirectory;
+				instrumentSourceCodeInNewProcess(inputArtifactPath, outputArtifactPath);
+			}
 		} catch (DependencyResolutionRequiredException e) {
 			throw new MojoExecutionException("IteratorException", e);
 		}
+
+		getLog().info("Completed instrumenting non-test classes for stack distance computation");
 	}
 
 	@SuppressWarnings("unchecked")
