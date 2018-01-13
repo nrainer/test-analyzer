@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.sdist.maven;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +32,13 @@ public class StackDistanceMojo extends AbstractMojo {
 	@Parameter(property = "additionalApplicationClasspathElements")
 	private ArrayList<String> additionalApplicationClasspathElements;
 
+	/**
+	 * Check if the instrumentation has not been done yet to avoid a further
+	 * instrumentation (which will cause an error).
+	 */
+	@Parameter(property = "checkIfInstrumentationIsNecessary")
+	private boolean checkIfInstrumentationIsNecessary = true;
+
 	/** {@inheritDoc} */
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
@@ -43,28 +52,35 @@ public class StackDistanceMojo extends AbstractMojo {
 		getLog().info("Starting to instrument non-test classes for stack distance computation");
 		try {
 			instrumentCodeDirectories(compiledCodeDirectoriesToInstrument);
-		} catch (DependencyResolutionRequiredException e) {
-			throw new MojoExecutionException("IteratorException", e);
+		} catch (DependencyResolutionRequiredException | IOException e) {
+			throw new MojoExecutionException("Exception occurred", e);
 		}
 		getLog().info("Completed instrumenting non-test classes for stack distance computation");
 	}
 
 	private void instrumentCodeDirectories(List<String> compiledCodeDirectoriesToInstrument)
-			throws DependencyResolutionRequiredException {
+			throws DependencyResolutionRequiredException, IOException {
 		for (String codeDirectory : compiledCodeDirectoriesToInstrument) {
 			instrumentCodeDirectory(codeDirectory);
 		}
 	}
 
-	private void instrumentCodeDirectory(String codeDirectory) throws DependencyResolutionRequiredException {
+	private void instrumentCodeDirectory(String codeDirectory)
+			throws DependencyResolutionRequiredException, IOException {
+		if (checkIfInstrumentationIsNecessary && hasInstrumentedMarker(codeDirectory)) {
+			getLog().warn("Skipping instrumentation for " + codeDirectory + ", seems to be already instrumented.");
+			return;
+		}
+
 		getLog().info("Instrumenting: " + codeDirectory);
 		String inputArtifactPath = codeDirectory;
 		String outputArtifactPath = codeDirectory;
 		instrumentSourceCodeInNewProcess(inputArtifactPath, outputArtifactPath);
+		addInstrumentedMarker(codeDirectory);
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void instrumentSourceCodeInNewProcess(String inputArtifactPath, String outputArtifactPath)
+	private void instrumentSourceCodeInNewProcess(String inputArtifactPath, String outputArtifactPath)
 			throws DependencyResolutionRequiredException {
 		String executionPath = project.getBasedir().getAbsolutePath();
 		String classpath = ClasspathUtility.getCurrentClasspath()
@@ -77,5 +93,21 @@ public class StackDistanceMojo extends AbstractMojo {
 		ProcessExecution processExecution = new ProcessExecution(executionPath, executionPath, executionPath);
 		processExecution.execute(ExecutionIdFactory.createNewShortExecutionId(), ProcessExecution.NO_TIMEOUT,
 				StackDistanceInstrumentation.class, classpath, argsWriter);
+	}
+
+	private boolean hasInstrumentedMarker(String codeDirectory) {
+		return createInstrumentedMarkerFile(codeDirectory).exists();
+	}
+
+	private void addInstrumentedMarker(String codeDirectory) throws IOException {
+		if (hasInstrumentedMarker(codeDirectory)) {
+			return;
+		}
+
+		createInstrumentedMarkerFile(codeDirectory).createNewFile();
+	}
+
+	private File createInstrumentedMarkerFile(String codeDirectory) {
+		return new File(codeDirectory, "sdist-instrumented.info");
 	}
 }
