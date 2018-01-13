@@ -26,6 +26,9 @@ SQL schema and procedures: `test-analyzer-runner/sql`
 1. Use the files in `1_setup/1_schema` to create the schema
 2. Use the files in `1_setup/2_procedures` to create the needed functions and procedures
 
+## Troubleshooting
+If the project `test-analyzer-sdist-maven` cannot be built, the used Maven version is too old. Maven 3.5.2 is working.
+
 ## Data import
 1. Import `execution_information.sql.txt` and subsequently all other result files
 2. Check the raw data
