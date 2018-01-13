@@ -49,6 +49,10 @@ public abstract class AbstractContentParserTest {
 
 		String expectedResult = StringUtility.join(expectedResultLines, CommonConstants.NEW_LINE);
 		String actualResult = StringUtility.join(resultReceiver.getResult(), CommonConstants.NEW_LINE);
+
+		expectedResult = expectedResult.replace("\r\n", "\n");
+		actualResult = actualResult.replace("\r\n", "\n");
+
 		assertEquals(expectedResult, actualResult);
 	}
 
