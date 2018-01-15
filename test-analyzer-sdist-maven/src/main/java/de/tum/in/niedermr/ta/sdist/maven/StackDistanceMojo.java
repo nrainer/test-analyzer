@@ -33,8 +33,8 @@ public class StackDistanceMojo extends AbstractMojo {
 	private ArrayList<String> additionalApplicationClasspathElements;
 
 	/**
-	 * Check if the instrumentation has not been done yet to avoid a further
-	 * instrumentation (which will cause an error).
+	 * Check if the instrumentation has not been done yet to avoid a further instrumentation (which will cause an
+	 * error).
 	 */
 	@Parameter(property = "checkIfInstrumentationIsNecessary")
 	private boolean checkIfInstrumentationIsNecessary = true;
@@ -46,7 +46,7 @@ public class StackDistanceMojo extends AbstractMojo {
 		compiledCodeDirectoriesToInstrument.add(project.getBuild().getOutputDirectory());
 
 		if (additionalApplicationClasspathElements != null) {
-			compiledCodeDirectoriesToInstrument.addAll(compiledCodeDirectoriesToInstrument);
+			compiledCodeDirectoriesToInstrument.addAll(additionalApplicationClasspathElements);
 		}
 
 		getLog().info("Starting to instrument non-test classes for stack distance computation");
