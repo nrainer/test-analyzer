@@ -9,10 +9,10 @@ mvn clean install
 mvn eclipse:eclipse
 ```
 
-# Main class
+# Main Class
 `de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart`
 
-# Sample configuration
+# Sample Configuration
 `/test-analyzer-runner/sample/sample-configuration.config`
 
 (See also: configurations of the integration tests in: `/test-analyzer-test-int/src/test/data/integrationtest*/configuration`)
@@ -20,7 +20,7 @@ mvn eclipse:eclipse
 # Troubleshooting
 If the project `test-analyzer-sdist-maven` cannot be built, the used Maven version is too old. Maven 3.5.2 is working.
 
-# Data postprocessing
+# Data Post-Processing
 SQL schema and procedures: `test-analyzer-runner/sql`
 
 (Required database: MySQL >= 5.7)
@@ -29,7 +29,7 @@ SQL schema and procedures: `test-analyzer-runner/sql`
 1. Use the files in `1_setup/1_schema` to create the schema
 2. Use the files in `1_setup/2_procedures` to create the needed functions and procedures
 
-## Data import
+## Data Import
 1. Import `execution_information.sql.txt` and subsequently all other result files
 2. Check the raw data
 3. Transfer the raw data into structures optimized for analyses using the script `2_processing/transfer_script.sql`. It is necessary to specify the value of `@executionId`.
