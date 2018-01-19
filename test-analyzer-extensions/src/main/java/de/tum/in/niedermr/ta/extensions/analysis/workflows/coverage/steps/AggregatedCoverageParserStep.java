@@ -3,10 +3,10 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractParserStep;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.IContentParser;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoXmlParser;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoCoverageParser;
 
 /** Step to parse coverage files. */
-public class CoverageParserStep extends AbstractParserStep {
+public class AggregatedCoverageParserStep extends AbstractParserStep {
 
 	/** {@inheritDoc} */
 	@Override
@@ -23,6 +23,6 @@ public class CoverageParserStep extends AbstractParserStep {
 	/** {@inheritDoc} */
 	@Override
 	protected IContentParser createParser(IExecutionId executionId) {
-		return new JaCoCoXmlParser(executionId);
+		return new JaCoCoCoverageParser(executionId);
 	}
 }

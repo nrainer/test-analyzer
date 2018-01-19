@@ -2,20 +2,22 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.AbstractConverterWorkflow;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps.CoverageParserStep;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.steps.AggregatedCoverageParserStep;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
 
 /**
- * Parser for coverage information. Currently, only coverage in form of XML from JaCoCo is supported.
+ * Parser for aggregated coverage information. Currently, only coverage in form
+ * of XML from JaCoCo is supported.
  */
-public class CoverageParserWorkflow extends AbstractConverterWorkflow<CoverageParserStep> {
+public class CoverageParserWorkflow extends AbstractConverterWorkflow<AggregatedCoverageParserStep> {
 
 	/** Default name of the coverage file. */
 	private static final String DEFAULT_COVERAGE_FILE_NAME = "coverage.xml";
 
 	/**
-	 * <code>extension.code.coverage.useMultipleOutputFiles</code>: Split the output into multiple files.
+	 * <code>extension.code.coverage.useMultipleOutputFiles</code>: Split the output
+	 * into multiple files.
 	 */
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_USE_MULTIPLE_OUTPUT_FILES = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "code.coverage.useMultipleOutputFiles", false);
@@ -44,7 +46,7 @@ public class CoverageParserWorkflow extends AbstractConverterWorkflow<CoveragePa
 
 	/** {@inheritDoc} */
 	@Override
-	protected Class<CoverageParserStep> getParserStep() {
-		return CoverageParserStep.class;
+	protected Class<AggregatedCoverageParserStep> getParserStep() {
+		return AggregatedCoverageParserStep.class;
 	}
 }

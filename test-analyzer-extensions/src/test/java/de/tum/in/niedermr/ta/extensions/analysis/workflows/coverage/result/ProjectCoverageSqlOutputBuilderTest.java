@@ -12,12 +12,12 @@ import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
-/** Test {@link ProjectCoverageSqlOutputBuilder}. */
+/** Test {@link AggregatedCoverageSqlOutputBuilder}. */
 public class ProjectCoverageSqlOutputBuilderTest {
 
 	@Test
 	public void testOutputBuilder() throws IOException {
-		ProjectCoverageSqlOutputBuilder builder = new ProjectCoverageSqlOutputBuilder(ExecutionIdFactory.ID_FOR_TESTS,
+		AggregatedCoverageSqlOutputBuilder builder = new AggregatedCoverageSqlOutputBuilder(ExecutionIdFactory.ID_FOR_TESTS,
 				ECoverageLevel.BRANCH);
 		builder.addSourceFolder("src/main/java", 204, 33);
 		builder.addSourceFolder("src/test/java", 14, 0);

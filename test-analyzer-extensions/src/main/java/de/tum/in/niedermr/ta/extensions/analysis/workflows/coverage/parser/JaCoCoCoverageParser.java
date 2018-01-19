@@ -18,13 +18,13 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractXmlContentParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.AggregatedCoverageSqlOutputBuilder;
 
 /** Coverage parser for JaCoCo XML files. */
-public class JaCoCoXmlParser extends AbstractXmlContentParser {
+public class JaCoCoCoverageParser extends AbstractXmlContentParser {
 
 	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(JaCoCoXmlParser.class);
+	private static final Logger LOGGER = LogManager.getLogger(JaCoCoCoverageParser.class);
 
 	private static final String XML_SCHEMA_NAME = "report.dtd";
 
@@ -33,7 +33,7 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 	private static final String COUNTER_TYPE_INSTRUCTION = "INSTRUCTION";
 	private static final String COUNTER_TYPE_BRANCH = "BRANCH";
 
-	public JaCoCoXmlParser(IExecutionId executionId) {
+	public JaCoCoCoverageParser(IExecutionId executionId) {
 		super(XML_SCHEMA_NAME, executionId);
 	}
 
@@ -71,7 +71,7 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 		XPathExpression folderNameAttributeXPath = compileXPath("../@name");
 		XPathExpression folderCountCoveredAttributeXPath = compileXPath("@covered");
 		XPathExpression folderCountMissedAttributeXPath = compileXPath("@missed");
-		ProjectCoverageSqlOutputBuilder sqlOutputBuilder = getResultPresentation()
+		AggregatedCoverageSqlOutputBuilder sqlOutputBuilder = getResultPresentation()
 				.createProjectCoverageSqlOutputBuilder(convertCounterTypeToCoverageLevel(counterTypeName));
 
 		NodeList nodeList = evaluateNodeList(document, sourceFoldersExpression);
