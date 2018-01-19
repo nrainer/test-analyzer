@@ -88,34 +88,26 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 
 	private void parseMethodInformation(Document document, IResultReceiver resultReceiver)
 			throws XPathExpressionException {
-		XPathExpression allClassesXPath = compileXPath("//class");
-		NodeList classNodes = evaluateNodeList(document, allClassesXPath);
-
-		for (int i = 0; i < classNodes.getLength(); i++) {
-			Node classNode = classNodes.item(i);
-
-			parseClassNode(classNode, resultReceiver);
-
-			// performance tuning (does not influence indices in the NodeList)
-			classNode.getParentNode().removeChild(classNode);
-		}
+		visitClassNodes(document, resultReceiver, new INodeVisitor() {
+			/** {@inheritDoc} */
+			@Override
+			public void visitNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+				parseClassNode(classNode, resultReceiver);
+			}
+		});
 	}
 
 	private void parseClassNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
 		XPathExpression classNameAttributeXPath = compileXPath("@name");
-		XPathExpression methodsOfClassXPath = compileXPath("./method");
-
 		String className = JavaUtility.toClassName(evaluateStringValue(classNode, classNameAttributeXPath));
-		NodeList methodNodes = evaluateNodeList(classNode, methodsOfClassXPath);
 
-		for (int i = 0; i < methodNodes.getLength(); i++) {
-			Node methodNode = methodNodes.item(i);
-
-			parseMethodNode(className, methodNode, resultReceiver);
-
-			// performance tuning (does not influence indices in the NodeList)
-			methodNode.getParentNode().removeChild(methodNode);
-		}
+		visitMethodNodes(classNode, resultReceiver, new INodeVisitor() {
+			/** {@inheritDoc} */
+			@Override
+			public void visitNode(Node methodNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+				parseMethodNode(className, methodNode, resultReceiver);
+			}
+		});
 
 		LOGGER.info("Parsed coverage of methods of class: " + className);
 		resultReceiver.markResultAsPartiallyComplete();
