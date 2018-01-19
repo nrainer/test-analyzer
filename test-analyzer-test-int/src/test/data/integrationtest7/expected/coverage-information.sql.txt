@@ -1,4 +1,4 @@
--- Created with: de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoXmlParser
+-- Created with: de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoCoverageParser
 /*
 -- TODO: check test excludes
 UPDATE Execution_Information SET methodCoverage = 
