@@ -15,26 +15,19 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractXmlContentParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.AggregatedCoverageSqlOutputBuilder;
 
 /** Coverage parser for JaCoCo XML files. */
-public class JaCoCoCoverageParser extends AbstractXmlContentParser {
+public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JaCoCoCoverageParser.class);
 
-	private static final String XML_SCHEMA_NAME = "report.dtd";
-
-	private static final String COUNTER_TYPE_METHOD = "METHOD";
-	private static final String COUNTER_TYPE_LINE = "LINE";
-	private static final String COUNTER_TYPE_INSTRUCTION = "INSTRUCTION";
-	private static final String COUNTER_TYPE_BRANCH = "BRANCH";
-
+	/** Constructor. */
 	public JaCoCoCoverageParser(IExecutionId executionId) {
-		super(XML_SCHEMA_NAME, executionId);
+		super(executionId);
 	}
 
 	/** {@inheritDoc} */
@@ -84,7 +77,8 @@ public class JaCoCoCoverageParser extends AbstractXmlContentParser {
 			int countNotCovered = Integer.parseInt(evaluateStringValue(node, folderCountMissedAttributeXPath));
 			sqlOutputBuilder.addSourceFolder(sourceFolderName, countCovered, countNotCovered);
 
-			// performance tuning (does not influence indices in the NodeList) must be applied at the end here (because
+			// performance tuning (does not influence indices in the NodeList) must be
+			// applied at the end here (because
 			// folderNameAttributeXPath accesses a parent attribute)
 			node.getParentNode().removeChild(node);
 		}
