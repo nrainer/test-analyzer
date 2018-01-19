@@ -32,6 +32,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPres
 public abstract class AbstractXmlContentParser implements IContentParser {
 
 	private final String m_xmlSchemaName;
+	private final IExecutionId m_executionId;
 	private final IResultPresentationExtended m_resultPresentation;
 	private DocumentBuilder m_documentBuilder;
 	private XPath m_xPath;
@@ -39,7 +40,13 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	/** Constructor. */
 	public AbstractXmlContentParser(String xmlSchemaName, IExecutionId executionId) {
 		m_xmlSchemaName = xmlSchemaName;
+		m_executionId = executionId;
 		m_resultPresentation = IResultPresentationExtended.create(executionId);
+	}
+
+	/** @see #m_executionId */
+	public IExecutionId getExecutionId() {
+		return m_executionId;
 	}
 
 	/** {@inheritDoc} */
