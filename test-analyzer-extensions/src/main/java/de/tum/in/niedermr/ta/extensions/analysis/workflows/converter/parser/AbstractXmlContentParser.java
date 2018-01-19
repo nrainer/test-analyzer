@@ -56,6 +56,12 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		} catch (ParserConfigurationException e) {
 			throw new ContentParserException("Parser initialization failed", e);
 		}
+
+		try {
+			execCompileXPathExpressions();
+		} catch (XPathExpressionException e) {
+			throw new ContentParserException("XPath expression compilation failed", e);
+		}
 	}
 
 	/** {@inheritDoc} */
@@ -85,6 +91,11 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	/** Compile an XPath expression. */
 	protected final XPathExpression compileXPath(String expression) throws XPathExpressionException {
 		return m_xPath.compile(expression);
+	}
+
+	/** Compile expressions. */
+	protected void execCompileXPathExpressions() throws XPathExpressionException {
+		// NOP
 	}
 
 	/** Get the extended result presentation. */
