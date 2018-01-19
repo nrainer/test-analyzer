@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result
 
 import java.util.Optional;
 
+import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.common.util.StringUtility;
@@ -66,7 +67,7 @@ public class MutationSqlOutputBuilder {
 	/** {@link m_mutatedMethod} */
 	public void setMutatedMethod(String mutatedClassName, String mutatedMethodName, String mutatedMethodTypeSignature) {
 		if (CONSTRUCTOR_ENCODED_METHOD_NAME.equals(mutatedMethodName)) {
-			mutatedMethodName = MethodIdentifier.CONSTRUCTOR_NAME;
+			mutatedMethodName = BytecodeConstants.NAME_CONSTRUCTOR;
 		}
 
 		m_mutatedMethod = MethodIdentifier.create(mutatedClassName, mutatedMethodName, mutatedMethodTypeSignature);

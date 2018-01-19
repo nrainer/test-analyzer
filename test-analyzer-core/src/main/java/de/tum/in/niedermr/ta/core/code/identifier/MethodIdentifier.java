@@ -10,7 +10,6 @@ import de.tum.in.niedermr.ta.core.code.util.Identification;
 /** Identifier for Java methods. */
 public final class MethodIdentifier implements Identifier {
 	private static final String UNKNOWN_RETURN_TYPE = "?";
-	public static final String CONSTRUCTOR_NAME = "<init>";
 	public static final MethodIdentifier EMPTY = new MethodIdentifier("*", UNKNOWN_RETURN_TYPE);
 
 	private final String m_identifier;
@@ -109,8 +108,9 @@ public final class MethodIdentifier implements Identifier {
 	}
 
 	/**
-	 * The return type would be available if the instance was created using the 'create' method or if the string to be
-	 * parsed by the 'parse' method contained the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be returned.
+	 * The return type would be available if the instance was created using the
+	 * 'create' method or if the string to be parsed by the 'parse' method contained
+	 * the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be returned.
 	 */
 	public final String getOnlyReturnType() {
 		return m_returnType;
@@ -155,7 +155,8 @@ public final class MethodIdentifier implements Identifier {
 	}
 
 	/**
-	 * Two method identifiers are supposed to be equal if the identifiers are equal. The return type is not considered.
+	 * Two method identifiers are supposed to be equal if the identifiers are equal.
+	 * The return type is not considered.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -186,11 +187,5 @@ public final class MethodIdentifier implements Identifier {
 	@Override
 	public String toString() {
 		return get();
-	}
-
-	/** Check if the method identifier refers to a constructor. */
-	public boolean isConstructor() {
-		return m_identifier
-				.contains(JavaConstants.CLASS_METHOD_SEPARATOR + CONSTRUCTOR_NAME + JavaConstants.ARGUMENTS_BEGIN);
 	}
 }

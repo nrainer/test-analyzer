@@ -1,8 +1,6 @@
 package de.tum.in.niedermr.ta.core.code.identifier;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
@@ -157,18 +155,5 @@ public class MethodIdentifierTest {
 		MethodIdentifier identifier = MethodIdentifier.create(SAMPLE_CLASS_NAME, "lambda$0", SAMPLE_DESCRIPTOR_2);
 		assertEquals(SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + "lambda$0" + SAMPLE_ARGUMENTS_3,
 				identifier.get());
-	}
-
-	/** Test. */
-	@Test
-	public void testIsConstructor() {
-		assertFalse(MethodIdentifier.EMPTY.isConstructor());
-
-		assertFalse(MethodIdentifier.parse(
-				SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + SAMPLE_METHOD_NAME + SAMPLE_ARGUMENTS_2)
-				.isConstructor());
-
-		assertTrue(MethodIdentifier.parse(SAMPLE_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR
-				+ MethodIdentifier.CONSTRUCTOR_NAME + SAMPLE_ARGUMENTS_2).isConstructor());
 	}
 }
