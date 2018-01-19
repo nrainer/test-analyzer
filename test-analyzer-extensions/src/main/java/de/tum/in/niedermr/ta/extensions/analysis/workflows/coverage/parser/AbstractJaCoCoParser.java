@@ -21,22 +21,33 @@ public abstract class AbstractJaCoCoParser extends AbstractXmlContentParser {
 	protected static final String COUNTER_TYPE_INSTRUCTION = "INSTRUCTION";
 	protected static final String COUNTER_TYPE_BRANCH = "BRANCH";
 
+	private XPathExpression m_allClassesXPath;
+
+	private XPathExpression m_methodsOfClassXPath;
+
 	/** Constructor. */
 	public AbstractJaCoCoParser(IExecutionId executionId) {
 		super(XML_SCHEMA_NAME, executionId);
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	protected void execCompileXPathExpressions() throws XPathExpressionException {
+		super.execCompileXPathExpressions();
+
+		m_allClassesXPath = compileXPath("//class");
+		m_methodsOfClassXPath = compileXPath("./method");
+	}
+
 	protected void visitClassNodes(Document document, IResultReceiver resultReceiver, INodeVisitor visitor)
 			throws XPathExpressionException {
-		XPathExpression allClassesXPath = compileXPath("//class");
-		NodeList classNodes = evaluateNodeList(document, allClassesXPath);
+		NodeList classNodes = evaluateNodeList(document, m_allClassesXPath);
 		visitNodes(classNodes, resultReceiver, visitor);
 	}
 
 	protected void visitMethodNodes(Node classNode, IResultReceiver resultReceiver, INodeVisitor visitor)
 			throws XPathExpressionException {
-		XPathExpression methodsOfClassXPath = compileXPath("./method");
-		NodeList methodNodes = evaluateNodeList(classNode, methodsOfClassXPath);
+		NodeList methodNodes = evaluateNodeList(classNode, m_methodsOfClassXPath);
 		visitNodes(methodNodes, resultReceiver, visitor);
 	}
 

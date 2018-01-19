@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
 
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -25,9 +24,27 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JaCoCoCoverageParser.class);
 
+	private XPathExpression m_classNameAttributeXPath;
+	private XPathExpression m_methodNameAttributeXPath;
+	private XPathExpression m_methodDescAttributeXPath;
+	private XPathExpression m_methodCountCoveredAttributeXPath;
+	private XPathExpression m_methodCountMissedAttributeXPath;
+
 	/** Constructor. */
 	public JaCoCoCoverageParser(IExecutionId executionId) {
 		super(executionId);
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	protected void execCompileXPathExpressions() throws XPathExpressionException {
+		super.execCompileXPathExpressions();
+
+		m_classNameAttributeXPath = compileXPath("@name");
+		m_methodNameAttributeXPath = compileXPath("@name");
+		m_methodDescAttributeXPath = compileXPath("@desc");
+		m_methodCountCoveredAttributeXPath = compileXPath("@covered");
+		m_methodCountMissedAttributeXPath = compileXPath("@missed");
 	}
 
 	/** {@inheritDoc} */
@@ -98,8 +115,7 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 	}
 
 	private void parseClassNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
-		XPathExpression classNameAttributeXPath = compileXPath("@name");
-		String className = JavaUtility.toClassName(evaluateStringValue(classNode, classNameAttributeXPath));
+		String className = JavaUtility.toClassName(evaluateStringValue(classNode, m_classNameAttributeXPath));
 
 		visitMethodNodes(classNode, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
@@ -115,11 +131,8 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 
 	private void parseMethodNode(String className, Node methodNode, IResultReceiver resultReceiver)
 			throws XPathExpressionException {
-		XPathExpression methodNameAttributeXPath = compileXPath("@name");
-		XPathExpression methodDescAttributeXPath = compileXPath("@desc");
-
-		String methodName = evaluateStringValue(methodNode, methodNameAttributeXPath);
-		String methodDesc = evaluateStringValue(methodNode, methodDescAttributeXPath);
+		String methodName = evaluateStringValue(methodNode, m_methodNameAttributeXPath);
+		String methodDesc = evaluateStringValue(methodNode, m_methodDescAttributeXPath);
 
 		if (BytecodeUtility.isConstructor(methodName)) {
 			return;
@@ -133,20 +146,18 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 
 	private void parseMethodNode(MethodIdentifier methodIdentifier, Node methodNode, IResultReceiver resultReceiver,
 			String counterTypeName) throws XPathExpressionException {
-		XPathExpression counterNodeXPath = compileXPath(String.format("./counter[@type='%s']", counterTypeName));
-		XPathExpression folderCountCoveredAttributeXPath = compileXPath("@covered");
-		XPathExpression folderCountMissedAttributeXPath = compileXPath("@missed");
 
+		XPathExpression counterNodeXPath = compileXPath(String.format("./counter[@type='%s']", counterTypeName));
 		ECoverageLevel coverageLevel = convertCounterTypeToCoverageLevel(counterTypeName);
 
-		Node counterNode = (Node) counterNodeXPath.evaluate(methodNode, XPathConstants.NODE);
+		Node counterNode = evaluateNode(methodNode, counterNodeXPath);
 		int countCovered = 0;
 		int countNotCovered = 0;
 
 		if (counterNode != null) {
 			// counterNode is null if a method does not contain any branches
-			countCovered = Integer.parseInt(evaluateStringValue(counterNode, folderCountCoveredAttributeXPath));
-			countNotCovered = Integer.parseInt(evaluateStringValue(counterNode, folderCountMissedAttributeXPath));
+			countCovered = Integer.parseInt(evaluateStringValue(counterNode, m_methodCountCoveredAttributeXPath));
+			countNotCovered = Integer.parseInt(evaluateStringValue(counterNode, m_methodCountMissedAttributeXPath));
 		}
 
 		resultReceiver.append(getResultPresentation().formatCoveragePerMethod(methodIdentifier, coverageLevel,
