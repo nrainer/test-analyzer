@@ -16,11 +16,14 @@ public class ClasspathUtilityTest {
 	public void testGetCurrentClasspath() {
 		String currentClasspath = ClasspathUtility.getCurrentClasspath();
 		assertNotNull(currentClasspath);
-		assertFalse(currentClasspath.contains(" "));
+		assertFalse(currentClasspath.contains(ClasspathUtility.ENCODED_CHARACTER_SPACE));
 		assertTrue(currentClasspath.endsWith(FileSystemConstants.CP_SEP));
 	}
 
-	/** Check that the class to determine the completeness of the classpath has not been renamed. */
+	/**
+	 * Check that the class to determine the completeness of the classpath has not
+	 * been renamed.
+	 */
 	@Test
 	public void checkOpcodesClassIsAvailable() throws ClassNotFoundException {
 		Class.forName(ClasspathUtility.ASM_OPCODES_CLASS);

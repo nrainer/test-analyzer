@@ -16,7 +16,7 @@ import de.tum.in.niedermr.ta.core.common.constants.FileSystemConstants;
 public class ClasspathUtility {
 	protected static final String ASM_OPCODES_CLASS = "org.objectweb.asm.Opcodes";
 	private static final String CHARACTER_SPACE = " ";
-	private static final String ENCODED_CHARACTER_SPACE = "%20";
+	protected static final String ENCODED_CHARACTER_SPACE = "%20";
 
 	public static String getCurrentClasspath() {
 		List<URLClassLoader> classLoaders = Arrays.asList((URLClassLoader) ClasspathUtility.class.getClassLoader(),
@@ -48,7 +48,8 @@ public class ClasspathUtility {
 	}
 
 	/**
-	 * Warning: Must not be used when the program is started with the libraries to analyze, mutate and test.
+	 * Warning: Must not be used when the program is started with the libraries to
+	 * analyze, mutate and test.
 	 */
 	public static String getCurrentProgramClasspath() {
 		String classpath = ClasspathUtility.getCurrentClasspath();
