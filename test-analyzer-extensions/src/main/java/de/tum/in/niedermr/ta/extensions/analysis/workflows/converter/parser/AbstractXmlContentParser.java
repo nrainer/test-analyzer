@@ -115,6 +115,11 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		return (String) expression.evaluate(node, XPathConstants.STRING);
 	}
 
+	/** Evaluate an expression on a node to an int value. */
+	protected static int evaluateIntValue(Node node, XPathExpression expression) throws XPathExpressionException {
+		return Integer.parseInt(evaluateStringValue(node, expression));
+	}
+
 	/** Evaluate an expression on a node to a node list. */
 	protected static NodeList evaluateNodeList(Node node, XPathExpression expression) throws XPathExpressionException {
 		return (NodeList) expression.evaluate(node, XPathConstants.NODESET);
