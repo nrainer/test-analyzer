@@ -21,8 +21,8 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JaCoCoLineLevelParser.class);
 
-	private static final String SQL_INSERT_INTO_COMMIT_INFO = "INSERT INTO Commit_Info " + "(projectKey, commitHash) "
-			+ "VALUES (@projectKey, @commitHash);";
+	private static final String SQL_INSERT_INTO_COMMIT_INFO = "INSERT IGNORE INTO Commit_Info "
+			+ "(projectKey, commitHash) " + "VALUES (@projectKey, @commitHash);";
 	private static final String SQL_INSERT_INTO_METHOD_LOCATION_INFORMATION = "INSERT INTO Method_Location_Import "
 			+ "(projectKey, commitHash, className, methodShortName, methodDesc, startLine) "
 			+ "VALUES (@projectKey, @commitHash, '%s', '%s', '%s', %s);";
