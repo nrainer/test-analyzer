@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
 
+import java.util.List;
+
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -19,12 +21,14 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JaCoCoLineLevelParser.class);
 
+	private static final String SQL_INSERT_INTO_COMMIT_INFO = "INSERT INTO Commit_Info " + "(projectKey, commitHash) "
+			+ "VALUES (@projectKey, @commitHash);";
 	private static final String SQL_INSERT_INTO_METHOD_LOCATION_INFORMATION = "INSERT INTO Method_Location_Import "
-			+ "(execution, className, methodShortName, methodDesc, startLine) "
-			+ "VALUES ('%s', '%s', '%s', '%s', %s);";
+			+ "(projectKey, commitHash, className, methodShortName, methodDesc, startLine) "
+			+ "VALUES (@projectKey, @commitHash, '%s', '%s', '%s', %s);";
 	private static final String SQL_INSERT_INTO_LINE_COVERAGE_SHALLOW = "INSERT INTO Line_Coverage_Import "
-			+ "(execution, packageName, sourceFileName, lineNumber, coverageState) VALUES %s;";
-	private static final String SQL_INSERT_INTO_LINE_COVERAGE_VALUES = "('%s', '%s', '%s', %s, '%s')";
+			+ "(projectKey, commitHash, sessionNumber, packageName, sourceFileName, lineNumber, coverageState) VALUES %s;";
+	private static final String SQL_INSERT_INTO_LINE_COVERAGE_VALUES = "(@projectKey, @commitHash, @sessionNumber, '%s', '%s', %s, '%s')";
 
 	private XPathExpression m_classNameAttributeXPath;
 	private XPathExpression m_methodNameAttributeXPath;
@@ -80,6 +84,22 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		resultReceiver.markResultAsComplete();
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	protected void execAppendToOutputFileHeader(List<String> header) {
+		super.execAppendToOutputFileHeader(header);
+
+		header.add("");
+		header.add(getResultPresentation().formatLineComment("BEGIN VARIABLES"));
+		header.add("SET @projectKey = '###';");
+		header.add("SET @commitHash = '###';");
+		header.add("SET @sessionNumber = '###';");
+		header.add(getResultPresentation().formatLineComment("END VARIABLES"));
+		header.add("");
+
+		header.add(SQL_INSERT_INTO_COMMIT_INFO);
+	}
+
 	private void parseMethodLocationInformation(Document document, IResultReceiver resultReceiver)
 			throws XPathExpressionException {
 		visitClassNodes(document, resultReceiver, new INodeVisitor() {
@@ -112,8 +132,8 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		String methodDesc = evaluateStringValue(methodNode, m_methodDescAttributeXPath);
 		String methodLine = evaluateStringValue(methodNode, m_methodLineAttributeXPath);
 
-		resultReceiver.append(String.format(SQL_INSERT_INTO_METHOD_LOCATION_INFORMATION, getExecutionId(), className,
-				methodName, methodDesc, methodLine));
+		resultReceiver.append(String.format(SQL_INSERT_INTO_METHOD_LOCATION_INFORMATION, className, methodName,
+				methodDesc, methodLine));
 	}
 
 	private void parseLineCoverage(Document document, IResultReceiver resultReceiver) throws XPathExpressionException {
@@ -174,8 +194,8 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		ELineCoverageState lineCoverageState = ELineCoverageState.get(countCoveredInstructions,
 				countMissedInstructions);
 
-		String sqlValuesStatementPart = String.format(SQL_INSERT_INTO_LINE_COVERAGE_VALUES, getExecutionId(),
-				packageName, sourceFileName, lineNumber, lineCoverageState.getName());
+		String sqlValuesStatementPart = String.format(SQL_INSERT_INTO_LINE_COVERAGE_VALUES, packageName, sourceFileName,
+				lineNumber, lineCoverageState.getName());
 		sqlStatementBuilder.addValuesStatementPart(sqlValuesStatementPart);
 	}
 }
