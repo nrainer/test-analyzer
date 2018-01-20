@@ -159,6 +159,11 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	protected List<String> getOutputFileHeader() {
 		List<String> outputHeader = new ArrayList<>();
 		outputHeader.add(getResultPresentation().formatLineComment("Created with: " + getClass().getName()));
+		execAppendToOutputFileHeader(outputHeader);
 		return outputHeader;
+	}
+
+	protected void execAppendToOutputFileHeader(List<String> header) {
+		// NOP
 	}
 }
