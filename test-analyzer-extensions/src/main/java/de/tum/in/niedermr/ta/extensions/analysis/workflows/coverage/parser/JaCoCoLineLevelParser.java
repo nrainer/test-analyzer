@@ -11,6 +11,7 @@ import org.w3c.dom.NodeList;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
+import de.tum.in.niedermr.ta.runner.analysis.result.presentation.sql.SqlMultiInsertStatementBuilder;
 
 /** Coverage parser for JaCoCo XML files. */
 public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
@@ -21,9 +22,9 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 	private static final String SQL_INSERT_INTO_METHOD_LOCATION_INFORMATION = "INSERT INTO Method_Location_Information "
 			+ "(execution, className, methodShortName, methodDesc, startLine) "
 			+ "VALUES ('%s', '%s', '%s', '%s', %s);";
-	private static final String SQL_INSERT_INTO_LINE_COVERAGE = "INSERT INTO Line_Coverage "
-			+ "(execution, packageName, sourceFileName, lineNumber, coverageState) "
-			+ "VALUES ('%s', '%s', '%s', %s, '%s');";
+	private static final String SQL_INSERT_INTO_LINE_COVERAGE_SHALLOW = "INSERT INTO Line_Coverage "
+			+ "(execution, packageName, sourceFileName, lineNumber, coverageState) VALUES %s;";
+	private static final String SQL_INSERT_INTO_LINE_COVERAGE_VALUES = "('%s', '%s', '%s', %s, '%s')";
 
 	private XPathExpression m_classNameAttributeXPath;
 	private XPathExpression m_methodNameAttributeXPath;
@@ -148,17 +149,24 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		String sourceFileNameWithoutEnding = sourceFileName.replaceAll("\\.java$", "");
 		NodeList sourceLines = evaluateNodeList(sourceFileNode, m_sourceLinesOfFileXPath);
 
+		SqlMultiInsertStatementBuilder sqlStatementBuilder = new SqlMultiInsertStatementBuilder(
+				SQL_INSERT_INTO_LINE_COVERAGE_SHALLOW);
+
 		visitNodes(sourceLines, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
 			public void visitNode(Node sourceLineNode, IResultReceiver resultReceiver) throws XPathExpressionException {
-				parseSourceLineNode(packageName, sourceFileNameWithoutEnding, sourceLineNode, resultReceiver);
+				parseSourceLineNode(packageName, sourceFileNameWithoutEnding, sourceLineNode, resultReceiver,
+						sqlStatementBuilder);
 			}
 		});
+
+		resultReceiver.append(sqlStatementBuilder.toSql());
 	}
 
 	private void parseSourceLineNode(String packageName, String sourceFileName, Node sourceLineNode,
-			IResultReceiver resultReceiver) throws XPathExpressionException {
+			IResultReceiver resultReceiver, SqlMultiInsertStatementBuilder sqlStatementBuilder)
+			throws XPathExpressionException {
 		String lineNumber = evaluateStringValue(sourceLineNode, m_numberOfSourceLineAttributeXPath);
 		int countCoveredInstructions = evaluateIntValue(sourceLineNode, m_coveredInstructionsAttributeXPath);
 		int countMissedInstructions = evaluateIntValue(sourceLineNode, m_missedInstructionsAttributeXPath);
@@ -166,7 +174,8 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		ELineCoverageState lineCoverageState = ELineCoverageState.get(countCoveredInstructions,
 				countMissedInstructions);
 
-		resultReceiver.append(String.format(SQL_INSERT_INTO_LINE_COVERAGE, getExecutionId(), packageName,
-				sourceFileName, lineNumber, lineCoverageState.getName()));
+		String sqlValuesStatementPart = String.format(SQL_INSERT_INTO_LINE_COVERAGE_VALUES, getExecutionId(),
+				packageName, sourceFileName, lineNumber, lineCoverageState.getName());
+		sqlStatementBuilder.addValuesStatementPart(sqlValuesStatementPart);
 	}
 }

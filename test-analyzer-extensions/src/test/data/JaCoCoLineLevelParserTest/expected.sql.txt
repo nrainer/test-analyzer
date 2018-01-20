@@ -6,15 +6,15 @@ INSERT INTO Method_Location_Information (execution, className, methodShortName, 
 INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'isEven', '()Z', 29);
 INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'add', '(I)V', 34);
 INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'increment', '()V', 39);
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 7, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 9, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 10, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 14, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 15, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 19, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 24, 'PARTIALLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 29, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 34, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 35, 'FULLY_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 39, 'NOT_COVERED');
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 40, 'FULLY_COVERED');
+INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 7, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 9, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 10, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 14, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 15, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 19, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 24, 'PARTIALLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 29, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 34, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 35, 'FULLY_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 39, 'NOT_COVERED'),
+('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 40, 'FULLY_COVERED');
