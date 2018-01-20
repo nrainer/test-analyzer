@@ -1,12 +1,12 @@
 -- Created with: de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.JaCoCoLineLevelParser
-INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', '<init>', '()V', 7);
-INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'setResult', '(I)V', 14);
-INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'getResult', '()I', 19);
-INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'getResultAsString', '()Ljava/lang/String;', 24);
-INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'isEven', '()Z', 29);
-INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'add', '(I)V', 34);
-INSERT INTO Method_Location_Information (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'increment', '()V', 39);
-INSERT INTO Line_Coverage (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 7, 'FULLY_COVERED'),
+INSERT INTO Method_Location_Import (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', '<init>', '()V', 7);
+INSERT INTO Method_Location_Import (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'setResult', '(I)V', 14);
+INSERT INTO Method_Location_Import (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'getResult', '()I', 19);
+INSERT INTO Method_Location_Import (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'getResultAsString', '()Ljava/lang/String;', 24);
+INSERT INTO Method_Location_Import (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'isEven', '()Z', 29);
+INSERT INTO Method_Location_Import (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'add', '(I)V', 34);
+INSERT INTO Method_Location_Import (execution, className, methodShortName, methodDesc, startLine) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite/CalculationLite', 'increment', '()V', 39);
+INSERT INTO Line_Coverage_Import (execution, packageName, sourceFileName, lineNumber, coverageState) VALUES ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 7, 'FULLY_COVERED'),
 ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 9, 'FULLY_COVERED'),
 ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 10, 'FULLY_COVERED'),
 ('TEST', 'de/tum/in/ma/simpleproject/lite', 'CalculationLite', 14, 'FULLY_COVERED'),

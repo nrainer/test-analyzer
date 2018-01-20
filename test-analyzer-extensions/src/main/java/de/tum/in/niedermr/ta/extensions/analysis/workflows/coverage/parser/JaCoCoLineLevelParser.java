@@ -19,10 +19,10 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(JaCoCoLineLevelParser.class);
 
-	private static final String SQL_INSERT_INTO_METHOD_LOCATION_INFORMATION = "INSERT INTO Method_Location_Information "
+	private static final String SQL_INSERT_INTO_METHOD_LOCATION_INFORMATION = "INSERT INTO Method_Location_Import "
 			+ "(execution, className, methodShortName, methodDesc, startLine) "
 			+ "VALUES ('%s', '%s', '%s', '%s', %s);";
-	private static final String SQL_INSERT_INTO_LINE_COVERAGE_SHALLOW = "INSERT INTO Line_Coverage "
+	private static final String SQL_INSERT_INTO_LINE_COVERAGE_SHALLOW = "INSERT INTO Line_Coverage_Import "
 			+ "(execution, packageName, sourceFileName, lineNumber, coverageState) VALUES %s;";
 	private static final String SQL_INSERT_INTO_LINE_COVERAGE_VALUES = "('%s', '%s', '%s', %s, '%s')";
 
