@@ -108,7 +108,7 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 		visitClassNodes(document, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node classNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
 				parseClassNode(classNode, resultReceiver);
 			}
 		});
@@ -120,7 +120,7 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 		visitMethodNodes(classNode, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node methodNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node methodNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
 				parseMethodNode(className, methodNode, resultReceiver);
 			}
 		});

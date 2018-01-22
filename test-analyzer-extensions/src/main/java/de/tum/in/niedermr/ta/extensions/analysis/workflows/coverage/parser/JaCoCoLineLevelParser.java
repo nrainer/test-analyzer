@@ -105,7 +105,7 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		visitClassNodes(document, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node classNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
 				parseClassNode(classNode, resultReceiver);
 			}
 		});
@@ -117,7 +117,7 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		visitMethodNodes(classNode, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node methodNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node methodNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
 				parseMethodNode(className, methodNode, resultReceiver);
 			}
 		});
@@ -142,7 +142,7 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		visitNodes(packages, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node packageNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node packageNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
 				parsePackageNode(packageNode, resultReceiver);
 			}
 		});
@@ -155,7 +155,7 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		visitNodes(sourceFiles, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node sourceFileNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node sourceFileNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
 				parseSourceFile(packageName, sourceFileNode, resultReceiver);
 			}
 		});
@@ -175,7 +175,7 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		visitNodes(sourceLines, resultReceiver, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node sourceLineNode, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node sourceLineNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
 				parseSourceLineNode(packageName, sourceFileNameWithoutEnding, sourceLineNode, resultReceiver,
 						sqlStatementBuilder);
 			}

@@ -10,5 +10,5 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 public interface INodeVisitor {
 
 	/** Visit a node. */
-	void visitNode(Node node, IResultReceiver resultReceiver) throws XPathExpressionException;
+	void visitNode(Node node, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException;
 }
