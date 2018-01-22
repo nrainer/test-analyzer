@@ -7,7 +7,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractXmlContentParser;
 
@@ -39,15 +38,13 @@ public abstract class AbstractJaCoCoParser extends AbstractXmlContentParser {
 		m_methodsOfClassXPath = compileXPath("./method");
 	}
 
-	protected void visitClassNodes(Document document, IResultReceiver resultReceiver, INodeVisitor visitor)
-			throws XPathExpressionException {
+	protected void visitClassNodes(Document document, INodeVisitor visitor) throws XPathExpressionException {
 		NodeList classNodes = evaluateNodeList(document, m_allClassesXPath);
-		visitNodes(classNodes, resultReceiver, visitor);
+		visitNodes(classNodes, visitor);
 	}
 
-	protected void visitMethodNodes(Node classNode, IResultReceiver resultReceiver, INodeVisitor visitor)
-			throws XPathExpressionException {
+	protected void visitMethodNodes(Node classNode, INodeVisitor visitor) throws XPathExpressionException {
 		NodeList methodNodes = evaluateNodeList(classNode, m_methodsOfClassXPath);
-		visitNodes(methodNodes, resultReceiver, visitor);
+		visitNodes(methodNodes, visitor);
 	}
 }

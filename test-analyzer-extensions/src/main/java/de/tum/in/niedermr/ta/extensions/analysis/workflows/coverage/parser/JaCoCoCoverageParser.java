@@ -105,10 +105,10 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 
 	private void parseMethodInformation(Document document, IResultReceiver resultReceiver)
 			throws XPathExpressionException {
-		visitClassNodes(document, resultReceiver, new INodeVisitor() {
+		visitClassNodes(document, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node classNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node classNode, int nodeIndex) throws XPathExpressionException {
 				parseClassNode(classNode, resultReceiver);
 			}
 		});
@@ -117,10 +117,10 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 	private void parseClassNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
 		String className = JavaUtility.toClassName(evaluateStringValue(classNode, m_classNameAttributeXPath));
 
-		visitMethodNodes(classNode, resultReceiver, new INodeVisitor() {
+		visitMethodNodes(classNode, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node methodNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node methodNode, int nodeIndex) throws XPathExpressionException {
 				parseMethodNode(className, methodNode, resultReceiver);
 			}
 		});

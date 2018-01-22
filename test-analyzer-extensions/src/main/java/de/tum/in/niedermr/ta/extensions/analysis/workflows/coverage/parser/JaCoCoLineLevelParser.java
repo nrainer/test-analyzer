@@ -102,10 +102,10 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 
 	private void parseMethodLocationInformation(Document document, IResultReceiver resultReceiver)
 			throws XPathExpressionException {
-		visitClassNodes(document, resultReceiver, new INodeVisitor() {
+		visitClassNodes(document, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node classNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node classNode, int nodeIndex) throws XPathExpressionException {
 				parseClassNode(classNode, resultReceiver);
 			}
 		});
@@ -114,10 +114,10 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 	private void parseClassNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
 		String className = evaluateStringValue(classNode, m_classNameAttributeXPath);
 
-		visitMethodNodes(classNode, resultReceiver, new INodeVisitor() {
+		visitMethodNodes(classNode, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node methodNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node methodNode, int nodeIndex) throws XPathExpressionException {
 				parseMethodNode(className, methodNode, resultReceiver);
 			}
 		});
@@ -139,10 +139,10 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 	private void parseLineCoverage(Document document, IResultReceiver resultReceiver) throws XPathExpressionException {
 		NodeList packages = evaluateNodeList(document, m_allPackagesXPath);
 
-		visitNodes(packages, resultReceiver, new INodeVisitor() {
+		visitNodes(packages, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node packageNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node packageNode, int nodeIndex) throws XPathExpressionException {
 				parsePackageNode(packageNode, resultReceiver);
 			}
 		});
@@ -152,10 +152,10 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		String packageName = evaluateStringValue(packageNode, m_packageNameAttributeXPath);
 		NodeList sourceFiles = evaluateNodeList(packageNode, m_sourceFilesOfPackageXPath);
 
-		visitNodes(sourceFiles, resultReceiver, new INodeVisitor() {
+		visitNodes(sourceFiles, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node sourceFileNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
+			public void visitNode(Node sourceFileNode, int nodeIndex) throws XPathExpressionException {
 				parseSourceFile(packageName, sourceFileNode, resultReceiver);
 			}
 		});
@@ -172,12 +172,11 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 		SqlMultiInsertStatementBuilder sqlStatementBuilder = new SqlMultiInsertStatementBuilder(
 				SQL_INSERT_INTO_LINE_COVERAGE_SHALLOW);
 
-		visitNodes(sourceLines, resultReceiver, new INodeVisitor() {
+		visitNodes(sourceLines, new INodeVisitor() {
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node sourceLineNode, int nodeIndex, IResultReceiver resultReceiver) throws XPathExpressionException {
-				parseSourceLineNode(packageName, sourceFileNameWithoutEnding, sourceLineNode, resultReceiver,
-						sqlStatementBuilder);
+			public void visitNode(Node sourceLineNode, int nodeIndex) throws XPathExpressionException {
+				parseSourceLineNode(packageName, sourceFileNameWithoutEnding, sourceLineNode, sqlStatementBuilder);
 			}
 		});
 
@@ -185,8 +184,7 @@ public class JaCoCoLineLevelParser extends AbstractJaCoCoParser {
 	}
 
 	private void parseSourceLineNode(String packageName, String sourceFileName, Node sourceLineNode,
-			IResultReceiver resultReceiver, SqlMultiInsertStatementBuilder sqlStatementBuilder)
-			throws XPathExpressionException {
+			SqlMultiInsertStatementBuilder sqlStatementBuilder) throws XPathExpressionException {
 		String lineNumber = evaluateStringValue(sourceLineNode, m_numberOfSourceLineAttributeXPath);
 		int countCoveredInstructions = evaluateIntValue(sourceLineNode, m_coveredInstructionsAttributeXPath);
 		int countMissedInstructions = evaluateIntValue(sourceLineNode, m_missedInstructionsAttributeXPath);

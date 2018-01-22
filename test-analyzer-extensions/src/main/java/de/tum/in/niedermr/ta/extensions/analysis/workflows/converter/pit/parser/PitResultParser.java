@@ -66,11 +66,11 @@ public class PitResultParser extends AbstractXmlContentParser {
 	private void parseMutationNodes(Document document, IResultReceiver resultReceiver) throws XPathExpressionException {
 		NodeList nodeList = evaluateNodeList(document, m_mutationNodeXPath);
 
-		visitNodes(nodeList, resultReceiver, new INodeVisitor() {
+		visitNodes(nodeList, new INodeVisitor() {
 
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node currentNode, int nodeIndex, IResultReceiver resultReceiver)
+			public void visitNode(Node currentNode, int nodeIndex)
 					throws XPathExpressionException {
 				parseMutationNodeAndAppendToResultReceiver(currentNode, nodeIndex, resultReceiver);
 				resultReceiver.markResultAsPartiallyComplete();

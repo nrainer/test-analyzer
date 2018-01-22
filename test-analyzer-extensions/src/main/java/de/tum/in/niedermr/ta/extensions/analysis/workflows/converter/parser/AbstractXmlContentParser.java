@@ -168,13 +168,13 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		// NOP
 	}
 
-	protected void visitNodes(NodeList nodes, IResultReceiver resultReceiver, INodeVisitor visitor)
+	protected void visitNodes(NodeList nodes, INodeVisitor visitor)
 			throws XPathExpressionException {
 
 		for (int nodeIndex = 0; nodeIndex < nodes.getLength(); nodeIndex++) {
 			Node currentNode = nodes.item(nodeIndex);
 
-			visitor.visitNode(currentNode, nodeIndex, resultReceiver);
+			visitor.visitNode(currentNode, nodeIndex);
 
 			// performance tuning (does not influence indices in the NodeList)
 			currentNode.getParentNode().removeChild(currentNode);
