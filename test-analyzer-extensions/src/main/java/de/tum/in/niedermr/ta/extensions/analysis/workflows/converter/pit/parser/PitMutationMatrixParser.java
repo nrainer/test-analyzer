@@ -42,15 +42,15 @@ public class PitMutationMatrixParser extends PitResultParser {
 
 	/** {@inheritDoc} */
 	@Override
-	protected void initializeXPathExpressions() throws XPathExpressionException {
-		super.initializeXPathExpressions();
+	protected void execCompileXPathExpressions() throws XPathExpressionException {
+		super.execCompileXPathExpressions();
 
 		m_succeedingTestNodeXPath = compileXPath("./succeedingTest");
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	protected void parseMutationNodeAndAppendToResultReceiver(int nodeIndex, Node mutationNode,
+	protected void parseMutationNodeAndAppendToResultReceiver(Node mutationNode, int nodeIndex,
 			IResultReceiver resultReceiver) throws XPathExpressionException {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
 		final String mutationStatusOfXmlNode = outputBuilder.getMutationStatus();
