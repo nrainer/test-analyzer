@@ -27,6 +27,7 @@ import org.xml.sax.SAXException;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.INodeVisitor;
 
 /** Abstract XML content parser. */
 public abstract class AbstractXmlContentParser implements IContentParser {
@@ -165,5 +166,18 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 
 	protected void execAppendToOutputFileHeader(List<String> header) {
 		// NOP
+	}
+
+	protected void visitNodes(NodeList nodes, IResultReceiver resultReceiver, INodeVisitor visitor)
+			throws XPathExpressionException {
+
+		for (int i = 0; i < nodes.getLength(); i++) {
+			Node currentNode = nodes.item(i);
+
+			visitor.visitNode(currentNode, resultReceiver);
+
+			// performance tuning (does not influence indices in the NodeList)
+			currentNode.getParentNode().removeChild(currentNode);
+		}
 	}
 }

@@ -50,18 +50,4 @@ public abstract class AbstractJaCoCoParser extends AbstractXmlContentParser {
 		NodeList methodNodes = evaluateNodeList(classNode, m_methodsOfClassXPath);
 		visitNodes(methodNodes, resultReceiver, visitor);
 	}
-
-	protected void visitNodes(NodeList nodes, IResultReceiver resultReceiver, INodeVisitor visitor)
-			throws XPathExpressionException {
-
-		for (int i = 0; i < nodes.getLength(); i++) {
-			Node currentNode = nodes.item(i);
-
-			visitor.visitNode(currentNode, resultReceiver);
-
-			// performance tuning (does not influence indices in the NodeList)
-			currentNode.getParentNode().removeChild(currentNode);
-		}
-	}
-
 }
