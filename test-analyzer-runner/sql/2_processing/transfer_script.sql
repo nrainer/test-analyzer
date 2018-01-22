@@ -79,7 +79,6 @@ INSERT INTO Pit_Mutation_Info
 SELECT 
 	pmr.id,
 	pmr.execution,
-	pmr.mutatedMethod,
 	pmr.mutatorName,
 	pmr.mutationStatus,
 	pmr.testcase,
