@@ -70,11 +70,30 @@ public abstract class AbstractArtifactVisitor<OP extends ICodeOperation>
 		}
 	}
 
+	/**
+	 * Visit a class file entry.
+	 * 
+	 * @param artifactOperation
+	 * @param cr
+	 *            class reader
+	 * @param originalClassPath
+	 *            class path
+	 */
 	protected void execVisitClassEntry(OP artifactOperation, ClassReader cr, String originalClassPath)
 			throws IteratorException, CodeOperationException, IOException {
 		// NOP
 	}
 
+	/**
+	 * Visit a resource file.
+	 * 
+	 * @param artifactOperation
+	 *            operation to perform
+	 * @param inStream
+	 *            input stream
+	 * @param entryName
+	 *            path to the entry
+	 */
 	protected void execVisitResourceEntry(OP artifactOperation, InputStream inStream, String entryName)
 			throws IteratorException, CodeOperationException, IOException {
 		// NOP
