@@ -24,7 +24,7 @@ CREATE TABLE Line_Coverage_Info
     isNotCovered TINYINT(1) GENERATED ALWAYS AS (coverageState = 'NOT_COVERED') VIRTUAL
 );
 
-CREATE INDEX idx_sf_info_1 ON Source_File_Info(commitId);
-CREATE INDEX idx_sf_info_2 ON Source_File_Info(sourceFilePathHash);
+CREATE INDEX idx_sf_info_1 ON Source_File_Info(commitId, sourceFilePathHash);
+CREATE INDEX idx_lc_info_1 ON Line_Coverage_Info(commitId, sourceFileId, lineNumber);
 
 ALTER TABLE Line_Coverage_Info ADD CONSTRAINT uc_lc_info_1 UNIQUE (commitId, sessionNumber, sourceFileId, lineNumber);

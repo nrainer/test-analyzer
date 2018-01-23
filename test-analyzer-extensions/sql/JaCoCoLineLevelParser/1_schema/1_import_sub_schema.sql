@@ -36,9 +36,7 @@ CREATE TABLE Line_Coverage_Import
 	sourceFilePathHash VARCHAR(64) GENERATED ALWAYS AS (CONCAT(MD5(packageName), MD5(sourceFileName))) VIRTUAL
 );
 
-CREATE INDEX idx_ml_imp_1 ON Method_Location_Import(projectKey, commitHash);
-CREATE INDEX idx_ml_imp_2 ON Method_Location_Import(startLine);
-CREATE INDEX idx_ml_imp_3 ON Method_Location_Import(fullMethodHash);
+CREATE INDEX idx_ml_imp_1 ON Method_Location_Import(projectKey, commitHash, fullMethodHash, startLine);
 CREATE INDEX idx_lc_imp_1 ON Line_Coverage_Import(projectKey, commitHash, sessionNumber);
 CREATE INDEX idx_lc_imp_2 ON Line_Coverage_Import(sourceFilePathHash);
 
