@@ -14,6 +14,10 @@ public enum ELineCoverageState {
 
 	/** Get the state based on instruction counts. */
 	public static ELineCoverageState get(int countCoveredInstructions, int countMissedInstructions) {
+		if (countCoveredInstructions < 0 || countMissedInstructions < 0) {
+			throw new IllegalStateException("Counters must not be < 0");
+		}
+
 		if (countCoveredInstructions > 0 && countMissedInstructions == 0) {
 			return FULLY_COVERED;
 		}
@@ -26,6 +30,7 @@ public enum ELineCoverageState {
 			return PARTIALLY_COVERED;
 		}
 
+		// both are zero
 		return NOT_COVERABLE;
 	}
 
