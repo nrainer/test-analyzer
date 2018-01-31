@@ -7,7 +7,7 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 
 /** SQL output builder for the aggregated project coverage. */
-public class ProjectCoverageSqlOutputBuilder {
+public class AggregatedCoverageSqlOutputBuilder {
 
 	/** Parts of source folder names that are presumably irrelevant. */
 	private static final String[] IRRELEVANT_SOURCE_FOLDER_NAME_PARTS = { "test", "tst", "external", "jmh",
@@ -18,7 +18,7 @@ public class ProjectCoverageSqlOutputBuilder {
 	private boolean m_completed = false;
 
 	/** Constructor. */
-	public ProjectCoverageSqlOutputBuilder(IExecutionId executionId, ECoverageLevel coverageLevel) {
+	public AggregatedCoverageSqlOutputBuilder(IExecutionId executionId, ECoverageLevel coverageLevel) {
 		m_executionId = executionId;
 		m_result = new ArrayList<>();
 		m_result.add("UPDATE Execution_Information SET " + getCoverageColumnName(coverageLevel) + " = ");

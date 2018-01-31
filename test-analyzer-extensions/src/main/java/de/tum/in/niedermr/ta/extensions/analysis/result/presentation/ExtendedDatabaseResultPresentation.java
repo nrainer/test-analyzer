@@ -5,7 +5,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result.MutationSqlOutputBuilder;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.AggregatedCoverageSqlOutputBuilder;
 import de.tum.in.niedermr.ta.runner.analysis.result.presentation.DatabaseResultPresentation;
 
 /** An extended version of the database result presentation. */
@@ -101,8 +101,8 @@ public class ExtendedDatabaseResultPresentation extends DatabaseResultPresentati
 
 	/** {@inheritDoc} */
 	@Override
-	public ProjectCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel) {
-		return new ProjectCoverageSqlOutputBuilder(getExecutionId(), coverageLevel);
+	public AggregatedCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel) {
+		return new AggregatedCoverageSqlOutputBuilder(getExecutionId(), coverageLevel);
 	}
 
 	private String getCoverageValueName(ECoverageLevel coverageLevel, ECoverageValueType valueType) {

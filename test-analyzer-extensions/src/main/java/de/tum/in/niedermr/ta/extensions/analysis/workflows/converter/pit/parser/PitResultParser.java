@@ -13,6 +13,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractXmlContentParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result.MutationSqlOutputBuilder;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.INodeVisitor;
 
 /** Coverage parser for PIT XML files. */
 public class PitResultParser extends AbstractXmlContentParser {
@@ -43,14 +44,15 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** {@inheritDoc} */
 	@Override
 	protected void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException {
-		initializeXPathExpressions();
-
 		parseMutationNodes(document, resultReceiver);
 		resultReceiver.markResultAsComplete();
 	}
 
-	/** Initialize XPath expressions. */
-	protected void initializeXPathExpressions() throws XPathExpressionException {
+	/** {@inheritDoc} */
+	@Override
+	protected void execCompileXPathExpressions() throws XPathExpressionException {
+		super.execCompileXPathExpressions();
+
 		m_mutationNodeXPath = compileXPath("mutations/mutation");
 		m_mutatedClassNodeXPath = compileXPath("./mutatedClass");
 		m_mutatedMethodNodeXPath = compileXPath("./mutatedMethod");
@@ -64,20 +66,20 @@ public class PitResultParser extends AbstractXmlContentParser {
 	private void parseMutationNodes(Document document, IResultReceiver resultReceiver) throws XPathExpressionException {
 		NodeList nodeList = evaluateNodeList(document, m_mutationNodeXPath);
 
-		for (int nodeIndex = 0; nodeIndex < nodeList.getLength(); nodeIndex++) {
-			Node currentNode = nodeList.item(nodeIndex);
+		visitNodes(nodeList, new INodeVisitor() {
 
-			parseMutationNodeAndAppendToResultReceiver(nodeIndex, currentNode, resultReceiver);
-			resultReceiver.markResultAsPartiallyComplete();
+			/** {@inheritDoc} */
+			@Override
+			public void visitNode(Node currentNode, int nodeIndex)
+					throws XPathExpressionException {
+				parseMutationNodeAndAppendToResultReceiver(currentNode, nodeIndex, resultReceiver);
+				resultReceiver.markResultAsPartiallyComplete();
 
-			if (nodeIndex > 0 && nodeIndex % 1000 == 0) {
-				LOGGER.info("Parsed mutation node number " + nodeIndex + ".");
+				if (nodeIndex > 0 && nodeIndex % 1000 == 0) {
+					LOGGER.info("Parsed mutation node number " + nodeIndex + ".");
+				}
 			}
-
-			// remove the current node from the parent node to improve the performance; this does not influence the
-			// indices in the NodeList
-			currentNode.getParentNode().removeChild(currentNode);
-		}
+		});
 	}
 
 	/**
@@ -86,7 +88,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 	 * @param nodeIndex
 	 *            zero-based index of the node
 	 */
-	protected void parseMutationNodeAndAppendToResultReceiver(int nodeIndex, Node mutationNode,
+	protected void parseMutationNodeAndAppendToResultReceiver(Node mutationNode, int nodeIndex,
 			IResultReceiver resultReceiver) throws XPathExpressionException {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
 		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);

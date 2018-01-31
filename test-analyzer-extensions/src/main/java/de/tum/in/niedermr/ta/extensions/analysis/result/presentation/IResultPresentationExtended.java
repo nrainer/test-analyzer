@@ -7,7 +7,7 @@ import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.result.MutationSqlOutputBuilder;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.AggregatedCoverageSqlOutputBuilder;
 
 /** Result presentation for extensions. */
 public interface IResultPresentationExtended extends IResultPresentation {
@@ -34,7 +34,7 @@ public interface IResultPresentationExtended extends IResultPresentation {
 	public String formatCoveragePerMethod(MethodIdentifier methodIdentifier, ECoverageLevel coverageLevel,
 			int coverageValue, ECoverageValueType valueType);
 
-	ProjectCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel);
+	AggregatedCoverageSqlOutputBuilder createProjectCoverageSqlOutputBuilder(ECoverageLevel coverageLevel);
 
 	MutationSqlOutputBuilder createMutationSqlOutputBuilder(String testcaseIdentifierColumnName,
 			String testcaseOrigColumnName);

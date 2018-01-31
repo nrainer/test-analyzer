@@ -26,6 +26,10 @@ public interface ExtensionEnvironmentConstants extends EnvironmentConstants {
 	String FILE_OUTPUT_COVERAGE_INFORMATION = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "coverage-information"
 			+ FileSystemConstants.FILE_EXTENSION_SQL_TXT;
 
+	/** Output file for the line level coverage. */
+	String FILE_OUTPUT_LINE_LEVEL_COVERAGE = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "line-level-coverage"
+			+ FileSystemConstants.FILE_EXTENSION_SQL_TXT;
+
 	/** Output file for the retrieved method return types. */
 	String FILE_OUTPUT_METHOD_RETURN_TYPES = EnvironmentConstants.PATH_WORKING_AREA_RESULT + "return-type-list"
 			+ FileSystemConstants.FILE_EXTENSION_TXT;

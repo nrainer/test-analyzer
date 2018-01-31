@@ -27,11 +27,13 @@ import org.xml.sax.SAXException;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
 import de.tum.in.niedermr.ta.extensions.analysis.result.presentation.IResultPresentationExtended;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser.INodeVisitor;
 
 /** Abstract XML content parser. */
 public abstract class AbstractXmlContentParser implements IContentParser {
 
 	private final String m_xmlSchemaName;
+	private final IExecutionId m_executionId;
 	private final IResultPresentationExtended m_resultPresentation;
 	private DocumentBuilder m_documentBuilder;
 	private XPath m_xPath;
@@ -39,7 +41,13 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	/** Constructor. */
 	public AbstractXmlContentParser(String xmlSchemaName, IExecutionId executionId) {
 		m_xmlSchemaName = xmlSchemaName;
+		m_executionId = executionId;
 		m_resultPresentation = IResultPresentationExtended.create(executionId);
+	}
+
+	/** @see #m_executionId */
+	public IExecutionId getExecutionId() {
+		return m_executionId;
 	}
 
 	/** {@inheritDoc} */
@@ -55,6 +63,12 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 			m_xPath = xPathFactory.newXPath();
 		} catch (ParserConfigurationException e) {
 			throw new ContentParserException("Parser initialization failed", e);
+		}
+
+		try {
+			execCompileXPathExpressions();
+		} catch (XPathExpressionException e) {
+			throw new ContentParserException("XPath expression compilation failed", e);
 		}
 	}
 
@@ -87,6 +101,11 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		return m_xPath.compile(expression);
 	}
 
+	/** Compile expressions. */
+	protected void execCompileXPathExpressions() throws XPathExpressionException {
+		// NOP
+	}
+
 	/** Get the extended result presentation. */
 	protected final IResultPresentationExtended getResultPresentation() {
 		return m_resultPresentation;
@@ -97,9 +116,19 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		return (String) expression.evaluate(node, XPathConstants.STRING);
 	}
 
+	/** Evaluate an expression on a node to an int value. */
+	protected static int evaluateIntValue(Node node, XPathExpression expression) throws XPathExpressionException {
+		return Integer.parseInt(evaluateStringValue(node, expression));
+	}
+
 	/** Evaluate an expression on a node to a node list. */
 	protected static NodeList evaluateNodeList(Node node, XPathExpression expression) throws XPathExpressionException {
 		return (NodeList) expression.evaluate(node, XPathConstants.NODESET);
+	}
+
+	/** Evaluate an expression on a node to a node. */
+	protected static Node evaluateNode(Node node, XPathExpression expression) throws XPathExpressionException {
+		return (Node) expression.evaluate(node, XPathConstants.NODE);
 	}
 
 	/** Evaluate the value of a node attribute. */
@@ -131,6 +160,24 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 	protected List<String> getOutputFileHeader() {
 		List<String> outputHeader = new ArrayList<>();
 		outputHeader.add(getResultPresentation().formatLineComment("Created with: " + getClass().getName()));
+		execAppendToOutputFileHeader(outputHeader);
 		return outputHeader;
+	}
+
+	protected void execAppendToOutputFileHeader(List<String> header) {
+		// NOP
+	}
+
+	protected void visitNodes(NodeList nodes, INodeVisitor visitor)
+			throws XPathExpressionException {
+
+		for (int nodeIndex = 0; nodeIndex < nodes.getLength(); nodeIndex++) {
+			Node currentNode = nodes.item(nodeIndex);
+
+			visitor.visitNode(currentNode, nodeIndex);
+
+			// performance tuning (does not influence indices in the NodeList)
+			currentNode.getParentNode().removeChild(currentNode);
+		}
 	}
 }

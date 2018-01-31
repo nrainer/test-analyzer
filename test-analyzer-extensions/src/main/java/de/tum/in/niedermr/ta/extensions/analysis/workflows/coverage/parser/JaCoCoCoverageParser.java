@@ -1,6 +1,5 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.parser;
 
-import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 
@@ -15,26 +14,37 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.execution.id.IExecutionId;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractXmlContentParser;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageLevel;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.ECoverageValueType;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.ProjectCoverageSqlOutputBuilder;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.coverage.result.AggregatedCoverageSqlOutputBuilder;
 
 /** Coverage parser for JaCoCo XML files. */
-public class JaCoCoXmlParser extends AbstractXmlContentParser {
+public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 
 	/** Logger. */
-	private static final Logger LOGGER = LogManager.getLogger(JaCoCoXmlParser.class);
+	private static final Logger LOGGER = LogManager.getLogger(JaCoCoCoverageParser.class);
 
-	private static final String XML_SCHEMA_NAME = "report.dtd";
+	private XPathExpression m_classNameAttributeXPath;
+	private XPathExpression m_methodNameAttributeXPath;
+	private XPathExpression m_methodDescAttributeXPath;
+	private XPathExpression m_methodCountCoveredAttributeXPath;
+	private XPathExpression m_methodCountMissedAttributeXPath;
 
-	private static final String COUNTER_TYPE_METHOD = "METHOD";
-	private static final String COUNTER_TYPE_LINE = "LINE";
-	private static final String COUNTER_TYPE_INSTRUCTION = "INSTRUCTION";
-	private static final String COUNTER_TYPE_BRANCH = "BRANCH";
+	/** Constructor. */
+	public JaCoCoCoverageParser(IExecutionId executionId) {
+		super(executionId);
+	}
 
-	public JaCoCoXmlParser(IExecutionId executionId) {
-		super(XML_SCHEMA_NAME, executionId);
+	/** {@inheritDoc} */
+	@Override
+	protected void execCompileXPathExpressions() throws XPathExpressionException {
+		super.execCompileXPathExpressions();
+
+		m_classNameAttributeXPath = compileXPath("@name");
+		m_methodNameAttributeXPath = compileXPath("@name");
+		m_methodDescAttributeXPath = compileXPath("@desc");
+		m_methodCountCoveredAttributeXPath = compileXPath("@covered");
+		m_methodCountMissedAttributeXPath = compileXPath("@missed");
 	}
 
 	/** {@inheritDoc} */
@@ -71,7 +81,7 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 		XPathExpression folderNameAttributeXPath = compileXPath("../@name");
 		XPathExpression folderCountCoveredAttributeXPath = compileXPath("@covered");
 		XPathExpression folderCountMissedAttributeXPath = compileXPath("@missed");
-		ProjectCoverageSqlOutputBuilder sqlOutputBuilder = getResultPresentation()
+		AggregatedCoverageSqlOutputBuilder sqlOutputBuilder = getResultPresentation()
 				.createProjectCoverageSqlOutputBuilder(convertCounterTypeToCoverageLevel(counterTypeName));
 
 		NodeList nodeList = evaluateNodeList(document, sourceFoldersExpression);
@@ -84,7 +94,8 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 			int countNotCovered = Integer.parseInt(evaluateStringValue(node, folderCountMissedAttributeXPath));
 			sqlOutputBuilder.addSourceFolder(sourceFolderName, countCovered, countNotCovered);
 
-			// performance tuning (does not influence indices in the NodeList) must be applied at the end here (because
+			// performance tuning (does not influence indices in the NodeList) must be
+			// applied at the end here (because
 			// folderNameAttributeXPath accesses a parent attribute)
 			node.getParentNode().removeChild(node);
 		}
@@ -94,34 +105,25 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 
 	private void parseMethodInformation(Document document, IResultReceiver resultReceiver)
 			throws XPathExpressionException {
-		XPathExpression allClassesXPath = compileXPath("//class");
-		NodeList classNodes = evaluateNodeList(document, allClassesXPath);
-
-		for (int i = 0; i < classNodes.getLength(); i++) {
-			Node classNode = classNodes.item(i);
-
-			parseClassNode(classNode, resultReceiver);
-
-			// performance tuning (does not influence indices in the NodeList)
-			classNode.getParentNode().removeChild(classNode);
-		}
+		visitClassNodes(document, new INodeVisitor() {
+			/** {@inheritDoc} */
+			@Override
+			public void visitNode(Node classNode, int nodeIndex) throws XPathExpressionException {
+				parseClassNode(classNode, resultReceiver);
+			}
+		});
 	}
 
 	private void parseClassNode(Node classNode, IResultReceiver resultReceiver) throws XPathExpressionException {
-		XPathExpression classNameAttributeXPath = compileXPath("@name");
-		XPathExpression methodsOfClassXPath = compileXPath("./method");
+		String className = JavaUtility.toClassName(evaluateStringValue(classNode, m_classNameAttributeXPath));
 
-		String className = JavaUtility.toClassName(evaluateStringValue(classNode, classNameAttributeXPath));
-		NodeList methodNodes = evaluateNodeList(classNode, methodsOfClassXPath);
-
-		for (int i = 0; i < methodNodes.getLength(); i++) {
-			Node methodNode = methodNodes.item(i);
-
-			parseMethodNode(className, methodNode, resultReceiver);
-
-			// performance tuning (does not influence indices in the NodeList)
-			methodNode.getParentNode().removeChild(methodNode);
-		}
+		visitMethodNodes(classNode, new INodeVisitor() {
+			/** {@inheritDoc} */
+			@Override
+			public void visitNode(Node methodNode, int nodeIndex) throws XPathExpressionException {
+				parseMethodNode(className, methodNode, resultReceiver);
+			}
+		});
 
 		LOGGER.info("Parsed coverage of methods of class: " + className);
 		resultReceiver.markResultAsPartiallyComplete();
@@ -129,11 +131,8 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 
 	private void parseMethodNode(String className, Node methodNode, IResultReceiver resultReceiver)
 			throws XPathExpressionException {
-		XPathExpression methodNameAttributeXPath = compileXPath("@name");
-		XPathExpression methodDescAttributeXPath = compileXPath("@desc");
-
-		String methodName = evaluateStringValue(methodNode, methodNameAttributeXPath);
-		String methodDesc = evaluateStringValue(methodNode, methodDescAttributeXPath);
+		String methodName = evaluateStringValue(methodNode, m_methodNameAttributeXPath);
+		String methodDesc = evaluateStringValue(methodNode, m_methodDescAttributeXPath);
 
 		if (BytecodeUtility.isConstructor(methodName)) {
 			return;
@@ -147,20 +146,18 @@ public class JaCoCoXmlParser extends AbstractXmlContentParser {
 
 	private void parseMethodNode(MethodIdentifier methodIdentifier, Node methodNode, IResultReceiver resultReceiver,
 			String counterTypeName) throws XPathExpressionException {
-		XPathExpression counterNodeXPath = compileXPath(String.format("./counter[@type='%s']", counterTypeName));
-		XPathExpression folderCountCoveredAttributeXPath = compileXPath("@covered");
-		XPathExpression folderCountMissedAttributeXPath = compileXPath("@missed");
 
+		XPathExpression counterNodeXPath = compileXPath(String.format("./counter[@type='%s']", counterTypeName));
 		ECoverageLevel coverageLevel = convertCounterTypeToCoverageLevel(counterTypeName);
 
-		Node counterNode = (Node) counterNodeXPath.evaluate(methodNode, XPathConstants.NODE);
+		Node counterNode = evaluateNode(methodNode, counterNodeXPath);
 		int countCovered = 0;
 		int countNotCovered = 0;
 
 		if (counterNode != null) {
 			// counterNode is null if a method does not contain any branches
-			countCovered = Integer.parseInt(evaluateStringValue(counterNode, folderCountCoveredAttributeXPath));
-			countNotCovered = Integer.parseInt(evaluateStringValue(counterNode, folderCountMissedAttributeXPath));
+			countCovered = Integer.parseInt(evaluateStringValue(counterNode, m_methodCountCoveredAttributeXPath));
+			countNotCovered = Integer.parseInt(evaluateStringValue(counterNode, m_methodCountMissedAttributeXPath));
 		}
 
 		resultReceiver.append(getResultPresentation().formatCoveragePerMethod(methodIdentifier, coverageLevel,

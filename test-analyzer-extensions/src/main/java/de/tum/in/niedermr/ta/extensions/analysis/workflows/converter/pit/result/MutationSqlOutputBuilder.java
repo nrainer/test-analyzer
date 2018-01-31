@@ -131,6 +131,6 @@ public class MutationSqlOutputBuilder {
 
 	/** Wrap a string value in quotation marks. */
 	private static String asSqlString(String value) {
-		return "'" + value + "'";
+		return SqlMultiInsertStatementBuilder.asSqlString(value);
 	}
 }

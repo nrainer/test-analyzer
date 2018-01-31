@@ -49,4 +49,9 @@ public class SqlMultiInsertStatementBuilder {
 
 		return String.format(m_statementShallow, combinedValuesBuilder);
 	}
+
+	/** Wrap a string value in quotation marks. */
+	public static String asSqlString(String value) {
+		return "'" + value + "'";
+	}
 }
