@@ -164,12 +164,15 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		return outputHeader;
 	}
 
+	/**
+	 * @param header
+	 *            to append to
+	 */
 	protected void execAppendToOutputFileHeader(List<String> header) {
 		// NOP
 	}
 
-	protected void visitNodes(NodeList nodes, INodeVisitor visitor)
-			throws XPathExpressionException {
+	protected void visitNodes(NodeList nodes, INodeVisitor visitor) throws XPathExpressionException {
 
 		for (int nodeIndex = 0; nodeIndex < nodes.getLength(); nodeIndex++) {
 			Node currentNode = nodes.item(nodeIndex);
