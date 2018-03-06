@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.core.code.identifier;
 
+import java.util.Objects;
+
 import org.objectweb.asm.Type;
 import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
@@ -17,7 +19,7 @@ public final class MethodIdentifier implements Identifier {
 
 	/** Constructor. */
 	private MethodIdentifier(String identifier, String returnType) {
-		this.m_identifier = identifier;
+		this.m_identifier = Objects.requireNonNull(identifier);
 		this.m_returnType = returnType;
 	}
 
@@ -108,9 +110,8 @@ public final class MethodIdentifier implements Identifier {
 	}
 
 	/**
-	 * The return type would be available if the instance was created using the
-	 * 'create' method or if the string to be parsed by the 'parse' method contained
-	 * the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be returned.
+	 * The return type would be available if the instance was created using the 'create' method or if the string to be
+	 * parsed by the 'parse' method contained the return type. Otherwise {@link #UNKNOWN_RETURN_TYPE} will be returned.
 	 */
 	public final String getOnlyReturnType() {
 		return m_returnType;
@@ -155,13 +156,15 @@ public final class MethodIdentifier implements Identifier {
 	}
 
 	/**
-	 * Two method identifiers are supposed to be equal if the identifiers are equal.
-	 * The return type is not considered.
+	 * Two method identifiers are supposed to be equal if the identifiers are equal. The return type is not considered.
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		return obj != null && obj instanceof MethodIdentifier
-				&& this.m_identifier.equals(((MethodIdentifier) obj).m_identifier);
+		if (obj instanceof MethodIdentifier) {
+			return Objects.equals(this.m_identifier, ((MethodIdentifier) obj).m_identifier);
+		}
+
+		return false;
 	}
 
 	private static String convertDescriptor(String descriptor) {

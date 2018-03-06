@@ -1,6 +1,8 @@
 package de.tum.in.niedermr.ta.core.code.tests;
 
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
@@ -24,7 +26,7 @@ public class TestInformation {
 	}
 
 	public Set<TestcaseIdentifier> getTestcases() {
-		return m_testcases;
+		return Collections.unmodifiableSet(m_testcases);
 	}
 
 	public int countTestcases() {
@@ -44,7 +46,8 @@ public class TestInformation {
 		if (obj != null && obj instanceof TestInformation) {
 			TestInformation t2 = (TestInformation) obj;
 
-			return this.getMethodUnderTest().equals(t2.getMethodUnderTest()) && this.getTestcases().equals(t2.getTestcases());
+			return Objects.equals(this.m_methodUnderTest, t2.m_methodUnderTest)
+					&& Objects.equals(this.m_testcases, t2.m_testcases);
 		}
 
 		return false;
@@ -52,6 +55,6 @@ public class TestInformation {
 
 	@Override
 	public int hashCode() {
-		return getMethodUnderTest().hashCode() + getTestcases().hashCode();
+		return Objects.hash(m_methodUnderTest, m_testcases);
 	}
 }

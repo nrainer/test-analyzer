@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.core.code.identifier;
 
+import java.util.Objects;
+
 import de.tum.in.niedermr.ta.core.code.constants.BytecodeConstants;
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
@@ -93,13 +95,18 @@ public final class TestcaseIdentifier implements Identifier {
 	/** {@inheritDoc} */
 	@Override
 	public boolean equals(Object obj) {
-		return obj != null && obj instanceof TestcaseIdentifier && get().equals(((TestcaseIdentifier) obj).get());
+		if (obj instanceof TestcaseIdentifier) {
+			return Objects.equals(this.m_className, ((TestcaseIdentifier) obj).m_className)
+					&& Objects.equals(this.m_testcaseName, ((TestcaseIdentifier) obj).m_testcaseName);
+		}
+
+		return false;
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	public int hashCode() {
-		return get().hashCode();
+		return Objects.hash(m_className, m_testcaseName);
 	}
 
 	/** {@inheritDoc} */

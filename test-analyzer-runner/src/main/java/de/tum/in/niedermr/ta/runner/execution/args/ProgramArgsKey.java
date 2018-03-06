@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.runner.execution.args;
 
+import java.util.Objects;
+
 /** Key to access a program argument. */
 public final class ProgramArgsKey {
 	/** Main class */
@@ -38,7 +40,7 @@ public final class ProgramArgsKey {
 	/** {@inheritDoc} */
 	@Override
 	public int hashCode() {
-		return m_programClass.hashCode() * 7 + m_index;
+		return Objects.hash(m_programClass, m_index);
 	}
 
 	/** {@inheritDoc} */

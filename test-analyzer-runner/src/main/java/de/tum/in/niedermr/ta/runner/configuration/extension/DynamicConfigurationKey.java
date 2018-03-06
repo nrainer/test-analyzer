@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.runner.configuration.extension;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /** Key to access a dynamic configuration property. */
 public class DynamicConfigurationKey implements Serializable, Comparable<DynamicConfigurationKey> {
@@ -16,7 +17,7 @@ public class DynamicConfigurationKey implements Serializable, Comparable<Dynamic
 
 	/** Constructor. */
 	private DynamicConfigurationKey(String qualifiedName, Object defaultValue) {
-		m_name = qualifiedName;
+		m_name = Objects.requireNonNull(qualifiedName);
 		m_defaultValue = defaultValue;
 	}
 
@@ -75,7 +76,7 @@ public class DynamicConfigurationKey implements Serializable, Comparable<Dynamic
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof DynamicConfigurationKey) {
-			return m_name.equals(((DynamicConfigurationKey) obj).m_name);
+			return Objects.equals(m_name, ((DynamicConfigurationKey) obj).m_name);
 		}
 
 		return false;

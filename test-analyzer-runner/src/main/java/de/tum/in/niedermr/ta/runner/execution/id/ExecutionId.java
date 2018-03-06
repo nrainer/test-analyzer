@@ -12,9 +12,9 @@ final class ExecutionId implements IExecutionId, IFullExecutionId {
 	static final String SEPARATOR = "_";
 
 	/** Short execution id. */
-	private String m_shortExecutionId;
+	private final String m_shortExecutionId;
 	/** Suffix of long execution id. May be null. */
-	private String m_fullExecutionSuffix;
+	private final String m_fullExecutionSuffix;
 
 	/** Constructor. */
 	ExecutionId(String shortExecutionId) {
@@ -111,14 +111,15 @@ final class ExecutionId implements IExecutionId, IFullExecutionId {
 	/** {@inheritDoc} */
 	@Override
 	public int hashCode() {
-		return get().hashCode();
+		return Objects.hash(m_shortExecutionId, m_fullExecutionSuffix);
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public boolean equals(Object obj) {
-		if (obj instanceof ExecutionId) {
-			return this.get().equals(((ExecutionId) obj).get());
+	public boolean equals(Object other) {
+		if (other instanceof ExecutionId) {
+			return Objects.equals(this.m_shortExecutionId, ((ExecutionId) other).m_shortExecutionId)
+					&& Objects.equals(this.m_fullExecutionSuffix, ((ExecutionId) other).m_fullExecutionSuffix);
 		}
 
 		return false;
