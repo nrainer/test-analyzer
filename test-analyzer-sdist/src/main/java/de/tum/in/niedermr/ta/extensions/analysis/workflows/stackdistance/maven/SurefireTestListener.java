@@ -29,7 +29,9 @@ public class SurefireTestListener extends RunListener {
 	/**
 	 * Note that for parameterized test cases more than one statement may be created for a certain test case identifier.
 	 */
-	private static final String SQL_INSERT_STACK_DISTANCE_STATEMENT = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, invocationCount) VALUES ('????', '%s', '%s', '%s', '%s'); ";
+	private static final String SQL_INSERT_STACK_DISTANCE_STATEMENT = "INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, invocationCount)"
+			+ " VALUES ('%s', '%s', '%s', '%s', '%s'); ";
+	private static final String DEFAULT_EXECUTION_ID = "????";
 
 	private AbstractThreadAwareStackDistanceManager m_stackDistanceManager;
 	private IResultReceiver m_resultReceiver;
@@ -117,8 +119,8 @@ public class SurefireTestListener extends RunListener {
 			int minInvocationDistance = invocationMinDistances.get(methodUnderTest);
 			int invocationCount = invocationsCount.get(methodUnderTest);
 
-			String sqlStatement = String.format(SQL_INSERT_STACK_DISTANCE_STATEMENT, testCaseIdentifier,
-					methodUnderTest, minInvocationDistance, invocationCount);
+			String sqlStatement = String.format(SQL_INSERT_STACK_DISTANCE_STATEMENT, DEFAULT_EXECUTION_ID,
+					testCaseIdentifier, methodUnderTest, minInvocationDistance, invocationCount);
 			m_resultReceiver.append(sqlStatement);
 		}
 
