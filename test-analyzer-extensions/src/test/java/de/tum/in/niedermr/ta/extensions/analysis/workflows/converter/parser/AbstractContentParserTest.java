@@ -4,15 +4,11 @@ import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
-import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
-import de.tum.in.niedermr.ta.core.common.io.TextFileUtility;
-import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 
 /** Abstract test for {@link IContentParser}. */
 public abstract class AbstractContentParserTest {
@@ -44,13 +40,9 @@ public abstract class AbstractContentParserTest {
 		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 
 		parser.parse(inputFile, resultReceiver);
-		List<String> expectedResultLines = TextFileUtility
-				.readFromFile(TestUtility.getTestFolder(getClass()) + expectedResultFileName);
 
-		String expectedResult = TestUtility
-				.alignLineEndings(StringUtility.join(expectedResultLines, CommonConstants.NEW_LINE));
-		String actualResult = TestUtility
-				.alignLineEndings(StringUtility.join(resultReceiver.getResult(), CommonConstants.NEW_LINE));
+		String expectedResult = TestUtility.loadTestContent(getClass(), expectedResultFileName);
+		String actualResult = TestUtility.loadTestContent(resultReceiver);
 
 		assertEquals(expectedResult, actualResult);
 	}
