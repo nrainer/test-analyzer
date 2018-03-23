@@ -24,26 +24,19 @@ public class TeamscaleSurefireTestListener extends AbstractSurefireTestListener 
 	/** {@inheritDoc} */
 	@Override
 	protected void writeCommentToResultFile(IResultReceiver resultReceiver, String comment) {
-		resultReceiver.append(toJson("_comment", comment) + ",");
-	}
-
-	/** {@inheritDoc} */
-	@Override
-	protected void execAfterOutputWriterInitialized(IResultReceiver resultReceiver) {
-		resultReceiver.append("{");
+		// currently not supported
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void execBeforeAllTests(IResultReceiver resultReceiver) {
-		resultReceiver.append(QUOTATION_MARK + "data" + QUOTATION_MARK + ": [");
+		resultReceiver.append("[");
 	}
 
 	/** {@inheritDoc} */
 	@Override
 	protected void execAfterAllTests(IResultReceiver resultReceiver) {
 		resultReceiver.append("]");
-		resultReceiver.append("}");
 	}
 
 	/** {@inheritDoc} */

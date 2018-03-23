@@ -1,6 +1,4 @@
-{
-"_comment": "abc",
-"data": [
+[
   {
     "testcase": "SampleTest;test1",
     "method": "java.lang.String.toString()",
@@ -15,4 +13,3 @@
     "invocationCount": "6"
   }
 ]
-}
