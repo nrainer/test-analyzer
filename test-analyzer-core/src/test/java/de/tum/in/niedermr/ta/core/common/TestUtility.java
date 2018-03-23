@@ -6,4 +6,8 @@ public class TestUtility {
 	public static String getTestFolder(Class<?> testCase) {
 		return TEST_FOLDER + testCase.getSimpleName() + "/";
 	}
+
+	public static String alignLineEndings(String s) {
+		return s.replace("\r\n", "\n");
+	}
 }

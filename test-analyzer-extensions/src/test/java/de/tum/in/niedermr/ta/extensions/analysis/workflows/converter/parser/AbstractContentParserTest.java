@@ -47,11 +47,10 @@ public abstract class AbstractContentParserTest {
 		List<String> expectedResultLines = TextFileUtility
 				.readFromFile(TestUtility.getTestFolder(getClass()) + expectedResultFileName);
 
-		String expectedResult = StringUtility.join(expectedResultLines, CommonConstants.NEW_LINE);
-		String actualResult = StringUtility.join(resultReceiver.getResult(), CommonConstants.NEW_LINE);
-
-		expectedResult = expectedResult.replace("\r\n", "\n");
-		actualResult = actualResult.replace("\r\n", "\n");
+		String expectedResult = TestUtility
+				.alignLineEndings(StringUtility.join(expectedResultLines, CommonConstants.NEW_LINE));
+		String actualResult = TestUtility
+				.alignLineEndings(StringUtility.join(resultReceiver.getResult(), CommonConstants.NEW_LINE));
 
 		assertEquals(expectedResult, actualResult);
 	}
