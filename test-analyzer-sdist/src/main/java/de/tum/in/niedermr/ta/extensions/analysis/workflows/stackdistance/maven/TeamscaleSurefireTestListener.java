@@ -69,7 +69,7 @@ public class TeamscaleSurefireTestListener extends AbstractSurefireTestListener 
 		result.append("    " + toJson("testcase", testCaseIdentifier.get()) + "," + NEW_LINE);
 		result.append("    " + toJson("method", methodUnderTest.get()) + "," + NEW_LINE);
 		result.append("    " + toJson("sdist", String.valueOf(minInvocationDistance)) + "," + NEW_LINE);
-		result.append("    " + toJson("invocCount", String.valueOf(invocationCount)) + NEW_LINE);
+		result.append("    " + toJson("invocationCount", String.valueOf(invocationCount)) + NEW_LINE);
 
 		result.append("  }");
 
