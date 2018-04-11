@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.converter;
 
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
+import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.ExtensionEnvironmentConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.parser.AbstractParserStep;
 import de.tum.in.niedermr.ta.runner.analysis.workflow.AbstractWorkflow;
@@ -19,15 +20,40 @@ public abstract class AbstractConverterWorkflow<PARSER_STEP extends AbstractPars
 	protected void startInternal(ExecutionContext context, Configuration configuration) throws ExecutionException {
 		prepareWorkingFolder();
 
-		boolean useMultipleOutputFiles = configuration.getDynamicValues()
-				.getBooleanValue(getConfigurationKeyForMultipleOutputFileUsage());
-		String resultFileName = getFileInWorkingArea(context, getOutputFile());
-		IResultReceiver resultReceiver = ResultReceiverFactory
-				.createFileResultReceiverWithDefaultSettings(useMultipleOutputFiles, resultFileName);
+		String[] inputFileNames = getInputFileNames(configuration);
 
-		String inputFileName = configuration.getDynamicValues().getStringValue(getConfigurationKeyForInputFile());
+		for (int i = 0; i < inputFileNames.length; i++) {
 
-		convert(context, inputFileName, resultReceiver);
+			boolean useMultipleOutputFiles = configuration.getDynamicValues()
+					.getBooleanValue(getConfigurationKeyForMultipleOutputFileUsage());
+			String inputFileName = inputFileNames[i];
+			String resultFileName = getResultFileName(context, i);
+			IResultReceiver resultReceiver = ResultReceiverFactory
+					.createFileResultReceiverWithDefaultSettings(useMultipleOutputFiles, resultFileName);
+
+			convert(context, inputFileName, resultReceiver);
+		}
+	}
+
+	/**
+	 * Get the name of the result file. <br/>
+	 * Adds an index to the file name if the index is greater than 0. Do not add an index suffix to the name for index 0
+	 * on purpose because in most cases only a single result file will be generated.
+	 */
+	protected String getResultFileName(ExecutionContext context, int index) {
+		String defaultResultFileName = getFileInWorkingArea(context, getOutputFile());
+
+		if (index > 0) {
+			defaultResultFileName += "." + index;
+		}
+
+		return defaultResultFileName;
+	}
+
+	protected String[] getInputFileNames(Configuration configuration) {
+		String inputFileParameterValue = configuration.getDynamicValues()
+				.getStringValue(getConfigurationKeyForInputFile());
+		return inputFileParameterValue.split(CommonConstants.SEPARATOR_DEFAULT);
 	}
 
 	/** Prepare the working folder. */
