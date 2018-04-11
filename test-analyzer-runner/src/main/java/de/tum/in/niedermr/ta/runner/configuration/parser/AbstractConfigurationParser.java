@@ -135,11 +135,16 @@ abstract class AbstractConfigurationParser<T extends AbstractConfiguration> {
 	}
 
 	private void handleDynamicProperty(LineType lineType, String key, String rawValue) {
-		if (lineType != LineType.SET) {
-			throw new IllegalStateException("Dynamic properties only support assignments with " + lineType.m_separator);
+		DynamicConfigurationKey dynamicConfigurationKey = DynamicConfigurationKey.parse(key);
+		if (lineType == LineType.SET) {
+			m_configuration.getDynamicValues().setRawValue(dynamicConfigurationKey, rawValue);
+		} else if (lineType == LineType.APPEND) {
+			String currentValue = m_configuration.getDynamicValues().getStringValue(dynamicConfigurationKey);
+			m_configuration.getDynamicValues().setRawValue(dynamicConfigurationKey, currentValue + rawValue);
+		} else {
+			throw new IllegalStateException("Unsupported line type for dynamic property: " + lineType.m_separator);
 		}
 
-		m_configuration.getDynamicValues().setRawValue(DynamicConfigurationKey.parse(key), rawValue);
 	}
 
 	/**
