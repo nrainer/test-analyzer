@@ -23,7 +23,7 @@ CREATE TABLE Method_Info
     branchCount INT(6),
     lineCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN lineCovered IS NULL THEN NULL WHEN lineCount = 0 THEN 1.0 ELSE lineCovered / lineCount END) VIRTUAL,
     instructionCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN instructionCovered IS NULL THEN NULL WHEN instructionCount = 0 THEN 1.0 ELSE instructionCovered / instructionCount END) VIRTUAL,
-    branchCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN branchCovered IS NULL THEN NULL WHEN branchCount = 0 THEN (CASE WHEN instructionCoverage > 0 THEN 1.0 ELSE 0 END) ELSE branchCovered / branchCount END) VIRTUAL,
+    branchCoverage DECIMAL(5, 4) GENERATED ALWAYS AS (CASE WHEN branchCovered IS NULL THEN NULL WHEN branchCount = 0 THEN (CASE WHEN lineCoverage = 0 THEN 0.0 ELSE 1.0 END) ELSE branchCovered / branchCount END) VIRTUAL,
 	methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(method)) VIRTUAL
 );
 
