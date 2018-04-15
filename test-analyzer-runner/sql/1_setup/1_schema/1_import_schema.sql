@@ -122,6 +122,7 @@ CREATE INDEX idx_tr_1 ON Test_Result_Import(execution, methodHash, testcaseHash,
 CREATE INDEX idx_ta_1 ON Test_Abort_Import(execution, methodHash);
 CREATE INDEX idx_sii_1 ON Stack_Info_Import(execution, methodHash, testcaseHash);
 CREATE INDEX idx_mii_1 ON Method_Info_Import(execution, methodHash);
+CREATE INDEX idx_mii_2 ON Method_Info_Import(valueName);
 CREATE INDEX idx_tii_1 ON Testcase_Info_Import(execution, testcaseHash);
 CREATE INDEX idx_pmr_1 ON Pit_Mutation_Result_Import(execution, methodHash);
 CREATE INDEX idx_pmr_2 ON Pit_Mutation_Result_Import(execution, testcaseHash);
