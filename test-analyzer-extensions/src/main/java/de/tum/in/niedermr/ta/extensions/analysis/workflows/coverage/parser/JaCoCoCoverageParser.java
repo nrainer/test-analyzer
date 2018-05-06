@@ -30,9 +30,28 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 	private XPathExpression m_methodCountCoveredAttributeXPath;
 	private XPathExpression m_methodCountMissedAttributeXPath;
 
+	private boolean m_parseSourceFolderInfo = true;
+	private boolean m_parseMethodInfo = true;
+
 	/** Constructor. */
 	public JaCoCoCoverageParser(IExecutionId executionId) {
 		super(executionId);
+	}
+
+	public boolean isParseSourceFolderInfo() {
+		return m_parseSourceFolderInfo;
+	}
+
+	public void setParseSourceFolderInfo(boolean parseSourceFolderInfo) {
+		m_parseSourceFolderInfo = parseSourceFolderInfo;
+	}
+
+	public boolean isParseMethodInfo() {
+		return m_parseMethodInfo;
+	}
+
+	public void setParseMethodInfo(boolean parseMethodInfo) {
+		m_parseMethodInfo = parseMethodInfo;
 	}
 
 	/** {@inheritDoc} */
@@ -50,15 +69,19 @@ public class JaCoCoCoverageParser extends AbstractJaCoCoParser {
 	/** {@inheritDoc} */
 	@Override
 	protected void parse(Document document, IResultReceiver resultReceiver) throws XPathExpressionException {
-		LOGGER.info("Begin parsing source folder information");
-		parseSourceFolderInformation(document, resultReceiver);
-		LOGGER.info("Completed parsing source folder information");
+		if (m_parseSourceFolderInfo) {
+			LOGGER.info("Begin parsing source folder information");
+			parseSourceFolderInformation(document, resultReceiver);
+			LOGGER.info("Completed parsing source folder information");
 
-		resultReceiver.markResultAsPartiallyComplete();
+			resultReceiver.markResultAsPartiallyComplete();
+		}
 
-		LOGGER.info("Begin parsing method information");
-		parseMethodInformation(document, resultReceiver);
-		LOGGER.info("Completed parsing method information");
+		if (m_parseMethodInfo) {
+			LOGGER.info("Begin parsing method information");
+			parseMethodInformation(document, resultReceiver);
+			LOGGER.info("Completed parsing method information");
+		}
 
 		resultReceiver.markResultAsComplete();
 	}
