@@ -103,6 +103,7 @@ CREATE TABLE Pit_Mutation_Result_Import
 (
 	id INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	execution VARCHAR(5) NOT NULL,
+	mutationIndex INT(8),
 	mutatedMethod VARCHAR(1024) NOT NULL COLLATE UTF8_BIN,
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
 	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR', 'NON_VIABLE', 'RUN_ERROR') NOT NULL,
@@ -110,6 +111,7 @@ CREATE TABLE Pit_Mutation_Result_Import
 	testcase VARCHAR(1024) COLLATE UTF8_BIN,
 	-- testcase as specified in the xml file
 	testcaseOrig VARCHAR(1024) COLLATE UTF8_BIN,
+	lineNumber INT(8),
 	mutationDescription VARCHAR(1024) COLLATE UTF8_BIN,
     methodHash VARCHAR(32) GENERATED ALWAYS AS (MD5(mutatedMethod)) VIRTUAL,
     testcaseHash VARCHAR(32) GENERATED ALWAYS AS (MD5(testcase)) VIRTUAL
