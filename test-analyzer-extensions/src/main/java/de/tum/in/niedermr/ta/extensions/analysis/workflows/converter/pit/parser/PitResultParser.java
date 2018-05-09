@@ -35,6 +35,10 @@ public class PitResultParser extends AbstractXmlContentParser {
 	protected XPathExpression m_killingTestNodeXPath;
 	/** Description node of mutation node. */
 	private XPathExpression m_descriptionNodeXPath;
+	/** Index node of mutation node. */
+	private XPathExpression m_indexNodeXPath;
+	/** Line number node of mutation node. */
+	private XPathExpression m_lineNumberNodeXPath;
 
 	/** Constructor. */
 	public PitResultParser(IExecutionId executionId) {
@@ -60,6 +64,8 @@ public class PitResultParser extends AbstractXmlContentParser {
 		m_mutatorNameNodeXPath = compileXPath("./mutator");
 		m_killingTestNodeXPath = compileXPath("./killingTest");
 		m_descriptionNodeXPath = compileXPath("./description");
+		m_indexNodeXPath = compileXPath("./index");
+		m_lineNumberNodeXPath = compileXPath("./lineNumber");
 	}
 
 	/** Parse the mutation nodes. */
@@ -70,8 +76,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 
 			/** {@inheritDoc} */
 			@Override
-			public void visitNode(Node currentNode, int nodeIndex)
-					throws XPathExpressionException {
+			public void visitNode(Node currentNode, int nodeIndex) throws XPathExpressionException {
 				parseMutationNodeAndAppendToResultReceiver(currentNode, nodeIndex, resultReceiver);
 				resultReceiver.markResultAsPartiallyComplete();
 
@@ -107,6 +112,8 @@ public class PitResultParser extends AbstractXmlContentParser {
 		mutationSqlOutputBuilder.setMutatorName(evaluateStringValue(mutationNode, m_mutatorNameNodeXPath));
 		mutationSqlOutputBuilder.setTestSignature(killingTestSignature);
 		mutationSqlOutputBuilder.setMutationDescription(evaluateStringValue(mutationNode, m_descriptionNodeXPath));
+		mutationSqlOutputBuilder.setMutationIndex(evaluateIntValue(mutationNode, m_indexNodeXPath));
+		mutationSqlOutputBuilder.setLineNumber(evaluateIntValue(mutationNode, m_lineNumberNodeXPath));
 		return mutationSqlOutputBuilder;
 	}
 

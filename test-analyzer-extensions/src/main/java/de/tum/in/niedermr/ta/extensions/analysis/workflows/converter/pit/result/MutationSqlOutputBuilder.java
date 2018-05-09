@@ -18,7 +18,8 @@ public class MutationSqlOutputBuilder {
 
 	/** SQL insert statement. */
 	private static final String SQL_INSERT_STATEMENT = "INSERT INTO Pit_Mutation_Result_Import "
-			+ "(execution, mutatedMethod, mutationStatus, %s, %s, mutatorName, mutationDescription) " + "VALUES %s;";
+			+ "(execution, mutationIndex, mutatedMethod, mutationStatus, %s, %s, mutatorName, lineNumber, mutationDescription) "
+			+ "VALUES %s;";
 
 	/** Execution id. */
 	private final IExecutionId m_executionId;
@@ -27,6 +28,11 @@ public class MutationSqlOutputBuilder {
 	private final String m_testcaseIdentifierColumnName;
 	/** Name of the original test case name column in the insert statement. */
 	private final String m_testcaseOrigColumnName;
+
+	/** Mutation index. */
+	private int m_mutationIndex;
+	/** Line number. */
+	private int m_lineNumber;
 
 	/** Mutation status. */
 	private String m_mutationStatus;
@@ -94,6 +100,16 @@ public class MutationSqlOutputBuilder {
 		m_mutationDescription = mutationDescription.replace("'", "");
 	}
 
+	/** {@link m_mutationIndex} */
+	public void setMutationIndex(int index) {
+		m_mutationIndex = index;
+	}
+
+	/** {@link m_lineNumber} */
+	public void setLineNumber(int lineNumber) {
+		m_lineNumber = lineNumber;
+	}
+
 	/** To SQL statement. */
 	public String toSqlStatement() {
 		return String.format(SQL_INSERT_STATEMENT, m_testcaseIdentifierColumnName, m_testcaseOrigColumnName,
@@ -114,6 +130,8 @@ public class MutationSqlOutputBuilder {
 		builder.append("(");
 		builder.append(asSqlString(m_executionId.getShortId()));
 		builder.append(", ");
+		builder.append(m_mutationIndex);
+		builder.append(", ");
 		builder.append(asSqlString(m_mutatedMethod.get()));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationStatus));
@@ -123,6 +141,8 @@ public class MutationSqlOutputBuilder {
 		builder.append(m_testcaseOrigSignature.map(methodSignature -> asSqlString(methodSignature)).orElse("NULL"));
 		builder.append(", ");
 		builder.append(asSqlString(m_mutatorName));
+		builder.append(", ");
+		builder.append(m_lineNumber);
 		builder.append(", ");
 		builder.append(asSqlString(m_mutationDescription));
 		builder.append(")");
