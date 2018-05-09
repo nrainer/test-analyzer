@@ -93,6 +93,7 @@ CREATE TABLE Pit_Mutation_Info
 (
 	importedMutationId INT(11) NOT NULL PRIMARY KEY REFERENCES Pit_Mutation_Result_Import(id),
 	execution VARCHAR(5) NOT NULL REFERENCES Execution_Information(execution),
+	mutationIndex INT(8),
 	mutatorName VARCHAR(256) NOT NULL COLLATE UTF8_BIN,
 	mutationStatus ENUM ('NO_COVERAGE', 'SURVIVED', 'KILLED', 'TIMED_OUT', 'MEMORY_ERROR', 'NON_VIABLE', 'RUN_ERROR') NOT NULL,
 	testcase VARCHAR(1024) COLLATE UTF8_BIN,

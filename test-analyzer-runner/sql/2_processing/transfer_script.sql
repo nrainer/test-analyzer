@@ -75,10 +75,11 @@ WHERE t.execution = @executionId;
 
 /* Create an entry for each entry in Pit_Mutation_Result_Import. */
 INSERT INTO Pit_Mutation_Info
-(importedMutationId, execution, mutatedMethod, mutatorName, mutationStatus, testcase, methodId, testcaseId)
+(importedMutationId, execution, mutationIndex, mutatedMethod, mutatorName, mutationStatus, testcase, methodId, testcaseId)
 SELECT 
 	pmr.id,
 	pmr.execution,
+	pmr.mutationIndex,
 	pmr.mutatorName,
 	pmr.mutationStatus,
 	pmr.testcase,
