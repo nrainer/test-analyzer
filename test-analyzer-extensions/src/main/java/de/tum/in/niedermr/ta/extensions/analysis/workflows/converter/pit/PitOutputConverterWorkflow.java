@@ -6,6 +6,7 @@ import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.AbstractCon
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.converter.pit.steps.PitConverterStep;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKey;
 import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationKeyNamespace;
+import de.tum.in.niedermr.ta.runner.configuration.extension.DynamicConfigurationValuesManager;
 import de.tum.in.niedermr.ta.runner.execution.ExecutionContext;
 
 /** Workflow to parse a PIT mutation testing result and convert it to SQL data. */
@@ -40,6 +41,14 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 	public static final DynamicConfigurationKey CONFIGURATION_KEY_TESTCASES_SEPARATOR = DynamicConfigurationKey
 			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.mutationMatrix.testcaseSeparator", "|");
 
+	/**
+	 * <code>extension.converter.pit.mutationMatrix.skipNoCoverageMutations</code>: Ignore mutation results with status
+	 * <code>NO_COVERAGE</code>.
+	 */
+	public static final DynamicConfigurationKey CONFIGURATION_KEY_SKIP_NO_COVERAGE_MUTATIONS = DynamicConfigurationKey
+			.create(DynamicConfigurationKeyNamespace.EXTENSION, "converter.pit.mutationMatrix.skipNoCoverageMutations",
+					true);
+
 	/** {@inheritDoc} */
 	@Override
 	protected DynamicConfigurationKey getConfigurationKeyForMultipleOutputFileUsage() {
@@ -70,10 +79,15 @@ public class PitOutputConverterWorkflow extends AbstractConverterWorkflow<PitCon
 			String inputFileName, IResultReceiver resultReceiver) {
 		super.configureStepBeforeConvert(context, converterStep, inputFileName, resultReceiver);
 
-		if (context.getConfiguration().getDynamicValues().getBooleanValue(CONFIGURATION_KEY_PARSE_MUTATION_MATRIX)) {
-			String testcaseSeparator = context.getConfiguration().getDynamicValues()
+		DynamicConfigurationValuesManager dynamicConfigurationValuesManager = context.getConfiguration()
+				.getDynamicValues();
+		if (dynamicConfigurationValuesManager.getBooleanValue(CONFIGURATION_KEY_PARSE_MUTATION_MATRIX)) {
+			String testcaseSeparator = dynamicConfigurationValuesManager
 					.getStringValue(CONFIGURATION_KEY_TESTCASES_SEPARATOR);
 			converterStep.enableParseMutationMatrix(testcaseSeparator);
 		}
+
+		converterStep.setSkipNoCoverageMutations(
+				dynamicConfigurationValuesManager.getBooleanValue(CONFIGURATION_KEY_SKIP_NO_COVERAGE_MUTATIONS));
 	}
 }

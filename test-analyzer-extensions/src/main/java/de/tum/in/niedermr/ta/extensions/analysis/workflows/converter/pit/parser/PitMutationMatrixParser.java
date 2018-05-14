@@ -53,6 +53,11 @@ public class PitMutationMatrixParser extends PitResultParser {
 	protected void parseMutationNodeAndAppendToResultReceiver(Node mutationNode, int nodeIndex,
 			IResultReceiver resultReceiver) throws XPathExpressionException {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
+
+		if (outputBuilder.isIgnored()) {
+			return;
+		}
+
 		final String mutationStatusOfXmlNode = outputBuilder.getMutationStatus();
 
 		String[] successfulTestcaseSignatures = splitTestcases(

@@ -29,6 +29,8 @@ public class MutationSqlOutputBuilder {
 	/** Name of the original test case name column in the insert statement. */
 	private final String m_testcaseOrigColumnName;
 
+	private boolean m_isIgnored = false;
+
 	/** Mutation index. */
 	private int m_mutationIndex;
 	/** Line number. */
@@ -112,6 +114,10 @@ public class MutationSqlOutputBuilder {
 
 	/** To SQL statement. */
 	public String toSqlStatement() {
+		if (isIgnored()) {
+			return "";
+		}
+
 		return String.format(SQL_INSERT_STATEMENT, m_testcaseIdentifierColumnName, m_testcaseOrigColumnName,
 				toValuesSqlStatementPart());
 	}
@@ -122,6 +128,10 @@ public class MutationSqlOutputBuilder {
 	}
 
 	public void addToMultiInsertBuilder(SqlMultiInsertStatementBuilder builder) {
+		if (isIgnored()) {
+			return;
+		}
+
 		builder.addValuesStatementPart(toValuesSqlStatementPart());
 	}
 
@@ -152,5 +162,14 @@ public class MutationSqlOutputBuilder {
 	/** Wrap a string value in quotation marks. */
 	private static String asSqlString(String value) {
 		return SqlMultiInsertStatementBuilder.asSqlString(value);
+	}
+
+	public void ignoreNode() {
+		m_isIgnored = true;
+	}
+
+	/** The content of this instance should not be included in the results. */
+	public boolean isIgnored() {
+		return m_isIgnored;
 	}
 }

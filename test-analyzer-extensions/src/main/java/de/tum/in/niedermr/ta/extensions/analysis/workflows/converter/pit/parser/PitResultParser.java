@@ -21,6 +21,8 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(PitResultParser.class);
 
+	private static final String STATUS_NO_COVERAGE = "NO_COVERAGE";
+
 	/** Mutation node. */
 	private XPathExpression m_mutationNodeXPath;
 	/** Class node of mutation node. */
@@ -39,6 +41,9 @@ public class PitResultParser extends AbstractXmlContentParser {
 	private XPathExpression m_indexNodeXPath;
 	/** Line number node of mutation node. */
 	private XPathExpression m_lineNumberNodeXPath;
+
+	/** Skip mutations with status {@value #STATUS_NO_COVERAGE}. */
+	private boolean m_skipNoCoverageMutations = true;
 
 	/** Constructor. */
 	public PitResultParser(IExecutionId executionId) {
@@ -96,6 +101,11 @@ public class PitResultParser extends AbstractXmlContentParser {
 	protected void parseMutationNodeAndAppendToResultReceiver(Node mutationNode, int nodeIndex,
 			IResultReceiver resultReceiver) throws XPathExpressionException {
 		MutationSqlOutputBuilder outputBuilder = parseMutationNodeAndCreateOutputBuilder(mutationNode, null);
+
+		if (outputBuilder.isIgnored()) {
+			return;
+		}
+
 		String killingTestSignatureValue = evaluateStringValue(mutationNode, m_killingTestNodeXPath);
 		outputBuilder.setTestSignature(killingTestSignatureValue);
 		resultReceiver.append(outputBuilder.toSqlStatement());
@@ -105,7 +115,14 @@ public class PitResultParser extends AbstractXmlContentParser {
 	protected MutationSqlOutputBuilder parseMutationNodeAndCreateOutputBuilder(Node mutationNode,
 			String killingTestSignature) throws XPathExpressionException {
 		MutationSqlOutputBuilder mutationSqlOutputBuilder = createOutputBuilder();
-		mutationSqlOutputBuilder.setMutationStatus(evaluateAttributeValue(mutationNode, "status"));
+		String mutationStatus = evaluateAttributeValue(mutationNode, "status");
+
+		if (m_skipNoCoverageMutations && STATUS_NO_COVERAGE.equals(mutationStatus)) {
+			mutationSqlOutputBuilder.ignoreNode();
+			return mutationSqlOutputBuilder;
+		}
+
+		mutationSqlOutputBuilder.setMutationStatus(mutationStatus);
 		mutationSqlOutputBuilder.setMutatedMethod(evaluateStringValue(mutationNode, m_mutatedClassNodeXPath),
 				evaluateStringValue(mutationNode, m_mutatedMethodNodeXPath),
 				evaluateStringValue(mutationNode, m_methodTypeSignatureNodeXPath));
@@ -119,5 +136,10 @@ public class PitResultParser extends AbstractXmlContentParser {
 
 	protected MutationSqlOutputBuilder createOutputBuilder() {
 		return getResultPresentation().createMutationSqlOutputBuilder("testcase", "testcaseOrig");
+	}
+
+	/** @see #m_skipNoCoverageMutations */
+	public void setSkipNoCoverageMutations(boolean skipNoCoverageMutations) {
+		m_skipNoCoverageMutations = skipNoCoverageMutations;
 	}
 }

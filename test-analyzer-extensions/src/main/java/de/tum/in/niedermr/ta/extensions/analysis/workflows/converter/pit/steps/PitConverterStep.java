@@ -15,6 +15,7 @@ public class PitConverterStep extends AbstractParserStep {
 	 * killed).
 	 */
 	private boolean m_parseMutationMatrix = false;
+	private boolean m_skipNoCoverageMutations = true;
 	private String m_testcaseSeparatorForUnrolling;
 
 	/** {@inheritDoc} */
@@ -32,15 +33,24 @@ public class PitConverterStep extends AbstractParserStep {
 	/** {@inheritDoc} */
 	@Override
 	protected IContentParser createParser(IExecutionId executionId) {
+		PitResultParser parser;
+
 		if (m_parseMutationMatrix) {
-			return new PitMutationMatrixParser(executionId, m_testcaseSeparatorForUnrolling);
+			parser = new PitMutationMatrixParser(executionId, m_testcaseSeparatorForUnrolling);
+		} else {
+			parser = new PitResultParser(executionId);
 		}
 
-		return new PitResultParser(executionId);
+		parser.setSkipNoCoverageMutations(m_skipNoCoverageMutations);
+		return parser;
 	}
 
 	public void enableParseMutationMatrix(String testcaseSeparator) {
 		m_parseMutationMatrix = true;
 		m_testcaseSeparatorForUnrolling = testcaseSeparator;
+	}
+
+	public void setSkipNoCoverageMutations(boolean skipNoCoverageMutations) {
+		m_skipNoCoverageMutations = skipNoCoverageMutations;
 	}
 }
