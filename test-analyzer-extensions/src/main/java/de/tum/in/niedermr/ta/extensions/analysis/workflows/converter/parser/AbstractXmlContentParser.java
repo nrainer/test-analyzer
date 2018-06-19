@@ -177,10 +177,10 @@ public abstract class AbstractXmlContentParser implements IContentParser {
 		for (int nodeIndex = 0; nodeIndex < nodes.getLength(); nodeIndex++) {
 			Node currentNode = nodes.item(nodeIndex);
 
-			visitor.visitNode(currentNode, nodeIndex);
-
 			// performance tuning (does not influence indices in the NodeList)
 			currentNode.getParentNode().removeChild(currentNode);
+
+			visitor.visitNode(currentNode, nodeIndex);
 		}
 	}
 }
