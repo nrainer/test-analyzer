@@ -10,7 +10,7 @@ import org.junit.runner.notification.Failure;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.InMemoryResultReceiver;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
-import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v2.ThreadStackManager;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.threading.ThreadStackManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.recording.v3.StackLogRecorderV3;
 import de.tum.in.niedermr.ta.sample.SampleClass;
 import de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;

@@ -1,4 +1,4 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v2;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.threading;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,10 +1,11 @@
-package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v2;
+package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.threading;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.methodsignature.operation.SampleClass;
+import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.threading.ThreadStackManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.recording.v2.StackLogRecorderV2;
 import de.tum.in.niedermr.ta.sample.SampleClassExtended;
 
