@@ -1,0 +1,29 @@
+[
+  {
+    "testcase": "de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1",
+    "method": "de.tum.in.niedermr.ta.sample.SampleClass.c(java.lang.String)",
+    "sdist": "4",
+    "invocationCount": "2"
+  }
+  ,
+  {
+    "testcase": "de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1",
+    "method": "de.tum.in.niedermr.ta.sample.SampleClass.b(boolean)",
+    "sdist": "3",
+    "invocationCount": "1"
+  }
+  ,
+  {
+    "testcase": "de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1",
+    "method": "de.tum.in.niedermr.ta.sample.SampleClass.a(int,int)",
+    "sdist": "2",
+    "invocationCount": "1"
+  }
+  ,
+  {
+    "testcase": "de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1",
+    "method": "de.tum.in.niedermr.ta.sample.SampleClass.a()",
+    "sdist": "1",
+    "invocationCount": "2"
+  }
+]

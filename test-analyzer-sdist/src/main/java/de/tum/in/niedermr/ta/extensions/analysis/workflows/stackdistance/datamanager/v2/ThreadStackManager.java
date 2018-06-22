@@ -20,6 +20,8 @@ public class ThreadStackManager implements IThreadListener {
 	/** Name of the main thread. */
 	private static final String MAIN_THREAD_NAME = "main";
 
+	private static boolean s_threadClassVerificationEnabled = true;
+
 	/** Map that contains for a thread its creator thread. */
 	private final Map<String, String> m_threadNameStartedByThreadName = new HashMap<>();
 	/**
@@ -62,6 +64,11 @@ public class ThreadStackManager implements IThreadListener {
 	 *             if the original {@link Thread} class is in use
 	 */
 	public void verifyReplacedThreadClassInUse() {
+		if (!s_threadClassVerificationEnabled) {
+			LOGGER.warn("Thread class verification is disabled!");
+			return;
+		}
+
 		if (IModifiedThreadClass.class.isAssignableFrom(Thread.class)) {
 			// OK
 			LOGGER.info("OK: Modified Thread class is in use.");
@@ -234,5 +241,16 @@ public class ThreadStackManager implements IThreadListener {
 		}
 
 		return false;
+	}
+
+	/** Re-enable the thread class verification. */
+	public static void enableThreadClassVerification() {
+		s_threadClassVerificationEnabled = true;
+	}
+
+	/** Disable the thread class verification. Only intended for use in certain test cases. */
+	public static void disableThreadClassVerification() {
+		s_threadClassVerificationEnabled = false;
+
 	}
 }

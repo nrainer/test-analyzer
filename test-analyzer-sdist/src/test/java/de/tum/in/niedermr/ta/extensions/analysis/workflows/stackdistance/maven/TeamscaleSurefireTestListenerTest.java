@@ -10,14 +10,20 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
 
 /** Test {@link TeamscaleSurefireTestListener}. */
-public class TeamscaleSurefireTestListenerTest {
+public class TeamscaleSurefireTestListenerTest extends AbstractSurefireTestListenerTest {
+
+	/** {@inheritDoc} */
+	@Override
+	protected AbstractSurefireTestListener createListenerInstance() {
+		return new TeamscaleSurefireTestListener();
+	}
 
 	/** Test. */
 	@Test
 	public void testOutputGeneration2() throws IOException {
 		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 
-		TeamscaleSurefireTestListener listener = new TeamscaleSurefireTestListener();
+		AbstractSurefireTestListener listener = createListenerInstance();
 
 		TestcaseIdentifier testcaseIdentifier1 = TestcaseIdentifier.create("SampleTest", "test1");
 		TestcaseIdentifier testcaseIdentifier2 = TestcaseIdentifier.create("SampleTest", "test2");
