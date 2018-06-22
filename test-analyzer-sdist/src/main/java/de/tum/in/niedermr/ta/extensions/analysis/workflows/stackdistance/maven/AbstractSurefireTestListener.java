@@ -11,6 +11,7 @@ import de.tum.in.niedermr.ta.core.analysis.result.receiver.IResultReceiver;
 import de.tum.in.niedermr.ta.core.analysis.result.receiver.ResultReceiverFactory;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
+import de.tum.in.niedermr.ta.core.common.util.CommonUtility;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.AbstractThreadAwareStackDistanceManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.StackLogDataManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.v3.ThreadAwareStackDistanceManagerV3;
@@ -88,7 +89,12 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 
 	protected abstract void writeCommentToResultFile(IResultReceiver resultReceiver, String comment);
 
-	protected abstract String getOutputFileName();
+	protected String getDefaultOutputFilePath() {
+		return "./target/stack-distance/sdist_" + CommonUtility.createDateTimeStringForFile()
+				+ getDefaultOutputFileExtension();
+	}
+
+	protected abstract String getDefaultOutputFileExtension();
 
 	/** {@inheritDoc} */
 	@Override
@@ -132,7 +138,7 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 		}
 
 		m_resultReceiver = ResultReceiverFactory.createFileResultReceiverWithDefaultSettings(false,
-				getOutputFileName());
+				getDefaultOutputFileExtension());
 	}
 
 	private void startStackLogRecorder(TestcaseIdentifier testCaseIdentifier) {

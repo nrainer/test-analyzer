@@ -11,12 +11,10 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
  */
 public class SurefireCsvTestListener extends AbstractSurefireTestListener {
 
-	private static final String OUTPUT_FILE_NAME = "./stack-distance.csv";
-
 	/** {@inheritDoc} */
 	@Override
-	protected String getOutputFileName() {
-		return OUTPUT_FILE_NAME;
+	protected String getDefaultOutputFileExtension() {
+		return ".csv";
 	}
 
 	/** {@inheritDoc} */

@@ -12,13 +12,12 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
  */
 public class SurefireJsonTestListener extends AbstractSurefireTestListener implements CommonConstants {
 
-	private static final String OUTPUT_FILE_NAME = "./stack-distance.json";
 	private boolean isFirstEntry = true;
 
 	/** {@inheritDoc} */
 	@Override
-	protected String getOutputFileName() {
-		return OUTPUT_FILE_NAME;
+	protected String getDefaultOutputFileExtension() {
+		return ".json";
 	}
 
 	/** {@inheritDoc} */

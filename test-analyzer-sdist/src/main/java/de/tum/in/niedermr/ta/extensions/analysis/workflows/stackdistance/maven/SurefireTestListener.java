@@ -11,8 +11,6 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
  */
 public class SurefireTestListener extends AbstractSurefireTestListener {
 
-	private static final String OUTPUT_FILE_NAME = "./stack-distance.sql";
-
 	/**
 	 * Note that for parameterized test cases more than one statement may be created for a certain test case identifier.
 	 */
@@ -22,8 +20,8 @@ public class SurefireTestListener extends AbstractSurefireTestListener {
 
 	/** {@inheritDoc} */
 	@Override
-	protected String getOutputFileName() {
-		return OUTPUT_FILE_NAME;
+	protected String getDefaultOutputFileExtension() {
+		return ".sql";
 	}
 
 	/** {@inheritDoc} */
