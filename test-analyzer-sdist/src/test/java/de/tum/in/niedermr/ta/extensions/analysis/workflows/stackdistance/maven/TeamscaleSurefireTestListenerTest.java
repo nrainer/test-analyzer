@@ -14,7 +14,7 @@ public class TeamscaleSurefireTestListenerTest {
 
 	/** Test. */
 	@Test
-	public void testOutputGeneration() throws IOException {
+	public void testOutputGeneration2() throws IOException {
 		InMemoryResultReceiver resultReceiver = new InMemoryResultReceiver();
 
 		TeamscaleSurefireTestListener listener = new TeamscaleSurefireTestListener();
@@ -31,6 +31,6 @@ public class TeamscaleSurefireTestListenerTest {
 		listener.appendToResult(resultReceiver, testcaseIdentifier2, methodIdentifier, 1, 6);
 		listener.execAfterAllTests(resultReceiver);
 
-		TestUtility.assertFileContentMatchesResultReceiver(getClass(), "expected-output.txt", resultReceiver);
+		TestUtility.assertFileContentMatchesResultReceiver(getClass(), "expected-output-2.txt", resultReceiver);
 	}
 }
