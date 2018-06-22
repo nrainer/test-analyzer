@@ -28,10 +28,6 @@ public class StackDistanceMojo extends AbstractMojo {
 	@Parameter(defaultValue = "${project}", readonly = true, required = true)
 	private MavenProject project;
 
-	/** Additional directories with compiled source source to be instrumented. */
-	@Parameter(property = "additionalApplicationClasspathElements")
-	private ArrayList<String> additionalApplicationClasspathElements;
-
 	/**
 	 * Check if the instrumentation has not been done yet to avoid a further instrumentation (which will cause an
 	 * error).
@@ -51,10 +47,6 @@ public class StackDistanceMojo extends AbstractMojo {
 
 		List<String> compiledCodeDirectoriesToInstrument = new ArrayList<>();
 		compiledCodeDirectoriesToInstrument.add(project.getBuild().getOutputDirectory());
-
-		if (additionalApplicationClasspathElements != null) {
-			compiledCodeDirectoriesToInstrument.addAll(additionalApplicationClasspathElements);
-		}
 
 		getLog().info("Starting to instrument non-test classes for stack distance computation");
 		try {
