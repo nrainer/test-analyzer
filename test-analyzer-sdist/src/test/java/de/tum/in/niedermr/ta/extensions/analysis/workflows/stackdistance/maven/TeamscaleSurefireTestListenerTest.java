@@ -1,7 +1,5 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.maven;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.IOException;
 
 import org.junit.Test;
@@ -33,8 +31,6 @@ public class TeamscaleSurefireTestListenerTest {
 		listener.appendToResult(resultReceiver, testcaseIdentifier2, methodIdentifier, 1, 6);
 		listener.execAfterAllTests(resultReceiver);
 
-		String expectedResult = TestUtility.loadTestContent(getClass(), "expected-output.txt");
-		String actualResult = TestUtility.loadTestContent(resultReceiver);
-		assertEquals(expectedResult, actualResult);
+		TestUtility.assertFileContentMatchesResultReceiver(getClass(), "expected-output.txt", resultReceiver);
 	}
 }

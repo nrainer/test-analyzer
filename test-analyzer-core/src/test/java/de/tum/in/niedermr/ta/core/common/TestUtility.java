@@ -1,5 +1,7 @@
 package de.tum.in.niedermr.ta.core.common;
 
+import static org.junit.Assert.assertEquals;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -32,5 +34,12 @@ public class TestUtility {
 
 	public static String alignLineEndings(String s) {
 		return s.replace("\r\n", "\n");
+	}
+
+	public static void assertFileContentMatchesResultReceiver(Class<?> testClass, String fileName,
+			InMemoryResultReceiver resultReceiver) throws IOException {
+		String expectedResult = TestUtility.loadTestContent(testClass, fileName);
+		String actualResult = TestUtility.loadTestContent(resultReceiver);
+		assertEquals(expectedResult, actualResult);
 	}
 }
