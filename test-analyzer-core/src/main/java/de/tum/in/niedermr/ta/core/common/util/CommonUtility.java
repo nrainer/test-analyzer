@@ -8,8 +8,8 @@ import java.util.concurrent.TimeUnit;
 
 public class CommonUtility {
 
-	private static final DateTimeFormatter DATE_TIME_FOR_FILE_PATTERN = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
-			.withZone(ZoneId.systemDefault());
+	private static final DateTimeFormatter DATE_TIME_FOR_FILE_PATTERN_BASE = DateTimeFormatter
+			.ofPattern("yyyyMMddHHmmss");
 
 	public static String createRandomId(int length) {
 		Random rd = new Random();
@@ -46,10 +46,11 @@ public class CommonUtility {
 	}
 
 	public static String createDateTimeStringForFile() {
-		return createDateTimeStringForFile(Instant.now());
+		return createDateTimeStringForFile(Instant.now(), ZoneId.systemDefault());
 	}
 
-	protected static String createDateTimeStringForFile(Instant instant) {
-		return DATE_TIME_FOR_FILE_PATTERN.format(instant);
+	protected static String createDateTimeStringForFile(Instant instant, ZoneId zoneId) {
+		DateTimeFormatter formatterPattern = DATE_TIME_FOR_FILE_PATTERN_BASE.withZone(zoneId);
+		return formatterPattern.format(instant);
 	}
 }

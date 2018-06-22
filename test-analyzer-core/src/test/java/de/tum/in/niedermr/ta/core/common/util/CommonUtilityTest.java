@@ -3,6 +3,7 @@ package de.tum.in.niedermr.ta.core.common.util;
 import static org.junit.Assert.assertEquals;
 
 import java.time.Instant;
+import java.time.ZoneId;
 
 import org.junit.Test;
 
@@ -19,6 +20,6 @@ public class CommonUtilityTest {
 	@Test
 	public void testCreateDateTimeStringForFile() {
 		Instant instant = Instant.parse("2007-12-03T10:15:30.00Z");
-		assertEquals("20071203111530", CommonUtility.createDateTimeStringForFile(instant));
+		assertEquals("20071203101530", CommonUtility.createDateTimeStringForFile(instant, ZoneId.of("UTC")));
 	}
 }
