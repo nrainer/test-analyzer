@@ -11,24 +11,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.conqat.lib.commons.filesystem.FileSystemUtils;
+
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 
 /** Utility to read and write from text files. */
 public class TextFileUtility {
 
 	/** Write the lines to a file. Overwrites an existing file. */
-	public static void writeToFile(String fileName, Collection<String> lines) throws IOException {
-		writeToFileInternal(fileName, false, lines);
+	public static void writeToFile(String fileNameOrPath, Collection<String> lines) throws IOException {
+		writeToFileInternal(fileNameOrPath, false, lines);
 	}
 
 	/** Write the lines to a file. Appends the lines if the file is not empty. */
-	public static void appendToFile(String fileName, Collection<String> lines) throws IOException {
-		writeToFileInternal(fileName, true, lines);
+	public static void appendToFile(String fileNameOrPath, Collection<String> lines) throws IOException {
+		writeToFileInternal(fileNameOrPath, true, lines);
 	}
 
-	private static void writeToFileInternal(String fileName, boolean append, Collection<String> lines)
+	private static void writeToFileInternal(String fileNameOrPath, boolean append, Collection<String> lines)
 			throws IOException {
-		try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, append))) {
+		File outputFile = new File(fileNameOrPath);
+
+		FileSystemUtils.ensureParentDirectoryExists(outputFile);
+
+		try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile, append))) {
 			for (String line : lines) {
 				writer.write(line);
 				writer.write(CommonConstants.NEW_LINE);
@@ -38,10 +44,10 @@ public class TextFileUtility {
 	}
 
 	/** Read a list of lines from a file. */
-	public static List<String> readFromFile(String fileName) throws IOException {
+	public static List<String> readFromFile(String fileNameOrPath) throws IOException {
 		List<String> result = new ArrayList<>();
 
-		try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+		try (BufferedReader reader = new BufferedReader(new FileReader(fileNameOrPath))) {
 			while (true) {
 				String line = reader.readLine();
 
@@ -52,7 +58,7 @@ public class TextFileUtility {
 				result.add(line);
 			}
 		} catch (FileNotFoundException e) {
-			throw new FileNotFoundException(new File(fileName).getAbsolutePath());
+			throw new FileNotFoundException(new File(fileNameOrPath).getAbsolutePath());
 		}
 
 		return result;
