@@ -9,13 +9,13 @@ import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.common.TestUtility;
 
-/** Test {@link TeamscaleSurefireTestListener}. */
-public class TeamscaleSurefireTestListenerTest extends AbstractSurefireTestListenerTest {
+/** Test {@link SurefireJsonTestListener}. */
+public class SurefireJsonTestListenerTest extends AbstractSurefireTestListenerTest {
 
 	/** {@inheritDoc} */
 	@Override
 	protected AbstractSurefireTestListener createListenerInstance() {
-		return new TeamscaleSurefireTestListener();
+		return new SurefireJsonTestListener();
 	}
 
 	/** Test. */

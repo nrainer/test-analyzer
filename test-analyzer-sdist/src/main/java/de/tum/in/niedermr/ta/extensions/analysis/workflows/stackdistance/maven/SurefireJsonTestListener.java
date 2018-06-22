@@ -6,11 +6,11 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 
 /**
- * Surefire listener with output for Teamscale.
+ * Surefire listener with JSON output for Teamscale.
  * 
  * @see AbstractSurefireTestListener
  */
-public class TeamscaleSurefireTestListener extends AbstractSurefireTestListener implements CommonConstants {
+public class SurefireJsonTestListener extends AbstractSurefireTestListener implements CommonConstants {
 
 	private static final String OUTPUT_FILE_NAME = "./stack-distance.json";
 	private boolean isFirstEntry = true;
