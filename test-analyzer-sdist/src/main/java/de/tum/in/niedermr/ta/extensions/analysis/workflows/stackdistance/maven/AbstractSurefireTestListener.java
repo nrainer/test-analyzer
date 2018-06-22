@@ -28,6 +28,16 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 	private IResultReceiver m_resultReceiver;
 	private transient boolean m_currentTestcaseFailed = false;
 
+	/** {@link #m_resultReceiver} */
+	public void setResultReceiver(IResultReceiver resultReceiver) {
+		m_resultReceiver = resultReceiver;
+	}
+
+	/** {@link #m_resultReceiver} */
+	public IResultReceiver getResultReceiver() {
+		return m_resultReceiver;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	public final void testRunStarted(Description description) throws Exception {
@@ -39,7 +49,7 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 			m_stackDistanceManager.beforeAllTests();
 			writeCommentToResultFile("INFO Stack distance setup successful.");
 			m_resultReceiver.markResultAsPartiallyComplete();
-		} catch (Exception e) {
+		} catch (IllegalStateException e) {
 			writeCommentToResultFile("ERROR Stack distance setup failed!");
 			writeCommentToResultFile("Cause is: " + e.getMessage());
 			writeCommentToResultFile(
