@@ -1,9 +1,16 @@
 package de.tum.in.niedermr.ta.core.common.util;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class CommonUtility {
+
+	private static final DateTimeFormatter DATE_TIME_FOR_FILE_PATTERN = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+			.withZone(ZoneId.systemDefault());
+
 	public static String createRandomId(int length) {
 		Random rd = new Random();
 
@@ -36,5 +43,13 @@ public class CommonUtility {
 	/** Check if the tests are running on Windows. */
 	public static boolean isRunningOnWindows() {
 		return System.getProperty("os.name").toLowerCase().contains("win");
+	}
+
+	public static String createDateTimeStringForFile() {
+		return createDateTimeStringForFile(Instant.now());
+	}
+
+	protected static String createDateTimeStringForFile(Instant instant) {
+		return DATE_TIME_FOR_FILE_PATTERN.format(instant);
 	}
 }
