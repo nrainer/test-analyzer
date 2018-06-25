@@ -22,7 +22,12 @@ import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
 
-@Mojo(name = "sdist", defaultPhase = LifecyclePhase.PROCESS_TEST_CLASSES, requiresDependencyResolution = ResolutionScope.TEST)
+/**
+ * StackDistance Mojo to instrument the classes under test. <br/>
+ * Use <code>PROCESS_CLASSES</code> as lifecycle phase because no test code is instrumented and so that (sub-) projects
+ * without test code are also instrumented.
+ */
+@Mojo(name = "sdist", defaultPhase = LifecyclePhase.PROCESS_CLASSES, requiresDependencyResolution = ResolutionScope.COMPILE)
 public class StackDistanceMojo extends AbstractMojo {
 
 	@Parameter(defaultValue = "${project}", readonly = true, required = true)
