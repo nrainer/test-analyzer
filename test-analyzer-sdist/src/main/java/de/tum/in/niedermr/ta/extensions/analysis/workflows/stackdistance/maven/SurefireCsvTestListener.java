@@ -11,6 +11,9 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
  */
 public class SurefireCsvTestListener extends AbstractSurefireTestListener {
 
+	/** Separator: do not use <code>;</code> because it can appear in method signatures. */
+	private static final String CSV_SEPARATOR = "|";
+
 	/** {@inheritDoc} */
 	@Override
 	protected String getDefaultOutputFileExtension() {
@@ -27,8 +30,8 @@ public class SurefireCsvTestListener extends AbstractSurefireTestListener {
 	@Override
 	protected void appendToResult(IResultReceiver resultReceiver, TestcaseIdentifier testCaseIdentifier,
 			MethodIdentifier methodUnderTest, int minInvocationDistance, int invocationCount) {
-		String sqlStatement = String.join("|", testCaseIdentifier.toMethodIdentifier().get(), methodUnderTest.get(),
-				String.valueOf(minInvocationDistance), String.valueOf(invocationCount));
+		String sqlStatement = String.join(CSV_SEPARATOR, testCaseIdentifier.toMethodIdentifier().get(),
+				methodUnderTest.get(), String.valueOf(minInvocationDistance), String.valueOf(invocationCount));
 		resultReceiver.append(sqlStatement);
 	}
 }
