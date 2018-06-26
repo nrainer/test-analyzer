@@ -137,7 +137,7 @@ public class ThreadStackManager implements IThreadListener {
 		m_stackHeightAtStartByThreadName.put(threadName, 0);
 
 		if (!MAIN_THREAD_NAME.equals(threadName)) {
-			LOGGER.warn("No stack height available for thread " + threadName + ". Using 0.");
+			LOGGER.warn("No initial stack height available for thread " + threadName + ". Using 0.");
 		}
 
 		return 0;
