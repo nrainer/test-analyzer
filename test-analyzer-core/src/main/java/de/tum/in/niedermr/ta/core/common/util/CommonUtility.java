@@ -8,8 +8,10 @@ import java.util.concurrent.TimeUnit;
 
 public class CommonUtility {
 
-	private static final DateTimeFormatter DATE_TIME_FOR_FILE_PATTERN_BASE = DateTimeFormatter
-			.ofPattern("yyyyMMddHHmmss");
+	protected static final DateTimeFormatter DATE_TIME_FOR_FILE_PATTERN_BASE = DateTimeFormatter
+			.ofPattern("yyyyMMdd-HHmmss");
+	protected static final DateTimeFormatter DATE_TIME_FOR_FILE_WITH_MS_PATTERN_BASE = DateTimeFormatter
+			.ofPattern("yyyyMMdd-HHmmssSSS");
 
 	public static String createRandomId(int length) {
 		Random rd = new Random();
@@ -46,11 +48,16 @@ public class CommonUtility {
 	}
 
 	public static String createDateTimeStringForFile() {
-		return createDateTimeStringForFile(Instant.now(), ZoneId.systemDefault());
+		return createDateTimeStringForFile(DATE_TIME_FOR_FILE_PATTERN_BASE, Instant.now(), ZoneId.systemDefault());
 	}
 
-	protected static String createDateTimeStringForFile(Instant instant, ZoneId zoneId) {
-		DateTimeFormatter formatterPattern = DATE_TIME_FOR_FILE_PATTERN_BASE.withZone(zoneId);
+	public static String createDateTimeWithMsStringForFile() {
+		return createDateTimeStringForFile(DATE_TIME_FOR_FILE_WITH_MS_PATTERN_BASE, Instant.now(),
+				ZoneId.systemDefault());
+	}
+
+	protected static String createDateTimeStringForFile(DateTimeFormatter formatter, Instant instant, ZoneId zoneId) {
+		DateTimeFormatter formatterPattern = formatter.withZone(zoneId);
 		return formatterPattern.format(instant);
 	}
 }
