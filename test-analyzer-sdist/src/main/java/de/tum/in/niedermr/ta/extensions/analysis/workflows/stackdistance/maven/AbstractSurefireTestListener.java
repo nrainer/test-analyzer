@@ -138,7 +138,7 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 		}
 
 		m_resultReceiver = ResultReceiverFactory.createFileResultReceiverWithDefaultSettings(false,
-				getDefaultOutputFileExtension());
+				getDefaultOutputFilePath());
 	}
 
 	private void startStackLogRecorder(TestcaseIdentifier testCaseIdentifier) {
