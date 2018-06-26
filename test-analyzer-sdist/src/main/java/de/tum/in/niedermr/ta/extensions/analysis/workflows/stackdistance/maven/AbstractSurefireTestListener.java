@@ -90,7 +90,7 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 	protected abstract void writeCommentToResultFile(IResultReceiver resultReceiver, String comment);
 
 	protected String getDefaultOutputFilePath() {
-		return "./target/stack-distance/sdist_" + CommonUtility.createDateTimeStringForFile()
+		return "./target/stack-distance/sdist_" + CommonUtility.createDateTimeWithMsStringForFile()
 				+ getDefaultOutputFileExtension();
 	}
 
