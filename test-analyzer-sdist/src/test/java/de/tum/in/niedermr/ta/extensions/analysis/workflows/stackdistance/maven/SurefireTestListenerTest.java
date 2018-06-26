@@ -5,6 +5,6 @@ public class SurefireTestListenerTest extends AbstractSurefireTestListenerTest {
 	/** {@inheritDoc} */
 	@Override
 	protected AbstractSurefireTestListener createListenerInstance() {
-		return new SurefireTestListener();
+		return new SurefireSqlTestListener();
 	}
 }
