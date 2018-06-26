@@ -126,6 +126,7 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 	@Override
 	public void testFinished(Description description) throws Exception {
 		if (m_currentTestcaseFailed) {
+			writeCommentToResultFile("Failing test case: " + createTestcaseIdentifier(description).get());
 			return;
 		}
 
