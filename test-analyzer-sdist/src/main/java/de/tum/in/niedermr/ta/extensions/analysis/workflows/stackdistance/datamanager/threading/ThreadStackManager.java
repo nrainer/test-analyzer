@@ -176,25 +176,24 @@ public class ThreadStackManager implements IThreadListener {
 
 		for (StackTraceElement stackTraceElement : stackTrace) {
 			String stackElementClassName = stackTraceElement.getClassName();
-			String stackTraceElementString = stackTraceElement.toString();
+			String stackElementString = stackTraceElement.toString();
 
 			if (!startClassCompleted) {
 				boolean inStartClass = startClassName.equals(stackElementClassName);
 
-				if (startClassReached && inStartClass) {
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Ignoring element in start class: " + stackTraceElementString);
-					}
-				}
 				if (!startClassReached && inStartClass) {
 					// start class reached -> start counting when the start
 					// class is left
 					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Start class reached: " + stackTraceElementString);
+						LOGGER.debug("Start class reached: " + stackElementString);
 					}
 					startClassReached = true;
-				}
-				if (startClassReached && !inStartClass) {
+				} else if (startClassReached && inStartClass) {
+					// start class was reached and we are still in it
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("Ignoring element in start class: " + stackElementString);
+					}
+				} else if (startClassReached && !inStartClass) {
 					// start class was reached and no longer in start class ->
 					// first element to count reached
 					startClassCompleted = true;
@@ -207,21 +206,21 @@ public class ThreadStackManager implements IThreadListener {
 
 			if (stopClassName.equals(stackElementClassName)) {
 				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Abort counting at element: " + stackTraceElementString);
+					LOGGER.debug("Abort counting at element: " + stackElementString);
 				}
 				break;
 			}
 
 			if (isCountIgnoredClass(stackElementClassName, ignoredClassNamePrefixes)) {
 				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Skipping ignored element: " + stackTraceElementString);
+					LOGGER.debug("Skipping ignored element: " + stackElementString);
 				}
 				continue;
 			}
 
 			count++;
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Counted element: " + stackTraceElementString);
+				LOGGER.debug("Counted element: " + stackElementString);
 			}
 		}
 
