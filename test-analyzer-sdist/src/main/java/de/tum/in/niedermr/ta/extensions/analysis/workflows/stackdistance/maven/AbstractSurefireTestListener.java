@@ -41,7 +41,7 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 
 	/** {@inheritDoc} */
 	@Override
-	public final void testRunStarted(Description description) throws Exception {
+	public final synchronized void testRunStarted(Description description) throws Exception {
 		ensureOutputWriterInitialized();
 		execAfterOutputWriterInitialized(m_resultReceiver);
 
@@ -98,33 +98,33 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 
 	/** {@inheritDoc} */
 	@Override
-	public final void testRunFinished(Result result) throws Exception {
+	public final synchronized void testRunFinished(Result result) throws Exception {
 		execAfterAllTests(m_resultReceiver);
 		m_resultReceiver.markResultAsComplete();
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void testStarted(Description description) throws Exception {
+	public synchronized void testStarted(Description description) throws Exception {
 		m_currentTestcaseFailed = false;
 		startStackLogRecorder(createTestcaseIdentifier(description));
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void testFailure(Failure failure) throws Exception {
+	public synchronized void testFailure(Failure failure) throws Exception {
 		m_currentTestcaseFailed = true;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void testAssumptionFailure(Failure failure) {
+	public synchronized void testAssumptionFailure(Failure failure) {
 		m_currentTestcaseFailed = true;
 	}
 
 	/** {@inheritDoc} */
 	@Override
-	public void testFinished(Description description) throws Exception {
+	public synchronized void testFinished(Description description) throws Exception {
 		if (m_currentTestcaseFailed) {
 			writeCommentToResultFile("Failing test case: " + createTestcaseIdentifier(description).get());
 			return;
