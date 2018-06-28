@@ -179,8 +179,10 @@ public abstract class AbstractIntegrationTest implements IntegrationTestConstant
 		}
 
 		if (!expectedContent.equals(outputContent)) {
-			System.err.println("Expected: " + CommonConstants.NEW_LINE + expectedContent);
-			System.err.println("Actual: " + CommonConstants.NEW_LINE + outputContent);
+			System.err.println(
+					"Expected: " + CommonConstants.NEW_LINE + String.join(CommonConstants.NEW_LINE, expectedContent));
+			System.err.println(
+					"Actual: " + CommonConstants.NEW_LINE + String.join(CommonConstants.NEW_LINE, outputContent));
 			fail("File content does not match the expected content: " + fileWithOutputContent.getName()
 					+ " (orderIsRelevant=" + orderIsRelevant + "; message=" + errorMsg + ")");
 		}

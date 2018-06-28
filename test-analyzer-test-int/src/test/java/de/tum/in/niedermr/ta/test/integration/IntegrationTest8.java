@@ -33,7 +33,7 @@ public class IntegrationTest8 extends AbstractIntegrationTest {
 	/** {@inheritDoc} */
 	@Override
 	public void executeTestLogic() throws ConfigurationException, IOException {
-		Assume.assumeTrue("This test requires a modified java.lang.Thread class",
+		Assume.assumeTrue("This test requires a modified " + Thread.class.getName() + " class",
 				IModifiedThreadClass.class.isAssignableFrom(Thread.class));
 
 		initializeFiles();
