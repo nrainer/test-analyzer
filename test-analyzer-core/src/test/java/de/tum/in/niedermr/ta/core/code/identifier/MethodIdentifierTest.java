@@ -2,6 +2,7 @@ package de.tum.in.niedermr.ta.core.code.identifier;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.IOException;
 import java.util.Map;
 
 import org.junit.Test;
@@ -9,6 +10,8 @@ import org.objectweb.asm.tree.ClassNode;
 import org.objectweb.asm.tree.MethodNode;
 
 import de.tum.in.niedermr.ta.core.code.constants.JavaConstants;
+import de.tum.in.niedermr.ta.core.code.util.BytecodeUtility;
+import de.tum.in.niedermr.ta.sample.SampleClass;
 
 /** Test {@link MethodIdentifier}. */
 public class MethodIdentifierTest {
@@ -68,6 +71,15 @@ public class MethodIdentifierTest {
 		assertEquals(EXPECTED_IDENTIFIER_STRING, identifier1.get());
 		assertEquals(EXPECTED_IDENTIFIER_STRING, identifier2.get());
 		assertEquals(identifier1, identifier2);
+	}
+
+	@Test
+	public void testCreateForConstructorMethod() throws IOException {
+		ClassNode classNode = BytecodeUtility.getAcceptedClassNode(SampleClass.class);
+		MethodNode methodNode = (MethodNode) classNode.methods.get(0);
+
+		MethodIdentifier identifier = MethodIdentifier.create(classNode, methodNode);
+		assertEquals("de.tum.in.niedermr.ta.sample.SampleClass.<init>()", identifier.get());
 	}
 
 	/** Test. */
