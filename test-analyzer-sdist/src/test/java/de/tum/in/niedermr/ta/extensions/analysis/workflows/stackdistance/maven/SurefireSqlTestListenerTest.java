@@ -1,6 +1,6 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.maven;
 
-public class SurefireTestListenerTest extends AbstractSurefireTestListenerTest {
+public class SurefireSqlTestListenerTest extends AbstractSurefireTestListenerTest {
 
 	/** {@inheritDoc} */
 	@Override
