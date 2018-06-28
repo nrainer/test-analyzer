@@ -29,6 +29,11 @@ public class StackLogDataManager {
 
 	/** Record a visited method: Update the minimal and maximal stack distance and the invocation count. */
 	public static synchronized void visitMethodInvocation(MethodIdentifier methodIdentifier, int stackDistance) {
+		if (s_currentTestCaseIdentifier == null) {
+			// should not be possible to happen
+			return;
+		}
+
 		// count the invocations
 		s_invocationsCount.put(methodIdentifier, 1 + s_invocationsCount.getOrDefault(methodIdentifier, 0));
 
