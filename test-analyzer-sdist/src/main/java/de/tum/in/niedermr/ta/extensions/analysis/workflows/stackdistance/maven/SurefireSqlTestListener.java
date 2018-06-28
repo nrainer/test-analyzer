@@ -27,7 +27,7 @@ public class SurefireSqlTestListener extends AbstractSurefireTestListener {
 	/** {@inheritDoc} */
 	@Override
 	protected void writeCommentToResultFile(IResultReceiver resultReceiver, String comment) {
-		resultReceiver.append("#" + comment);
+		resultReceiver.append("# " + comment);
 	}
 
 	/** {@inheritDoc} */

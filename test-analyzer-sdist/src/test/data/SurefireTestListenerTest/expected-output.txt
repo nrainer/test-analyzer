@@ -1,5 +1,6 @@
-#INFO Stack distance setup successful.
+# INFO Stack distance setup successful.
 INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, invocationCount) VALUES ('????', 'de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1', 'de.tum.in.niedermr.ta.sample.SampleClass.c(java.lang.String)', '4', '2'); 
 INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, invocationCount) VALUES ('????', 'de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1', 'de.tum.in.niedermr.ta.sample.SampleClass.b(boolean)', '3', '1'); 
 INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, invocationCount) VALUES ('????', 'de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1', 'de.tum.in.niedermr.ta.sample.SampleClass.a(int,int)', '2', '1'); 
 INSERT INTO Stack_Info_Import (execution, testcase, method, minStackDistance, invocationCount) VALUES ('????', 'de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase1', 'de.tum.in.niedermr.ta.sample.SampleClass.a()', '1', '2'); 
+# Failing test case: de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass;testCase2
