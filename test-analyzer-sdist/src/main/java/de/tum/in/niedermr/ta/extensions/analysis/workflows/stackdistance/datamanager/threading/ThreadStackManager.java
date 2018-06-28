@@ -41,9 +41,9 @@ public class ThreadStackManager implements IThreadListener {
 
 	/** {@inheritDoc} */
 	@Override
-	public synchronized void threadStarted(String newThreadName) {
+	public synchronized void threadIsAboutToStart(String newThreadName) {
 		String creatorThreadName = Thread.currentThread().getName();
-		LOGGER.debug("Thread " + newThreadName + " was started by thread " + creatorThreadName);
+		LOGGER.debug("Thread " + newThreadName + " is being started by thread " + creatorThreadName);
 
 		m_threadNameStartedByThreadName.put(newThreadName, creatorThreadName);
 		int stackHeightAtCreation = computeStackHeightOfThread(newThreadName);
@@ -59,7 +59,6 @@ public class ThreadStackManager implements IThreadListener {
 	/**
 	 * Verify that the modified {@link Thread} is used.
 	 * 
-	 * @see StackDistanceAnalysisWorkflowV2
 	 * @throws IllegalStateException
 	 *             if the original {@link Thread} class is in use
 	 */
@@ -70,17 +69,17 @@ public class ThreadStackManager implements IThreadListener {
 		}
 
 		if (IModifiedThreadClass.class.isAssignableFrom(Thread.class)) {
-			// OK
 			LOGGER.info("OK: Modified Thread class is in use.");
 			return;
 		}
 
-		LOGGER.error(
-				"It appears that the original java.lang.Thread class is used instead of the modified one! Either put the modified Thread class into the endorsed folder or use StackDistanceAnalysisWorkflowV1");
+		LOGGER.error("It appears that the original " + Thread.class.getName()
+				+ " class is used instead of the modified one, which implements " + IModifiedThreadClass.class.getName()
+				+ "! Either put the modified Thread class into the endorsed folder or use a non-thread aware version.");
 		LOGGER.error("Classpath is: " + ClasspathUtility.getCurrentClasspath());
 
-		throw new IllegalStateException(
-				"It appears that the original java.lang.Thread class is used instead of the modified one!");
+		throw new IllegalStateException("It appears that the original " + Thread.class.getName()
+				+ " class is used instead of the modified one!");
 	}
 
 	/** {@link #m_stopClassName} */
@@ -126,7 +125,7 @@ public class ThreadStackManager implements IThreadListener {
 		return creatorThreadStackHeight;
 	}
 
-	/** Get the stored stack height of the given thread. */
+	/** Get the stored stack height of the given thread. Return 0 if no information is available. */
 	public synchronized int getStackHeightOfThread(String threadName) {
 		Integer threadCreatorStackHeight = m_stackHeightAtStartByThreadName.get(threadName);
 

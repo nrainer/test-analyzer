@@ -18,13 +18,14 @@ public class ThreadNotifier {
 	}
 
 	/**
-	 * Send an event to the listeners to notify them that a new thread was started. <br/>
-	 * <b>Only to be invoked by {@link Thread#start()}.</b>
+	 * Send an event to the listeners to notify them that a new thread is about to be started. Note that is <b>has not
+	 * been started yet</b>, but will be started after the leaving of this method. <b>Only to be invoked by
+	 * {@link Thread#start()}.</b>
 	 */
 	public synchronized void sendThreadStartedEvent(Thread thread) {
 		String threadName = thread.getName();
 		for (IThreadListener listener : m_listeners) {
-			listener.threadStarted(threadName);
+			listener.threadIsAboutToStart(threadName);
 		}
 	}
 }
