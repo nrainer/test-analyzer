@@ -51,30 +51,38 @@ public class StackLogDataManager {
 	}
 
 	/** Get the identifier of the current test case. */
-	public static TestcaseIdentifier getCurrentTestCaseIdentifier() {
+	public static synchronized TestcaseIdentifier getCurrentTestCaseIdentifier() {
 		return s_currentTestCaseIdentifier;
 	}
 
 	/**
 	 * Get for each method which is (directly or indirectly) invoked by the current testcase the minimum stack distance
 	 * between the testcase and the method.
+	 * 
+	 * @return a copy of the internal map
 	 */
-	public static Map<MethodIdentifier, Integer> getInvocationsMinDistance() {
-		return s_invocationsMinDistance;
+	public static synchronized Map<MethodIdentifier, Integer> getInvocationsMinDistance() {
+		// return a copy in case threads did not terminate at the test case execution, causing a
+		// ConcurrencyModificationException when iterating over the list
+		return new HashMap<>(s_invocationsMinDistance);
 	}
 
 	/**
 	 * Get for each method which is (directly or indirectly) invoked by the current testcase the maximum stack distance
 	 * between the testcase and the method.
+	 * 
+	 * @return a copy of the internal map
 	 */
-	public static Map<MethodIdentifier, Integer> getInvocationsMaxDistance() {
-		return s_invocationsMaxDistance;
+	public static synchronized Map<MethodIdentifier, Integer> getInvocationsMaxDistance() {
+		return new HashMap<>(s_invocationsMaxDistance);
 	}
 
 	/**
 	 * Get for each method which is (directly or indirectly) invoked by the current testcase the number of invocations.
+	 * 
+	 * @return a copy of the internal map
 	 */
-	public static Map<MethodIdentifier, Integer> getInvocationsCount() {
-		return s_invocationsCount;
+	public static synchronized Map<MethodIdentifier, Integer> getInvocationsCount() {
+		return new HashMap<>(s_invocationsCount);
 	}
 }
