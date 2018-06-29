@@ -22,7 +22,7 @@ public class ThreadNotifier {
 	 * been started yet</b>, but will be started after the leaving of this method. <b>Only to be invoked by
 	 * {@link Thread#start()}.</b>
 	 */
-	public synchronized void sendThreadStartedEvent(Thread thread) {
+	public synchronized void sendThreadAboutToStartEvent(Thread thread) {
 		String threadName = thread.getName();
 		for (IThreadListener listener : m_listeners) {
 			listener.threadIsAboutToStart(threadName);
