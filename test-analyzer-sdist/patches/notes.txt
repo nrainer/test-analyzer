@@ -1,0 +1,2 @@
+* The patched classes need to be compiled with exactly the same JRE.
+* Java 9 has no endorsed folder!
