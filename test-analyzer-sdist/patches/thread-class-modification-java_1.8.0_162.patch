@@ -1,0 +1,31 @@
+diff --git a/Thread.java b/Thread.java
+index fad348a..f0664d5 100644
+--- a/Thread.java
++++ b/Thread.java
+@@ -36,6 +36,9 @@ import java.util.HashMap;
+ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ConcurrentMap;
+ import java.util.concurrent.locks.LockSupport;
++
++import de.tum.in.niedermr.ta.extensions.threads.IModifiedThreadClass;
++import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
+ import sun.nio.ch.Interruptible;
+ import sun.reflect.CallerSensitive;
+ import sun.reflect.Reflection;
+@@ -138,7 +141,7 @@ import sun.security.util.SecurityConstants;
+  * @since   JDK1.0
+  */
+ public
+-class Thread implements Runnable {
++class Thread implements Runnable, IModifiedThreadClass {
+     /* Make sure registerNatives is the first thing <clinit> does. */
+     private static native void registerNatives();
+     static {
+@@ -714,6 +717,7 @@ class Thread implements Runnable {
+ 
+         boolean started = false;
+         try {
++            ThreadNotifier.INSTANCE.sendThreadAboutToStartEvent(this);
+             start0();
+             started = true;
+         } finally {

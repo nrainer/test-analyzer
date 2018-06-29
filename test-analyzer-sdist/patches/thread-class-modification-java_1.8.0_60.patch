@@ -1,18 +1,8 @@
-diff --git a/test-analyzer-sdist/src/main/java/java/lang/Thread.java b/test-analyzer-sdist/src/main/java/java/lang/Thread.java
-index 342bb89..c72cca0 100644
---- a/test-analyzer-sdist/src/main/java/java/lang/Thread.java
-+++ b/test-analyzer-sdist/src/main/java/java/lang/Thread.java
-@@ -28,14 +28,17 @@ package java.lang;
- import java.lang.ref.Reference;
- import java.lang.ref.ReferenceQueue;
- import java.lang.ref.WeakReference;
--import java.security.AccessController;
- import java.security.AccessControlContext;
-+import java.security.AccessController;
- import java.security.PrivilegedAction;
--import java.util.Map;
- import java.util.HashMap;
-+import java.util.Map;
+diff --git a/Thread.java b/Thread.java
+index 342bb89..13c993b 100644
+--- a/Thread.java
++++ b/Thread.java
+@@ -36,6 +36,9 @@ import java.util.HashMap;
  import java.util.concurrent.ConcurrentHashMap;
  import java.util.concurrent.ConcurrentMap;
  import java.util.concurrent.locks.LockSupport;
@@ -35,7 +25,7 @@ index 342bb89..c72cca0 100644
  
          boolean started = false;
          try {
-+            ThreadNotifier.INSTANCE.sendThreadStartedEvent(this);
++            ThreadNotifier.INSTANCE.sendThreadAboutToStartEvent(this);
              start0();
              started = true;
          } finally {

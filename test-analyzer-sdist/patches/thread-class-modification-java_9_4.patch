@@ -1,0 +1,40 @@
+diff --git a/Thread.java b/Thread.java
+index db92741..9cb8c24 100644
+--- a/Thread.java
++++ b/Thread.java
+@@ -36,6 +36,9 @@ import java.util.HashMap;
+ import java.util.concurrent.ConcurrentHashMap;
+ import java.util.concurrent.ConcurrentMap;
+ import java.util.concurrent.locks.LockSupport;
++
++import de.tum.in.niedermr.ta.extensions.threads.IModifiedThreadClass;
++import de.tum.in.niedermr.ta.extensions.threads.ThreadNotifier;
+ import sun.nio.ch.Interruptible;
+ import jdk.internal.reflect.CallerSensitive;
+ import jdk.internal.reflect.Reflection;
+@@ -138,7 +141,7 @@ import jdk.internal.HotSpotIntrinsicCandidate;
+  * @since   1.0
+  */
+ public
+-class Thread implements Runnable {
++class Thread implements Runnable, IModifiedThreadClass {
+     /* Make sure registerNatives is the first thing <clinit> does. */
+     private static native void registerNatives();
+     static {
+@@ -810,6 +813,7 @@ class Thread implements Runnable {
+ 
+         boolean started = false;
+         try {
++            ThreadNotifier.INSTANCE.sendThreadAboutToStartEvent(this);
+             start0();
+             started = true;
+         } finally {
+@@ -1759,7 +1763,7 @@ class Thread implements Runnable {
+      */
+     private static boolean auditSubclass(final Class<?> subcl) {
+         Boolean result = AccessController.doPrivileged(
+-            new PrivilegedAction<>() {
++            new PrivilegedAction<Boolean>() {
+                 public Boolean run() {
+                     for (Class<?> cl = subcl;
+                          cl != Thread.class;
