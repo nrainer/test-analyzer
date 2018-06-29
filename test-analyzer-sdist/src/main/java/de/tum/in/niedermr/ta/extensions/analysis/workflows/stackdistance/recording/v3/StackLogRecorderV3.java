@@ -57,14 +57,13 @@ public class StackLogRecorderV3 {
 			return;
 		}
 
-		MethodIdentifier methodIdentifier = MethodIdentifier.parse(methodIdentifierString);
 		String currentThreadName = Thread.currentThread().getName();
 
 		Integer currentStackDistance = s_currentStackDistanceByThreadName.get(currentThreadName);
 		LinkedList<String> methodsOnStack = s_currentMethodsOnStackByThreadName.get(currentThreadName);
 
 		if (currentStackDistance == null) {
-			currentStackDistance = s_threadStackManager.getStackHeightOfThread(currentThreadName);
+			currentStackDistance = s_threadStackManager.getStartStackHeightOfThread(currentThreadName);
 			methodsOnStack = new LinkedList<>();
 		}
 
@@ -74,6 +73,7 @@ public class StackLogRecorderV3 {
 		s_currentStackDistanceByThreadName.put(currentThreadName, currentStackDistance);
 		s_currentMethodsOnStackByThreadName.put(currentThreadName, methodsOnStack);
 
+		MethodIdentifier methodIdentifier = MethodIdentifier.parse(methodIdentifierString);
 		StackLogDataManager.visitMethodInvocation(methodIdentifier, currentStackDistance);
 	}
 
@@ -88,25 +88,29 @@ public class StackLogRecorderV3 {
 		Integer currentStackDistance = s_currentStackDistanceByThreadName.get(currentThreadName);
 		LinkedList<String> methodsOnStack = s_currentMethodsOnStackByThreadName.get(currentThreadName);
 
-		if (currentStackDistance != null) {
-			while (!methodsOnStack.getLast().equals(methodIdentifierString) && !methodsOnStack.isEmpty()) {
-				// fix for missing invocations of popInvocation (not always invoked on ATHROWS)
-				currentStackDistance--;
-				methodsOnStack.removeLast();
-			}
-
-			if (!methodsOnStack.isEmpty()) {
-				// should never be empty
-				currentStackDistance--;
-				methodsOnStack.removeLast();
-			}
-
-			if (currentStackDistance < 0) {
-				// should not happen
-				currentStackDistance = 0;
-			}
-
-			s_currentStackDistanceByThreadName.put(currentThreadName, currentStackDistance);
+		if (currentStackDistance == null) {
+			// should not be possible
+			return;
 		}
+
+		while (!methodsOnStack.getLast().equals(methodIdentifierString) && !methodsOnStack.isEmpty()) {
+			// fix for missing invocations of popInvocation (not always invoked on ATHROWS)
+			// until we reach the current method
+			currentStackDistance--;
+			methodsOnStack.removeLast();
+		}
+
+		if (!methodsOnStack.isEmpty()) {
+			// should never be empty as the method invocation needs to be still on stack
+			currentStackDistance--;
+			methodsOnStack.removeLast();
+		}
+
+		if (currentStackDistance < 0) {
+			// should not happen
+			currentStackDistance = 0;
+		}
+
+		s_currentStackDistanceByThreadName.put(currentThreadName, currentStackDistance);
 	}
 }

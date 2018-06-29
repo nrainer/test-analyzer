@@ -41,19 +41,19 @@ public class ThreadStackManager implements IThreadListener {
 
 	/** {@inheritDoc} */
 	@Override
-	public synchronized void threadIsAboutToStart(String newThreadName) {
+	public synchronized void threadIsAboutToStart(String startingThreadName) {
 		String creatorThreadName = Thread.currentThread().getName();
-		LOGGER.debug("Thread " + newThreadName + " is being started by thread " + creatorThreadName);
+		LOGGER.debug("Thread " + startingThreadName + " is being started by thread " + creatorThreadName);
 
-		m_threadNameStartedByThreadName.put(newThreadName, creatorThreadName);
-		int stackHeightAtCreation = computeStackHeightOfThread(newThreadName);
+		m_threadNameStartedByThreadName.put(startingThreadName, creatorThreadName);
+		int stackHeightAtCreation = computeStackHeightOfThread(startingThreadName);
 
 		if (stackHeightAtCreation < 0) {
-			throw new IllegalStateException("Computed negative stack height for thread " + newThreadName);
+			throw new IllegalStateException("Computed negative stack height for thread " + startingThreadName);
 		}
 
-		m_stackHeightAtStartByThreadName.put(newThreadName, stackHeightAtCreation);
-		LOGGER.debug("Registered thread " + newThreadName + " with stack height " + stackHeightAtCreation);
+		m_stackHeightAtStartByThreadName.put(startingThreadName, stackHeightAtCreation);
+		LOGGER.debug("Registered thread " + startingThreadName + " with stack height " + stackHeightAtCreation);
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class ThreadStackManager implements IThreadListener {
 	public synchronized int computeCurrentStackHeight(String startClassName) {
 		String currentThreadName = Thread.currentThread().getName();
 
-		int stackHeight = getStackHeightOfThread(currentThreadName)
+		int stackHeight = getStartStackHeightOfThread(currentThreadName)
 				+ computeStackHeightOnCurrentThreadOnly(startClassName);
 
 		if (stackHeight < 0) {
@@ -115,18 +115,21 @@ public class ThreadStackManager implements IThreadListener {
 	/**
 	 * Compute the stack height of the thread, including the height for creating this thread.
 	 */
-	private int computeStackHeightOfThread(String threadCreatorName) {
-		int creatorThreadStackHeight = computeStackHeightOnCurrentThreadOnly(ThreadNotifier.class.getName());
+	private synchronized int computeStackHeightOfThread(String threadCreatorName) {
+		// stack height of the creator thread, without creator's creator thread height
+		int creatorThreadCurrentOwnStackHeight = computeStackHeightOnCurrentThreadOnly(ThreadNotifier.class.getName());
 
 		if (m_threadNameStartedByThreadName.containsKey(threadCreatorName)) {
-			return creatorThreadStackHeight + getStackHeightOfThread(threadCreatorName);
+			// creator thread has a creator
+			return creatorThreadCurrentOwnStackHeight + getStartStackHeightOfThread(threadCreatorName);
 		}
 
-		return creatorThreadStackHeight;
+		// current thread is the initial thread and has no creator
+		return creatorThreadCurrentOwnStackHeight;
 	}
 
 	/** Get the stored stack height of the given thread. Return 0 if no information is available. */
-	public synchronized int getStackHeightOfThread(String threadName) {
+	public synchronized int getStartStackHeightOfThread(String threadName) {
 		Integer threadCreatorStackHeight = m_stackHeightAtStartByThreadName.get(threadName);
 
 		if (threadCreatorStackHeight != null) {
@@ -136,7 +139,7 @@ public class ThreadStackManager implements IThreadListener {
 		m_stackHeightAtStartByThreadName.put(threadName, 0);
 
 		if (!MAIN_THREAD_NAME.equals(threadName)) {
-			LOGGER.warn("No initial stack height available for thread " + threadName + ". Using 0.");
+			LOGGER.warn("No start stack height available for thread " + threadName + ". Using 0.");
 		}
 
 		return 0;
@@ -148,7 +151,7 @@ public class ThreadStackManager implements IThreadListener {
 	 * @param startClassName
 	 *            start counting after this class (this class excluded)
 	 */
-	protected int computeStackHeightOnCurrentThreadOnly(String startClassName) {
+	protected synchronized int computeStackHeightOnCurrentThreadOnly(String startClassName) {
 		StackTraceElement[] stackTrace = new Exception().getStackTrace();
 		return computeStackHeightOfStackTrace(startClassName, m_stopClassName, stackTrace,
 				m_stackCountIgnoreClassNamePrefixes);
