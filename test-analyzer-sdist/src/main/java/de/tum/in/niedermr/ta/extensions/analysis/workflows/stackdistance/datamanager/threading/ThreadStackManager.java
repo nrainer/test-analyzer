@@ -47,12 +47,8 @@ public class ThreadStackManager implements IThreadListener {
 		LOGGER.debug("Thread " + nameOfThreadToBeStarted + " is being started by thread " + nameOfCreatorThread);
 
 		m_parentThreadNameByThreadName.put(nameOfThreadToBeStarted, nameOfCreatorThread);
-		int stackHeightAtCreation = computeFullStackHeightOfCurrentThread(nameOfCreatorThread);
 
-		if (stackHeightAtCreation < 0) {
-			throw new IllegalStateException("Computed negative stack height for creator thread " + nameOfCreatorThread);
-		}
-
+		int stackHeightAtCreation = computeCurrentStackHeight(ThreadNotifier.class);
 		m_stackHeightAtCreationByThreadName.put(nameOfThreadToBeStarted, stackHeightAtCreation);
 		LOGGER.debug("Registered thread " + nameOfThreadToBeStarted + " with stack height " + stackHeightAtCreation);
 	}
@@ -94,39 +90,22 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/**
-	 * Compute the current stack height, including the height for creating this thread.
+	 * Compute the current full stack height, <b>including</b> the height for creating this thread.
 	 * 
-	 * @param startClassName
+	 * @param stackCountStartClass
 	 *            start counting the stack elements (top down) after this class
 	 */
-	public synchronized int computeCurrentStackHeight(Class<?> startClass) {
+	public synchronized int computeCurrentStackHeight(Class<?> stackCountStartClass) {
 		String currentThreadName = Thread.currentThread().getName();
 
-		int stackHeight = getStackHeightOfThreadAtCreation(currentThreadName)
-				+ computeStackHeightOnCurrentThreadOnly(startClass);
+		int stackHeight = computeStackHeightOnCurrentThreadOnly(stackCountStartClass)
+				+ getStackHeightOfThreadAtCreation(currentThreadName);
 
 		if (stackHeight < 0) {
-			LOGGER.error("Negative stack height computed in thread " + currentThreadName);
-			stackHeight = 0;
+			throw new IllegalStateException("Negative stack height computed for thread " + currentThreadName);
 		}
 
 		return stackHeight;
-	}
-
-	/**
-	 * Compute the full stack height of the thread, including the height for creating this thread.
-	 */
-	private synchronized int computeFullStackHeightOfCurrentThread(String creatorThreadName) {
-		// stack height of the creator thread, without creator's creator thread height
-		int stackHeightOnCurrentThread = computeStackHeightOnCurrentThreadOnly(ThreadNotifier.class);
-
-		if (m_parentThreadNameByThreadName.containsKey(creatorThreadName)) {
-			// creator thread has a creator
-			return stackHeightOnCurrentThread + getStackHeightOfThreadAtCreation(creatorThreadName);
-		}
-
-		// current thread is the initial thread and has no creator
-		return stackHeightOnCurrentThread;
 	}
 
 	/**
