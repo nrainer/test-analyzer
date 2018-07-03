@@ -20,40 +20,41 @@ public class ThreadStackManager implements IThreadListener {
 	/** Name of the main thread. */
 	private static final String MAIN_THREAD_NAME = "main";
 
+	/** Whether the {@link Thread} class should be verified. Can be disabled during testing this class. */
 	private static boolean s_threadClassVerificationEnabled = true;
 
-	/** Map that contains for a thread its creator thread. */
-	private final Map<String, String> m_threadNameStartedByThreadName = new HashMap<>();
+	/** Map that contains for a thread its creator thread (key: thread's name, value: creator thread's name). */
+	private final Map<String, String> m_parentThreadNameByThreadName = new HashMap<>();
 	/**
-	 * Map that contains for a thread its stack height from the program start.
+	 * Map that contains for a thread its stack height from the program start (key: thread's name, value: stack height
+	 * at thread start).
 	 */
-	private final Map<String, Integer> m_stackHeightAtStartByThreadName = new HashMap<>();
+	private final Map<String, Integer> m_stackHeightAtCreationByThreadName = new HashMap<>();
 
 	/**
 	 * Stop class from where to stop counting the stacks. Occurrences of this class will be excluded.
 	 */
 	private String m_stopClassName;
 
-	/**
-	 * Class names which start with one of the specified prefixes will not be counted when computing the stack distance.
-	 */
+	/** Prefixes for qualified class names that should be ignored when counting the stack distance. */
 	private String[] m_stackCountIgnoreClassNamePrefixes;
 
 	/** {@inheritDoc} */
 	@Override
-	public synchronized void threadIsAboutToStart(String startingThreadName) {
-		String creatorThreadName = Thread.currentThread().getName();
-		LOGGER.debug("Thread " + startingThreadName + " is being started by thread " + creatorThreadName);
+	public synchronized void threadIsAboutToStart(String nameOfThreadToBeStarted) {
+		// new thread will be started by the current thread
+		String nameOfCreatorThread = Thread.currentThread().getName();
+		LOGGER.debug("Thread " + nameOfThreadToBeStarted + " is being started by thread " + nameOfCreatorThread);
 
-		m_threadNameStartedByThreadName.put(startingThreadName, creatorThreadName);
-		int stackHeightAtCreation = computeStackHeightOfThread(startingThreadName);
+		m_parentThreadNameByThreadName.put(nameOfThreadToBeStarted, nameOfCreatorThread);
+		int stackHeightAtCreation = computeFullStackHeightOfCurrentThread(nameOfThreadToBeStarted);
 
 		if (stackHeightAtCreation < 0) {
-			throw new IllegalStateException("Computed negative stack height for thread " + startingThreadName);
+			throw new IllegalStateException("Computed negative stack height for creator thread " + nameOfCreatorThread);
 		}
 
-		m_stackHeightAtStartByThreadName.put(startingThreadName, stackHeightAtCreation);
-		LOGGER.debug("Registered thread " + startingThreadName + " with stack height " + stackHeightAtCreation);
+		m_stackHeightAtCreationByThreadName.put(nameOfThreadToBeStarted, stackHeightAtCreation);
+		LOGGER.debug("Registered thread " + nameOfThreadToBeStarted + " with stack height " + stackHeightAtCreation);
 	}
 
 	/**
@@ -62,7 +63,7 @@ public class ThreadStackManager implements IThreadListener {
 	 * @throws IllegalStateException
 	 *             if the original {@link Thread} class is in use
 	 */
-	public void verifyReplacedThreadClassInUse() {
+	public static void verifyReplacedThreadClassInUse() {
 		if (!s_threadClassVerificationEnabled) {
 			LOGGER.warn("Thread class verification is disabled!");
 			return;
@@ -98,11 +99,11 @@ public class ThreadStackManager implements IThreadListener {
 	 * @param startClassName
 	 *            start counting the stack elements (top down) after this class
 	 */
-	public synchronized int computeCurrentStackHeight(String startClassName) {
+	public synchronized int computeCurrentStackHeight(Class<?> startClass) {
 		String currentThreadName = Thread.currentThread().getName();
 
-		int stackHeight = getStartStackHeightOfThread(currentThreadName)
-				+ computeStackHeightOnCurrentThreadOnly(startClassName);
+		int stackHeight = getStackHeightOfThreadAtCreation(currentThreadName)
+				+ computeStackHeightOnCurrentThreadOnly(startClass);
 
 		if (stackHeight < 0) {
 			LOGGER.error("Negative stack height computed in thread " + currentThreadName);
@@ -113,30 +114,35 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/**
-	 * Compute the stack height of the thread, including the height for creating this thread.
+	 * Compute the full stack height of the thread, including the height for creating this thread.
 	 */
-	private synchronized int computeStackHeightOfThread(String threadCreatorName) {
+	private synchronized int computeFullStackHeightOfCurrentThread(String creatorThreadName) {
 		// stack height of the creator thread, without creator's creator thread height
-		int creatorThreadCurrentOwnStackHeight = computeStackHeightOnCurrentThreadOnly(ThreadNotifier.class.getName());
+		int stackHeightOnCurrentThread = computeStackHeightOnCurrentThreadOnly(ThreadNotifier.class);
 
-		if (m_threadNameStartedByThreadName.containsKey(threadCreatorName)) {
+		if (m_parentThreadNameByThreadName.containsKey(creatorThreadName)) {
 			// creator thread has a creator
-			return creatorThreadCurrentOwnStackHeight + getStartStackHeightOfThread(threadCreatorName);
+			return stackHeightOnCurrentThread + getStackHeightOfThreadAtCreation(creatorThreadName);
 		}
 
 		// current thread is the initial thread and has no creator
-		return creatorThreadCurrentOwnStackHeight;
+		return stackHeightOnCurrentThread;
 	}
 
-	/** Get the stored stack height of the given thread. Return 0 if no information is available. */
-	public synchronized int getStartStackHeightOfThread(String threadName) {
-		Integer threadCreatorStackHeight = m_stackHeightAtStartByThreadName.get(threadName);
+	/**
+	 * Get the stored stack height of the given thread at its creation. Use 0 if no information is available.
+	 * 
+	 * @param threadName
+	 *            name of the thread
+	 */
+	public synchronized int getStackHeightOfThreadAtCreation(String threadName) {
+		Integer threadStackHeightAtStart = m_stackHeightAtCreationByThreadName.get(threadName);
 
-		if (threadCreatorStackHeight != null) {
-			return threadCreatorStackHeight;
+		if (threadStackHeightAtStart != null) {
+			return threadStackHeightAtStart;
 		}
 
-		m_stackHeightAtStartByThreadName.put(threadName, 0);
+		m_stackHeightAtCreationByThreadName.put(threadName, 0);
 
 		if (!MAIN_THREAD_NAME.equals(threadName)) {
 			LOGGER.warn("No start stack height available for thread " + threadName + ". Using 0.");
@@ -146,14 +152,15 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/**
-	 * Compute the current height on the stack, <b>without</b> the height for creating this thread.
+	 * Compute the current height on the stack, <b>without</b> the height for creating this thread. Considered as an
+	 * expensive operation, because an exception is created to retrieve the stack trace.
 	 * 
 	 * @param startClassName
 	 *            start counting after this class (this class excluded)
 	 */
-	protected synchronized int computeStackHeightOnCurrentThreadOnly(String startClassName) {
+	protected synchronized int computeStackHeightOnCurrentThreadOnly(Class<?> startClass) {
 		StackTraceElement[] stackTrace = new Exception().getStackTrace();
-		return computeStackHeightOfStackTrace(startClassName, m_stopClassName, stackTrace,
+		return computeStackHeightOfStackTrace(startClass.getName(), m_stopClassName, stackTrace,
 				m_stackCountIgnoreClassNamePrefixes);
 	}
 
@@ -213,7 +220,7 @@ public class ThreadStackManager implements IThreadListener {
 				break;
 			}
 
-			if (isCountIgnoredClass(stackElementClassName, ignoredClassNamePrefixes)) {
+			if (shouldClassBeIgnoredWhenCounting(stackElementClassName, ignoredClassNamePrefixes)) {
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("Skipping ignored element: " + stackElementString);
 				}
@@ -234,7 +241,8 @@ public class ThreadStackManager implements IThreadListener {
 	}
 
 	/** Check if the class should not be counted. */
-	private static boolean isCountIgnoredClass(String stackElementClassName, String[] ignoredClassNamePrefixes) {
+	private static boolean shouldClassBeIgnoredWhenCounting(String stackElementClassName,
+			String[] ignoredClassNamePrefixes) {
 		for (String classNamePrefix : ignoredClassNamePrefixes) {
 			if (stackElementClassName.startsWith(classNamePrefix)) {
 				return true;
@@ -252,6 +260,5 @@ public class ThreadStackManager implements IThreadListener {
 	/** Disable the thread class verification. Only intended for use in certain test cases. */
 	public static void disableThreadClassVerification() {
 		s_threadClassVerificationEnabled = false;
-
 	}
 }

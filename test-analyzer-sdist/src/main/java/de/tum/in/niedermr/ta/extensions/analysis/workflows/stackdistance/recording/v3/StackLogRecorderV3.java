@@ -29,7 +29,7 @@ public class StackLogRecorderV3 {
 	/** Set the thread manager and verify that the modified thread class was loaded. */
 	public static void setThreadStackManagerAndVerify(ThreadStackManager threadManager) {
 		s_threadStackManager = threadManager;
-		s_threadStackManager.verifyReplacedThreadClassInUse();
+		ThreadStackManager.verifyReplacedThreadClassInUse();
 	}
 
 	/**
@@ -63,7 +63,8 @@ public class StackLogRecorderV3 {
 		LinkedList<String> methodsOnStack = s_currentMethodsOnStackByThreadName.get(currentThreadName);
 
 		if (currentStackDistance == null) {
-			currentStackDistance = s_threadStackManager.getStartStackHeightOfThread(currentThreadName);
+			// thread is seen for the first time
+			currentStackDistance = s_threadStackManager.getStackHeightOfThreadAtCreation(currentThreadName);
 			methodsOnStack = new LinkedList<>();
 		}
 

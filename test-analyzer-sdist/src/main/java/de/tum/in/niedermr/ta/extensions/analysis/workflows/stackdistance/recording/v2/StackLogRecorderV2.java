@@ -19,7 +19,7 @@ public class StackLogRecorderV2 {
 	/** Set the thread manager and verify that the modified thread class was loaded. */
 	public static void setThreadStackManagerAndVerify(ThreadStackManager threadManager) {
 		s_threadStackManager = threadManager;
-		s_threadStackManager.verifyReplacedThreadClassInUse();
+		ThreadStackManager.verifyReplacedThreadClassInUse();
 	}
 
 	/**
@@ -46,7 +46,7 @@ public class StackLogRecorderV2 {
 		}
 
 		MethodIdentifier methodIdentifier = MethodIdentifier.parse(methodIdentifierString);
-		int currentStackDistance = s_threadStackManager.computeCurrentStackHeight(StackLogRecorderV2.class.getName());
+		int currentStackDistance = s_threadStackManager.computeCurrentStackHeight(StackLogRecorderV2.class);
 
 		StackLogDataManager.visitMethodInvocation(methodIdentifier, currentStackDistance);
 	}

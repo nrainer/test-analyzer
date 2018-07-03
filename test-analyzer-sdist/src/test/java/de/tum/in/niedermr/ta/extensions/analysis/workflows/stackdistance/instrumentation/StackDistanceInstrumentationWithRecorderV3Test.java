@@ -2,6 +2,8 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.instru
 
 import static org.junit.Assert.assertEquals;
 
+import org.junit.After;
+
 import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.StackLogDataManager;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.threading.ThreadStackManager;
@@ -12,13 +14,14 @@ public class StackDistanceInstrumentationWithRecorderV3Test extends AbstractStac
 	/** {@inheritDoc} */
 	@Override
 	protected void beforeVerifyModification() throws Exception {
-		StackLogRecorderV3.setThreadStackManagerAndVerify(new ThreadStackManager() {
-			/** {@inheritDoc} */
-			@Override
-			public void verifyReplacedThreadClassInUse() {
-				// NOP: not required for the test in this usecase
-			}
-		});
+		ThreadStackManager.disableThreadClassVerification();
+		StackLogRecorderV3.setThreadStackManagerAndVerify(new ThreadStackManager());
+	}
+
+	/** After test. */
+	@After
+	public void restoreState() {
+		ThreadStackManager.enableThreadClassVerification();
 	}
 
 	/** {@inheritDoc} */
