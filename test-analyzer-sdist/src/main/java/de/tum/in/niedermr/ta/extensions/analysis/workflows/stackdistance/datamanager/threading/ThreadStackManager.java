@@ -47,7 +47,7 @@ public class ThreadStackManager implements IThreadListener {
 		LOGGER.debug("Thread " + nameOfThreadToBeStarted + " is being started by thread " + nameOfCreatorThread);
 
 		m_parentThreadNameByThreadName.put(nameOfThreadToBeStarted, nameOfCreatorThread);
-		int stackHeightAtCreation = computeFullStackHeightOfCurrentThread(nameOfThreadToBeStarted);
+		int stackHeightAtCreation = computeFullStackHeightOfCurrentThread(nameOfCreatorThread);
 
 		if (stackHeightAtCreation < 0) {
 			throw new IllegalStateException("Computed negative stack height for creator thread " + nameOfCreatorThread);
