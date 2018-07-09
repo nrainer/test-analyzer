@@ -114,7 +114,9 @@ public class StackDistanceMojo extends AbstractMojo {
 			return;
 		}
 
-		createInstrumentedMarkerFile(codeDirectory).createNewFile();
+		File markerFile = createInstrumentedMarkerFile(codeDirectory);
+		getLog().info("Creating marker file: " + markerFile.getAbsolutePath());
+		markerFile.createNewFile();
 	}
 
 	private File createInstrumentedMarkerFile(String codeDirectory) {
