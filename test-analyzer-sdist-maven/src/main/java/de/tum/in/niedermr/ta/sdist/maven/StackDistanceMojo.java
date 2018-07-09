@@ -59,8 +59,9 @@ public class StackDistanceMojo extends AbstractMojo {
 
 	/** Check if the project has build artifacts to be instrumented. */
 	protected boolean isShouldRun() {
-		// project has build artifacts
-		return new File(project.getBuild().getDirectory()).exists();
+		// project has build artifacts and compiled application classes exist
+		return new File(project.getBuild().getDirectory()).exists()
+				&& new File(project.getBuild().getOutputDirectory()).exists();
 	}
 
 	private void instrumentCodeDirectory(String codeDirectory)
