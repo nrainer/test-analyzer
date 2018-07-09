@@ -2,8 +2,6 @@ package de.tum.in.niedermr.ta.sdist.maven;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -50,12 +48,9 @@ public class StackDistanceMojo extends AbstractMojo {
 
 		getLog().info("Processing project: " + project.getName());
 
-		List<String> compiledCodeDirectoriesToInstrument = new ArrayList<>();
-		compiledCodeDirectoriesToInstrument.add(project.getBuild().getOutputDirectory());
-
 		getLog().info("Starting to instrument non-test classes for stack distance computation");
 		try {
-			instrumentCodeDirectories(compiledCodeDirectoriesToInstrument);
+			instrumentCodeDirectory(project.getBuild().getOutputDirectory());
 		} catch (DependencyResolutionRequiredException | IOException e) {
 			throw new MojoExecutionException("Exception occurred", e);
 		}
@@ -66,13 +61,6 @@ public class StackDistanceMojo extends AbstractMojo {
 	protected boolean isShouldRun() {
 		// project has build artifacts
 		return new File(project.getBuild().getDirectory()).exists();
-	}
-
-	private void instrumentCodeDirectories(List<String> compiledCodeDirectoriesToInstrument)
-			throws DependencyResolutionRequiredException, IOException {
-		for (String codeDirectory : compiledCodeDirectoriesToInstrument) {
-			instrumentCodeDirectory(codeDirectory);
-		}
 	}
 
 	private void instrumentCodeDirectory(String codeDirectory)
