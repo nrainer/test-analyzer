@@ -42,11 +42,11 @@ public class StackDistanceMojo extends AbstractMojo {
 	@Override
 	public void execute() throws MojoExecutionException, MojoFailureException {
 		if (!isShouldRun()) {
-			getLog().info("Skipping current project without build folder: " + project.getName());
+			getLog().info("Skipping current project without build folder: " + getProjectDisplayName());
 			return;
 		}
 
-		getLog().info("Processing project: " + project.getName());
+		getLog().info("Processing project: " + getProjectDisplayName());
 
 		getLog().info("Starting to instrument non-test classes for stack distance computation");
 		try {
@@ -110,5 +110,9 @@ public class StackDistanceMojo extends AbstractMojo {
 
 	private File createInstrumentedMarkerFile(String codeDirectory) {
 		return new File(codeDirectory, "sdist-instrumented.info");
+	}
+
+	private String getProjectDisplayName() {
+		return project.getArtifactId() + " (" + project.getName() + ")";
 	}
 }
