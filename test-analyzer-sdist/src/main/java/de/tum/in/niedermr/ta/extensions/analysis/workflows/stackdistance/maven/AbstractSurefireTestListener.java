@@ -146,7 +146,10 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 		m_stackDistanceManager.startStackLogger(testCaseIdentifier);
 	}
 
-	private TestcaseIdentifier createTestcaseIdentifier(Description description) {
+	protected static TestcaseIdentifier createTestcaseIdentifier(Description description) {
+		if (description.getTestClass() == null) {
+			return TestcaseIdentifier.createForNonCodeTestcase(description.getDisplayName());
+		}
 		return TestcaseIdentifier.create(description.getTestClass(), description.getMethodName());
 	}
 
