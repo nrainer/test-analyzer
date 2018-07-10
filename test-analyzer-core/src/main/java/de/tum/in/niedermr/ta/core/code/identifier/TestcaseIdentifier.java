@@ -9,15 +9,19 @@ import de.tum.in.niedermr.ta.core.common.constants.CommonConstants;
 
 /** Identifier for Java test case methods. */
 public final class TestcaseIdentifier implements Identifier {
-	public static final String SEPARATOR = CommonConstants.SEPARATOR_DEFAULT;
 
+	public static final String SEPARATOR = CommonConstants.SEPARATOR_DEFAULT;
+	public static final String NON_CODE_TEST_CLASS_NAME = "zzz.NonCodeTest";
+
+	/** Name of the test class. May be null for non-code test cases. */
 	private final String m_className;
+	/** Name of the test case. Usually the name of the method for test cases based on code. */
 	private final String m_testcaseName;
 
 	/** Constructor. */
 	private TestcaseIdentifier(String className, String testcaseName) {
 		this.m_className = className;
-		this.m_testcaseName = testcaseName;
+		this.m_testcaseName = Objects.requireNonNull(testcaseName);
 	}
 
 	/** Create an identifier for a test case. */
@@ -28,6 +32,11 @@ public final class TestcaseIdentifier implements Identifier {
 	/** Create an identifier for a test case. */
 	public static TestcaseIdentifier create(String testClassName, String testcaseName) {
 		return new TestcaseIdentifier(testClassName, testcaseName);
+	}
+
+	/** Create an identifier for a test case. */
+	public static TestcaseIdentifier createForNonCodeTestcase(String displayName) {
+		return new TestcaseIdentifier(null, displayName);
 	}
 
 	/** Create an identifier for a test case. */
@@ -67,14 +76,25 @@ public final class TestcaseIdentifier implements Identifier {
 		return getTestClassName() + SEPARATOR + getTestcaseName();
 	}
 
+	/** Name of the test class. Return {@value #NON_CODE_TEST_CLASS_NAME} if the internal value is null. */
 	public final String getTestClassName() {
+		if (m_className == null) {
+			return NON_CODE_TEST_CLASS_NAME;
+		}
+
 		return m_className;
 	}
 
+	/** Return the test class or <code>null</code> for non-code test cases. */
 	public final Class<?> resolveTestClass() throws ClassNotFoundException {
-		return JavaUtility.loadClass(getTestClassName());
+		if (m_className == null) {
+			return null;
+		}
+
+		return JavaUtility.loadClass(m_className);
 	}
 
+	/** Return the test class or <code>null</code> if the class is not on the classpath or for non-code test cases. */
 	public final Class<?> resolveTestClassNoEx() {
 		try {
 			return resolveTestClass();

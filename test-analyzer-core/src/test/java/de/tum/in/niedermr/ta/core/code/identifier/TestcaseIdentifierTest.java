@@ -1,6 +1,7 @@
 package de.tum.in.niedermr.ta.core.code.identifier;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
@@ -34,6 +35,17 @@ public class TestcaseIdentifierTest {
 				EXPECTED_TEST_IDENTIFIER_CLASS_NAME + JavaConstants.CLASS_METHOD_SEPARATOR + TEST_CASE_NAME);
 		assertEquals(EXPECTED_TEST_IDENTIFIER_CLASS_NAME, testIdentifier.getTestClassName());
 		assertEquals(TEST_CASE_NAME, testIdentifier.getTestcaseName());
+	}
+
+	/** Test. */
+	@Test
+	public void testCreateForNonCodeTestcase() throws ClassNotFoundException {
+		String testDisplayName = "comment_attribution_scenarios.story";
+
+		TestcaseIdentifier testIdentifier = TestcaseIdentifier.createForNonCodeTestcase(testDisplayName);
+		assertEquals(TestcaseIdentifier.NON_CODE_TEST_CLASS_NAME, testIdentifier.getTestClassName());
+		assertEquals(testDisplayName, testIdentifier.getTestcaseName());
+		assertNull(testIdentifier.resolveTestClass());
 	}
 
 	/** Test. */
