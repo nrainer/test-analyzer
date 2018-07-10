@@ -13,11 +13,10 @@ public abstract class AbstractThreadAwareStackDistanceManager {
 	private static final Logger LOGGER = LogManager.getLogger(AbstractThreadAwareStackDistanceManager.class);
 
 	/**
-	 * Prefixes of class names that should not be counted when computing the
-	 * stack distance.
+	 * Prefixes of class names that should not be counted when computing the stack distance.
 	 */
-	private static final String[] STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES = new String[] { "org.junit.",
-			"sun.reflect." };
+	private static final String[] STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES = new String[] { "org.junit.", "sun.reflect.",
+			"junit.framework." };
 
 	public void beforeAllTests() {
 		ThreadStackManager stackManager = new ThreadStackManager();
