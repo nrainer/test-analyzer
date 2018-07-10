@@ -69,8 +69,7 @@ public class InformationCollectionLogic extends AbstractInformationCollectionLog
 				m_methodInformation.put(identifier, testInformation);
 			}
 
-			testInformation.addTestcase(testCaseIdentifier.resolveTestClassNoEx(),
-					testCaseIdentifier.getTestcaseName());
+			testInformation.addTestcase(testCaseIdentifier);
 		}
 	}
 
