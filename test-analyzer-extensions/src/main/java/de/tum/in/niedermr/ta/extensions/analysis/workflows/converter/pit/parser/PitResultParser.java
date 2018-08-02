@@ -43,6 +43,8 @@ public class PitResultParser extends AbstractXmlContentParser {
 	private XPathExpression m_lineNumberNodeXPath;
 	/** Description node of mutation node. */
 	private XPathExpression m_descriptionNodeXPath;
+	/** Status attribute. */
+	private String m_statusAttributeName;
 
 	/** Skip mutations with status {@value #STATUS_NO_COVERAGE}. */
 	private boolean m_skipNoCoverageMutations = true;
@@ -73,6 +75,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 		m_indexNodeXPath = compileXPath("./index");
 		m_lineNumberNodeXPath = compileXPath("./lineNumber");
 		m_descriptionNodeXPath = compileXPath("./description");
+		m_statusAttributeName = "status";
 	}
 
 	/** Parse the mutation nodes. */
@@ -84,13 +87,12 @@ public class PitResultParser extends AbstractXmlContentParser {
 			/** {@inheritDoc} */
 			@Override
 			public void visitNode(Node currentNode, int nodeIndex) throws XPathExpressionException {
-				if (!isAcceptedMutationNode(currentNode)) {
+				if (isAcceptedMutationNode(currentNode)) {
+					parseMutationNodeAndAppendToResultReceiver(currentNode, nodeIndex, resultReceiver);
+					resultReceiver.markResultAsPartiallyComplete();
+				} else {
 					LOGGER.debug("Skipping mutation node " + nodeIndex + ".");
-					return;
 				}
-
-				parseMutationNodeAndAppendToResultReceiver(currentNode, nodeIndex, resultReceiver);
-				resultReceiver.markResultAsPartiallyComplete();
 
 				if (nodeIndex > 0 && nodeIndex % 1000 == 0) {
 					LOGGER.info("Parsed mutation node number " + nodeIndex + ".");
@@ -100,6 +102,12 @@ public class PitResultParser extends AbstractXmlContentParser {
 	}
 
 	protected boolean isAcceptedMutationNode(Node mutationNode) throws XPathExpressionException {
+		String mutationStatus = evaluateAttributeValue(mutationNode, m_statusAttributeName);
+
+		if (m_skipNoCoverageMutations && STATUS_NO_COVERAGE.equals(mutationStatus)) {
+			return false;
+		}
+
 		String description = evaluateStringValue(mutationNode, m_descriptionNodeXPath);
 
 		if (description.contains(STACK_DISTANCE_RECORDING_CALL_PACKAGE)) {
@@ -133,14 +141,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 	protected MutationSqlOutputBuilder parseMutationNodeAndCreateOutputBuilder(Node mutationNode,
 			String killingTestSignature) throws XPathExpressionException {
 		MutationSqlOutputBuilder mutationSqlOutputBuilder = createOutputBuilder();
-		String mutationStatus = evaluateAttributeValue(mutationNode, "status");
-
-		if (m_skipNoCoverageMutations && STATUS_NO_COVERAGE.equals(mutationStatus)) {
-			mutationSqlOutputBuilder.ignoreNode();
-			return mutationSqlOutputBuilder;
-		}
-
-		mutationSqlOutputBuilder.setMutationStatus(mutationStatus);
+		mutationSqlOutputBuilder.setMutationStatus(evaluateAttributeValue(mutationNode, m_statusAttributeName));
 		mutationSqlOutputBuilder.setMutatedMethod(evaluateStringValue(mutationNode, m_mutatedClassNodeXPath),
 				evaluateStringValue(mutationNode, m_mutatedMethodNodeXPath),
 				evaluateStringValue(mutationNode, m_methodTypeSignatureNodeXPath));
