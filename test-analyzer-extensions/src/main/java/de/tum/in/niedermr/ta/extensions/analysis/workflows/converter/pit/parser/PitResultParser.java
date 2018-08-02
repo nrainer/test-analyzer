@@ -21,6 +21,8 @@ public class PitResultParser extends AbstractXmlContentParser {
 	/** Logger. */
 	private static final Logger LOGGER = LogManager.getLogger(PitResultParser.class);
 
+	private static final String STACK_DISTANCE_RECORDING_CALL_PACKAGE = "de/tum/in/niedermr/ta/extensions/analysis/workflows/stackdistance/recording";
+
 	private static final String STATUS_NO_COVERAGE = "NO_COVERAGE";
 
 	/** Mutation node. */
@@ -97,8 +99,15 @@ public class PitResultParser extends AbstractXmlContentParser {
 		});
 	}
 
-	protected boolean isAcceptedMutationNode(Node node) {
-		return false;
+	protected boolean isAcceptedMutationNode(Node mutationNode) throws XPathExpressionException {
+		String description = evaluateStringValue(mutationNode, m_descriptionNodeXPath);
+
+		if (description.contains(STACK_DISTANCE_RECORDING_CALL_PACKAGE)) {
+			// instrumented code that should not have been there
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
