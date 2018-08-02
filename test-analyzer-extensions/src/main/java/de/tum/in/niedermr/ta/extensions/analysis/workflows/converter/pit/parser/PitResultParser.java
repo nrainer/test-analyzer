@@ -35,12 +35,12 @@ public class PitResultParser extends AbstractXmlContentParser {
 	private XPathExpression m_mutatorNameNodeXPath;
 	/** Killing test node of mutation node. */
 	protected XPathExpression m_killingTestNodeXPath;
-	/** Description node of mutation node. */
-	private XPathExpression m_descriptionNodeXPath;
 	/** Index node of mutation node. */
 	private XPathExpression m_indexNodeXPath;
 	/** Line number node of mutation node. */
 	private XPathExpression m_lineNumberNodeXPath;
+	/** Description node of mutation node. */
+	private XPathExpression m_descriptionNodeXPath;
 
 	/** Skip mutations with status {@value #STATUS_NO_COVERAGE}. */
 	private boolean m_skipNoCoverageMutations = true;
@@ -68,9 +68,9 @@ public class PitResultParser extends AbstractXmlContentParser {
 		m_methodTypeSignatureNodeXPath = compileXPath("./methodDescription");
 		m_mutatorNameNodeXPath = compileXPath("./mutator");
 		m_killingTestNodeXPath = compileXPath("./killingTest");
-		m_descriptionNodeXPath = compileXPath("./description");
 		m_indexNodeXPath = compileXPath("./index");
 		m_lineNumberNodeXPath = compileXPath("./lineNumber");
+		m_descriptionNodeXPath = compileXPath("./description");
 	}
 
 	/** Parse the mutation nodes. */
@@ -82,6 +82,11 @@ public class PitResultParser extends AbstractXmlContentParser {
 			/** {@inheritDoc} */
 			@Override
 			public void visitNode(Node currentNode, int nodeIndex) throws XPathExpressionException {
+				if (!isAcceptedMutationNode(currentNode)) {
+					LOGGER.debug("Skipping mutation node " + nodeIndex + ".");
+					return;
+				}
+
 				parseMutationNodeAndAppendToResultReceiver(currentNode, nodeIndex, resultReceiver);
 				resultReceiver.markResultAsPartiallyComplete();
 
@@ -90,6 +95,10 @@ public class PitResultParser extends AbstractXmlContentParser {
 				}
 			}
 		});
+	}
+
+	protected boolean isAcceptedMutationNode(Node node) {
+		return false;
 	}
 
 	/**
