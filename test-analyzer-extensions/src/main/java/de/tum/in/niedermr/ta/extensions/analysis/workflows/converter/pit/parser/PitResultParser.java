@@ -94,7 +94,7 @@ public class PitResultParser extends AbstractXmlContentParser {
 					LOGGER.debug("Skipping mutation node " + nodeIndex + ".");
 				}
 
-				if (nodeIndex > 0 && nodeIndex % 1000 == 0) {
+				if (nodeIndex > 0 && nodeIndex % 100 == 0) {
 					LOGGER.info("Parsed mutation node number " + nodeIndex + ".");
 				}
 			}
