@@ -106,6 +106,11 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 	/** {@inheritDoc} */
 	@Override
 	public synchronized void testStarted(Description description) throws Exception {
+		if (m_stackDistanceManager == null) {
+			throw new IllegalStateException(getClass().getSimpleName()
+					+ " has not been initialized because testRunStarted(Description) has not been invoked. Check the used Maven version of the SUT.");
+		}
+
 		m_currentTestcaseFailed = false;
 		startStackLogRecorder(createTestcaseIdentifier(description));
 	}
