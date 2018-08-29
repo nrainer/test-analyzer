@@ -1,2 +1,8 @@
 * The patched classes need to be compiled with exactly the same JRE.
 * Java 9 has no endorsed folder!
+
+Patches are available for following versions:
+* java_1.8.0_60
+* java_1.8.0_162
+* java_1.8.0_171 (equal to java_1.8.0_162)
+* java_9_4
