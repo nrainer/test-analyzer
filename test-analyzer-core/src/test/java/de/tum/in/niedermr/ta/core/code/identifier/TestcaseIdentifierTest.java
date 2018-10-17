@@ -65,4 +65,11 @@ public class TestcaseIdentifierTest {
 
 		assertEquals(methodIdentifier, testIdentifier.toMethodIdentifier());
 	}
+
+	/** Test. */
+	@Test
+	public void testSanitizeName() throws ClassNotFoundException {
+		TestcaseIdentifier testIdentifier = TestcaseIdentifier.createForNonCodeTestcase("This |here|");
+		assertEquals("zzz.NonCodeTest;This here", testIdentifier.get());
+	}
 }
