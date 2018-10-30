@@ -20,8 +20,8 @@ public final class TestcaseIdentifier implements Identifier {
 
 	/** Constructor. */
 	private TestcaseIdentifier(String className, String testcaseName) {
-		this.m_className = className;
-		this.m_testcaseName = Objects.requireNonNull(testcaseName);
+		m_className = sanitizeName(className);
+		m_testcaseName = sanitizeName(Objects.requireNonNull(testcaseName));
 	}
 
 	/** Create an identifier for a test case. */
@@ -133,5 +133,13 @@ public final class TestcaseIdentifier implements Identifier {
 	@Override
 	public String toString() {
 		return get();
+	}
+
+	private static String sanitizeName(String name) {
+		if (name == null) {
+			return null;
+		}
+
+		return name.replace("|", "");
 	}
 }
