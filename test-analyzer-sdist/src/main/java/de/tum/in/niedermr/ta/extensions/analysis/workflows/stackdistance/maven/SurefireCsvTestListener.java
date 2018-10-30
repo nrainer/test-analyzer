@@ -12,7 +12,7 @@ import de.tum.in.niedermr.ta.core.code.identifier.TestcaseIdentifier;
 public class SurefireCsvTestListener extends AbstractSurefireTestListener {
 
 	/** Separator: do not use <code>;</code> because it can appear in method signatures. */
-	private static final String CSV_SEPARATOR = "|";
+	private static final String CSV_SEPARATOR = "||";
 
 	/** {@inheritDoc} */
 	@Override
