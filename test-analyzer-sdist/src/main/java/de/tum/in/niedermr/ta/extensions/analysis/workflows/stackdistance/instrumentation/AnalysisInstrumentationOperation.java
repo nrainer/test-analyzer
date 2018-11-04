@@ -12,6 +12,8 @@ public class AnalysisInstrumentationOperation extends AbstractTestAwareCodeModif
 	/** Class that records the data gathered from the instrumentation. */
 	private final Class<?> m_instrumentationDataRetrieverClass;
 
+	private boolean m_failIfAlreadyInstrumented = true;
+
 	/** Constructor. */
 	public AnalysisInstrumentationOperation(ITestClassDetector testClassDetector,
 			Class<?> instrumentationDataRetrieverClass) {
@@ -19,10 +21,19 @@ public class AnalysisInstrumentationOperation extends AbstractTestAwareCodeModif
 		m_instrumentationDataRetrieverClass = instrumentationDataRetrieverClass;
 	}
 
+	public void setFailIfAlreadyInstrumented(boolean failIfAlreadyInstrumented) {
+		this.m_failIfAlreadyInstrumented = failIfAlreadyInstrumented;
+	}
+
+	public boolean isFailIfAlreadyInstrumented() {
+		return m_failIfAlreadyInstrumented;
+	}
+
 	/** {@inheritDoc} */
 	@Override
 	protected void modifySourceClass(ClassReader cr, ClassWriter cw) {
-		ClassVisitor cv = new AnalysisInstrumentationClassVisitor(cw, cr, m_instrumentationDataRetrieverClass);
+		ClassVisitor cv = new AnalysisInstrumentationClassVisitor(cw, cr, m_instrumentationDataRetrieverClass,
+				m_failIfAlreadyInstrumented);
 		cr.accept(cv, ClassReader.EXPAND_FRAMES);
 	}
 }

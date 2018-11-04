@@ -12,13 +12,15 @@ public class AnalysisInstrumentationClassVisitor extends AbstractCommonClassVisi
 	/** Class that records the data gathered from the instrumentation. */
 	private final Class<?> m_instrumentationDataRetrieverClass;
 	private final ClassReader m_cr;
+	private boolean m_failIfAlreadyInstrumented;
 
 	/** Constructor. */
 	public AnalysisInstrumentationClassVisitor(ClassVisitor cv, ClassReader cr,
-			Class<?> instrumentationDataRetrieverClass) {
+			Class<?> instrumentationDataRetrieverClass, boolean failIfAlreadyInstrumented) {
 		super(cv, cr.getClassName());
 		m_instrumentationDataRetrieverClass = instrumentationDataRetrieverClass;
 		m_cr = cr;
+		m_failIfAlreadyInstrumented = failIfAlreadyInstrumented;
 	}
 
 	/** {@inheritDoc} */
@@ -27,7 +29,15 @@ public class AnalysisInstrumentationClassVisitor extends AbstractCommonClassVisi
 		ClassNode cn = new ClassNode();
 		m_cr.accept(cn, 0);
 
-		return new AnalysisInstrumentationMethodVisitor(mv, cn, getClassName(), methodName, desc,
-				m_instrumentationDataRetrieverClass);
+		MethodVisitor instrumentationMethodVisitor = new AnalysisInstrumentationMethodVisitor(mv, cn, getClassName(),
+				methodName, desc, m_instrumentationDataRetrieverClass);
+
+		if (m_failIfAlreadyInstrumented) {
+			// wrap the method visitor
+			return new AlreadyInstrumentedMethodVisitor(instrumentationMethodVisitor, getClassName(),
+					m_instrumentationDataRetrieverClass);
+		}
+
+		return instrumentationMethodVisitor;
 	}
 }
