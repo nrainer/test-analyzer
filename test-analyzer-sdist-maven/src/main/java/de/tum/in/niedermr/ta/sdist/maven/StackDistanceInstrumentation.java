@@ -30,7 +30,7 @@ public class StackDistanceInstrumentation {
 		String inputArtifactPath = argsReader.getArgument(ARGS_ARTIFACT_INPUT_PATH);
 		String outputArtifactPath = argsReader.getArgument(ARGS_ARTIFACT_OUTPUT_PATH);
 
-		IArtifactModificationVisitor modificationIterator = MainArtifactVisitorFactory.INSTANCE
+		IArtifactModificationVisitor modificationVisitor = MainArtifactVisitorFactory.INSTANCE
 				.createModificationVisitor(inputArtifactPath, outputArtifactPath, exceptionHandler);
 
 		// the source code folder contains only source classes in the Maven scenario
@@ -38,7 +38,7 @@ public class StackDistanceInstrumentation {
 
 		AnalysisInstrumentationOperation operation = new AnalysisInstrumentationOperation(testClassDetector,
 				StackLogRecorderV3.class);
-		modificationIterator.execute(operation);
+		modificationVisitor.execute(operation);
 	}
 
 	/** Create a writer for the program arguments. */

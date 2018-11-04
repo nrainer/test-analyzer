@@ -19,6 +19,8 @@ import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
+import de.tum.in.niedermr.ta.sdist.maven.status.IInstrumentationStatusManager;
+import de.tum.in.niedermr.ta.sdist.maven.status.SimpleInstrumentationStatusManager;
 
 /**
  * StackDistance Mojo to instrument the classes under test. <br/>
@@ -66,7 +68,9 @@ public class StackDistanceMojo extends AbstractMojo {
 
 	private void instrumentCodeDirectory(String codeDirectory)
 			throws DependencyResolutionRequiredException, IOException {
-		if (checkIfInstrumentationIsNecessary && hasInstrumentedMarker(codeDirectory)) {
+		IInstrumentationStatusManager instrumentationStatus = createInstrumentationStatusManager();
+
+		if (checkIfInstrumentationIsNecessary && instrumentationStatus.checkIsInstrumented(codeDirectory)) {
 			getLog().warn("Skipping instrumentation for " + codeDirectory + ", seems to be already instrumented.");
 			return;
 		}
@@ -75,7 +79,11 @@ public class StackDistanceMojo extends AbstractMojo {
 		String inputArtifactPath = codeDirectory;
 		String outputArtifactPath = codeDirectory;
 		instrumentSourceCodeInNewProcess(inputArtifactPath, outputArtifactPath);
-		addInstrumentedMarker(codeDirectory);
+		instrumentationStatus.markAsInstrumented(codeDirectory);
+	}
+
+	protected IInstrumentationStatusManager createInstrumentationStatusManager() {
+		return new SimpleInstrumentationStatusManager(getLog());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -92,24 +100,6 @@ public class StackDistanceMojo extends AbstractMojo {
 		ProcessExecution processExecution = new ProcessExecution(executionPath, executionPath, executionPath);
 		processExecution.execute(ExecutionIdFactory.createNewShortExecutionId(), ProcessExecution.NO_TIMEOUT,
 				StackDistanceInstrumentation.class, classpath, argsWriter);
-	}
-
-	private boolean hasInstrumentedMarker(String codeDirectory) {
-		return createInstrumentedMarkerFile(codeDirectory).exists();
-	}
-
-	private void addInstrumentedMarker(String codeDirectory) throws IOException {
-		if (hasInstrumentedMarker(codeDirectory)) {
-			return;
-		}
-
-		File markerFile = createInstrumentedMarkerFile(codeDirectory);
-		getLog().info("Creating marker file: " + markerFile.getAbsolutePath());
-		markerFile.createNewFile();
-	}
-
-	private File createInstrumentedMarkerFile(String codeDirectory) {
-		return new File(codeDirectory, "sdist-instrumented.info");
 	}
 
 	private String getProjectDisplayName() {
