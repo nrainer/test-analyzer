@@ -8,6 +8,7 @@ import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger.LoggingMode;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.code.visitor.AbstractTryFinallyMethodVisitor;
+import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 
 public class TestModeMethodVisitor extends AbstractTryFinallyMethodVisitor implements Opcodes {
 	private static final String CP_INVOCATION_LOGGER = JavaUtility.toClassPathWithoutEnding(InvocationLogger.class);
@@ -25,7 +26,7 @@ public class TestModeMethodVisitor extends AbstractTryFinallyMethodVisitor imple
 
 	/** Constructor. */
 	public TestModeMethodVisitor(MethodVisitor mv, ClassNode cn, String name, String desc) {
-		super(Opcodes.ASM5, mv, cn, name, desc);
+		super(AsmConstants.ASM_VERSION, mv, cn, name, desc);
 	}
 
 	/** {@inheritDoc} */

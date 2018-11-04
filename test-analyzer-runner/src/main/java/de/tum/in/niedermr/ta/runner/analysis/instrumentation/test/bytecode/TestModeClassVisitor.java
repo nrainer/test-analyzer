@@ -4,10 +4,10 @@ import java.util.Set;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.tree.ClassNode;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 
 public class TestModeClassVisitor extends ClassVisitor {
 	private final ClassNode m_cn;
@@ -16,7 +16,7 @@ public class TestModeClassVisitor extends ClassVisitor {
 
 	/** Constructor. */
 	public TestModeClassVisitor(ClassNode cn, ClassVisitor cv, Set<MethodIdentifier> testcases) {
-		super(Opcodes.ASM5, cv);
+		super(AsmConstants.ASM_VERSION, cv);
 
 		m_cn = cn;
 		m_className = cn.name;

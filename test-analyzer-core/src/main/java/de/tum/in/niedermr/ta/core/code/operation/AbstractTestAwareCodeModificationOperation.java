@@ -2,11 +2,11 @@ package de.tum.in.niedermr.ta.core.code.operation;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassWriter;
-import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.tests.detector.ClassType;
 import de.tum.in.niedermr.ta.core.code.tests.detector.ITestClassDetector;
 import de.tum.in.niedermr.ta.core.code.visitor.NoModificationClassVisitor;
+import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 
 /**
  * Base class for a code modification operation that is aware of test classes.
@@ -42,7 +42,7 @@ public abstract class AbstractTestAwareCodeModificationOperation extends Abstrac
 	 *            class writer
 	 */
 	protected void modifySourceClass(ClassReader classReader, ClassWriter classWriter) {
-		classReader.accept(new NoModificationClassVisitor(Opcodes.ASM5, classWriter), 0);
+		classReader.accept(new NoModificationClassVisitor(AsmConstants.ASM_VERSION, classWriter), 0);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public abstract class AbstractTestAwareCodeModificationOperation extends Abstrac
 	 *            type of the class
 	 */
 	protected void modifyTestClass(ClassReader classReader, ClassWriter classWriter, ClassType classType) {
-		classReader.accept(new NoModificationClassVisitor(Opcodes.ASM5, classWriter), 0);
+		classReader.accept(new NoModificationClassVisitor(AsmConstants.ASM_VERSION, classWriter), 0);
 	}
 
 	/**
@@ -70,6 +70,6 @@ public abstract class AbstractTestAwareCodeModificationOperation extends Abstrac
 	 *            type of the class
 	 */
 	protected void modifyIgnoredTestClass(ClassReader classReader, ClassWriter classWriter, ClassType classType) {
-		classReader.accept(new NoModificationClassVisitor(Opcodes.ASM5, classWriter), 0);
+		classReader.accept(new NoModificationClassVisitor(AsmConstants.ASM_VERSION, classWriter), 0);
 	}
 }

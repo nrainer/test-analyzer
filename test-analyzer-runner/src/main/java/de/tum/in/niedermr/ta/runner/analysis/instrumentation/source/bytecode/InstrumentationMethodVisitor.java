@@ -6,12 +6,13 @@ import org.objectweb.asm.Opcodes;
 import de.tum.in.niedermr.ta.core.analysis.instrumentation.InvocationLogger;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
+import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 
 public class InstrumentationMethodVisitor extends MethodVisitor {
 	private final MethodIdentifier m_identifier;
 
 	public InstrumentationMethodVisitor(MethodVisitor mv, String className, String methodName, String desc) {
-		super(Opcodes.ASM5, mv);
+		super(AsmConstants.ASM_VERSION, mv);
 
 		this.m_identifier = MethodIdentifier.create(className, methodName, desc);
 	}
@@ -21,6 +22,7 @@ public class InstrumentationMethodVisitor extends MethodVisitor {
 		super.visitCode();
 
 		visitLdcInsn(m_identifier.get());
-		mv.visitMethodInsn(Opcodes.INVOKESTATIC, JavaUtility.toClassPathWithoutEnding(InvocationLogger.class), "log", "(Ljava/lang/String;)V", false);
+		mv.visitMethodInsn(Opcodes.INVOKESTATIC, JavaUtility.toClassPathWithoutEnding(InvocationLogger.class), "log",
+				"(Ljava/lang/String;)V", false);
 	}
 }

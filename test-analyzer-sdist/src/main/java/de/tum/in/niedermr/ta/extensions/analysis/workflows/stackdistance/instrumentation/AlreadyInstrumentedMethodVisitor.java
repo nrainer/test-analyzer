@@ -4,6 +4,7 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
+import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 
 public class AlreadyInstrumentedMethodVisitor extends MethodVisitor {
 
@@ -13,7 +14,7 @@ public class AlreadyInstrumentedMethodVisitor extends MethodVisitor {
 	/** Constructor. */
 	public AlreadyInstrumentedMethodVisitor(MethodVisitor mv, String visitedClassName,
 			Class<?> instrumentationDataRetrieverClass) {
-		super(Opcodes.ASM5, mv);
+		super(AsmConstants.ASM_VERSION, mv);
 		m_visitedClassName = visitedClassName;
 		m_instrumentationDataRetrieverClassPath = JavaUtility
 				.toClassPathWithoutEnding(instrumentationDataRetrieverClass);

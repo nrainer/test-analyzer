@@ -3,9 +3,9 @@ package de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.bytecode;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
 
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
+import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 import de.tum.in.niedermr.ta.extensions.analysis.workflows.statistics.tests.AssertionInformation;
 
 public class AssertionCounterMethodVisitor extends MethodVisitor {
@@ -17,7 +17,7 @@ public class AssertionCounterMethodVisitor extends MethodVisitor {
 	private int m_countAssertions;
 
 	public AssertionCounterMethodVisitor(AssertionInformation assertionInformation) {
-		super(Opcodes.ASM5);
+		super(AsmConstants.ASM_VERSION);
 
 		this.m_assertionInformation = assertionInformation;
 	}

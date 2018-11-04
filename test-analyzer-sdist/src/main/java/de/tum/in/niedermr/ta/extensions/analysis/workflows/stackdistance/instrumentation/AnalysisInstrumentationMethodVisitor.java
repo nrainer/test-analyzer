@@ -7,6 +7,7 @@ import org.objectweb.asm.tree.ClassNode;
 import de.tum.in.niedermr.ta.core.code.identifier.MethodIdentifier;
 import de.tum.in.niedermr.ta.core.code.util.JavaUtility;
 import de.tum.in.niedermr.ta.core.code.visitor.AbstractTryFinallyMethodVisitor;
+import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 
 public class AnalysisInstrumentationMethodVisitor extends AbstractTryFinallyMethodVisitor {
 	private final MethodIdentifier m_identifier;
@@ -19,7 +20,7 @@ public class AnalysisInstrumentationMethodVisitor extends AbstractTryFinallyMeth
 	/** Constructor. */
 	public AnalysisInstrumentationMethodVisitor(MethodVisitor mv, ClassNode cn, String className, String methodName,
 			String desc, Class<?> instrumentationDataRetrieverClass) {
-		super(Opcodes.ASM5, mv, cn, methodName, desc);
+		super(AsmConstants.ASM_VERSION, mv, cn, methodName, desc);
 
 		m_instrumentationDataRetrieverClassPath = JavaUtility
 				.toClassPathWithoutEnding(instrumentationDataRetrieverClass);
