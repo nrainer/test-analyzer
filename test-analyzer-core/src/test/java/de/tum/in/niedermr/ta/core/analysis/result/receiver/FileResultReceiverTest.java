@@ -19,7 +19,7 @@ public class FileResultReceiverTest extends AbstractFileResultReceiverTest {
 	/** Test. */
 	@Test
 	public void testReceiver() throws IOException {
-		FileResultReceiver receiver = new FileResultReceiver(OUTPUT_FILE_NAME, false, 5);
+		FileResultReceiver receiver = new FileResultReceiver(OUTPUT_FILE_NAME, false, false, 5);
 		assertTrue(receiver.isResultBufferEmpty());
 
 		receiver.append(Arrays.asList("1", "2", "3", "4"));
@@ -37,7 +37,7 @@ public class FileResultReceiverTest extends AbstractFileResultReceiverTest {
 		assertEquals(7, TextFileUtility.readFromFile(OUTPUT_FILE_NAME).size());
 
 		// writes to the same file and resets the file at the beginning
-		FileResultReceiver receiver2 = new FileResultReceiver(OUTPUT_FILE_NAME, true, 5);
+		FileResultReceiver receiver2 = new FileResultReceiver(OUTPUT_FILE_NAME, true, false, 5);
 		receiver2.append("X");
 		receiver2.flush();
 		assertEquals(1, TextFileUtility.readFromFile(OUTPUT_FILE_NAME).size());

@@ -30,21 +30,25 @@ public class MultiFileResultReceiver implements IResultReceiver {
 	/** Number of created files. */
 	private int m_fileCount;
 
+	private final boolean m_flushOnPartiallyComplete;
+
 	/** Constructor. */
-	public MultiFileResultReceiver(String baseFileName) {
-		this(baseFileName, DEFAULT_DESIRED_LINES_PER_FILE);
+	public MultiFileResultReceiver(String baseFileName, boolean flushOnPartiallyComplete) {
+		this(baseFileName, flushOnPartiallyComplete, DEFAULT_DESIRED_LINES_PER_FILE);
 	}
 
 	/** Constructor. */
-	public MultiFileResultReceiver(String baseFileName, int desiredLinesPerFile) {
-		this(baseFileName, desiredLinesPerFile, FileResultReceiver.DEFAULT_BUFFER_SIZE);
+	public MultiFileResultReceiver(String baseFileName, boolean flushOnPartiallyComplete, int desiredLinesPerFile) {
+		this(baseFileName, flushOnPartiallyComplete, desiredLinesPerFile, FileResultReceiver.DEFAULT_BUFFER_SIZE);
 	}
 
 	/** Constructor. */
-	public MultiFileResultReceiver(String baseFileName, int desiredLinesPerFile, int bufferSize) {
+	public MultiFileResultReceiver(String baseFileName, boolean flushOnPartiallyComplete, int desiredLinesPerFile,
+			int bufferSize) {
 		m_baseFileName = baseFileName;
 		m_desiredLinesPerFile = desiredLinesPerFile;
 		m_bufferSize = bufferSize;
+		m_flushOnPartiallyComplete = flushOnPartiallyComplete;
 		m_fileCount = FIRST_INDEX;
 
 		createNewFileResultReceiver();
@@ -56,7 +60,8 @@ public class MultiFileResultReceiver implements IResultReceiver {
 			m_fileCount++;
 		}
 
-		m_currentFileResultReceiver = new FileResultReceiver(getFileName(m_fileCount), true, m_bufferSize);
+		m_currentFileResultReceiver = new FileResultReceiver(getFileName(m_fileCount), true, m_flushOnPartiallyComplete,
+				m_bufferSize);
 		m_linesInCurrentFile = 0;
 	}
 

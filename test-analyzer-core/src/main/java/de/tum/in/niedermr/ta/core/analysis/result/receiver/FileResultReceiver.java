@@ -21,21 +21,25 @@ public class FileResultReceiver implements IResultReceiver {
 	/** Result buffer. */
 	private final List<String> m_resultBuffer;
 
+	private final boolean m_flushOnPartiallyComplete;
+
 	/**
 	 * Constructor.
 	 * 
 	 * @param overwriteExisting
 	 *            if true, the file will be reset, otherwise the new content will be appended
 	 */
-	public FileResultReceiver(String fileName, boolean overwriteExisting) {
-		this(fileName, overwriteExisting, DEFAULT_BUFFER_SIZE);
+	public FileResultReceiver(String fileName, boolean overwriteExisting, boolean flushOnPartiallyComplete) {
+		this(fileName, overwriteExisting, flushOnPartiallyComplete, DEFAULT_BUFFER_SIZE);
 	}
 
 	/** Constructor. */
-	public FileResultReceiver(String fileName, boolean overwriteExisting, int bufferSize) {
+	public FileResultReceiver(String fileName, boolean overwriteExisting, boolean flushOnPartiallyComplete,
+			int bufferSize) {
 		m_fileName = fileName;
 		m_bufferSize = bufferSize;
 		m_resultBuffer = new ArrayList<>(bufferSize);
+		m_flushOnPartiallyComplete = flushOnPartiallyComplete;
 
 		if (bufferSize <= 0) {
 			throw new IllegalArgumentException("bufferSize <= 0");
@@ -63,7 +67,9 @@ public class FileResultReceiver implements IResultReceiver {
 	/** {@inheritDoc} */
 	@Override
 	public void markResultAsPartiallyComplete() {
-		// NOP
+		if (m_flushOnPartiallyComplete) {
+			flush();
+		}
 	}
 
 	/** {@inheritDoc} */

@@ -6,15 +6,19 @@ public class ResultReceiverFactory {
 	/**
 	 * Create an instance of the appropriate file result receiver.
 	 * 
-	 * @return either {@link FileResultReceiver} (with overwrite = true) or
-	 *         {@link MultiFileResultReceiver}
+	 * @return either {@link FileResultReceiver} (with overwrite = true) or {@link MultiFileResultReceiver}
 	 */
 	public static IResultReceiver createFileResultReceiverWithDefaultSettings(boolean useMultiFile, String fileName) {
+		return createFileResultReceiverWithDefaultSettings(useMultiFile, fileName, false);
+	}
+
+	public static IResultReceiver createFileResultReceiverWithDefaultSettings(boolean useMultiFile, String fileName,
+			boolean flushOnPartiallyComplete) {
 		if (useMultiFile) {
-			return new MultiFileResultReceiver(fileName);
+			return new MultiFileResultReceiver(fileName, flushOnPartiallyComplete);
 		}
 
-		return new FileResultReceiver(fileName, true);
+		return new FileResultReceiver(fileName, true, flushOnPartiallyComplete);
 	}
 
 	/** Create an instance of the {@link InMemoryResultReceiver}. */

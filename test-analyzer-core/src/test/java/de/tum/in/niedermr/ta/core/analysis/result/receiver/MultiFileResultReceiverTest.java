@@ -18,7 +18,7 @@ public class MultiFileResultReceiverTest extends AbstractFileResultReceiverTest 
 	/** Test. */
 	@Test
 	public void testReceiver() throws IOException {
-		MultiFileResultReceiver receiver = new MultiFileResultReceiver(OUTPUT_FILE_NAME_PATTERN, 5);
+		MultiFileResultReceiver receiver = new MultiFileResultReceiver(OUTPUT_FILE_NAME_PATTERN, false, 5);
 		assertEquals(1, receiver.getFileCount());
 		assertEquals(new File(OUTPUT_FOLDER + "chunk-1-result.txt").getPath(), receiver.getFileName(1));
 
