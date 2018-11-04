@@ -25,7 +25,7 @@ public class SourceInstrumentationOperationTest {
 	public void createInstrumentedClass() throws Exception {
 		ICodeModificationOperation modificationOperation = new SourceInstrumentationOperation(
 				new BiasedTestClassDetector(ClassType.NO_TEST_CLASS), null);
-		m_instrumentedClass = BytecodeModificationTestUtility.createAndLoadModifiedClass(ClassToBeInstrumented.class,
+		m_instrumentedClass = BytecodeModificationTestUtility.modifyAndLoadClass(ClassToBeInstrumented.class,
 				modificationOperation);
 		m_instanceOfInstrumentedClass = m_instrumentedClass.newInstance();
 

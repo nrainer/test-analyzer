@@ -11,19 +11,13 @@ import de.tum.in.niedermr.ta.core.code.operation.ICodeModificationOperation;
 public class BytecodeModificationTestUtility {
 
 	/**
-	 * Execute a bytecode modification on a class and return the newly created
-	 * class.
+	 * Execute a bytecode modification on a class, load and return the newly created class.
 	 */
-	public static Class<?> createAndLoadModifiedClass(Class<?> classToBeModified,
+	public static Class<?> modifyAndLoadClass(Class<?> classToBeModified,
 			ICodeModificationOperation modificationOperation)
 			throws ClassNotFoundException, CodeOperationException, IOException {
-		ClassReader cr = new ClassReader(classToBeModified.getName());
-		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
-
-		modificationOperation.modify(cr, cw);
-
+		byte[] mutatedClassByteCode = modifyAndLoadClassAsBytes(classToBeModified, modificationOperation);
 		ClassLoader baseClassLoader = BytecodeModificationTestUtility.class.getClassLoader();
-		byte[] mutatedClassByteCode = cw.toByteArray();
 
 		DynamicClassLoader dynamicClassLoader = new DynamicClassLoader(baseClassLoader, classToBeModified.getName(),
 				mutatedClassByteCode);
@@ -34,6 +28,19 @@ public class BytecodeModificationTestUtility {
 		}
 
 		return loadedClass;
+	}
+
+	public static byte[] modifyAndLoadClassAsBytes(Class<?> classToBeModified,
+			ICodeModificationOperation modificationOperation) throws IOException, CodeOperationException {
+		ClassReader cr = new ClassReader(classToBeModified.getName());
+		return modifyAndLoadClassAsBytes(cr, modificationOperation);
+	}
+
+	public static byte[] modifyAndLoadClassAsBytes(ClassReader cr,
+			ICodeModificationOperation modificationOperation) throws IOException, CodeOperationException {
+		ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
+		modificationOperation.modify(cr, cw);
+		return cw.toByteArray();
 	}
 
 	private static class DynamicClassLoader extends ClassLoader {

@@ -19,7 +19,7 @@ public abstract class AbstractStackDistanceInstrumentationTest
 	protected Class<?> modifyClass(Class<?> classToBeModified) throws Exception {
 		ICodeModificationOperation modificationOperation = new AnalysisInstrumentationOperation(
 				new BiasedTestClassDetector(ClassType.NO_TEST_CLASS), getStackLogRecorder());
-		return BytecodeModificationTestUtility.createAndLoadModifiedClass(classToBeModified, modificationOperation);
+		return BytecodeModificationTestUtility.modifyAndLoadClass(classToBeModified, modificationOperation);
 	}
 
 	protected abstract Class<?> getStackLogRecorder();

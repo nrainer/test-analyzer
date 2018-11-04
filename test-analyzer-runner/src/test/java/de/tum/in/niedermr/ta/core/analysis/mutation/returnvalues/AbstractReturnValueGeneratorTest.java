@@ -24,6 +24,6 @@ public abstract class AbstractReturnValueGeneratorTest<T> extends AbstractByteco
 		filterList.addValueGenerationSupportedFilter(m_returnValueGenerator);
 		ICodeModificationOperation modificationOperation = new MutateMethodsOperation(m_returnValueGenerator,
 				filterList);
-		return BytecodeModificationTestUtility.createAndLoadModifiedClass(classToBeMutated, modificationOperation);
+		return BytecodeModificationTestUtility.modifyAndLoadClass(classToBeMutated, modificationOperation);
 	}
 }
