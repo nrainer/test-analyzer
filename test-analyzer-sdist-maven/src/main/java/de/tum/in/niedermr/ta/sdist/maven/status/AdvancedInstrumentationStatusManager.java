@@ -31,7 +31,7 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 
 		List<String> instrumentationInfo = TextFileUtility
 				.readFromFile(getInstrumentedMarkerFile(codeDirectory).getAbsolutePath());
-		long lastInstrumentedTimestamp = getLastInstrumentedTimestamp(instrumentationInfo);
+		long lastInstrumentedTimestamp = getLastInstrumentedTimestampFromInfoFile(instrumentationInfo);
 
 		if (lastInstrumentedTimestamp <= 0) {
 			logger.warn("Last instrumented timestamp is invalid." + " Assuming not instrumented.");
@@ -40,7 +40,8 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 
 		long lastChangeTimestamp = computeLastChangeTimestamp(codeDirectory);
 
-		if (lastChangeTimestamp <= lastInstrumentedTimestamp) {
+		if (lastChangeTimestamp < lastInstrumentedTimestamp) {
+			// do not use <= because timestamps are truncated to seconds
 			logger.info("Already instrumented at " + lastInstrumentedTimestamp + " and unchanged since "
 					+ lastChangeTimestamp + ".");
 			return true;
@@ -68,7 +69,7 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 		}
 	}
 
-	private long getLastInstrumentedTimestamp(List<String> instrumentationInfo) {
+	private long getLastInstrumentedTimestampFromInfoFile(List<String> instrumentationInfo) {
 		if (instrumentationInfo.isEmpty()) {
 			return -1;
 		}
@@ -89,6 +90,10 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 
 		File instrumentationInfoFile = getInstrumentedMarkerFile(codeDirectory);
 		long currentTimestamp = new Date().getTime();
+
+		// reduce resolution to seconds (because the Linux filesystem operates on seconds)
+		currentTimestamp = (currentTimestamp / 1000L) * 1000L;
+
 		logger.info("Updating marker file with timestamp " + currentTimestamp + ": "
 				+ instrumentationInfoFile.getAbsolutePath());
 		TextFileUtility.writeToFile(instrumentationInfoFile.getAbsolutePath(),
