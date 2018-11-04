@@ -1,4 +1,4 @@
-de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()|de.tum.in.niedermr.ta.sample.SampleClass.c(java.lang.String)|4|2
-de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()|de.tum.in.niedermr.ta.sample.SampleClass.b(boolean)|3|1
-de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()|de.tum.in.niedermr.ta.sample.SampleClass.a(int,int)|2|1
-de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()|de.tum.in.niedermr.ta.sample.SampleClass.a()|1|2
+de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()||de.tum.in.niedermr.ta.sample.SampleClass.c(java.lang.String)||4||2
+de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()||de.tum.in.niedermr.ta.sample.SampleClass.b(boolean)||3||1
+de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()||de.tum.in.niedermr.ta.sample.SampleClass.a(int,int)||2||1
+de.tum.in.niedermr.ta.sample.junit.SampleJUnitTestClass.testCase1()||de.tum.in.niedermr.ta.sample.SampleClass.a()||1||2
