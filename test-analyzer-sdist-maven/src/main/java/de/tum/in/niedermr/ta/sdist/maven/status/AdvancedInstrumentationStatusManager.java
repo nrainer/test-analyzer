@@ -41,7 +41,8 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 		long lastChangeTimestamp = computeLastChangeTimestamp(codeDirectory);
 
 		if (lastChangeTimestamp <= lastInstrumentedTimestamp) {
-			logger.info("Already instrumented at " + lastInstrumentedTimestamp + " and unchanged since then.");
+			logger.info("Already instrumented at " + lastInstrumentedTimestamp + " and unchanged since "
+					+ lastChangeTimestamp + ".");
 			return true;
 		}
 
@@ -62,6 +63,7 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 			FileTime lastModifiedTime = Files.getLastModifiedTime(path);
 			return lastModifiedTime.toMillis();
 		} catch (IOException e) {
+			logger.warn("Failed to retrieve timestamp of " + path, e);
 			return -1;
 		}
 	}
