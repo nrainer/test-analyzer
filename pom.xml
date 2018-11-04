@@ -27,7 +27,6 @@
 
 		<!-- custom properties -->
 		<currentVersion>2.1.0-SNAPSHOT</currentVersion>
-		<rootFolder>${project.basedir}</rootFolder>
 		
 		<!-- dependency versions -->
 		<junit.version>4.12</junit.version>
@@ -37,6 +36,13 @@
 		<log4j2.version>2.6.2</log4j2.version>
 		<conqat.commons.version>1.0</conqat.commons.version>
 	</properties>
+	
+	<repositories>
+		<repository>
+			<id>local-maven-repo</id>
+			<url>file:///${project.basedir}/local-maven-repo</url>
+		</repository>
+	</repositories>
 	
 	<build>
 		<plugins>
@@ -149,8 +155,6 @@
 			<groupId>org.conqat.lib</groupId>
 			<artifactId>commons</artifactId>
 			<version>${conqat.commons.version}</version>
-			<scope>system</scope>
-			<systemPath>${rootFolder}/test-analyzer-core/lib/ccsm-commons.jar</systemPath>
 		</dependency>
 
 		<dependency>

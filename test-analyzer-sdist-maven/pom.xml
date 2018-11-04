@@ -14,8 +14,6 @@
 	</parent>
 
 	<properties>
-		<!-- Must be set as absolute path. -->
-		<rootFolder>${project.basedir}/../</rootFolder>
 	</properties>
 
 	<build>

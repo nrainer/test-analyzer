@@ -14,7 +14,6 @@
 	</parent>
 
 	<properties>
-		<rootFolder>${project.basedir}/../</rootFolder>
 		<test.integration.pattern>**/IntegrationTest*.java</test.integration.pattern>
 		<test.program.path>${basedir}/src/test/program</test.program.path>
 	</properties>

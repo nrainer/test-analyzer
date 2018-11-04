@@ -1,0 +1,1 @@
+mvn deploy:deploy-file -DgroupId="org.conqat.lib" -DartifactId="commons" -Dversion="1.0" -Durl=file:./local-maven-repo/ -DrepositoryId=local-maven-repo -DupdateReleaseInfo=true -Dfile=D:/TestAnalyzer/repo/test-analyzer-core/lib/ccsm-commons.jar
