@@ -13,24 +13,26 @@ public class SimpleInstrumentationStatusManager implements IInstrumentationStatu
 		this.logger = logger;
 	}
 
+	/** {@inheritDoc} */
 	@Override
-	public boolean checkIsInstrumented(String codeDirectory) {
-		logger.info("Checking instrumentation status using: " + getClass().getSimpleName());
-		return createInstrumentedMarkerFile(codeDirectory).exists();
+	public boolean checkIsInstrumented(String codeDirectory) throws IOException {
+		return getInstrumentedMarkerFile(codeDirectory).exists();
 	}
 
+	/** {@inheritDoc} */
 	@Override
 	public void markAsInstrumented(String codeDirectory) throws IOException {
 		if (checkIsInstrumented(codeDirectory)) {
 			return;
 		}
 
-		File markerFile = createInstrumentedMarkerFile(codeDirectory);
+		File markerFile = getInstrumentedMarkerFile(codeDirectory);
 		logger.info("Creating marker file: " + markerFile.getAbsolutePath());
 		markerFile.createNewFile();
 	}
 
-	protected File createInstrumentedMarkerFile(String codeDirectory) {
-		return new File(codeDirectory, "sdist-instrumented.info");
+	protected File getInstrumentedMarkerFile(String codeDirectory) {
+		String string = "sdist-instrumented.info";
+		return new File(codeDirectory, string);
 	}
 }

@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public interface IInstrumentationStatusManager {
 
-	boolean checkIsInstrumented(String codeDirectory);
+	boolean checkIsInstrumented(String codeDirectory) throws IOException;
 
 	void markAsInstrumented(String codeDirectory) throws IOException;
 }

@@ -19,7 +19,9 @@ import de.tum.in.niedermr.ta.core.common.util.StringUtility;
 import de.tum.in.niedermr.ta.runner.execution.ProcessExecution;
 import de.tum.in.niedermr.ta.runner.execution.args.ProgramArgsWriter;
 import de.tum.in.niedermr.ta.runner.execution.id.ExecutionIdFactory;
+import de.tum.in.niedermr.ta.sdist.maven.status.AdvancedInstrumentationStatusManager;
 import de.tum.in.niedermr.ta.sdist.maven.status.IInstrumentationStatusManager;
+import de.tum.in.niedermr.ta.sdist.maven.status.NoneInstrumentedStatusManager;
 import de.tum.in.niedermr.ta.sdist.maven.status.SimpleInstrumentationStatusManager;
 
 /**
@@ -35,10 +37,10 @@ public class StackDistanceMojo extends AbstractMojo {
 
 	/**
 	 * Check if the instrumentation has not been done yet to avoid a further instrumentation (which will cause an
-	 * error).
+	 * error). Modes are: none, simple, advanced
 	 */
-	@Parameter(property = "checkIfInstrumentationIsNecessary")
-	private boolean checkIfInstrumentationIsNecessary = true;
+	@Parameter(property = "precheckAlreadyInstrumentedMode", defaultValue = "advanced")
+	private String precheckAlreadyInstrumentedMode = "advanced";
 
 	/** {@inheritDoc} */
 	@Override
@@ -70,7 +72,9 @@ public class StackDistanceMojo extends AbstractMojo {
 			throws DependencyResolutionRequiredException, IOException {
 		IInstrumentationStatusManager instrumentationStatus = createInstrumentationStatusManager();
 
-		if (checkIfInstrumentationIsNecessary && instrumentationStatus.checkIsInstrumented(codeDirectory)) {
+		getLog().info("Checking instrumentation status using: " + instrumentationStatus.getClass().getSimpleName());
+
+		if (instrumentationStatus.checkIsInstrumented(codeDirectory)) {
 			getLog().warn("Skipping instrumentation for " + codeDirectory + ", seems to be already instrumented.");
 			return;
 		}
@@ -83,7 +87,15 @@ public class StackDistanceMojo extends AbstractMojo {
 	}
 
 	protected IInstrumentationStatusManager createInstrumentationStatusManager() {
-		return new SimpleInstrumentationStatusManager(getLog());
+		if (precheckAlreadyInstrumentedMode.equalsIgnoreCase("advanced")) {
+			return new AdvancedInstrumentationStatusManager(getLog());
+		}
+
+		if (precheckAlreadyInstrumentedMode.equalsIgnoreCase("simple")) {
+			return new SimpleInstrumentationStatusManager(getLog());
+		}
+
+		return new NoneInstrumentedStatusManager();
 	}
 
 	@SuppressWarnings("unchecked")
