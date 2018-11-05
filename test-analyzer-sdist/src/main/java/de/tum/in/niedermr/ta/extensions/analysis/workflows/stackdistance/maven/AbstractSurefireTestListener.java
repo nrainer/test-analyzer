@@ -138,6 +138,12 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 		appendStackDistanceOfTestcaseToResult(createTestcaseIdentifier(description));
 	}
 
+	/** {@inheritDoc} */
+	@Override
+	public synchronized void testIgnored(Description description) throws Exception {
+		writeCommentToResultFile("Ignored test case: " + createTestcaseIdentifier(description).get());
+	}
+
 	private void ensureOutputWriterInitialized() {
 		if (m_resultReceiver != null) {
 			return;
