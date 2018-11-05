@@ -174,6 +174,16 @@ public class ThreadStackManager implements IThreadListener {
 			LOGGER.info("Stack trace elements are: " + Arrays.asList(stackTrace));
 		}
 
+		int countStackHeight = computeStackHeightOfStackTraceInternal(startClassName, stopClassName, stackTrace,
+				ignoredClassNamePrefixes);
+
+		LOGGER.debug("Computed stack height is: " + countStackHeight);
+
+		return countStackHeight;
+	}
+
+	protected static int computeStackHeightOfStackTraceInternal(String startClassName, String stopClassName,
+			StackTraceElement[] stackTrace, String[] ignoredClassNamePrefixes) {
 		int count = 0;
 		boolean startClassReached = false;
 		boolean startClassCompleted = false;
@@ -237,9 +247,6 @@ public class ThreadStackManager implements IThreadListener {
 				LOGGER.info("Stack trace elements are: " + Arrays.asList(stackTrace));
 			}
 		}
-
-		LOGGER.debug("Computed stack height is: " + count);
-
 		return count;
 	}
 
