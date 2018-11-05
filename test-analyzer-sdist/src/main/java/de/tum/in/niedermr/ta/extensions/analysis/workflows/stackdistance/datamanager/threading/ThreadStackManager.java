@@ -22,6 +22,9 @@ public class ThreadStackManager implements IThreadListener {
 	/** Name of the main thread. */
 	private static final String MAIN_THREAD_NAME = "main";
 
+	/** Shutdown hooks class. */
+	private static final String SHUTDOWN_HOOKS_CLASS_NAME = "java.lang.ApplicationShutdownHooks";
+
 	/** Whether the {@link Thread} class should be verified. Can be disabled during testing this class. */
 	private static boolean s_threadClassVerificationEnabled = true;
 
@@ -175,6 +178,7 @@ public class ThreadStackManager implements IThreadListener {
 		boolean startClassReached = false;
 		boolean startClassCompleted = false;
 		boolean stopClassReached = false;
+		boolean shutdownHookInvolved = false;
 
 		for (StackTraceElement stackTraceElement : stackTrace) {
 			String stackElementClassName = stackTraceElement.getClassName();
@@ -209,6 +213,10 @@ public class ThreadStackManager implements IThreadListener {
 				break;
 			}
 
+			if (stackElementClassName.equals(SHUTDOWN_HOOKS_CLASS_NAME)) {
+				shutdownHookInvolved = true;
+			}
+
 			if (shouldClassBeIgnoredWhenCounting(stackElementClassName, ignoredClassNamePrefixes)) {
 				LOGGER.debug("Skipping ignored element: " + stackElementString);
 				continue;
@@ -222,8 +230,12 @@ public class ThreadStackManager implements IThreadListener {
 		}
 
 		if (stopClassName != null && !stopClassReached) {
-			LOGGER.warn("Stop class was not reached: " + stopClassName);
-			LOGGER.info("Stack trace elements are: " + Arrays.asList(stackTrace));
+			if (shutdownHookInvolved) {
+				LOGGER.debug("Stop class was not reached, but a shutdown hook is involved.");
+			} else {
+				LOGGER.warn("Stop class was not reached: " + stopClassName);
+				LOGGER.info("Stack trace elements are: " + Arrays.asList(stackTrace));
+			}
 		}
 
 		LOGGER.debug("Computed stack height is: " + count);
