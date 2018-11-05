@@ -1,7 +1,9 @@
 package de.tum.in.niedermr.ta.extensions.analysis.workflows.stackdistance.datamanager.threading;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -81,7 +83,7 @@ public class ThreadStackManager implements IThreadListener {
 
 	/** {@link #m_stopClassName} */
 	public synchronized void setStopClassName(String stopClassName) {
-		m_stopClassName = stopClassName;
+		m_stopClassName = Objects.requireNonNull(stopClassName);
 	}
 
 	/** {@link #m_stackCountIgnoreClassNamePrefixes} */
@@ -153,14 +155,26 @@ public class ThreadStackManager implements IThreadListener {
 	 */
 	protected static int computeStackHeightOfStackTrace(String startClassName, String stopClassName,
 			StackTraceElement[] stackTrace, String[] ignoredClassNamePrefixes) {
+		if (stackTrace.length == 0) {
+			throw new IllegalStateException("Stack trace is empty");
+		}
+
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("Start class name is: " + startClassName);
 			LOGGER.debug("Stop class name is: " + stopClassName);
+			LOGGER.debug("Stack trace elements are: " + Arrays.asList(stackTrace));
+		}
+
+		if (stopClassName == null) {
+			// may happen for (shutdown) threads started by forked boot runners
+			LOGGER.warn("Stop class name is null!");
+			LOGGER.info("Stack trace elements are: " + Arrays.asList(stackTrace));
 		}
 
 		int count = 0;
 		boolean startClassReached = false;
 		boolean startClassCompleted = false;
+		boolean stopClassReached = false;
 
 		for (StackTraceElement stackTraceElement : stackTrace) {
 			String stackElementClassName = stackTraceElement.getClassName();
@@ -172,18 +186,15 @@ public class ThreadStackManager implements IThreadListener {
 				if (!startClassReached && inStartClass) {
 					// start class reached -> start counting when the start
 					// class is left
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Start class reached: " + stackElementString);
-					}
+					LOGGER.debug("Start class reached: " + stackElementString);
 					startClassReached = true;
 				} else if (startClassReached && inStartClass) {
 					// start class was reached and we are still in it
-					if (LOGGER.isDebugEnabled()) {
-						LOGGER.debug("Ignoring element in start class: " + stackElementString);
-					}
+					LOGGER.debug("Ignoring element in start class: " + stackElementString);
 				} else if (startClassReached && !inStartClass) {
 					// start class was reached and no longer in start class ->
 					// first element to count reached
+					LOGGER.debug("Start class was reached and left with: " + stackElementString);
 					startClassCompleted = true;
 				}
 			}
@@ -192,29 +203,30 @@ public class ThreadStackManager implements IThreadListener {
 				continue;
 			}
 
-			if (stopClassName.equals(stackElementClassName)) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Abort counting at element: " + stackElementString);
-				}
+			if (Objects.equals(stopClassName, stackElementClassName)) {
+				LOGGER.debug("Stop class was reached. Counting aborted at: " + stackElementString);
+				stopClassReached = true;
 				break;
 			}
 
 			if (shouldClassBeIgnoredWhenCounting(stackElementClassName, ignoredClassNamePrefixes)) {
-				if (LOGGER.isDebugEnabled()) {
-					LOGGER.debug("Skipping ignored element: " + stackElementString);
-				}
+				LOGGER.debug("Skipping ignored element: " + stackElementString);
 				continue;
 			}
 
 			count++;
+
 			if (LOGGER.isDebugEnabled()) {
-				LOGGER.debug("Counted element: " + stackElementString);
+				LOGGER.debug("Counted stack trace element: " + stackElementString);
 			}
 		}
 
-		if (LOGGER.isDebugEnabled()) {
-			LOGGER.debug("Stack height is: " + count);
+		if (stopClassName != null && !stopClassReached) {
+			LOGGER.warn("Stop class was not reached: " + stopClassName);
+			LOGGER.info("Stack trace elements are: " + Arrays.asList(stackTrace));
 		}
+
+		LOGGER.debug("Computed stack height is: " + count);
 
 		return count;
 	}

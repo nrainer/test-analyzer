@@ -16,16 +16,17 @@ public abstract class AbstractThreadAwareStackDistanceManager {
 	 * Prefixes of class names that should not be counted when computing the stack distance.
 	 */
 	private static final String[] STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES = new String[] { "org.junit.", "sun.reflect.",
-			"junit.framework." };
+			"junit.framework.", "org.testng.", "org.apache.maven.surefire.", "org.apache.maven.failsafe." };
 
 	public void beforeAllTests() {
+		LOGGER.info("Used stack distance manager is: " + getClass().getName());
 		ThreadStackManager stackManager = new ThreadStackManager();
 
 		// useful for JUnit tests with timeout annotation
 		stackManager.setStackCountIgnoreClassNamesPrefixes(STACK_COUNT_IGNORE_CLASS_NAME_PREFIXES);
 
 		ThreadNotifier.INSTANCE.registerListener(stackManager);
-		LOGGER.info("Registered StackManager at the ThreadNotifier.");
+		LOGGER.info("Registered " + ThreadStackManager.class.getName() + " at " + ThreadNotifier.class.getName() + ".");
 		execSetThreadStackManagerAndVerify(stackManager);
 		LOGGER.info("ThreadStackManager is set and verified.");
 	}
