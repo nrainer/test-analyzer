@@ -141,7 +141,15 @@ public abstract class AbstractSurefireTestListener extends RunListener {
 	/** {@inheritDoc} */
 	@Override
 	public synchronized void testIgnored(Description description) throws Exception {
-		writeCommentToResultFile("Ignored test case: " + createTestcaseIdentifier(description).get());
+		String testcase = description.getDisplayName();
+
+		if (description.getMethodName() != null) {
+			// descriptions with class but without method name are not allowed
+			// they have never been encountered outside ignored tests
+			testcase = createTestcaseIdentifier(description).get();
+		}
+
+		writeCommentToResultFile("Ignored test case: " + testcase);
 	}
 
 	private void ensureOutputWriterInitialized() {
