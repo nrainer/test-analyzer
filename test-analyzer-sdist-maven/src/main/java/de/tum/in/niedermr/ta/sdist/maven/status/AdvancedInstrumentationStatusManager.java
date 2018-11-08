@@ -55,8 +55,20 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 	}
 
 	private long computeLastChangeTimestamp(String codeDirectory) throws IOException {
-		return Files.walk(Paths.get(codeDirectory)).filter(path -> path.toString().endsWith(".class"))
+		return Files.walk(Paths.get(codeDirectory)).filter(path -> isRelevantCompiledClass(path))
 				.mapToLong(path -> getLastModifiedTimestamp(path)).max().orElse(-1);
+	}
+
+	protected boolean isRelevantCompiledClass(Path path) {
+		if (!path.toString().endsWith(".class")) {
+			return false;
+		}
+
+		if (path.toString().endsWith("package-info.class")) {
+			return false;
+		}
+
+		return true;
 	}
 
 	private long getLastModifiedTimestamp(Path path) {
