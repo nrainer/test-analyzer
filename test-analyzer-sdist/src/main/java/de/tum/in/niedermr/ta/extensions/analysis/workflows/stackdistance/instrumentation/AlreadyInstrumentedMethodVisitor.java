@@ -8,14 +8,14 @@ import de.tum.in.niedermr.ta.core.common.constants.AsmConstants;
 
 public class AlreadyInstrumentedMethodVisitor extends MethodVisitor {
 
-	private final String m_visitedClassName;
 	private final String m_instrumentationDataRetrieverClassPath;
+	private AlreadyInstrumentedHandler m_alreadyInstrumentedHandler;
 
 	/** Constructor. */
-	public AlreadyInstrumentedMethodVisitor(MethodVisitor mv, String visitedClassName,
-			Class<?> instrumentationDataRetrieverClass) {
+	public AlreadyInstrumentedMethodVisitor(MethodVisitor mv, Class<?> instrumentationDataRetrieverClass,
+			AlreadyInstrumentedHandler alreadyInstrumentedHandler) {
 		super(AsmConstants.ASM_VERSION, mv);
-		m_visitedClassName = visitedClassName;
+		m_alreadyInstrumentedHandler = alreadyInstrumentedHandler;
 		m_instrumentationDataRetrieverClassPath = JavaUtility
 				.toClassPathWithoutEnding(instrumentationDataRetrieverClass);
 	}
@@ -26,7 +26,11 @@ public class AlreadyInstrumentedMethodVisitor extends MethodVisitor {
 		super.visitMethodInsn(opcode, owner, name, desc, itf);
 
 		if (opcode == Opcodes.INVOKESTATIC && m_instrumentationDataRetrieverClassPath.equals(owner)) {
-			throw new IllegalStateException("Already instrumented: " + m_visitedClassName);
+			m_alreadyInstrumentedHandler.execOnAlreadyInstrumented();
 		}
+	}
+
+	public interface AlreadyInstrumentedHandler {
+		void execOnAlreadyInstrumented();
 	}
 }

@@ -50,7 +50,7 @@ public class AdvancedInstrumentationStatusManager extends SimpleInstrumentationS
 		logger.warn("Instrumentation file is present, but files changed (" + lastChangeTimestamp
 				+ ") after the last instrumentation (" + lastInstrumentedTimestamp + ")!"
 				+ " It is possible that the files were recompiled."
-				+ " Files will be instrumented, but instrumentation will fail if an already instrumented file is found.");
+				+ " Files will be instrumented if not instrumented yet.");
 		return false;
 	}
 
