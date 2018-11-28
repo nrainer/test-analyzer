@@ -94,7 +94,7 @@ public class StackLogRecorderV3 {
 			return;
 		}
 
-		while (!methodsOnStack.getLast().equals(methodIdentifierString) && !methodsOnStack.isEmpty()) {
+		while (!methodsOnStack.isEmpty() && !methodsOnStack.getLast().equals(methodIdentifierString)) {
 			// fix for missing invocations of popInvocation (not always invoked on ATHROWS)
 			// until we reach the current method
 			currentStackDistance--;
