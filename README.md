@@ -1,4 +1,6 @@
-# test-analyzer [![Build Status](https://travis-ci.org/cqse/test-analyzer.svg?branch=master)](https://travis-ci.org/cqse/test-analyzer)
+# test-analyzer
+
+[![Build Status](https://travis-ci.org/cqse/test-analyzer.svg?branch=master)](https://travis-ci.org/cqse/test-analyzer)
 
 A mutation testing tool to detect pseudo-tested methods and to collect information about the test execution (e.g., the minimal stack distance between a test case and a method).
 
@@ -9,10 +11,12 @@ mvn clean install
 mvn eclipse:eclipse
 ```
 
-# Main Class
+# Getting Started
+
+## Main Class
 `de.tum.in.niedermr.ta.runner.start.AnalyzerRunnerStart`
 
-# Sample Configuration
+## Sample Configuration
 `/test-analyzer-runner/sample/sample-configuration.config`
 
 (See also: configurations of the integration tests in: `/test-analyzer-test-int/src/test/data/integrationtest*/configuration`)
